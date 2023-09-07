@@ -1,4 +1,4 @@
-function result = fixed(g, x0, epsilon, epsilon_g, max_it)
+function result = fixed(g, x0, epsilon, max_it)
     x_next = x0;
     
     for k = 0:max_it
@@ -11,7 +11,7 @@ function result = fixed(g, x0, epsilon, epsilon_g, max_it)
             k, xk, cauchy_error, x_next...
         )
 
-        if cauchy_error < epsilon || abs(x_next) < epsilon_g
+        if cauchy_error < epsilon
             break;
         end
     end
