@@ -1,0 +1,20 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{2}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+\maketitle
+
+\question Define $f(x) = 1 - \frac{1}{Rx}$. Then $f(x) = 0$ if and only if $x = \frac{1}{R}$, so solving $f(x) = 0$ is equivalent to computing $\frac{1}{R}$. Since $f'(x) = \frac{1}{Rx^2}$, the Newton's method for solving $f(x)=0$ is given by
+\begin{equation}
+	\begin{aligned}
+		x_{k+1} &= x_k - \frac{f(x_k)}{f'(x_k)} = x_k - Rx_k^2\left(1-\frac{1}{Rx_k}\right) = x_k - Rx_k^2 +x_k \\
+		&= x_k(2- Rx_k)
+	\end{aligned}
+\end{equation}
+
+\question
+
+\end{document}

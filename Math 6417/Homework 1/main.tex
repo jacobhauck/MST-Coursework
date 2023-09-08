@@ -33,7 +33,7 @@
 	\end{equation}
 	We show that if $u \in C^2[0,1]$, then $u$ solves (\ref{eq:bvp}) if and only if $u$ solves (\ref{eq:integral}), and that there is a unique solution $u \in C^2[0,1]$ of (\ref{eq:integral}) by the Banach Fixed Point Theorem. Then the claim follows.
 	
-	\begin{romanparts}
+	\begin{enumerate}[label=\textbf{(\roman*)}]
 		\questionpart If $u \in C^2[0,1]$, then $u$ is a solution of (\ref{eq:bvp}) if and only if $u$ is a solution of (\ref{eq:integral}).
 		\begin{proof}
 			Suppose that $u \in C^2[0,1]$ is a solution of (\ref{eq:bvp}). Then, using integration by parts,
@@ -48,25 +48,76 @@
 			
 			Conversely, suppose that $u \in C^2[0,1]$ is a solution of (\ref{eq:integral}). Then differentiating both sides of (\ref{eq:integral}) implies that
 			\begin{equation}
+				\label{eq:diff_u1}
 				u'(x) = \beta - \alpha + \frac{\text{d}}{\text{d} x}\int_0^x \xi(1-x)f(\xi, u(\xi))\dee\xi + \frac{\text{d}}{\text{d} x}\int_x^1 x(1-\xi)f(\xi,u(\xi))\dee\xi
 			\end{equation}
 			for $x \in (0,1)$. Since the integrands in both integrals above are obviously continuous and have a continuous partial derivative with respect to $x$ on $[0,1]^2$, the action of the derivative on the integrals gives
 			\begin{align*}
+				\label{eq:diff_u2}
 				u'(x) &= \beta - \alpha + x(1-x)f(x,u(x)) -\int_0^x\xi f(\xi,u(\xi))\dee\xi - x(1-x)f(x,u(x))+\int_x^1(1-\xi)f(\xi,u(\xi))\dee\xi \\
 				&= \beta - \alpha - \int_0^x\xi f(\xi,u(\xi))\dee\xi + \int_x^1(1-\xi)f(\xi,u(\xi))\dee\xi \tag{\arabic{equation}}\stepcounter{equation}
 			\end{align*}
 			for $x \in(0,1)$. Since $f$ is continuous, the integrands in the above integrals are continuous, and the Fundamental Theorem of Calculus implies that
 			\begin{equation}
+				\label{eq:diff_u3}
 				u''(x) = -xf(x,u(x)) - (1-x)f(x,u(x)) = -f(x,u(x))
 			\end{equation}
 			for $x \in (0,1)$. Lastly, note that the definition of $G$ implies that $G(0,\xi) = 0 = G(1,\xi)$ for all $\xi \in [0,1]$. Thus, $u(0) = \alpha$, and $u(1) = \beta$, so $u$ solves (\ref{eq:bvp}).
 		\end{proof}
 		\questionpart There is one and only one solution $u \in C^2[0,1]$ of (\ref{eq:integral}).
 		\begin{proof}
-			For $u\in C[0,1]$, define
+			First, note that $G$ is continuous on $[0,1]^2$. Indeed, it is obviously continuous on the regions $\{x < \xi\}$ and $\{\xi < x\}$ by definition, and we have
+			\begin{equation}
+				\lim_{\substack{(x,\xi)\to(x_0,x_0)\\x \le \xi}} G(x,\xi) = x_0(1-x_0) = \lim_{\substack{(x,\xi)\to (x_0,x_0)\\x \ge \xi}} G(x,\xi)
+			\end{equation}
+			for any $x_0 \in [0,1]$. Thus, $G$ is continuous on $\{x=\xi\}$ as well, and consequently on all of $[0,1]^2$.
+			
+			Second, for $u\in C[0,1]$, define
 			\begin{equation}
 				Au(x) = \alpha(1-x) + \beta x + \int_0^1G(x,\xi)f(\xi, u(\xi))\dee\xi.
 			\end{equation}
+			Since $f$ is continuous on $[0,1]^2$, it is also bounded on $[0,1]^2$, say, by $M > 0$. Then
+			\begin{align*}
+				\left|\int_0^1 G(x,\xi)f(\xi, u(\xi))\dee\xi - \int_0^1G(y,\xi)f(\xi,u(\xi))\dee\xi\right| &\le M \int_0^1|G(x,\xi) - G(y,\xi)|\dee\xi \\
+				&\le M\left[\int_0^x  \xi|x-y|\dee\xi + \int_x^1 |x-y|(1-\xi)\dee\xi\right] \\
+				&\le M |x-y|
+			\end{align*}
+			Hence, $Au$ is the sum of a polynomial and a Lipschitz function, so $Au \in C[0,1]$, and $A : C[0,1] \to C[0,1]$.
+			
+			Third, $A$ is a contraction on $C[0,1]$ in the uniform metric $\rho$ on $C[0,1]$. Indeed, for $u, v \in C[0,1]$,
+			\begin{align}
+				\rho(Au,Av) &= \max_{x\in[0,1]}\left|\int_0^1G(x,\xi)\big[f(\xi, u(\xi))-f(\xi,v(\xi))\big]\dee\xi\right| \\
+				&\le \max_{x\in[0,1]} L\int_0^1|G(x,\xi)| \cdot|u(\xi) - v(\xi)|\dee\xi \\
+				&\le L \cdot\left(\max_{x\in[0,1]}\int_0^1 |G(x,\xi)|\dee\xi\right)\rho(u,v).
+			\end{align}
+			By the Extreme Value Theorem,
+			\begin{equation}
+				\begin{aligned}
+					p(x) = \int_0^1|G(x,\xi)|\dee\xi &= \int_0^x \xi(1-x)\dee\xi + \int_x^1x(1-\xi)\dee\xi = \frac{1}{2}\left[x^2(1-x) + x(1-x)^2\right] \\
+					&= \frac{1}{2}x(1-x)
+				\end{aligned}
+			\end{equation}
+			achieves its maximum for $x \in [0,1]$ when $x \in \{0,1\}$, which implies $p(x) = 0$, or when 
+			\begin{equation}
+				0 = p'(x) = \frac{1}{2}(1-x - x)
+			\end{equation}
+			that is, when $x = \frac{1}{2}$, in which case $p(x) = \frac{1}{8}$. Thus, $p(x) \le \frac{1}{8}$ for $x \in [0,1]$, and
+			\begin{equation}
+				\rho(Au,Av) \le 8L \rho(u,v).
+			\end{equation}
+			Since $8L < 1$ by hypothesis, it follows that $A$ is a contraction on $C[0,1]$.
+			
+			Fourth, by the Banach Fixed Point Theorem, there is a unique solution $u \in C[0,1]$ of (\ref{eq:integral}). Since $C^2[0,1] \subseteq C[0,1]$, it follows that if $u \in C^2[0,1]$, then (\ref{eq:integral}) has a unique solution in $C^2[0,1]$, namely, $u$. Thus, to finish the proof, we need to show that $u'$ and $u''$ exist and are continuous.
+			
+			Since $u$ is a solution of (\ref{eq:integral}), it follows that
+			\begin{equation}
+				u(x) = \alpha(1-x) + \beta x + \int_0^x (1-x)\xi f(\xi, u(\xi))\dee\xi + \int_x^1 x(1-\xi)f(\xi,u(\xi))\dee\xi.
+			\end{equation}
+			The calculations in (\ref{eq:diff_u1}, \ref{eq:diff_u2}, \ref{eq:diff_u3}) relied only the fact that $u$ was continuous (so that $f(\cdot, u(\cdot))$ would be continuous), so they apply to $u$ here. Thus, $u'$ and $u''$ exist, and
+			\begin{equation}
+				u''(x) = -f(x, u(x)),
+			\end{equation}
+			which is continuous on $[0,1]$. Therefore $u \in C^2[0,1]$.
 		\end{proof}
-	\end{romanparts}
+	\end{enumerate}
 \end{document}
