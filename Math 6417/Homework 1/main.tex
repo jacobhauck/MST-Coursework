@@ -1,0 +1,72 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+\input{standardcmd.tex}
+
+\newcommand{\hwnum}{1}
+
+\begin{document}
+	\maketitle
+	
+	\question Let $f$ be continuous on $[0,1] \times \R$ and satisfy $|f(x,u) - f(x, v)| \le L |u-v|$ for all $x \in [0,1]$ and $u,v \in \R$, where $0 \le L < 8$.
+	
+	For $\alpha, \beta \in \R$, consider the boundary value problem
+	\begin{equation}
+		\label{eq:bvp}
+		\begin{gathered}
+			-u''(x) = f(x,u(x)) \quad \text{if } x \in (0,1) \\
+			u(0)=\alpha \qquad u(1) = \beta.
+		\end{gathered}
+	\end{equation}
+	This problem has one and only one solution $u \in C^2[0,1]$.
+	
+	Indeed, define
+	\begin{equation}
+		G(x,\xi) = \begin{cases}
+			\xi(1-x) & 0 \le \xi \le x \le 1 \\
+			x(1-\xi) & 0 \le x \le \xi \le 1
+		\end{cases}
+	\end{equation}
+	and also consider the integral equation
+	\begin{equation}
+		\label{eq:integral}
+		u(x) = \alpha (1-x) + \beta x + \int_0^1G(x,\xi)f(\xi, u(\xi))\dee\xi\quad\text{if } x\in [0,1].
+	\end{equation}
+	We show that if $u \in C^2[0,1]$, then $u$ solves (\ref{eq:bvp}) if and only if $u$ solves (\ref{eq:integral}), and that there is a unique solution $u \in C^2[0,1]$ of (\ref{eq:integral}) by the Banach Fixed Point Theorem. Then the claim follows.
+	
+	\begin{romanparts}
+		\questionpart If $u \in C^2[0,1]$, then $u$ is a solution of (\ref{eq:bvp}) if and only if $u$ is a solution of (\ref{eq:integral}).
+		\begin{proof}
+			Suppose that $u \in C^2[0,1]$ is a solution of (\ref{eq:bvp}). Then, using integration by parts,
+			\begin{alignat*}{2}
+				\int_0^1G(x,\xi)f(\xi, u(\xi))\dee\xi &{}={}&& -\int_0^x \xi(1-x)u''(\xi)\dee\xi - \int_x^1 x(1-\xi)u''(\xi)\dee\xi \\
+				&{}={}&& -(1-x)\left[\xi u'(\xi)\Big\vert_0^x - \int_0^xu'(\xi)\dee\xi\right] - x\left[(1-\xi)u'(\xi)\Big\vert_x^1 + \int_x^1u'(\xi)\dee\xi\right] \\[0.5em]
+				&{}={}&& -(1-x)xu'(x) + (1-x)(u(x) - u(0)) \\ 
+				&&&{}+ x(1-x)xu'(x) - x(u(1) - u(x)) \\[0.5em]
+				&{}={}&& -\alpha(1-x) - \beta x + u(x)
+			\end{alignat*}
+			for any $x \in [0,1]$. Therefore, $u$ solves (\ref{eq:integral}).
+			
+			Conversely, suppose that $u \in C^2[0,1]$ is a solution of (\ref{eq:integral}). Then differentiating both sides of (\ref{eq:integral}) implies that
+			\begin{equation}
+				u'(x) = \beta - \alpha + \frac{\text{d}}{\text{d} x}\int_0^x \xi(1-x)f(\xi, u(\xi))\dee\xi + \frac{\text{d}}{\text{d} x}\int_x^1 x(1-\xi)f(\xi,u(\xi))\dee\xi
+			\end{equation}
+			for $x \in (0,1)$. Since the integrands in both integrals above are obviously continuous and have a continuous partial derivative with respect to $x$ on $[0,1]^2$, the action of the derivative on the integrals gives
+			\begin{align*}
+				u'(x) &= \beta - \alpha + x(1-x)f(x,u(x)) -\int_0^x\xi f(\xi,u(\xi))\dee\xi - x(1-x)f(x,u(x))+\int_x^1(1-\xi)f(\xi,u(\xi))\dee\xi \\
+				&= \beta - \alpha - \int_0^x\xi f(\xi,u(\xi))\dee\xi + \int_x^1(1-\xi)f(\xi,u(\xi))\dee\xi \tag{\arabic{equation}}\stepcounter{equation}
+			\end{align*}
+			for $x \in(0,1)$. Since $f$ is continuous, the integrands in the above integrals are continuous, and the Fundamental Theorem of Calculus implies that
+			\begin{equation}
+				u''(x) = -xf(x,u(x)) - (1-x)f(x,u(x)) = -f(x,u(x))
+			\end{equation}
+			for $x \in (0,1)$. Lastly, note that the definition of $G$ implies that $G(0,\xi) = 0 = G(1,\xi)$ for all $\xi \in [0,1]$. Thus, $u(0) = \alpha$, and $u(1) = \beta$, so $u$ solves (\ref{eq:bvp}).
+		\end{proof}
+		\questionpart There is one and only one solution $u \in C^2[0,1]$ of (\ref{eq:integral}).
+		\begin{proof}
+			For $u\in C[0,1]$, define
+			\begin{equation}
+				Au(x) = \alpha(1-x) + \beta x + \int_0^1G(x,\xi)f(\xi, u(\xi))\dee\xi.
+			\end{equation}
+		\end{proof}
+	\end{romanparts}
+\end{document}
