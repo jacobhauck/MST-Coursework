@@ -1,0 +1,164 @@
+>> for x0 = [0.5, 1, 1.3, 1.4, 1.35, 1.375, 1.3875, 1.39375, 1.390625, 1.3921875]
+  fprintf('Final numerical solution =  %.05g\n\n', newton(@(x) atan(x), @(x) 1 / (1 + x*x), x0, 1e-10, 1e-10, 1e-10, 20))
+end
+k = 0, x_k = 0.5, Cauchy error = 0.57956, f(x_k) = 0.46365, f'(x_k) = 0.8
+k = 1, x_k = -0.07956, Cauchy error = 0.079895, f(x_k) = -0.079392, f'(x_k) = 0.99371
+k = 2, x_k = 0.0003353, Cauchy error = 0.0003353, f(x_k) = 0.0003353, f'(x_k) = 1
+k = 3, x_k = -2.5131e-11, Cauchy error = 2.5131e-11, f(x_k) = -2.5131e-11, f'(x_k) = 1
+Final numerical solution =  -2.5131e-11
+
+k = 0, x_k = 1, Cauchy error = 1.5708, f(x_k) = 0.7854, f'(x_k) = 0.5
+k = 1, x_k = -0.5708, Cauchy error = 0.68766, f(x_k) = -0.51867, f'(x_k) = 0.75426
+k = 2, x_k = 0.11686, Cauchy error = 0.11792, f(x_k) = 0.11633, f'(x_k) = 0.98653
+k = 3, x_k = -0.001061, Cauchy error = 0.001061, f(x_k) = -0.001061, f'(x_k) = 1
+k = 4, x_k = 7.9631e-10, Cauchy error = 7.9631e-10, f(x_k) = 7.9631e-10, f'(x_k) = 1
+k = 5, x_k = 0, Cauchy error = 0, f(x_k) = 0, f'(x_k) = 1
+Final numerical solution =  0
+
+k = 0, x_k = 1.3, Cauchy error = 2.4616, f(x_k) = 0.9151, f'(x_k) = 0.37175
+k = 1, x_k = -1.1616, Cauchy error = 2.0205, f(x_k) = -0.86003, f'(x_k) = 0.42565
+k = 2, x_k = 0.8589, Cauchy error = 1.2331, f(x_k) = 0.70964, f'(x_k) = 0.57547
+k = 3, x_k = -0.37424, Cauchy error = 0.40826, f(x_k) = -0.3581, f'(x_k) = 0.87715
+k = 4, x_k = 0.034019, Cauchy error = 0.034045, f(x_k) = 0.034006, f'(x_k) = 0.99884
+k = 5, x_k = -2.624e-05, Cauchy error = 2.624e-05, f(x_k) = -2.624e-05, f'(x_k) = 1
+k = 6, x_k = 1.2045e-14, Cauchy error = 1.2045e-14, f(x_k) = 1.2045e-14, f'(x_k) = 1
+Final numerical solution =  1.2045e-14
+
+k = 0, x_k = 1.4, Cauchy error = 2.8136, f(x_k) = 0.95055, f'(x_k) = 0.33784
+k = 1, x_k = -1.4136, Cauchy error = 2.8637, f(x_k) = -0.95512, f'(x_k) = 0.33352
+k = 2, x_k = 1.4501, Cauchy error = 3.0008, f(x_k) = 0.96709, f'(x_k) = 0.32228
+k = 3, x_k = -1.5506, Cauchy error = 3.3977, f(x_k) = -0.99801, f'(x_k) = 0.29373
+k = 4, x_k = 1.8471, Cauchy error = 4.7406, f(x_k) = 1.0746, f'(x_k) = 0.22667
+k = 5, x_k = -2.8936, Cauchy error = 11.604, f(x_k) = -1.2381, f'(x_k) = 0.10669
+k = 6, x_k = 8.7103, Cauchy error = 111.96, f(x_k) = 1.4565, f'(x_k) = 0.013009
+k = 7, x_k = -103.25, Cauchy error = 16644, f(x_k) = -1.5611, f'(x_k) = 9.3795e-05
+k = 8, x_k = 16541, Cauchy error = 4.2974e+08, f(x_k) = 1.5707, f'(x_k) = 3.6551e-09
+Failed. f_prime too small.
+Final numerical solution =  -4.2972e+08
+
+k = 0, x_k = 1.35, Cauchy error = 2.6341, f(x_k) = 0.93325, f'(x_k) = 0.3543
+k = 1, x_k = -1.2841, Cauchy error = 2.4082, f(x_k) = -0.90914, f'(x_k) = 0.37752
+k = 2, x_k = 1.1241, Cauchy error = 1.91, f(x_k) = 0.84377, f'(x_k) = 0.44176
+k = 3, x_k = -0.78587, Cauchy error = 1.0774, f(x_k) = -0.66607, f'(x_k) = 0.6182
+k = 4, x_k = 0.29155, Cauchy error = 0.3078, f(x_k) = 0.28369, f'(x_k) = 0.92166
+k = 5, x_k = -0.016251, Cauchy error = 0.016254, f(x_k) = -0.01625, f'(x_k) = 0.99974
+k = 6, x_k = 2.8611e-06, Cauchy error = 2.8611e-06, f(x_k) = 2.8611e-06, f'(x_k) = 1
+k = 7, x_k = -1.5613e-17, Cauchy error = 1.5613e-17, f(x_k) = -1.5613e-17, f'(x_k) = 1
+Final numerical solution =  -1.5613e-17
+
+k = 0, x_k = 1.375, Cauchy error = 2.723, f(x_k) = 0.942, f'(x_k) = 0.34595
+k = 1, x_k = -1.348, Cauchy error = 2.6269, f(x_k) = -0.93253, f'(x_k) = 0.35499
+k = 2, x_k = 1.279, Cauchy error = 2.3912, f(x_k) = 0.90721, f'(x_k) = 0.37939
+k = 3, x_k = -1.1122, Cauchy error = 1.8757, f(x_k) = -0.83848, f'(x_k) = 0.44702
+k = 4, x_k = 0.76349, Cauchy error = 1.0322, f(x_k) = 0.65208, f'(x_k) = 0.63175
+k = 5, x_k = -0.26869, Cauchy error = 0.28145, f(x_k) = -0.26249, f'(x_k) = 0.93266
+k = 6, x_k = 0.012751, Cauchy error = 0.012753, f(x_k) = 0.012751, f'(x_k) = 0.99984
+k = 7, x_k = -1.3822e-06, Cauchy error = 1.3822e-06, f(x_k) = -1.3822e-06, f'(x_k) = 1
+k = 8, x_k = 1.7603e-18, Cauchy error = 1.7603e-18, f(x_k) = 1.7603e-18, f'(x_k) = 1
+Final numerical solution =  1.7603e-18
+
+k = 0, x_k = 1.3875, Cauchy error = 2.7681, f(x_k) = 0.9463, f'(x_k) = 0.34186
+k = 1, x_k = -1.3806, Cauchy error = 2.743, f(x_k) = -0.94392, f'(x_k) = 0.34412
+k = 2, x_k = 1.3624, Cauchy error = 2.6781, f(x_k) = 0.93763, f'(x_k) = 0.35011
+k = 3, x_k = -1.3157, Cauchy error = 2.5149, f(x_k) = -0.92088, f'(x_k) = 0.36617
+k = 4, x_k = 1.1993, Cauchy error = 2.1353, f(x_k) = 0.87575, f'(x_k) = 0.41014
+k = 5, x_k = -0.93601, Cauchy error = 1.4115, f(x_k) = -0.75236, f'(x_k) = 0.53301
+k = 6, x_k = 0.4755, Cauchy error = 0.54422, f(x_k) = 0.44386, f'(x_k) = 0.81559
+k = 7, x_k = -0.068714, Cauchy error = 0.06893, f(x_k) = -0.068606, f'(x_k) = 0.9953
+k = 8, x_k = 0.00021609, Cauchy error = 0.00021609, f(x_k) = 0.00021609, f'(x_k) = 1
+k = 9, x_k = -6.7269e-12, Cauchy error = 6.7269e-12, f(x_k) = -6.7269e-12, f'(x_k) = 1
+Final numerical solution =  -6.7269e-12
+
+k = 0, x_k = 1.3938, Cauchy error = 2.7908, f(x_k) = 0.94843, f'(x_k) = 0.33984
+k = 1, x_k = -1.397, Cauchy error = 2.8028, f(x_k) = -0.94955, f'(x_k) = 0.33879
+k = 2, x_k = 1.4058, Cauchy error = 2.8347, f(x_k) = 0.95248, f'(x_k) = 0.33601
+k = 3, x_k = -1.429, Cauchy error = 2.9209, f(x_k) = -0.9602, f'(x_k) = 0.32873
+k = 4, x_k = 1.4919, Cauchy error = 3.1623, f(x_k) = 0.9803, f'(x_k) = 0.30999
+k = 5, x_k = -1.6704, Cauchy error = 3.9091, f(x_k) = -1.0314, f'(x_k) = 0.26384
+k = 6, x_k = 2.2387, Cauchy error = 6.9176, f(x_k) = 1.1507, f'(x_k) = 0.16634
+k = 7, x_k = -4.679, Cauchy error = 31.14, f(x_k) = -1.3602, f'(x_k) = 0.043682
+k = 8, x_k = 26.461, Cauchy error = 1074.9, f(x_k) = 1.533, f'(x_k) = 0.0014262
+k = 9, x_k = -1048.4, Cauchy error = 1.7256e+06, f(x_k) = -1.5698, f'(x_k) = 9.0973e-07
+Failed. f_prime too small.
+Final numerical solution =  1.7246e+06
+
+k = 0, x_k = 1.3906, Cauchy error = 2.7794, f(x_k) = 0.94737, f'(x_k) = 0.34085
+k = 1, x_k = -1.3888, Cauchy error = 2.7728, f(x_k) = -0.94674, f'(x_k) = 0.34144
+k = 2, x_k = 1.384, Cauchy error = 2.7553, f(x_k) = 0.94509, f'(x_k) = 0.34301
+k = 3, x_k = -1.3713, Cauchy error = 2.7097, f(x_k) = -0.94072, f'(x_k) = 0.34716
+k = 4, x_k = 1.3384, Cauchy error = 2.5936, f(x_k) = 0.92913, f'(x_k) = 0.35824
+k = 5, x_k = -1.2551, Cauchy error = 2.3128, f(x_k) = -0.89805, f'(x_k) = 0.3883
+k = 6, x_k = 1.0577, Cauchy error = 1.7234, f(x_k) = 0.81342, f'(x_k) = 0.472
+k = 7, x_k = -0.66569, Cauchy error = 0.84759, f(x_k) = -0.58732, f'(x_k) = 0.69294
+k = 8, x_k = 0.1819, Cauchy error = 0.18589, f(x_k) = 0.17993, f'(x_k) = 0.96797
+k = 9, x_k = -0.0039864, Cauchy error = 0.0039864, f(x_k) = -0.0039863, f'(x_k) = 0.99998
+k = 10, x_k = 4.2232e-08, Cauchy error = 4.2232e-08, f(x_k) = 4.2232e-08, f'(x_k) = 1
+k = 11, x_k = -4.6322e-23, Cauchy error = 4.6322e-23, f(x_k) = -4.6322e-23, f'(x_k) = 1
+Final numerical solution =  -4.6322e-23
+
+k = 0, x_k = 1.3922, Cauchy error = 2.7851, f(x_k) = 0.9479, f'(x_k) = 0.34035
+k = 1, x_k = -1.3929, Cauchy error = 2.7877, f(x_k) = -0.94814, f'(x_k) = 0.34011
+k = 2, x_k = 1.3948, Cauchy error = 2.7947, f(x_k) = 0.94879, f'(x_k) = 0.3395
+k = 3, x_k = -1.3999, Cauchy error = 2.8132, f(x_k) = -0.95051, f'(x_k) = 0.33787
+k = 4, x_k = 1.4133, Cauchy error = 2.8626, f(x_k) = 0.95502, f'(x_k) = 0.33362
+k = 5, x_k = -1.4493, Cauchy error = 2.9976, f(x_k) = -0.96682, f'(x_k) = 0.32253
+k = 6, x_k = 1.5483, Cauchy error = 3.3883, f(x_k) = 0.99734, f'(x_k) = 0.29435
+k = 7, x_k = -1.8399, Cauchy error = 4.7054, f(x_k) = -1.073, f'(x_k) = 0.22803
+k = 8, x_k = 2.8654, Cauchy error = 11.375, f(x_k) = 1.235, f'(x_k) = 0.10857
+k = 9, x_k = -8.5099, Cauchy error = 106.74, f(x_k) = -1.4538, f'(x_k) = 0.01362
+k = 10, x_k = 98.228, Cauchy error = 15060, f(x_k) = 1.5606, f'(x_k) = 0.00010363
+k = 11, x_k = -14961, Cauchy error = 3.5159e+08, f(x_k) = -1.5707, f'(x_k) = 4.4675e-09
+Failed. f_prime too small.
+Final numerical solution =  3.5158e+08
+
+>> x0 = [0.5, 1, 1.4, 10];
+>> x1 = [1, 1.3, 1.5, 11];
+>> for i = 1:4
+  fprintf("Final numerical solution = %.05g\n\n", secant(@(x) atan(x), x0(i), x1(i), 1e-10, 1e-10, 20))
+end
+k = 1, x_{k-1} = 0.5, x_k = 1, Cauchy error = 0.5, f(x_k) = 0.7854
+k = 2, x_{k-1} = 1, x_k = -0.22051, Cauchy error = 1.2205, f(x_k) = -0.21703
+k = 3, x_{k-1} = -0.22051, x_k = 0.043742, Cauchy error = 0.26425, f(x_k) = 0.043714
+k = 4, x_{k-1} = 0.043742, x_k = -0.00055908, Cauchy error = 0.044301, f(x_k) = -0.00055908
+k = 5, x_{k-1} = -0.00055908, x_k = 3.5183e-07, Cauchy error = 0.00055943, f(x_k) = 3.5183e-07
+k = 6, x_{k-1} = 3.5183e-07, x_k = -3.6634e-14, Cauchy error = 3.5183e-07, f(x_k) = -3.6634e-14
+Final numerical solution = -3.6634e-14
+
+k = 1, x_{k-1} = 1, x_k = 1.3, Cauchy error = 0.3, f(x_k) = 0.9151
+k = 2, x_{k-1} = 1.3, x_k = -0.81661, Cauchy error = 2.1166, f(x_k) = -0.68479
+k = 3, x_{k-1} = -0.81661, x_k = 0.089345, Cauchy error = 0.90596, f(x_k) = 0.089109
+k = 4, x_{k-1} = 0.089345, x_k = -0.014969, Cauchy error = 0.10431, f(x_k) = -0.014968
+k = 5, x_{k-1} = -0.014969, x_k = 3.3071e-05, Cauchy error = 0.015002, f(x_k) = 3.3071e-05
+k = 6, x_{k-1} = 3.3071e-05, x_k = -2.4645e-09, Cauchy error = 3.3073e-05, f(x_k) = -2.4645e-09
+k = 7, x_{k-1} = -2.4645e-09, x_k = 8.9838e-19, Cauchy error = 2.4645e-09, f(x_k) = 8.9838e-19
+Final numerical solution = 8.9838e-19
+
+k = 1, x_{k-1} = 1.4, x_k = 1.5, Cauchy error = 0.1, f(x_k) = 0.98279
+k = 2, x_{k-1} = 1.5, x_k = -1.5477, Cauchy error = 3.0477, f(x_k) = -0.99716
+k = 3, x_{k-1} = -1.5477, x_k = -0.012803, Cauchy error = 1.5349, f(x_k) = -0.012802
+k = 4, x_{k-1} = -0.012803, x_k = 0.0071596, Cauchy error = 0.019962, f(x_k) = 0.0071594
+k = 5, x_{k-1} = 0.0071596, x_k = -1.7241e-07, Cauchy error = 0.0071597, f(x_k) = -1.7241e-07
+k = 6, x_{k-1} = -1.7241e-07, x_k = 2.9457e-12, Cauchy error = 1.7241e-07, f(x_k) = 2.9457e-12
+Final numerical solution = 2.9457e-12
+
+k = 1, x_{k-1} = 10, x_k = 11, Cauchy error = 1, f(x_k) = 1.4801
+k = 2, x_{k-1} = 11, x_k = -153.3, Cauchy error = 164.3, f(x_k) = -1.5643
+k = 3, x_{k-1} = -153.3, x_k = -68.879, Cauchy error = 84.42, f(x_k) = -1.5563
+k = 4, x_{k-1} = -68.879, x_k = 16366, Cauchy error = 16435, f(x_k) = 1.5707
+k = 5, x_{k-1} = 16366, x_k = 8110.6, Cauchy error = 8255.5, f(x_k) = 1.5707
+k = 6, x_{k-1} = 8110.6, x_k = -2.0848e+08, Cauchy error = 2.0849e+08, f(x_k) = -1.5708
+k = 7, x_{k-1} = -2.0848e+08, x_k = -1.0423e+08, Cauchy error = 1.0425e+08, f(x_k) = -1.5708
+k = 8, x_{k-1} = -1.0423e+08, x_k = 3.4134e+16, Cauchy error = 3.4134e+16, f(x_k) = 1.5708
+k = 9, x_{k-1} = 3.4134e+16, x_k = 1.7067e+16, Cauchy error = 1.7067e+16, f(x_k) = 1.5708
+k = 10, x_{k-1} = 1.7067e+16, x_k = Inf, Cauchy error = Inf, f(x_k) = 1.5708
+k = 11, x_{k-1} = Inf, x_k = NaN, Cauchy error = NaN, f(x_k) = NaN
+k = 12, x_{k-1} = NaN, x_k = NaN, Cauchy error = NaN, f(x_k) = NaN
+k = 13, x_{k-1} = NaN, x_k = NaN, Cauchy error = NaN, f(x_k) = NaN
+k = 14, x_{k-1} = NaN, x_k = NaN, Cauchy error = NaN, f(x_k) = NaN
+k = 15, x_{k-1} = NaN, x_k = NaN, Cauchy error = NaN, f(x_k) = NaN
+k = 16, x_{k-1} = NaN, x_k = NaN, Cauchy error = NaN, f(x_k) = NaN
+k = 17, x_{k-1} = NaN, x_k = NaN, Cauchy error = NaN, f(x_k) = NaN
+k = 18, x_{k-1} = NaN, x_k = NaN, Cauchy error = NaN, f(x_k) = NaN
+k = 19, x_{k-1} = NaN, x_k = NaN, Cauchy error = NaN, f(x_k) = NaN
+k = 20, x_{k-1} = NaN, x_k = NaN, Cauchy error = NaN, f(x_k) = NaN
+Final numerical solution = NaN
