@@ -1,0 +1,1 @@
+Make sure to add `homework.cls` to your `texmf` directory!
