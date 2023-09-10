@@ -1,0 +1,18 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{2}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+\maketitle
+
+\question Let $R > 0$, and define $f(x) = 1 - \frac{1}{Rx}$ for $x > 0$. Then clearly $f(x) = 0$ if and only if $x = \frac{1}{R}$, so calculating a zero of $f$ is equivalent to calculating the reciprocal of $R$.
+
+Let $\{x_k\}$ be the sequence of approximate solutions of $f(x) = 0$ obtained by using Newton's method. Then, by definition,
+\begin{equation}
+	x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)} = x_k - \left(1-\frac{1}{Rx_k}\right)\cdot Rx_k^2 = x_k - Rx_k^2 + x_k = x_k(2-Rx_k)
+\end{equation}
+
+\question 
+\end{document}
