@@ -4,17 +4,50 @@
 \newcommand{\hwnum}{2}
 \renewcommand{\questiontype}{Problem}
 
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{pifont}
+\newcommand{\xmark}{\ding{55}}
+
 \begin{document}
 \maketitle
 
-\question Define $f(x) = 1 - \frac{1}{Rx}$. Then $f(x) = 0$ if and only if $x = \frac{1}{R}$, so solving $f(x) = 0$ is equivalent to computing $\frac{1}{R}$. Since $f'(x) = \frac{1}{Rx^2}$, the Newton's method for solving $f(x)=0$ is given by
+\question Let $R > 0$, and define $f(x) = 1 - \frac{1}{Rx}$ for $x > 0$. Then clearly $f(x) = 0$ if and only if $x = \frac{1}{R}$, so calculating a zero of $f$ is equivalent to calculating the reciprocal of $R$.
+
+Let $\{x_k\}$ be the sequence of approximate solutions of $f(x) = 0$ obtained by using Newton's method. Then, by definition,
 \begin{equation}
-	\begin{aligned}
-		x_{k+1} &= x_k - \frac{f(x_k)}{f'(x_k)} = x_k - Rx_k^2\left(1-\frac{1}{Rx_k}\right) = x_k - Rx_k^2 +x_k \\
-		&= x_k(2- Rx_k)
-	\end{aligned}
+	x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)} = x_k - \left(1-\frac{1}{Rx_k}\right)\cdot Rx_k^2 = x_k - Rx_k^2 + x_k = x_k(2-Rx_k)
 \end{equation}
 
-\question
+\question 
+See \verb*|newton.m|; also included here for convenience.
+\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{newton.m}
+The iteration appears to converge for some starting values and diverge for others. See Table \ref{table:newton} for a summary of the results. The full outputs from the MATLAB console can be found in \verb*|outputs.txt|. In particular, there seems to be a cutoff $c \approx 1.391$ such that the method converges if $|x_0| < c$ and diverges if $|x_0| > c$.
 
+\newcommand{\conv}{\textcolor{green!50!black}{\checkmark}}
+\newcommand{\nconv}{\textcolor{red!50!black}{\xmark}}
+\begin{table}[t]
+	\centering
+	\begin{tabular}{@{}ll@{}}
+		\toprule
+		$x_0$ & Converged \\
+		\midrule
+		0.5  & \conv \\ 
+		1 & \conv \\
+		1.3 & \conv \\
+		1.4 & \nconv \\ 
+		1.35 & \conv \\ 
+		1.375 &  \conv \\
+		1.3875 & \conv \\
+		1.39375 & \nconv \\
+		1.390625 & \conv \\
+		1.3921875 & \nconv \\
+		\bottomrule
+	\end{tabular}
+	\caption{Convergence of Newton's method for $f(x) = \tan^{-1}(x)$}
+	\label{table:newton}
+\end{table}
+
+\question See \verb*|secant.m|; also included here for convenience. Outputs from the MATLAB console can be found in \verb*|outputs.txt|.
+\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{secant.m}
 \end{document}
