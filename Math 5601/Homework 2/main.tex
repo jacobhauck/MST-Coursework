@@ -22,7 +22,7 @@ Let $\{x_k\}$ be the sequence of approximate solutions of $f(x) = 0$ obtained by
 \question 
 See \verb*|newton.m|; also included here for convenience.
 \lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{newton.m}
-The iteration appears to converge for some starting values and diverge for others. See Table \ref{table:newton} for a summary of the results. The full outputs from the MATLAB console can be found in \verb*|outputs.txt|. In particular, there seems to be a cutoff $c \approx 1.391$ such that the method converges if $|x_0| < c$ and diverges if $|x_0| > c$.
+The iteration appears to converge (quickly) for some starting values and diverge for others. See Table \ref{table:newton} for a summary of the results. The full outputs from the MATLAB console can be found in \verb*|outputs.txt|. In particular, there seems to be a cutoff $c \approx 1.391$ such that the method converges if $|x_0| < c$ and diverges if $|x_0| > c$.
 
 \newcommand{\conv}{\textcolor{green!50!black}{\checkmark}}
 \newcommand{\nconv}{\textcolor{red!50!black}{\xmark}}
