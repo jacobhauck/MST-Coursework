@@ -1,0 +1,206 @@
+\documentclass[]{beamer}
+\input{../../standardcmd.tex}
+
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\newtoggle{handout}
+\togglefalse{handout}
+
+\iftoggle{handout}{
+	\usepackage{pgfpages}
+	\pgfpagesuselayout{4 on 1}[border shrink=5mm]
+}{}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{xcolor}
+\usepackage{mathtools}
+
+\usetikzlibrary{positioning,arrows.meta}
+
+\title{Exponential Functions}
+\author{Jacob Hauck}
+\institute{Math 6010}
+\date{9-20-2023}
+
+\setbeamertemplate{footline}
+{
+	\hbox{\begin{beamercolorbox}[wd=1\paperwidth,ht=2.25ex,dp=1ex,right]{framenumber}%
+			\usebeamerfont{framenumber}\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+	\end{beamercolorbox}}%
+	\vskip0pt%
+}
+
+\usefonttheme{serif}
+
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamercolor{frametitle}{fg=black,bg=blue!20!white}
+\setbeamercolor{block title}{bg=blue!20!white,fg=black}
+\setbeamercolor{block body}{bg=blue!10}
+
+
+\begin{document}
+	\beamertemplatenavigationsymbolsempty
+	
+	\frame{\titlepage}
+	
+	\begin{frame}{Review of Exponents}
+		Let $a > 0$ and $m, n$ be integers
+		\vspace*{1em}
+		
+		$a^m = \underbrace{a \cdot a \cdot\ldots \cdot a}_{m \text{ times}}$ \pause \qquad $(1.5)^3 = 1.5 \cdot 1.5 \cdot 1.5 = 3.375$
+		\vspace*{1em}
+		\pause
+		\begin{itemize}
+			\item $a^0 = 1$,\quad $1^m = 1$, \quad $a^1 = a$
+			\pause
+			\vfill
+			\item $a^m \cdot a^n = a^{m+n}$ \pause \qquad $\underbrace{a\cdot a\cdot\ldots\cdot a}_{m\text{ times}} \cdot \underbrace{a\cdot a\cdot\ldots\cdot a}_{n\text{ times}}$
+			\vfill
+			\pause
+			\item $\frac{1}{a^n} = a^{-n}$ \pause \qquad want $a^{-n}\cdot a^n = a^0 = 1$
+			\vfill
+			\pause
+			\item $\frac{a^m}{a^n} = a^{m-n}$
+			\vfill
+			\pause
+			\item $\left(a^n\right)^m = a^{m\cdot n}$ \qquad $\underbrace{a^n \cdot a^n \cdot \ldots \cdot a^n}_{m\text{ times}}$
+			\vfill
+			\pause
+			\item $a^\frac{1}{n} = \sqrt[n]{a}$ \qquad want $\left(a^\frac{1}{n}\right)^n = a^1 = a$
+			\vfill
+			\pause 
+			\item $a^\frac{m}{n} = \sqrt[n]{a^m}$
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Exponential Functions}
+		Want a function like
+		\begin{equation*}
+			f(x) = C\cdot a^x
+		\end{equation*}
+		\pause
+		but $x$ might not be $\frac{m}{n}$, for integers $m,n$...
+		\pause\vfill
+		\begin{itemize}
+			\item $x = \pi, \sqrt{2}$, and so on
+		\end{itemize}
+		\pause
+		\vfill
+		...but \textit{every} number has a decimal expansion
+		\begin{equation*}
+			3 = 3, \qquad \frac{2}{5} = 0.4, \qquad \pi=3.14159265..., \qquad \sqrt{2} = 1.41421356...
+		\end{equation*}
+		\pause\vfill
+		Approximate any number $x$ by finitely many of its decimal digits
+		\begin{equation}
+			a^\pi \approx a^{3.14} = a^{\frac{314}{100}} = \sqrt[100]{a^{314}}
+		\end{equation}
+	\end{frame}
+
+	\begin{frame}{Exponential Functions}
+		The more digits we use, the closer we get to the true value of $a^\pi$
+		\vfill
+		\begin{center}
+		\begin{tabular}{@{}lllllcl@{}}
+			$2^3$ & $2^{3.1}$ & $2^{3.14}$ & $2^{3.141}$ & $2^{3.1415}$ & $\cdots$ & $2^\pi$\\
+			\midrule
+			8.0000 & 8.5742 & 8.8152 & 8.8213 & 8.8244 & $\cdots$ & 8.8250
+		\end{tabular}
+		\end{center}
+		\pause
+		\vfill
+		So we can use any number $x$ in the exponent, and we also get to keep all the previous properties. Hooray!
+		\pause
+		\vfill
+		\begin{block}{Exponential Functions}
+			An \textbf{exponential function} is a function $f$ such that
+			\begin{equation*}
+				f(x) = C\cdot a^x
+			\end{equation*} 
+			\begin{itemize}
+				\item $C\ne 0$ is the \textbf{initial value}
+				\item $a > 0$, $a\ne1$ is the \textbf{growth factor} 
+			\end{itemize}
+		\end{block}
+	\end{frame}
+
+	\begin{frame}{Exponential Functions}
+		Consider the exponential function $f(x) = 5\cdot 2^x$. Let's make a table of values
+		\vfill
+		\begin{center}
+		\begin{tabular}{@{}ll@{}}
+			$x$ & $f(x)$ \\
+			\midrule
+			-2 & 1.25 \\
+			-1 & 2.5 \\
+			0 & 5 \\
+			1 & 10 \\
+			2 & 20
+		\end{tabular}
+		\end{center}
+		\vfill\pause
+		\begin{itemize}
+			\item $f(x)$ goes up by $\times 2 = a$ each time $x$ increases
+			\vfill\pause
+			\item $f(0) = 5 = C$.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Initial Value and Growth Factor}
+		\begin{equation*}
+			f(x) = C\cdot a^x
+		\end{equation*}
+		\vfill
+		\begin{itemize}
+			\item $f(0) = C\cdot a^0 = C$, the initial value
+			\vfill\pause
+			\item The growth factor: how much the function grows (or shrinks) every time $x$ goes up by 1
+			\begin{equation*}
+				f(x+1) = a\cdot f(x)
+			\end{equation*}
+			\pause
+			because
+			\begin{equation*}
+				\frac{f(x+1)}{f(x)} = \frac{C\cdot a^{x+1}}{C\cdot a^x} \pause = \frac{a^{x+1}}{a^x} \pause = a^{x+1-x} = a
+			\end{equation*}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Graphing Exponential Functions}
+		Let's try to graph the function $f(x) = 5\cdot 2^x$ from before. First, extend the table of values
+		\pause\vfill
+		\begin{center}
+			\begin{tabular}{@{}l|l@{}}
+				$x$ & $f(x)$ \\
+				\midrule
+				-5 & 0.16125 \\
+				-4 & 0.3125 \\
+				-3 & 0.625 \\
+				-2 & 1.25 \\
+				-1 & 2.5 \\
+				0 & 5 \\
+				1 & 10 \\
+				2 & 20 \\
+				3 & 40 \\
+				4 & 80 \\
+				5 & 160 \\
+			\end{tabular}
+		\end{center}
+		\vfill\pause
+		It seems that $f(x) \to 0$ as $x \to -\infty$, and $f(x) \to \infty$ as $x \to \infty$
+	\end{frame}
+	\begin{frame}{Graphing Exponential Functions}
+		Connect the points continuously and use the asymptotic behavior noted
+		\vfill
+		\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[samples at={-5,-4,-3,-2,-1,0,1,2,3,4,5}, xlabel={$x$}, ylabel={$f(x)$}]
+				\addplot {5 * exp(ln(2) * x)};
+			\end{axis}
+		\end{tikzpicture}
+		\end{center}
+		\vfill
+	\end{frame}
+\end{document}

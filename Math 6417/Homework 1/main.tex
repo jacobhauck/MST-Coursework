@@ -57,7 +57,7 @@
 				u'(x) &= \beta - \alpha + x(1-x)f(x,u(x)) -\int_0^x\xi f(\xi,u(\xi))\dee\xi - x(1-x)f(x,u(x))+\int_x^1(1-\xi)f(\xi,u(\xi))\dee\xi \\
 				&= \beta - \alpha - \int_0^x\xi f(\xi,u(\xi))\dee\xi + \int_x^1(1-\xi)f(\xi,u(\xi))\dee\xi \tag{\arabic{equation}}\stepcounter{equation}
 			\end{align*}
-			for $x \in(0,1)$. Since $f$ is continuous, the integrands in the above integrals are continuous, and the Fundamental Theorem of Calculus implies that
+			for $x \in(0,1)$. Since $f$ is continuous, the integrands in the above integrals are continuous, and, upon differentiating both sides again, the Fundamental Theorem of Calculus implies that
 			\begin{equation}
 				\label{eq:diff_u3}
 				u''(x) = -xf(x,u(x)) - (1-x)f(x,u(x)) = -f(x,u(x))
@@ -70,17 +70,17 @@
 			\begin{equation}
 				\lim_{\substack{(x,\xi)\to(x_0,x_0)\\x \le \xi}} G(x,\xi) = x_0(1-x_0) = \lim_{\substack{(x,\xi)\to (x_0,x_0)\\x \ge \xi}} G(x,\xi)
 			\end{equation}
-			for any $x_0 \in [0,1]$. Thus, $G$ is continuous on $\{x=\xi\}$ as well, and consequently on all of $[0,1]^2$.
+			for any $x_0 \in [0,1]$. Thus, $G$ is continuous on $\{x=\xi\}$ as well, and, consequently, on all of $[0,1]^2$.
 			
 			Second, for $u\in C[0,1]$, define
 			\begin{equation}
 				Au(x) = \alpha(1-x) + \beta x + \int_0^1G(x,\xi)f(\xi, u(\xi))\dee\xi.
 			\end{equation}
-			Since $f$ is continuous on $[0,1]^2$, it is also bounded on $[0,1]^2$, say, by $M > 0$. Then
+			Since $f$ and $u$ are both continuous, it follows that $f(\cdot, u(\cdot))$ is continuous and therefore bounded on $[0,1]$ by, say, $M > 0$. Then
 			\begin{align*}
 				\left|\int_0^1 G(x,\xi)f(\xi, u(\xi))\dee\xi - \int_0^1G(y,\xi)f(\xi,u(\xi))\dee\xi\right| &\le M \int_0^1|G(x,\xi) - G(y,\xi)|\dee\xi \\
 				&\le M\left[\int_0^x  \xi|x-y|\dee\xi + \int_x^1 |x-y|(1-\xi)\dee\xi\right] \\
-				&\le M |x-y|
+				&\le 2M |x-y|
 			\end{align*}
 			Hence, $Au$ is the sum of a polynomial and a Lipschitz function, so $Au \in C[0,1]$, and $A : C[0,1] \to C[0,1]$.
 			
@@ -109,15 +109,74 @@
 			
 			Fourth, by the Banach Fixed Point Theorem, there is a unique solution $u \in C[0,1]$ of (\ref{eq:integral}). Since $C^2[0,1] \subseteq C[0,1]$, it follows that if $u \in C^2[0,1]$, then (\ref{eq:integral}) has a unique solution in $C^2[0,1]$, namely, $u$. Thus, to finish the proof, we need to show that $u'$ and $u''$ exist and are continuous.
 			
-			Since $u$ is a solution of (\ref{eq:integral}), it follows that
-			\begin{equation}
-				u(x) = \alpha(1-x) + \beta x + \int_0^x (1-x)\xi f(\xi, u(\xi))\dee\xi + \int_x^1 x(1-\xi)f(\xi,u(\xi))\dee\xi.
-			\end{equation}
-			The calculations in (\ref{eq:diff_u1}, \ref{eq:diff_u2}, \ref{eq:diff_u3}) relied only the fact that $u$ was continuous (so that $f(\cdot, u(\cdot))$ would be continuous), so they apply to $u$ here. Thus, $u'$ and $u''$ exist, and
+			The calculations on the right-hand sides of (\ref{eq:diff_u1}, \ref{eq:diff_u2}, \ref{eq:diff_u3}) relied only the fact that $u$ was continuous (so that $f(\cdot, u(\cdot))$ would be continuous) and solved (\ref{eq:integral}), so they apply to $u$ here as well. Thus, $u'$ and $u''$ exist, and
 			\begin{equation}
 				u''(x) = -f(x, u(x)),
 			\end{equation}
 			which is continuous on $[0,1]$. Therefore $u \in C^2[0,1]$.
 		\end{proof}
 	\end{enumerate}
+	
+	\question Let $u(x,t)$ be a smooth solution of the generalized heat equation
+	\begin{equation}
+		\label{eq:generalized_heat}
+		\begin{aligned}
+			u_t - \nabla \cdot (A(x) \nabla u) &= 0, \qquad (x,t) \in \Omega\times(0,\infty) \\
+			u \big\vert_{t=0} &= u_0
+		\end{aligned}
+	\end{equation}
+	where $\Omega \subset \R^n$ is a smooth bounded domain, and $A : \R^n \to \R^{n\times n}$ is a positive definite matrix function.
+	
+	 
+	\begin{enumerate}[label=\textbf{(\roman*)}]
+	 	\questionpart If $u\big\vert_{\partial\Omega} = 0$, then
+	 	\begin{equation}
+	 		\lVert u(\cdot, t) \rVert_{L^\infty} \le \lVert u_0\rVert_{L^\infty}
+	 	\end{equation}
+ 		\begin{proof}
+	 		Applying the vector calculus identity $\nabla \cdot (\phi B) = \nabla \phi^T B + \phi\nabla \cdot B$, where $\phi : \R^n \to \R$ is a differentiable scalar function, and $B : \R^n \to \R^n$ is a differentiable vector function, to the quantity $u^{2k-1}A(x)\nabla u$, where $k \ge 1$ is an integer, we obtain the identity
+	 		\begin{equation}
+	 			\label{eq:key_identity}
+	 			\nabla\cdot(u^{2k-1}A(x)\nabla u) = (2k-1)u^{2(k-1)}\nabla u^TA(x)\nabla u + u^{2k-1}\nabla\cdot(A(x)\nabla u)
+	 		\end{equation}
+	 		Multiplying both sides of (\ref{eq:generalized_heat}) by $u^{2k-1}$ and integrating both sides over $\Omega$ gives
+	 		\begin{equation}
+	 			\int_\Omega u^{2k-1}u_t - \nabla \cdot (A(x)\nabla u) \dee x = 0
+	 		\end{equation}
+	 		for $t > 0$. Using (\ref{eq:key_identity}) and the fact that $\pl{(u^{2k})}{t} = 2ku^{2k-1}u_t$, we get
+	 		\begin{equation}
+	 			\label{eq:key_integral}
+	 			\int_\Omega \pl{(u^{2k})}{t} \dee x = 2k\int_\Omega \nabla\cdot(u^{2k-1}A(x)\nabla u)\dee x - 2k(2k-1)\int_\Omega u^{2(k-1)}\nabla u^TA(x)\nabla u \dee x.
+	 		\end{equation}
+			Since $A(x)$ is positive definite by hypothesis, the integrand of the second term on RHS(\ref{eq:key_integral}) is pointwise nonnegative; hence, the entire second term is nonpositive because $k \ge 1$. Applying the Divergence Theorem to the first term, we obtain the inequality
+			\begin{equation}
+				\label{eq:key_inequality}
+				\int_\Omega \pl{(u^{2k})}{t} \dee x \le 2k \int_{\partial\Omega} u^{2k-1}A(x)\nabla u\cdot \textbf{n} \dee S.
+			\end{equation}
+			where $S$ is the surface measure on $\partial \Omega$, and $\textbf{n}$ is the outward unit normal vector to $\Omega$. Using the assumptions $u\big\vert_{\partial\Omega} = 0$ and $k \ge 1$, we see that the integrand in RHS(\ref{eq:key_inequality}) is equal to 0 over the domain of integration $\partial \Omega$. Hence, $\text{RHS}(\ref{eq:key_inequality}) = 0$. Since $u$ is smooth, the time derivative commutes with the integral on LHS(\ref{eq:key_inequality}), so we deduce that
+			\begin{equation}
+				\dl{}{t}\lVert u(\cdot,t)\rVert_{L^{2k}}^{2k} = \dl{}{t} \int_\Omega u^{2k}\dee x = \int_\Omega \pl{(u^{2k})}{t}\dee x \le 0
+			\end{equation}
+			for $t > 0$. This implies that
+			\begin{equation}
+				\lVert u(\cdot, t) \rVert_{L^{2k}}^{2k} \le \lVert u(\cdot, 0)\rVert_{L^{2k}}^{2k} \iff \lVert u(\cdot, t)\rVert_{L^{2k}} \le \lVert u_0\rVert_{L^{2k}}
+			\end{equation}
+			for $t > 0$ and $k \ge 1$ an integer. Taking the limit as $k \to \infty$ on both sides and applying Proposition 2.18 from Arbogast and Bona, we obtain the desired result.
+		\end{proof}
+			
+		\questionpart Suppose that $u \big\vert_{\partial\Omega} = g$, a nonzero, smooth function on $\partial\Omega$. Let $v$ be a smooth solution of the equation
+		\begin{equation}
+			\label{eq:generalized_laplace}
+			\begin{aligned}
+				\nabla\cdot(A(x)\nabla v) &= 0, \qquad x\in \Omega \\
+				v \big\vert_{\partial\Omega} &= g.
+			\end{aligned}
+		\end{equation}
+		Then $u-v$ is a smooth solution of (\ref{eq:generalized_heat}) such that $u-v\big\vert_{\partial\Omega} = 0$. Hence, by the previous problem,
+		\begin{equation}
+			\lVert u(\cdot,t)-v\rVert_{L^\infty} \le \lVert u(\cdot, 0) - v\rVert_{L^\infty} = \lVert u_0 - v\rVert_{L^\infty}
+		\end{equation}
+		for $t > 0$. Interpreting this inequality, we might say that $u$ does not deviate from $0$ by no more than the initial value $u_0$ in $L^\infty$ norm (the previous situation) but, rather, that $u$ deviates from the \textit{equilibrium} $v$ by no more than than the initial value $u_0$ in $L^\infty$ norm.
+	\end{enumerate}
+
 \end{document}
