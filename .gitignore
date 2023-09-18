@@ -3,3 +3,6 @@
 *.out
 *.synctex.gz
 *.asv
+*.nav
+*.snm
+*.toc
