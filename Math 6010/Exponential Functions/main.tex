@@ -12,8 +12,7 @@
 }{}
 
 \usepackage{tikz}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta}
 \usepackage{xcolor}
 \usepackage{mathtools}
 
@@ -136,6 +135,26 @@
 			\end{alignat*}
 		\end{block}
 	\end{frame}
+	
+	\begin{frame}{Transformations}
+		
+	\end{frame}
+	
+	\begin{frame}{Exponential Functions}
+		Now that we know what $a^x$ means for \textit{any} $x$, we can define an exponential function.
+		\vfill
+		\begin{block}{Exponential Function}
+			An \textbf{exponential function} is a functiton $f$ such that
+			\begin{equation*}
+				f(x) = C \cdot a^x,
+			\end{equation*}
+			where
+			\begin{itemize}
+				\item $C \ne 0$ is called the \textbf{initial value}, and
+				\item $a > 0$, $a \ne 1$ is called the \textbf{growth factor}.
+			\end{itemize}
+		\end{block}
+	\end{frame}
 
 	\begin{frame}{Exponential Functions}
 		Consider the exponential function $f(x) = 5\cdot 2^x$. Let's make a table of values
@@ -207,9 +226,40 @@
 		\vfill
 		\begin{center}
 		\begin{tikzpicture}
-			\begin{axis}[samples at={-5,-4,-3,-2,-1,0,1,2,3,4,5}, xlabel={$x$}, ylabel={$f(x)$}]
-				\addplot {5 * exp(ln(2) * x)};
-			\end{axis}
+			\begin{scope}[yscale=.02, xscale=.45, >=Stealth, thick]
+				\draw[black!20!white, thin, xstep=1, ystep=20] (-7.5, -30) grid (7.5, 170);
+				\draw[<->] (0, -40) -- (0,180) node[above] {$y$};
+				\draw[<->] (-8, 0) -- (8, 0) node[right] {$x$};
+				\pause
+				\fill[blue]
+					(-5, 0.16125) circle[x radius=.15, y radius=3.375]
+					(-4, .3125) circle[x radius=.15, y radius=3.375]
+					(-3, .625) circle[x radius=.15, y radius=3.375]
+					(-2, 1.25) circle[x radius=.15, y radius=3.375]
+					(-1, 2.5) circle[x radius=.15, y radius=3.375]
+					(0, 5) circle[x radius=.15, y radius=3.375]
+					(1, 10) circle[x radius=.15, y radius=3.375]
+					(2, 20) circle[x radius=.15, y radius=3.375]
+					(3, 40) circle[x radius=.15, y radius=3.375]
+					(4, 80) circle[x radius=.15, y radius=3.375]
+					(5, 160) circle[x radius=.15, y radius=3.375];
+				\pause
+				\draw[blue]
+					(-5, 0.16125) --
+					(-4, .3125) --
+					(-3, .625) --
+					(-2, 1.25) --
+					(-1, 2.5) --
+					(0, 5) --
+					(1, 10) --
+					(2, 20) --
+					(3, 40) --
+					(4, 80) --
+					(5, 160);
+				\pause
+				\draw[->, blue] (5, 160) -- (5.25, 190.273) node[left] {$y=5\cdot 2^x$};
+				\draw[->, blue] (-5, .16125) -- (-6.5, 0.020617);
+			\end{scope}
 		\end{tikzpicture}
 		\end{center}
 		\vfill
