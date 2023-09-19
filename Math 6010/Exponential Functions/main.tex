@@ -45,43 +45,56 @@
 	
 	\frame{\titlepage}
 	
-	\begin{frame}{Review of Exponents}
-		Let $a > 0$ and $m, n$ be integers
-		\vspace*{1em}
-		
-		$a^m = \underbrace{a \cdot a \cdot\ldots \cdot a}_{m \text{ times}}$ \pause \qquad $(1.5)^3 = 1.5 \cdot 1.5 \cdot 1.5 = 3.375$
-		\vspace*{1em}
-		\pause
+%	\begin{frame}{Review of Exponents}
+%		Let $a > 0$ and $m, n$ be integers
+%		\vspace*{1em}
+%		
+%		$a^m = \underbrace{a \cdot a \cdot\ldots \cdot a}_{m \text{ times}}$ \pause \qquad $(1.5)^3 = 1.5 \cdot 1.5 \cdot 1.5 = 3.375$
+%		\vspace*{1em}
+%		\pause
+%		\begin{itemize}
+%			\item $a^0 = 1$,\quad $1^m = 1$, \quad $a^1 = a$
+%			\pause
+%			\vfill
+%			\item $a^m \cdot a^n = a^{m+n}$ \pause \qquad $\underbrace{a\cdot a\cdot\ldots\cdot a}_{m\text{ times}} \cdot \underbrace{a\cdot a\cdot\ldots\cdot a}_{n\text{ times}}$
+%			\vfill
+%			\pause
+%			\item $\frac{1}{a^n} = a^{-n}$ \pause \qquad want $a^{-n}\cdot a^n = a^0 = 1$
+%			\vfill
+%			\pause
+%			\item $\frac{a^m}{a^n} = a^{m-n}$
+%			\vfill
+%			\pause
+%			\item $\left(a^n\right)^m = a^{m\cdot n}$ \qquad $\underbrace{a^n \cdot a^n \cdot \ldots \cdot a^n}_{m\text{ times}}$
+%			\vfill
+%			\pause
+%			\item $a^\frac{1}{n} = \sqrt[n]{a}$ \qquad want $\left(a^\frac{1}{n}\right)^n = a^1 = a$
+%			\vfill
+%			\pause 
+%			\item $a^\frac{m}{n} = \sqrt[n]{a^m}$
+%		\end{itemize}
+%	\end{frame}
+	
+	\begin{frame}{Objectives}
 		\begin{itemize}
-			\item $a^0 = 1$,\quad $1^m = 1$, \quad $a^1 = a$
-			\pause
-			\vfill
-			\item $a^m \cdot a^n = a^{m+n}$ \pause \qquad $\underbrace{a\cdot a\cdot\ldots\cdot a}_{m\text{ times}} \cdot \underbrace{a\cdot a\cdot\ldots\cdot a}_{n\text{ times}}$
-			\vfill
-			\pause
-			\item $\frac{1}{a^n} = a^{-n}$ \pause \qquad want $a^{-n}\cdot a^n = a^0 = 1$
-			\vfill
-			\pause
-			\item $\frac{a^m}{a^n} = a^{m-n}$
-			\vfill
-			\pause
-			\item $\left(a^n\right)^m = a^{m\cdot n}$ \qquad $\underbrace{a^n \cdot a^n \cdot \ldots \cdot a^n}_{m\text{ times}}$
-			\vfill
-			\pause
-			\item $a^\frac{1}{n} = \sqrt[n]{a}$ \qquad want $\left(a^\frac{1}{n}\right)^n = a^1 = a$
-			\vfill
-			\pause 
-			\item $a^\frac{m}{n} = \sqrt[n]{a^m}$
+			\item Define exponential functions ($f(x) = C\cdot a^x$)
+			\pause\vfill
+			\item Understand basic properties of exponential functions
+			\pause\vfill
+			\item Graph exponential functions
 		\end{itemize}
 	\end{frame}
-
-	\begin{frame}{Exponential Functions}
+	
+	\begin{frame}{Extended Exponents}
 		Want a function like
 		\begin{equation*}
 			f(x) = C\cdot a^x
 		\end{equation*}
 		\pause
-		but $x$ might not be $\frac{m}{n}$, for integers $m,n$...
+		Recall: if $x = \frac{m}{n}$, then $a^x = a^\frac{m}{n} = \sqrt[n]{a^m}$
+		\pause
+		\vfill
+		But $x$ might not be $\frac{m}{n}$, for integers $m,n$...
 		\pause\vfill
 		\begin{itemize}
 			\item $x = \pi, \sqrt{2}$, and so on
@@ -93,13 +106,13 @@
 			3 = 3, \qquad \frac{2}{5} = 0.4, \qquad \pi=3.14159265..., \qquad \sqrt{2} = 1.41421356...
 		\end{equation*}
 		\pause\vfill
-		Approximate any number $x$ by finitely many of its decimal digits
-		\begin{equation}
+		Approximate any number $x$ by \textit{finitely many} of its decimal digits.
+		\begin{equation*}
 			a^\pi \approx a^{3.14} = a^{\frac{314}{100}} = \sqrt[100]{a^{314}}
-		\end{equation}
+		\end{equation*}
 	\end{frame}
 
-	\begin{frame}{Exponential Functions}
+	\begin{frame}{Extended Exponents}
 		The more digits we use, the closer we get to the true value of $a^\pi$
 		\vfill
 		\begin{center}
@@ -111,18 +124,16 @@
 		\end{center}
 		\pause
 		\vfill
-		So we can use any number $x$ in the exponent, and we also get to keep all the previous properties. Hooray!
+		So we can use any number $x$ in the exponent. Hooray!
 		\pause
 		\vfill
-		\begin{block}{Exponential Functions}
-			An \textbf{exponential function} is a function $f$ such that
-			\begin{equation*}
-				f(x) = C\cdot a^x
-			\end{equation*} 
-			\begin{itemize}
-				\item $C\ne 0$ is the \textbf{initial value}
-				\item $a > 0$, $a\ne1$ is the \textbf{growth factor} 
-			\end{itemize}
+		Better still, we get to keep all the properties of exponents that we already know:
+		\begin{block}{Exponent Properties}
+			If $x,y$ are real numbers, and $a,b > 0$, then
+			\begin{alignat*}{3}
+				&\bullet a^x\cdot a^y = a^{x+y} &\quad &\bullet \left(a^x\right)^y = a^{xy} &\quad &\bullet (ab)^x = a^x\cdot b^x \\
+				&\bullet 1^x = 1 &\quad &\bullet a^{-x} = \frac{1}{a^x} = \left(\frac{1}{a}\right)^x &\quad &\bullet a^0 = 1
+			\end{alignat*}
 		\end{block}
 	\end{frame}
 
