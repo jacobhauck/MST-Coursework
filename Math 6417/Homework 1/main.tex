@@ -107,9 +107,11 @@
 			\end{equation}
 			Since $8L < 1$ by hypothesis, it follows that $A$ is a contraction on $C[0,1]$.
 			
-			Fourth, by the Banach Fixed Point Theorem, there is a unique solution $u \in C[0,1]$ of (\ref{eq:integral}). Since $C^2[0,1] \subseteq C[0,1]$, it follows that if $u \in C^2[0,1]$, then (\ref{eq:integral}) has a unique solution in $C^2[0,1]$, namely, $u$. Thus, to finish the proof, we need to show that $u'$ and $u''$ exist and are continuous.
+			Fourth, by the Banach Fixed Point Theorem, there is a unique fixed point $u \in C[0,1]$ of $A$. By the definition of $A$, however, $u$ is a fixed point of $A$ if and only if it is a solution of (\ref{eq:integral}). Thus, (\ref{eq:integral}) has a unique solution $u \in C[0,1]$. 
 			
-			The calculations on the right-hand sides of (\ref{eq:diff_u1}, \ref{eq:diff_u2}, \ref{eq:diff_u3}) relied only the fact that $u$ was continuous (so that $f(\cdot, u(\cdot))$ would be continuous) and solved (\ref{eq:integral}), so they apply to $u$ here as well. Thus, $u'$ and $u''$ exist, and
+			Since $C^2[0,1] \subseteq C[0,1]$, it follows that if $u \in C^2[0,1]$, then (\ref{eq:integral}) has a unique solution in $C^2[0,1]$, namely, $u$. Thus, to finish the proof, we need to show that $u'$ and $u''$ exist and are continuous.
+			
+			The calculations on the right-hand sides of (\ref{eq:diff_u1}, \ref{eq:diff_u2}, \ref{eq:diff_u3}) relied only on the fact that $u$ was continuous (so that $f(\cdot, u(\cdot))$ would be continuous) and solved (\ref{eq:integral}), so they apply to $u$ here as well. Thus, $u'$ and $u''$ exist, and
 			\begin{equation}
 				u''(x) = -f(x, u(x)),
 			\end{equation}
@@ -121,11 +123,11 @@
 	\begin{equation}
 		\label{eq:generalized_heat}
 		\begin{aligned}
-			u_t - \nabla \cdot (A(x) \nabla u) &= 0, \qquad (x,t) \in \Omega\times(0,\infty) \\
-			u \big\vert_{t=0} &= u_0
+			u_t - \nabla \cdot (A(x) \nabla u) &= 0,& &\qquad (x,t) \in \Omega\times(0,\infty) \\
+			u \big\vert_{t=0} &= u_0,& &\qquad x \in \Omega
 		\end{aligned}
 	\end{equation}
-	where $\Omega \subset \R^n$ is a smooth bounded domain, and $A : \R^n \to \R^{n\times n}$ is a positive definite matrix function.
+	where $\Omega \subset \R^n$ is a smooth bounded domain, $A : \R^n \to \R^{n\times n}$ is a positive definite matrix function, and $u_0 \in L^\infty(\Omega)$.
 	
 	 
 	\begin{enumerate}[label=\textbf{(\roman*)}]
