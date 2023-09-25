@@ -18,10 +18,10 @@
 
 \usetikzlibrary{positioning,arrows.meta}
 
-\title{Exponential Functions}
-\author{Jacob Hauck}
-\institute{Math 6010}
-\date{9-20-2023}
+\title{6.3 Exponential Functions}
+\author{Math 6010}
+\institute{9-27-2023}
+\date{}
 
 \setbeamertemplate{footline}
 {
@@ -102,7 +102,7 @@
 		\vfill
 		...but \textit{every} number has a decimal expansion
 		\begin{equation*}
-			3 = 3, \qquad \frac{2}{5} = 0.4, \qquad \pi=3.14159265..., \qquad \sqrt{2} = 1.41421356...
+			\frac{2}{5} = 0.4, \qquad \frac{1}{3} = 0.3333..., \qquad \pi=3.14159..., \qquad \sqrt{2} = 1.41421...
 		\end{equation*}
 		\pause\vfill
 		Approximate any number $x$ by \textit{finitely many} of its decimal digits.
@@ -128,7 +128,7 @@
 		\vfill
 		Better still, we get to keep all the properties of exponents that we already know:
 		\begin{block}{Exponent Properties}
-			If $x,y$ are real numbers, and $a,b > 0$, then
+			If $x,y$ are \textit{any real numbers}, and $a,b > 0$, then
 			\begin{alignat*}{3}
 				&\bullet a^x\cdot a^y = a^{x+y} &\quad &\bullet \left(a^x\right)^y = a^{xy} &\quad &\bullet (ab)^x = a^x\cdot b^x \\
 				&\bullet 1^x = 1 &\quad &\bullet a^{-x} = \frac{1}{a^x} = \left(\frac{1}{a}\right)^x &\quad &\bullet a^0 = 1
@@ -140,7 +140,7 @@
 		Now that we know what $a^x$ means for \textit{any} $x$, we can define an exponential function.
 		\vfill
 		\begin{block}{Exponential Function}
-			An \textbf{exponential function} is a functiton $f$ such that
+			An \textbf{exponential function} is a function $f$ such that
 			\begin{equation*}
 				f(x) = C \cdot a^x,
 			\end{equation*}
@@ -156,7 +156,7 @@
 		Consider the exponential function $f(x) = 5\cdot 2^x$. Let's make a table of values
 		\vfill
 		\begin{center}
-		\begin{tabular}{@{}ll@{}}
+		\begin{tabular}{@{}l|l@{}}
 			$x$ & $f(x)$ \\
 			\midrule
 			-2 & 1.25 \\
@@ -226,6 +226,12 @@
 				\draw[black!20!white, thin, xstep=1, ystep=20] (-7.5, -30) grid (7.5, 170);
 				\draw[<->] (0, -40) -- (0,180) node[above] {$y$};
 				\draw[<->] (-8, 0) -- (8, 0) node[right] {$x$};
+				\foreach \x in {-7,...,7}{
+					\node[anchor=north, fill=white, text=black!50!white] at (\x, 0) {\tiny\x};
+				}
+				\foreach \y in {20, 40, 60, 80, 100, 120, 140, 160}{
+					\node[anchor=east, fill=white, text=black] at (0, \y) {\tiny\y};
+				}
 				\pause
 				\fill[blue]
 					(-5, 0.16125) circle[x radius=.15, y radius=3.375]
@@ -261,25 +267,25 @@
 		\vfill
 	\end{frame}
 
-	\begin{frame}{Properties}
-		Basic properties:
-		\begin{itemize}
-			\item Domain is $(-\infty, \infty)$; range is $(0,\infty)$ if $C> 0$, and $(-\infty, 0)$ if $C < 0$
-			\pause\vfill
-			\item Increasing or decreasing, one-to-one, continuous
-			\pause\vfill
-			\item No $x$-intercept; $y$-intercept is $C$
-			\pause\vfill
-			\item Horizontal asymptote at $x = \infty$ if $a < 1$ and at $x =-\infty$ if $a > 1$
-		\end{itemize}
-		\pause\vfill
-		Due to our inherited exponent properties, if $f(x) = C\cdot a^x$, and $g(x) = C\cdot \left(\frac{1}{a}\right)^x$, then
-		\pause\vfill
-		\begin{equation*}
-			f(x) = C\cdot a^x = C\cdot\left(\frac{1}{a}\right)^{-x} = g(-x)
-		\end{equation*}
-		\vfill
-		That is, $g$ is the reflection of $f$ over the $y$-axis.
-	\end{frame}
+%	\begin{frame}{Properties}
+%		Basic properties:
+%		\begin{itemize}
+%			\item Domain is $(-\infty, \infty)$; range is $(0,\infty)$ if $C> 0$, and $(-\infty, 0)$ if $C < 0$
+%			\pause\vfill
+%			\item Increasing or decreasing, one-to-one, continuous
+%			\pause\vfill
+%			\item No $x$-intercept; $y$-intercept is $C$
+%			\pause\vfill
+%			\item Horizontal asymptote at $x = \infty$ if $a < 1$ and at $x =-\infty$ if $a > 1$
+%		\end{itemize}
+%		\pause\vfill
+%		Due to our inherited exponent properties, if $f(x) = C\cdot a^x$, and $g(x) = C\cdot \left(\frac{1}{a}\right)^x$, then
+%		\pause\vfill
+%		\begin{equation*}
+%			f(x) = C\cdot a^x = C\cdot\left(\frac{1}{a}\right)^{-x} = g(-x)
+%		\end{equation*}
+%		\vfill
+%		That is, $g$ is the reflection of $f$ over the $y$-axis.
+%	\end{frame}
 
 \end{document}
