@@ -1,0 +1,252 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\newcommand{\hwnum}{4}
+
+\begin{document}
+	\maketitle
+	
+	\question
+	\begin{alphaparts}
+	\questionpart We want to derive a finite difference formula for $f'(t_j)$ involving the sample values $f(t_j -2h)$, $f(t_j-h)$, $f(t_j + h)$, and $f(t_j + 2h)$. Expanding $f$ at these sample values with Taylor's Theorem (centered at $t_j$) gives
+	\begin{alignat}{6}
+		f(t_j - 2h) &= f(t_j)& &- 2hf'(t_j)& &+ \frac{4h^2}{2}f''(t_j)& &- \frac{8h^3}{6}f'''(t_j)& &+ \frac{16h^4}{24}f''''(t_j)& &+ O(h^5), \\
+		f(t_j - h) &= f(t_j)& &- hf'(t_j)& &+ \frac{h^2}{2}f''(t_j)& &- \frac{h^3}{6}f'''(t_j)& &+ \frac{h^4}{24}f''''(t_j)& &+ O(h^5), \\
+		f(t_j + h) &= f(t_j)& &+ hf'(t_j)& &+ \frac{h^2}{2}f''(t_j)& &+ \frac{h^3}{6}f'''(t_j)& &+ \frac{h^4}{24}f''''(t_j)& &+ O(h^5), \\
+		f(t_j + 2h) &= f(t_j)& &+ 2hf'(t_j)& &+ \frac{4h^2}{2}f''(t_j)& &+ \frac{8h^3}{6}f'''(t_j)& &+ \frac{16h^4}{24}f''''(t_j)& &+ O(h^5).
+	\end{alignat}
+	Therefore,
+	\begin{equation}
+	\begin{alignedat}{2}
+		f(t_j - 2h) - 8f(t_j-h) + 8f(t_j + h) - f(t_j + 2h) &{}={}&& (1-8+8-1)f(t_j)\\[0.5em] &&&{}+ (-2 +8 + 8-2)hf'(t_j) \\ &&&{}+ (4-8+8-4)\frac{h^2}{2}f''(t_j) \\&&&{}+ (-8-8+8+8)\frac{h^3}{6}f'''(t_j) \\&&&{}+ (16-8+8-16)\frac{h^4}{24}f''''(t_j) \\&&&{}+ O(h^5) \\[0.5em]
+		&{}={}& &12hf'(t_j) + O(h^5).
+	\end{alignedat}
+	\end{equation}
+	Dividing both sides by $12h$ yields the finite difference formula
+	\begin{equation}
+		f'(t_j) = \frac{1}{12h}\left[f(t_j - 2h) - 8f(t_j - h) + 8f(t_j+h) - f(t_j + 2h)\right] + O(h^4).
+	\end{equation}
+	
+	\questionpart
+	\newcommand{\fcpu}{\tilde{f}}
+	Let $\fcpu_j$ be the number actually stored in computer memory as an approximation of $f_j = f(t_j)$, and suppose that $f_j = \fcpu_j + e(t_j)$, where, for some $\varepsilon > 0$, the round-off error $e$ satisfies the estimate $|e(t)| \le \varepsilon|f(t)|$ for all $t$.
+	
+	Then the error between $f'(t_j)$ the approximation computed by the computer using the finite difference formula from (a) is given by
+	\begin{equation}
+	\begin{alignedat}{2}
+		E(t_j) &{}={}& &\left|f'(t_j) - \frac{\fcpu_{j-2} -8\fcpu_{j-1} + 8\fcpu_{j+1} - \fcpu_{j+2}}{12h}\right| \\[.3em]&{}\le{}& &\left|f'(t_j) - \frac{f_{j-2} - 8f_{j-1} + 8f_{j+1} - f_{j+2}}{12h}\right| \\
+		&&&{}+ \frac{1}{12h}\left|\fcpu_{j-2} - f_{j-2} - 8(\fcpu_{j-1} - f_{j-2}) + 8(\fcpu_{j+1} - f_{j+1}) - (\fcpu_{j+2} - f_{j+2})\right| \\[0.5em]&{}\le{}& &O(h^4) + \frac{\varepsilon}{12h}(f_{j-2} + 8f_{j-1} + 8f_{j+1} + f_{j+2})
+	\end{alignedat}
+	\end{equation}
+	
+	\questionpart The following Python script computes the numerical derivative $\ln'(3) = \frac{1}{3}$ using the formula from (a) for various values of $h$.
+	\lstinputlisting[language=Python, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{lnapprox.py}
+	Here is what was printed when I ran this script.
+	\lstinputlisting[frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{lnapprox_output.txt}
+	Evidently, the error decreases at first as $h$ gets smaller, achieving a minimum for $h = 10^{-3}$, then it increases again as $h$ gets even smaller. This is consistent with the estimate from part (b). This estimate involves two terms; the first decreases rapidly as $h \to 0$, and the second blows up as $h\to 0$. If the relative error $\varepsilon$ is small enough compared to $h$, then the total error $E(t_j)$ should be small at first because the $O(h^4)$ term goes to zero so quickly, but as $h$ gets even smaller, the total error could (and in this case does) increase in inverse proportion to $h$. In fact, each time $h$ \textit{decreases} by a factor of 10 below $10^{-5}$, the total error roughly \textit{increases} by a factor of $10$, consistent with the $\frac{1}{h}$ relationship in the estimate.
+	
+	Furthermore, we can see that the point where the error changes from decreasing to increasing is different if we use a different level of precision. Here we do the same experiment using 30 decimal digits of relative precision ($\varepsilon \approx 10^{-30}$) instead of Python's default 64-bit floating point representation ($\varepsilon \approx 10^{-15}$).
+	\lstinputlisting[language=Python, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{lnapprox30.py}
+	This results in the following output.
+	\lstinputlisting[frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{lnapprox30_output.txt}
+	As we can see, the value of $h$ where the error is minimal is now $h = 10^{-6}$. Furthermore, for the smallest value of $h=10^{-20}$ (at which point the $O(h^4)$ error term should be completely irrelevant), the error has decreased by a factor of $\sim 10^{-15}$, that is, in proportion to $\varepsilon$, as the estimate for $E(t_j)$ suggests.
+	\end{alphaparts}
+	
+	\question Suppose that
+	\begin{equation}
+		\label{eq:desired_scheme}
+		f'(t_j) = \frac{1}{h}\left[\alpha_1f(t_j) + \alpha_2f(t_j+h) + \alpha_3f(t_j+2h) + \alpha_4f(t_j +3h) + \alpha_5f(t_j + 4h)\right] + O(h^4)
+	\end{equation}
+	for some constants $\{\alpha_i\}$. Expanding $f$ about $t_j$ using Taylor's Theorem, we have, for $i \in \{0,1,2,3,4\}$,
+	\begin{equation}
+		f(t_j+ih) = f(t_j) + \sum_{k=1}^4 \frac{(ih)^k}{k!}f^{(k)}(t_j) + O(h^5).
+	\end{equation}
+	Therefore, the approximation in (\ref{eq:desired_scheme}) can be estimated by
+	\begin{alignat}{2}
+		\frac{1}{h}\sum_{i=0}^{4}\alpha_{i+1}f(t_j + ih) &{}={}& & \sum_{i=0}^4\alpha_{i+1}\left[f(t_j) + \sum_{k=1}^4 \frac{i^k}{k!}f^{(k)}(t_j)h^{k-1}\right] + O(h^4) \\
+		&{}={}& &\left(\sum_{i=0}^4i\alpha_{i+1}\right)f'(t_j) + \sum_{i=0}^4 \alpha_{i+1}\left[f(t_j)h^{-1} + \sum_{k=2}^4\frac{i^k}{k!}f^{(k)}(t_j)h^{k-1}\right] + O(h^4) \\
+		\label{eq:requirement}
+		&{}={}& &\left(\sum_{i=1}^5(i-1)\alpha_i\right)f'(t_j) + \left(\sum_{i=1}^5\alpha_i\right)f(t_j)h^{-1} \\ \notag
+		&&&{}+ \sum_{k=2}^4f^{(k)}(t_j)\frac{h^{k-1}}{k!}\left(\sum_{i=1}^5\alpha_i(i-1)^k\right) + O(h^4).
+	\end{alignat}
+	So, to obtain (\ref{eq:desired_scheme}), we would need the coefficient of $f'(t_j)$ in (\ref{eq:requirement}) to be 1, and we would need the rest of the coefficients of $h^{k}$ to be zero when $k < 4$, since otherwise we would not have an error of $O(h^4)$. That is, $\{\alpha_i\}$ must satisfy the system of equations
+	\begin{align}
+		\left[\begin{matrix}
+			1 & 1 & 1 & 1 & 1 \\
+			0 & 1 & 2 & 3 & 4 \\
+			0 & 1 & 4 & 9 & 16 \\
+			0 & 1 & 8 & 27 & 64 \\
+			0 & 1 & 16 & 81 & 256
+		\end{matrix}\right]
+		\left[\begin{matrix}
+			\alpha_1 \\ \alpha_2 \\ \alpha_3 \\ \alpha_4 \\ \alpha_5
+		\end{matrix}\right] =
+		\left[\begin{matrix}
+			0 \\ 1 \\ 0 \\ 0 \\ 0
+		\end{matrix}\right].
+	\end{align}
+	Thus, $\alpha_1 = -\sum\limits_{i=2}^5 \alpha_i$, and the remaining $\{\alpha_i\}_{i=2}^5$ must satisfy
+	\begin{equation}
+		\left[\begin{matrix}
+			1 & 2 & 3 & 4 \\
+			1 & 4 & 9 & 16 \\
+			1 & 8 & 27 & 64 \\
+			1 & 16 & 81 & 256
+		\end{matrix}\right]
+		\left[\begin{matrix}
+			\alpha_2 \\ \alpha_3 \\ \alpha_4 \\ \alpha_5
+		\end{matrix}\right] =
+		\left[\begin{matrix}
+			1 \\ 0 \\ 0 \\ 0
+		\end{matrix}\right].
+	\end{equation}
+	Then $\alpha_2 = 1-\sum\limits_{i=3}^5 (i-1)\alpha_i$, and the last three rows are equivalent to
+	\begin{equation}
+		\label{eq:3x3}
+		\left[\begin{matrix}
+			4 & 9 & 16 \\
+			8 & 27 & 64 \\
+			16 & 81 & 256
+		\end{matrix}\right]\left[\begin{matrix}
+		\alpha_3 \\ \alpha_4\\ \alpha_5
+		\end{matrix}\right] = -\alpha_2\left[\begin{matrix}
+		1\\1\\1
+		\end{matrix}\right].
+	\end{equation}
+	Let $A$ be the matrix on LHS(\ref{eq:3x3}). Then 
+	\begin{align*}
+		\det(A) = 4(27\cdot 256 - 64\cdot 81) - 9(8 \cdot 256 - 64\cdot 16) + 16\cdot(8\cdot 81 - 27\cdot 16) = 1152.
+	\end{align*}
+	Using Cramer's Rule, the solution of $Ax = [\begin{matrix}1&0&0\end{matrix}]^T$ is 
+	\begin{equation}
+		\frac{1}{\det(A)}\left[\begin{matrix}
+			\left|\begin{matrix}
+				27 & 64 \\ 81 & 256
+			\end{matrix}\right| &
+			-\left|\begin{matrix}
+				8 & 64 \\ 16 & 256
+			\end{matrix}\right| &
+			\left|\begin{matrix}
+				8 & 27 \\ 16 & 81
+			\end{matrix}\right|
+		\end{matrix}\right]^T = \frac{1}{1152} \left[\begin{matrix}
+		1728 \\ -1024 \\ 216
+		\end{matrix}\right],
+	\end{equation}
+	the solution of $Ax = [\begin{matrix}0&1&0\end{matrix}]^T$ is 
+	\begin{equation}
+		\frac{1}{\det(A)}\left[\begin{matrix}
+			-\left|\begin{matrix}
+				9 & 16 \\ 81 & 256
+			\end{matrix}\right| &
+			\left|\begin{matrix}
+				4 & 16 \\ 16 & 256
+			\end{matrix}\right| &
+			-\left|\begin{matrix}
+				4 & 9 \\ 16 & 81
+			\end{matrix}\right|
+		\end{matrix}\right]^T = \frac{1}{1152} \left[\begin{matrix}
+			-1008 \\ 768 \\ -180
+		\end{matrix}\right],
+	\end{equation}
+	and the solution of $Ax = [\begin{matrix}0&0&1\end{matrix}]^T$ is 
+	\begin{equation}
+	\frac{1}{\det(A)}\left[\begin{matrix}
+		\left|\begin{matrix}
+			9 & 16 \\ 27 & 64
+		\end{matrix}\right| &
+		-\left|\begin{matrix}
+			4 & 16 \\ 8 & 64
+		\end{matrix}\right| &
+		\left|\begin{matrix}
+			4 & 9 \\ 8 & 27
+		\end{matrix}\right|
+	\end{matrix}\right]^T = \frac{1}{1152} \left[\begin{matrix}
+		144 \\ -128 \\ 36
+	\end{matrix}\right].
+	\end{equation}
+	Therefore,
+	\begin{equation}
+		A^{-1} = \frac{1}{1152}\left[\begin{matrix}
+			1728 & -1008 & 144 \\
+			-1024 & 768 & -128 \\
+			216 & -180 & 36
+		\end{matrix}\right].
+	\end{equation}
+	This implies that
+	\begin{equation}
+		\left[\begin{matrix}
+			\alpha_3 \\ \alpha_4 \\ \alpha_5
+		\end{matrix}\right] =
+		-\alpha_2A^{-1}\left[\begin{matrix}
+			1\\1\\1 =
+		\end{matrix}\right]
+		-\frac{\alpha_2}{1152}\left[\begin{matrix}
+			1728 - 1008 +144 \\ -1024 + 768 -128 \\ 216-180 + 36
+		\end{matrix}\right] =-\frac{\alpha_2}{1152}\left[\begin{matrix}
+			864 \\ -384 \\ 72
+		\end{matrix}\right] = \frac{\alpha_2}{48}\left[\begin{matrix}
+			-36 \\ 16 \\ -3
+		\end{matrix}\right],
+	\end{equation}
+	or $\alpha_3 = -\frac{3}{4}\alpha_2$, $\alpha_4 = \frac{1}{3}\alpha_2$, and $\alpha_5 = -\frac{1}{16}\alpha_2$. Next,
+	\begin{equation}
+		\alpha_2 =1-2\alpha_3 -3\alpha_4-4\alpha_5 = 1 +\frac{3}{2}\alpha_2 -\alpha_2 + \frac{1}{4}\alpha_2 \implies \alpha_2 = 4.
+	\end{equation}
+	Thus, $\alpha_3 = -3$, $\alpha_4 = \frac{4}{3}$, and $\alpha_5 = -\frac{1}{4}$. Lastly, we get
+	\begin{equation}
+		\alpha_1 = -\alpha_2 -\alpha_3 -\alpha_4 - \alpha_5 = -4 +3-\frac{4}{3} + \frac{1}{4} = -\frac{25}{12}.
+	\end{equation}
+	Therefore, the desired finite difference formula is
+	\begin{equation}
+		f'(t_j) = \frac{-25f(t_j) + 48f(t_j + h) - 36f(t_j+2h) +16f(t_j+3h)-3f(t_j+4h)}{12h} + O(h^4).
+	\end{equation}
+	
+	\question Let $f \in C^\infty(-\infty, \infty)$, and let $x \in\R$.
+	
+	\begin{alphaparts}
+		\questionpart Define
+		\begin{equation}
+			S_h = \frac{f(x+h) - f(x-h)}{2h}.
+		\end{equation}
+		Then
+		\begin{equation}
+			S_h = f'(x) + \sum_{i=1}^\infty c_ih^{2i}
+		\end{equation}
+		for constants $c_i$ independent of $h$.
+		\begin{proof}
+			By Taylor's Theorem (assuming $f$ is analytic in a neighborhood of $x$ and $h$ is sufficiently small),
+			\begin{equation}
+				f(x + sh) = \sum_{i=0}^\infty \frac{f^{(i)}(x)}{i!}s^ih^i,
+			\end{equation}
+			where $s \in \{-1,1\}$. Then
+			\begin{equation}
+				S_h = \frac{1}{2h}\left[\sum_{i=0}^\infty \frac{f^{(i)}(x)}{i!}h^i - \sum_{i=0}^\infty \frac{f^{(i)}(x)}{i!}(-1)^ih^i\right] = \frac{1}{2h}\sum_{i=0}^\infty \frac{f^{(i)}(x)}{i!}\left(1 - (-1)^i\right)h^i.
+			\end{equation}
+			Since $1- (-1)^i = 0$ if $i$ is even and $2$ if $i$ is odd, it follows that
+			\begin{equation}
+				S_h = \frac{1}{h}\sum_{i=0}^\infty \frac{f^{(2i+1)}(x)}{(2i+1)!}h^{2i+1} = f'(x) + \sum_{i=1}^\infty \frac{f^{(2i+1)}(x)}{(2i+1)!}h^{2i}.
+			\end{equation}
+			The claim follows if we choose $c_i = \frac{f^{(2i+1)}(x)}{(2i+1)!}$.
+		\end{proof}
+		
+		\questionpart Suppose that
+		\begin{equation}
+			\alpha_1 S_h + \alpha_2 S_{\frac{h}{2}} = f'(x) + O(h^4).
+		\end{equation}
+		Using part (a), we see that
+		\begin{equation}
+			\alpha_1 S_h + \alpha_2 S_\frac{h}{2} = (\alpha_1 + \alpha_2)f'(x) + \sum_{i=1}^\infty c_i\left(\alpha_1 + \frac{\alpha_2}{2^{2i}}\right)h^{2i}.
+		\end{equation}
+		Since $\sum c_i h^{2i}$ converges, the remainder of the infinite series starting from $i = 2$ is $O(h^4)$. The first term of the infinite series, however, is at best $O(h^2)$, so, in order to satisfy the assumption, we must choose $\alpha_1$ and $\alpha_2$ so that the coefficient of the $h^2$ term in the series is zero. We must also ensure that the coefficient of $f'(x)$ is 1. That is, $\alpha_1$ and $\alpha_2$ must solve the equations
+		\begin{align}
+			\alpha_1 + \alpha_2 = 1, \\
+			\alpha_1 + \frac{1}{4}\alpha_2 = 0.
+		\end{align}
+		Then $\alpha_2 = -4\alpha_1$, so $-3\alpha_1 = 1$, and $\alpha_1 = -\frac{1}{3}$, and $\alpha_2 = \frac{4}{3}$. Then
+		\begin{equation}
+			\alpha_1S_h + \alpha_2S_\frac{h}{2} = \frac{4S_\frac{h}{2} - S_h}{3} = f'(x) + O(h^4).
+		\end{equation}
+	\end{alphaparts}
+\end{document}

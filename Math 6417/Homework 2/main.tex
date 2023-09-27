@@ -1,0 +1,68 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\newcommand{\hwnum}{2}
+
+\begin{document}
+	\maketitle
+	
+	A continuous function $\sigma : \R \to \R$ is called \textbf{sigmoidal} if there exists $T > 0$ such that
+	\begin{equation}
+		\sigma(t) = \begin{cases}
+			1 & t \ge T, \\
+			0 & t \le -T.
+		\end{cases}
+	\end{equation}
+	Let $\sigma$ be sigmoidal in the following problems.
+	
+	\question Let $y \in \R^n$, and $(\theta, \phi) \in \R^2$. For $x \in \R^n$, define
+	\begin{equation}
+		\sigma_\lambda(x; \theta,\phi) = \sigma\left(\lambda\left(y^Tx + \theta\right) + \phi\right).
+	\end{equation}
+	Then
+	\begin{equation}
+		\sigma_\lambda(x;\theta,\phi) \to \gamma(x) = \begin{cases}
+			1 & y^Tx + \theta > 0 \\
+			0 & y^Tx + \theta < 0 \\
+			\sigma(\phi) & y^Tx + \theta = 0
+		\end{cases} \qquad \text{ as } \lambda \to\infty.
+	\end{equation}
+	\begin{proof}
+		If $y^Tx +\theta =0$, then $\sigma_\lambda(x;\phi,\theta) = \sigma(\phi)$ for all $\lambda$, and the result is clear. Otherwise, let $s = \sgn(y^Tx + \theta)$. Then
+		\begin{equation}
+			\label{eq:lambda_cond}
+			\lambda \ge \frac{T - s\phi}{|y^Tx +\theta|}
+		\end{equation}
+		implies that $\lambda\left(y^Tx + \theta\right) + \phi \ge T$ if $s = 1$, and $\lambda\left(y^Tx + \theta\right) + \phi \le -T$ if $s = -1$. Then (\ref{eq:lambda_cond}) implies that $\sigma_\lambda(x;\theta,\phi) = 1$ if $s=1$, and $\sigma_\lambda(x;\theta,\phi) = 0$ if $s = -1$. The result follows.
+	\end{proof}
+	
+	\question
+	\newcommand{\zset}{\Pi_{y,\theta}}
+	\newcommand{\pset}{H_{y,\theta}}
+	Let $y \in \R^n$, let $\zset = \left\{x\mid y^Tx + \theta = 0\right\}$, and let $\pset=\left\{x\mid y^Tx+\theta > 0\right\}$. If $\mu$ is a finite Borel measure on $[0,1]^n$ such that
+	\begin{equation}
+		\label{eq:mu_zero_cond}
+		\int_{[0,1]^n}\sigma_\lambda(x)\dee\mu(x) = 0 \qquad \text{for all } (\lambda, \theta, \phi)\in\R^3,
+	\end{equation}
+	then
+	\begin{equation}
+		\sigma(\phi)\mu(\zset) + \mu(\pset) = 0\qquad \text{for all } (\lambda, \theta, \phi)\in\R^3.
+	\end{equation}
+	\begin{proof}
+		Fix $(\theta,\phi)\in\R^2$. For any $\lambda \in \R$, the function $\sigma_\lambda(\,\cdot\,;\theta,\phi)$ is dominated by the constant function $C(x) = \max\limits_{t\in[-T,T]}|\sigma(t)|$. Since $\sigma$ is continuous, $\sigma_\lambda$ is continuous as well, so $\sigma_\lambda$ is integrable on $[0,1]^n$. By the previous problem, $\sigma_\lambda$ converges to $\gamma$ pointwise as $\lambda \to \infty$. Thus, the Dominated Convergence Theorem implies that
+		\begin{equation}
+			0=\lim_{\lambda\to\infty}\int_{[0,1]^n}\sigma_\lambda(x)\dee\mu(x) = \int_{[0,1]^n} \gamma(x)\dee\mu(x) = \sigma(\phi)\mu(\zset) + \mu(\pset).
+		\end{equation}
+	\end{proof}
+	
+	\question
+	Suppose that $\mu$ satisfies (\ref{eq:mu_zero_cond}). Then $\mu = 0$. 
+	\begin{proof}
+		Define the linear functional $F: L^\infty(\R) \to \R$ by
+		\begin{equation}
+			F(h) = \int_{[0,1]^n}h\left(y^Tx\right)\dee\mu(x)
+		\end{equation}
+		First, let $h = \chi_{[\theta,\infty)}$ for some $\theta \in \R$.
+	\end{proof}
+\end{document}
