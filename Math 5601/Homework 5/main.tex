@@ -1,0 +1,87 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\newcommand{\hwnum}{5}
+
+\begin{document}
+	\maketitle
+	
+	\question Let $S = \{(t,y) \in \R^2 \mid |t| < 11\}$. Define
+	\begin{equation}
+		f(t,y) = \frac{t}{9}\cos(2y) + t^2.
+	\end{equation}
+	Then $f$ is differentiable with respect to $y$, with
+	\begin{equation}
+		\frac{\partial f}{\partial y} = -\frac{2t}{9}\sin(2y)
+	\end{equation}
+	If $|t| < 11$, then $\left|\frac{\partial f}{\partial y}\right| <\frac{22}{9}$ for all $y \in \R$. This implies that $f$ is $\frac{22}{9}$-Lipschitz in $y$ over $S$, so, by Theorem (I) in the notes, the IVP
+	\begin{equation}
+		\label{eq:ivp}
+		y' = f(t,y), \qquad y(0) = 1
+	\end{equation}
+	has a unique solution defined for $|t| < 11$. Then (\ref{eq:ivp}) certainly has a unique solution defined for $|t| \le 10$.
+	
+	\question 
+	
+	\question Consider the forward Euler method
+	\begin{equation}
+		y_{j+1}^h = y_{j}^h + f(x_j, y_{j}^h), \qquad h > 0,\quad j \in \{0,1,2,\dots, N\}
+	\end{equation}
+	for approximating the solution $y(x)$ of $y' = f(x,y)$ with $y(0) = \alpha$. Suppose that
+	\begin{equation}
+		y_j^h - y(x_j) = \sum_{m=1}^\infty c_mh^m
+	\end{equation}
+	for some $\{c_m\}$ independent of $h$. To find a third-order approximation $z_j^h$ of $y(x_j)$ using $y_j^h$, $y_j^{\frac{h}{2}}$, and $y_j^{\frac{h}{3}}$, we take a linear combination of them and attempt to find coefficients that make the combination a third-order approximation. To this end, let
+	\begin{equation}
+		z_j^h = a_1y_j^h + a_2y_j^\frac{h}{2} + a_3 y_j^{\frac{h}{3}}.
+	\end{equation}
+	Consider the difference $z_j - y(x_j)$:
+	\begin{align}
+		z_j^h - y(x_j) &= (a_1 + a_2+a_3 - 1)y(x_j) + \sum_{n=1}^3 a_n \left(y_j^\frac{h}{n} - y(x_j)\right) \\
+		&= (a_1+a_2+a_3-1)y(x_j) + \sum_{n=1}^3 a_n\sum_{m=1}^\infty c_m\left(\frac{h}{n}\right)^m \\
+		&= (a_1 + a_2+a_3-1)y(x_j) + \sum_{m=1}^\infty \left(\sum_{n=1}^3 \frac{a_n}{n^m}\right)h^m \\
+		&= \left(-1  + \sum_{n=1}^3a_n\right)y(x_j) +\left(\sum_{n=1}^3\frac{a_n}{n}\right)h + \left(\sum_{n=1}^3\frac{a_n}{n^2}\right)h^2 + O(h^3).
+	\end{align}
+	Evidently, $z_j^h$ will be a third-order approximation if we choose $a_1$, $a_2$, and $a_3$ such that the first three terms in the last line above are all zero. That is, we must choose the coefficients to satisfy
+	\begin{align}
+		\left[\begin{matrix}
+			1 & 1 & 1 \\
+			1 & \frac{1}{2} & \frac{1}{3} \\
+			1 & \frac{1}{4} & \frac{1}{9}
+		\end{matrix}\right]\left[\begin{matrix}
+		a_1 \\ a_2 \\ a_3
+		\end{matrix}\right] = \left[\begin{matrix}
+		1 \\ 0 \\ 0
+		\end{matrix}\right].
+	\end{align}
+	This implies that
+	\begin{equation}
+		\left[\begin{matrix}
+			18 & 12 \\
+			9 & 4
+		\end{matrix}\right]\left[\begin{matrix}
+		a_2 \\ a_3
+		\end{matrix}\right] = -36a_1\left[\begin{matrix}
+			1 \\ 1
+		\end{matrix}\right],
+	\end{equation}
+	which gives
+	\begin{equation}
+		\left[\begin{matrix}
+			a_2 \\ a_3
+		\end{matrix}\right] = -\frac{1}{36}\cdot (-36a_1)\cdot\left[\begin{matrix}
+			4 & -12 \\
+			-9 & 18
+		\end{matrix}\right]\cdot\left[\begin{matrix}
+			1 \\ 1
+		\end{matrix}\right] = a_1\left[\begin{matrix}
+			-8\\9
+		\end{matrix}\right],
+	\end{equation}
+	or $a_2 = -8 a_1$, and $a_3 = 9a_1$. Since we must have $a_1 + a_2 + a_3 =1$, it follows that $a_1 - 8a_1 + 9a_1 = 1$, so $a_1 = \frac{1}{2}$, $a_2 = -4$, and $a_3 = \frac{9}{2}$. Therefore,
+	\begin{equation}
+		z_j^h = \frac{1}{2}y_j^h - 4y_j^{\frac{h}{2}} + \frac{9}{2}y_j^\frac{h}{3}
+	\end{equation}
+	is a third-order approximation of $y(x_j)$.
+\end{document}
