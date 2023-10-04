@@ -23,6 +23,30 @@
 	has a unique solution defined for $|t| < 11$. Then (\ref{eq:ivp}) certainly has a unique solution defined for $|t| \le 10$.
 	
 	\question 
+	\begin{alphaparts}
+		\questionpart The following MATLAB code (copied from \verb*|forward_euler.m|) implements the forward Euler method
+		\begin{equation}
+			y_{j+1} = y_j + hf(t_j, y_j),\qquad y_0 = y_a
+		\end{equation}
+		for the IVP $y' = f(t,y)$ on $[a,b]$ with $y(a) = y_a$, where $t_j = a+ jh$:
+		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{forward_euler.m}
+		
+		\questionpart The following code can be entered in the Command Window in MATLAB to use the above script to solve the IVP $y' = y^\frac{1}{3}$ on $[0,2]$ with $y(0) = 0$:
+		\begin{lstlisting}[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]
+forward_euler(@(t, y) y^(1/3), 0, 2, 0, h)
+		\end{lstlisting}
+		Running this command with various values of the parameter \verb*|h| (I tried $.1$, $.01$, $.001$, and $.0001$) gives the same output, so I will just describe it rather than copy it: $y_j = 0$ for all $j$. This is, indeed, the exact values $y(t_j)$ for the solution $y(t) = y_1(t) = 0$ of the IVP. There is, however, \textit{another} solution of the IVP:
+		\begin{equation}
+			y(t) = y_2(t) = \left(\frac{2}{3}t\right)^\frac{3}{2},
+		\end{equation}
+		which is in fact a solution because $y_2(0) = 0$, and $y_2'(t) = \frac{3}{2}\left(\frac{2}{3}\right)^\frac{3}{2}t^\frac{1}{2} = \left(\frac{2}{3}t\right)^\frac{1}{2} = [y_2(t)]^\frac{1}{3}$ for $t \in [0,2]$.
+		
+		It is evident from the definition of the forward Euler method that it will never be able to approximate this solution no matter what value of $h$ is chosen. Indeed, we have $y_0 = y_a = 0$, and if $y_j = 0$, then
+		\begin{equation}
+			y_{j+1} = y_j + hf(t_j, y_j) = 0 + h\cdot 0^\frac{1}{3} = 0,
+		\end{equation}
+		so by mathematical induction it follows that $y_j = 0$ for all $j$, which is precisely what we observed in the numerical experiments (of course, one could argue that floating-point round-off error \textit{might} cause the stored values $\{\tilde{y}_j\}$ to differ slightly from $0$, ruining the above explanation; however, in standard floating-point representations, $0$ can be represented exactly, and floating-point arithmetic standards ensure that multiplication by exactly $0$ is exactly $0$, and addition of exactly $0$ is exactly the same as before, so the above argument still works).
+	\end{alphaparts}
 	
 	\question Consider the forward Euler method
 	\begin{equation}
