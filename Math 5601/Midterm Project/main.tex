@@ -2,6 +2,9 @@
 \input{../homework_shared.tex}
 \input{../../standardcmd.tex}
 
+\usepackage{float}
+\usepackage{booktabs}
+
 \renewcommand{\hwtype}{Midterm Project}
 \newcommand{\hwnum}{}
 \renewcommand{\questiontype}{Problem}
@@ -286,6 +289,47 @@
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={The fixed point method}, label=lst:fixed]{fixed.m}
 		
 		\questionpart 
+		In Table \ref{table:p6:b} (summarized from \verb*|p6b_output.txt|) are the numerical values of $y(1)$ (that is, $y_J$) output by the backward Euler method using Newton's method and the fixed point method for the nonlinear equation, with step size $h \in \left\{\frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{32}, \frac{1}{64}, \frac{1}{128}\right\}$.
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{@{}lll@{}}
+				\toprule
+				& \multicolumn{2}{c}{$y_J$} \\
+				\cmidrule{2-3}
+				$h$ & Fixed point method & Newton's method \\
+				\midrule
+				$\frac{1}{4}$ & 0.133040559656 & 0.133042542007 \\[0.4em]
+				$\frac{1}{8}$ & 0.140084791265 & 0.140087879975 \\[0.4em]
+				$\frac{1}{16}$ & 0.143533541626 & 0.143537206437 \\[0.4em]
+				$\frac{1}{32}$ & 0.145236447788 & 0.145241162009 \\[0.4em]
+				$\frac{1}{64}$ & 0.146068376104 & 0.146089330750 \\[0.4em]
+				$\frac{1}{128}$ & 0.146465061447 & 0.146516760703 \\[0.4em]
+				\bottomrule
+			\end{tabular}
+			\caption{Backward Euler $y_J$ values}
+			\label{table:p6:b}
+		\end{table}
 		
+		\questionpart
+		In Table \ref{table:p6:c}
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{@{}lll@{}}
+				\toprule
+				& \multicolumn{2}{c}{$|y(1) - y_J|$} \\
+				\cmidrule{2-3}
+				$h$ & Fixed point method & Newton's method \\
+				\midrule
+				$\frac{1}{4}$ & 0.133040559656 & 0.133042542007 \\[0.4em]
+				$\frac{1}{8}$ & 0.140084791265 & 0.140087879975 \\[0.4em]
+				$\frac{1}{16}$ & 0.143533541626 & 0.143537206437 \\[0.4em]
+				$\frac{1}{32}$ & 0.145236447788 & 0.145241162009 \\[0.4em]
+				$\frac{1}{64}$ & 0.146068376104 & 0.146089330750 \\[0.4em]
+				$\frac{1}{128}$ & 0.146465061447 & 0.146516760703 \\[0.4em]
+				\bottomrule
+			\end{tabular}
+			\caption{Backward Euler $y_J$ values}
+			\label{table:p6:c}
+		\end{table}
 	\end{alphaparts}
 \end{document}
