@@ -1,0 +1,21 @@
+>> f1 = @(t, y) exp(2*t) * y * y;
+>> df1dy = @(t, y) exp(2*t) * 2 * y;
+>> g_a = 0.1;
+>> a = 0;
+>> b = 1;
+>> tol = 1e-6;
+>> max_it = 100;
+>> hvals = [1/4, 1/8, 1/16, 1/32, 1/64, 1/128];
+>> newton_solver1 = be_newton(f1, df1dy, tol, tol, tol, max_it, false);
+>> fixed_solver1 = be_fixed(f1, tol, max_it, false);
+>> for h = hvals
+  [t_newton, y_newton] = backward_euler(newton_solver1, g_a, a, b, h);
+  [t_fixed, y_fixed] = backward_euler(fixed_solver1, g_a, a, b, h);
+  fprintf("Newton y(1) = %.012f, Fixed y(1) = %.012f\n", y_newton(length(y_newton)), y_fixed(length(y_fixed)));
+end
+Newton y(1) = 0.133042542007, Fixed y(1) = 0.133040559656
+Newton y(1) = 0.140087879975, Fixed y(1) = 0.140084791265
+Newton y(1) = 0.143537206437, Fixed y(1) = 0.143533541626
+Newton y(1) = 0.145241162009, Fixed y(1) = 0.145236447788
+Newton y(1) = 0.146089330750, Fixed y(1) = 0.146068376104
+Newton y(1) = 0.146516760703, Fixed y(1) = 0.146465061447
