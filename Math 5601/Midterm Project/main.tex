@@ -265,6 +265,12 @@
 	\question
 	\begin{alphaparts}
 		\questionpart
-		
+		\newcommand{\solver}{\mathrm{solver}}
+		In order to avoid duplicate code, I have implemented an abstract version of the backward Euler method that takes as input the initial condition $g_a$, the interval $[a,b]$, and the step size $h$. The function $f$ is specified implicitly by the function argument $\solver$, defined by
+		\begin{equation}
+			\solver(x_0, t, h) = \text{solution $x$ of } \big[x = x_0 + hf(t,x)\big].
+		\end{equation}
+		I define two solver functions, one that uses Newton's method, and one that uses the fixed point method. In Listing \ref{lst:backward_euler} is the abstract backward Euler method implementation (copied from \verb*|backward_euler.m|).
+		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Abstract backward Euler method}, label=lst:backward_euler]{backward_euler.m}
 	\end{alphaparts}
 \end{document}
