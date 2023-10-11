@@ -176,13 +176,13 @@
 	
 	We now consider Newton's method for finding the root of a function $f$:
 	\begin{equation}
-		x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}
+		x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}.
 	\end{equation}
 	
 	\question
 	Suppose that $f$ has a root $z$ of multiplicity $m \ge 2$. Then, by definition, there exists a function $r$ such $r(z) \ne 0$, and $f(x) = (x-z)^mr(x)$. Then $f'(x) =m(x-z)^{m-1}r(x) + (x-z)^mr'(x) = (x-z)^{m-1}(mr(x) + (x-z)r'(x))$. Then we can still safely define Newton's method despite the fact that $f'(z) = 0$ by setting
 	\begin{equation}
-		g(x) = x - \frac{f'(x)}{f(x)} = x - \frac{(x-z)^mr(x)}{(x-z)^{m-1}(mr(x) + (x-z)r'(x))} = x- \frac{(x-z)r(x)}{mr(x) + (x-z)r'(x)}
+		g(x) = x - \frac{f(x)}{f'(x)} = x - \frac{(x-z)^mr(x)}{(x-z)^{m-1}(mr(x) + (x-z)r'(x))} = x- \frac{(x-z)r(x)}{mr(x) + (x-z)r'(x)}
 	\end{equation}
 	and observing that the denominator in the last expression is nonzero when $x =z$ because $r(z) \ne 0$. Then Newton's method becomes $x_{k+1} = g(x_k)$.
 	
@@ -218,4 +218,53 @@
 		g_m'(z) = 1-  m\frac{m(r(z))^2}{(mr(z))^2} = 0.
 	\end{equation}
 	Then the iteration $x_{k+1} = g_m(x_k)$ converges at least quadratically to the root $z$ of $f$ by the convergence theorem in the project description.
+	\\
+	\hrule
+	
+	Now we consider the implementation of the backward Euler method for (\ref{eq:ivp_ode}, \ref{eq:ivp_ic}):
+	\begin{equation}
+		y_0 = y(a) = g_a, \qquad y_{j+1} = y_j + hf(t_{j+1}, y_{j+1}) \quad\text{if}\quad j \in \{0,1,\dots, J-1\}.
+	\end{equation}
+	
+	\question
+	\newcommand{\newf}{\tilde{f}}
+	\newcommand{\newg}{\tilde{g}}
+	Suppose that $y_j$, $t_{j+1}$ and $h$ are known at the $j$th step of the backward Euler method. Then $y_{j+1}$ can be obtained by solving the nonlinear equation
+	\begin{equation}
+		\label{eq:p6:equation_to_solve}
+		y_{j+1} = y_j + hf(t_{j+1}, y_{j+1})
+	\end{equation}
+	for $y_{j+1}$. Since our methods for numerically solving nonlinear equations work only for equations of the form $\newf(x) = 0$ (for the bisection, Netwton's and secant methods) and $\newg(x) = x$ (for the fixed point method), we need to recast (\ref{eq:p6:equation_to_solve}) in these forms. In other words, we need to define $\newf$ and $\newg$ such that
+	\begin{equation}
+		\newf(y_{j+1}) = 0 \iff y_{j+1} = y_j + hf(t_{j+1}, y_{j+1}) \iff \newg(y_{j+1}) = y_{j+1}.
+	\end{equation}
+	There are many ways to do this, but perhaps the simplest is to choose
+	\begin{equation}
+		\newf(x) = x - y_j - hf(t_{j+1}, x),\qquad \newg(x) = y_j + hf(t_{j+1}, x).
+	\end{equation}
+	
+	\question
+	Suppose that we wanted to use the bisection method or the secant method to solve $x = y_j + hf(t_{j+1}, x)$ for $x$.
+	\begin{alphaparts}
+		\questionpart To use the bisection method, we would need to know
+		\begin{enumerate}[label=(\arabic*)]
+			\item the initial interval $[a,b]$ that contains the root, and
+			\item the stopping conditions (error tolerances and maximum iterations).
+		\end{enumerate}
+		As mentioned in the project description, the stopping conditions can be set according to the accuracy requirements determined by the step size $h$. The initial interval, however, would be more difficult to determine.
+		
+		\questionpart
+		To use the secant method, we would need to know
+		\begin{enumerate}[label=(\arabic*)]
+			\item the initial points $x_0$ and $x_1$, and
+			\item the stopping conditions (error tolerances and maximum iterations).
+		\end{enumerate}
+		As with the bisection method, the stopping conditions here can be determined fairly easily. The two initial points, however, would be more difficult to choose. Perhaps $x_0 = y_{j-1}$ and $x_1 = y_j$ would work, but we would still need to answer the question of how to choose $x_0$ when $j=0$.
+	\end{alphaparts}
+	
+	\question
+	\begin{alphaparts}
+		\questionpart
+		
+	\end{alphaparts}
 \end{document}
