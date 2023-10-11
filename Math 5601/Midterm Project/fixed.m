@@ -13,7 +13,7 @@ for k = 0:max_it
 end
 
 if log_iterations
-    fprintf('Newton iterations = %d', k);
+    fprintf("Fixed point iterations = %d\n", k);
 end
 
 result = xk;

@@ -11,7 +11,7 @@ for k = 0:max_it
 
     % check f_prime not zero *before* dividing by it
     if abs(f_primek) <= epsilon_f_prime  
-        fprintf("Failed. f_prime too small.\n");
+        fprintf("Failed. f' too small.\n");
         break;
     end
         
@@ -25,7 +25,7 @@ for k = 0:max_it
 end
 
 if log_iterations
-    fprintf('Newton iterations = %d', k);
+    fprintf("Newton iterations = %d\n", k);
 end
     
 result = xk;
