@@ -16,7 +16,7 @@
 	\end{equation}
 	Let $\sigma$ be sigmoidal in the following problems.
 	
-	\question Let $y \in \R^n$, and $(\theta, \phi) \in \R^2$. For $x \in \R^n$, define
+	\question Let $y \in \R^n$, and $\theta, \phi \in \R$. For $x \in \R^n$, define
 	\begin{equation}
 		\sigma_\lambda(x; \theta,\phi) = \sigma\left(\lambda\left(y^Tx + \theta\right) + \phi\right).
 	\end{equation}
@@ -29,12 +29,20 @@
 		\end{cases} \qquad \text{ as } \lambda \to\infty.
 	\end{equation}
 	\begin{proof}
-		If $y^Tx +\theta =0$, then $\sigma_\lambda(x;\phi,\theta) = \sigma(\phi)$ for all $\lambda$, and the result is clear. Otherwise, let $s = \sgn(y^Tx + \theta)$. Then
-		\begin{equation}
-			\label{eq:lambda_cond}
-			\lambda \ge \frac{T - s\phi}{|y^Tx +\theta|}
-		\end{equation}
-		implies that $\lambda\left(y^Tx + \theta\right) + \phi \ge T$ if $s = 1$, and $\lambda\left(y^Tx + \theta\right) + \phi \le -T$ if $s = -1$. Then (\ref{eq:lambda_cond}) implies that $\sigma_\lambda(x;\theta,\phi) = 1$ if $s=1$, and $\sigma_\lambda(x;\theta,\phi) = 0$ if $s = -1$. The result follows.
+		We use proof by cases.
+		\begin{enumerate}
+			\item If $y^Tx + \theta > 0$, then
+			\begin{equation}
+				\lambda \ge \frac{T - \phi}{y^Tx + \theta} \implies \lambda(y^Tx + \theta) + \phi \ge T \implies \sigma_\lambda(x;\theta,\phi) = 1,
+			\end{equation}
+			so $\sigma_\lambda(x;\theta, \phi) \to 1 = \gamma(x)$ as $\lambda \to\infty$.
+			\item If $y^Tx + \theta < 0$, then
+			\begin{equation}
+				\lambda \ge \frac{-T - \phi}{y^T x + \theta}\implies \lambda(y^Tx +\theta) + \phi \le -T \implies \sigma_\lambda(x;\theta,\phi) = 0,
+			\end{equation}
+			so $\sigma_\lambda(x;\theta,\phi) \to 0 = \gamma(x)$ as $\lambda \to\infty$.
+			\item If $y^Tx +\theta =0$, then $\sigma_\lambda(x;\phi,\theta) = \sigma(\phi)$ for all $\lambda$, so $\sigma_\lambda(x;\phi,\theta) \to \sigma(\phi) = \gamma(x)$ as $\lambda \to \infty$.
+		\end{enumerate}
 	\end{proof}
 	
 	\question
@@ -43,17 +51,35 @@
 	Let $y \in \R^n$, let $\zset = \left\{x\mid y^Tx + \theta = 0\right\}$, and let $\pset=\left\{x\mid y^Tx+\theta > 0\right\}$. If $\mu$ is a finite Borel measure on $[0,1]^n$ such that
 	\begin{equation}
 		\label{eq:mu_zero_cond}
-		\int_{[0,1]^n}\sigma_\lambda(x)\dee\mu(x) = 0 \qquad \text{for all } (\lambda, \theta, \phi)\in\R^3,
+		\int_{[0,1]^n}\sigma_\lambda(x)\dee\mu(x) = 0 \qquad \text{for all } \lambda, \theta, \phi\in\R,
 	\end{equation}
 	then
 	\begin{equation}
-		\sigma(\phi)\mu(\zset) + \mu(\pset) = 0\qquad \text{for all } (\lambda, \theta, \phi)\in\R^3.
+		\sigma(\phi)\mu(\zset) + \mu(\pset) = 0\qquad \text{for all } \lambda, \theta, \phi\in\R.
 	\end{equation}
 	\begin{proof}
-		Fix $(\theta,\phi)\in\R^2$. For any $\lambda \in \R$, the function $\sigma_\lambda(\,\cdot\,;\theta,\phi)$ is dominated by the constant function $C(x) = \max\limits_{t\in[-T,T]}|\sigma(t)|$. Since $\sigma$ is continuous, $\sigma_\lambda$ is continuous as well, so $\sigma_\lambda$ is integrable on $[0,1]^n$. By the previous problem, $\sigma_\lambda$ converges to $\gamma$ pointwise as $\lambda \to \infty$. Thus, the Dominated Convergence Theorem implies that
-		\begin{equation}
-			0=\lim_{\lambda\to\infty}\int_{[0,1]^n}\sigma_\lambda(x)\dee\mu(x) = \int_{[0,1]^n} \gamma(x)\dee\mu(x) = \sigma(\phi)\mu(\zset) + \mu(\pset).
-		\end{equation}
+		Fix $\theta,\phi\in\R$. For any $\lambda \in \R$, the function $\sigma_\lambda(\,\cdot\,;\theta,\phi)$ is clearly dominated on $[0,1]^n$ by the constant function $g(x) = \max\limits_{t\in[-T,T]}|\sigma(t)|$. The following statements are true.
+		\begin{enumerate}
+			\item Open subsets of $[0,1]^n$ (in the relative topology of $[0,1]^n$) are $\mu$-measurable by the definition of a Borel measure.
+			\item $g$ is constant, so it is continuous, meaning that $g^{-1}(U)$ is open for any open set $U$ (in the relative topology of $[0,1]^n$).
+			\item 1. and 2. imply that $g^{-1}(U)$ is $\mu$-measurable for any open set $U$ (in the relative topology of $[0,1]^n$).
+			\item 3. implies that $g$ is $\mu$-measurable.
+			\item $[0,1]^n$ is open in the relative topology on $[0,1]^n$, so it is $\mu$-measurable by 1.
+			\item $g$ is constant on the $\mu$-measurable set $[0,1]^n$, so $g$ is simple with respect to the measure $\mu$ by definition.
+			\item Simple functions are always integrable, so, by 6., $g$ is integrable with respect to $\mu$.
+			\item $\sigma$ is continuous, and $x\mapsto\lambda (y^Tx + \theta) + \phi$ is also continuous, so $\sigma_\lambda(\,\cdot\,;\theta,\phi)$, the composition, of the two, is also continuous.
+			\item By 8., $\sigma_\lambda(\,\cdot\,;\theta,\phi)$ is continuous on $[0,1]^n$, so $\sigma_\lambda^{-1}(U;\theta,\phi)$ is open for any open set $U$ (in the relative topology of $[0,1]^n$).
+			\item 1. and 9. imply that $\sigma_\lambda^{-1}(U;\theta,\phi)$ is open for any open set $U$ (in the relative topology of $[0,1]^n$).
+			\item 10. implies that $\sigma_\lambda(\,\cdot\,;\theta,\phi)$ is $\mu$-measurable.
+		\end{enumerate}
+		Let $\{\lambda_n\}$ be any sequence of real numbers such that $\lambda_n \to \infty$ as $n\to\infty$. Then $\sigma_{\lambda_n}(x;\theta,\phi) \to \gamma(x)$ as $n \to \infty$ for all $x \in [0,1]^n$ by the previous problem, and $\{\sigma_{\lambda_n}(\,\cdot\,;\theta,\phi)\}$ and $g$ satisfy the hypotheses of the Dominated Convergence Theorem, so
+		\begin{align}
+			0&=\lim_{n\to\infty}\int_{[0,1]^n}\sigma_{\lambda_n}(x;\theta,\phi)\dee\mu(x) \\
+			&= \int_{[0,1]^n} \gamma(x)\dee\mu(x) \\
+			&= \int_{[0,1]^n \setminus (\zset \cup \pset)} \gamma(x)\dee\mu(x) + \int_{\zset}\gamma(x)\dee\mu(x) + \int_{\pset}\gamma(x)\dee\mu(x)  \\
+			&= \int_{[0,1]^n\setminus(\zset\cup\pset)} 0\dee\mu(x) + \int_{\zset}\sigma(\phi)\dee\mu(x) + \int_{\pset}1\dee\mu(x) \\
+			&= \sigma(\phi)\mu(\zset) + \mu(\pset).
+		\end{align}
 	\end{proof}
 	
 	\question
@@ -63,7 +89,47 @@
 		\begin{equation}
 			F(h) = \int_{[0,1]^n}h\left(y^Tx\right)\dee\mu(x)
 		\end{equation}
-		First, let $h = \chi_{[\theta,\infty)}$ for some $\theta \in \R$.
+		First, let $h = \chi_{[a,\infty)}$ for some $a \in \R$. Choose $\theta = -a$, and $\phi = T$. Then $\sigma(\phi) = 1$, and
+		\begin{equation}
+			h(y^Tx) = 1 \iff y^Tx \ge a \iff y^Tx + \theta  \ge 0 \iff y^Tx \in \zset \cup \pset.
+		\end{equation}
+		If $y^Tx \notin \zset \cup \pset$, then $h(y^Tx) = \chi_{[a,\infty)}(y^Tx) = 0$, because characteristic functions can only be 0 or 1. Therefore, by the previous problem,
+		\begin{align}
+			F(h) &= \int_{[0,1]^n}h(y^Tx)\dee\mu(x) \\
+			&= \int_{\zset}1\dee \mu(x) + \int_{\pset} 1\dee\mu(x) \\
+			&= 1\cdot\mu(\zset) + \mu(\pset) = \sigma(\phi)\mu(\zset) + \mu(\pset) = 0.
+		\end{align}
+		Second, for $a,b\in \R$, the characteristic function $\chi_{[a,b)}$ can be written as $\chi_{[a,\infty)} - \chi_{[b,\infty)}$. Since $F$ is linear, it follows that $F\left(\chi_{[a,b)}\right) = 0$.
+	\end{proof}
+	
+	\question
+	\newcommand{\neural}{\mathcal{N}}
+	Let $\neural$ be the set of all functions $G \in C[0,1]$ of the form
+	\begin{equation}
+		G(x) = \sum_{j=1}^n \alpha_j\sigma(y_jx + \theta_j),
+	\end{equation}
+	for some $\alpha_j, y_j, \theta_j \in \R$. Then $\neural$ is dense in $C[0,1]$ in the uniform norm.
+	\begin{proof}
+		It is clear that $\neural$ is a subspace of $C[0,1]$. Then $\overline{\neural}$ is a closed subspace of $C[0,1]$.
+		
+		Suppose that $\neural$ is \textit{not} dense in $C[0,1]$. Then there exists some function $f \in C[0,1]$ such that $f \notin \overline{\neural}$. Define the linear functional $\mu_0$ on the subspace $\mathrm{span}\{\overline{\neural}, f\}$ by setting
+		\begin{equation}
+			\mu_0(G + af) = a.
+		\end{equation}
+		This is well-defined because every element $g \in \mathrm{span}\{\overline{\neural}, f\}$ can be written uniquely in the form $g = G + af$, where $G \in \neural$, and $a \in \R$. Indeed, if we had $G,G' \in \neural$, and $a,a' \in \R$ such that $G + af = G' + a'f$, then $G-G' = (a'-a)f$, and $a \ne a'$ would imply that $f \in \neural$, so $a = a'$, and $G = G'$.
+		
+		The functional $\mu_0$ is clearly linear because
+		\begin{equation}
+			\mu_0(r(G + af) + s(G' + a'f)) = \mu_0((rG + sG') + (sa + ra')f) = sa + ra' = s\mu_0(G+af) + r\mu_0(G'+a'f).
+		\end{equation}
+		Furthermore, $\mu_0(\neural) = \{0\}$ because
+		\begin{equation}
+			\mu_0(G) = \mu_0(G + 0f) = 0.
+		\end{equation}
+		Finally, $\mu_0$ is dominated by the sublinear functional $p =\frac{\lVert \cdot \rVert}{\lVert f \rVert}$ because
+		\begin{equation}
+			|\mu_0(G + af)| = |a| = \frac{\lVert af\rVert}{\lVert f\rVert} \le \frac{\lVert G+af\rVert + \lVert G \rVert}{\lVert f \rVert}
+		\end{equation}
 	\end{proof}
 	
 	\question
