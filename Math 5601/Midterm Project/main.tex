@@ -280,9 +280,12 @@
 		
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={$\solver$ using the fixed point method}, label=lst:be_fixed]{be_fixed.m}
 		
-		The two types of $\solver$ constructed by \verb*|be_newton| and \verb*|be_fixed| call the \verb*|newton| and \verb*|fixed| functions, which implement Newton's method and the fixed point method and were defined in Homework 1 and 2. For reference, they can be found in Listings \ref{lst:newton} and \ref{lst:fixed} (I modified them slightly for this project -- they no longer output the state at each iteration step, but now provide an option to log the final number of steps, which we will need later).
+		The two types of $\solver$ constructed by \verb*|be_newton| and \verb*|be_fixed| call the \verb*|newton| and \verb*|fixed| functions, which implement Newton's method and the fixed point method and were defined in Homework 1 and 2. For reference, they can be found in Listings \ref{lst:newton} and \ref{lst:fixed} (copied from \verb*|newton.m| and \verb*|fixed.m|. I modified them slightly for this project -- they no longer output the state at each iteration step, but now provide an option to log the final number of steps, which we will need later).
 		
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Newton's method}, label=lst:newton]{newton.m}
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={The fixed point method}, label=lst:fixed]{fixed.m}
+		
+		\questionpart 
+		
 	\end{alphaparts}
 \end{document}
