@@ -1,4 +1,4 @@
-function result = backward_euler(solver, y_a, a, b, h)
+function result = backward_euler(solver, g_a, a, b, h)
 
 % get as close to b as possible without going past on the last step
 num_steps = floor((b - a) / h);
