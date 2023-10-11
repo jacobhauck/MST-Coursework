@@ -272,9 +272,17 @@
 		\end{equation}
 		I define two solver functions, one that uses Newton's method, and one that uses the fixed point method. 
 		
-		In Listing \ref{lst:backward_euler} is the abstract backward Euler method implementation (copied from \verb*|backward_euler.m|). In Listing 
+		In Listing \ref{lst:backward_euler} is the abstract backward Euler method implementation (copied from \verb*|backward_euler.m|). In Listings \ref{lst:be_newton} and \ref{lst:be_fixed} (copied from \verb*|be_newton.m| and \verb*|be_fixed.m|) are functions that construct suitable $\solver$ functions that use Newton's method and the fixed point method to solve the equation $x = x_0 + hf(t,x)$ for $x$ by converting the equation into $\newf(x) = 0$ and $\newg(x) = x$, where $\newf$ and $\newg$ are the same as in Problem 6; note that we need to take $x_0 = y_j$ and $t = t_{j+1}$ so that $\newf(x) = 0$ and $\newg(x) = x$ are equivalent to $x = x_0 + hf(t,x)$ (see line 16 of Listing \ref{lst:backward_euler}).
+		
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Abstract backward Euler method}, label=lst:backward_euler]{backward_euler.m}
+		
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={$\solver$ using Newton's method}, label=lst:be_newton]{be_newton.m}
+		
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={$\solver$ using the fixed point method}, label=lst:be_fixed]{be_fixed.m}
+		
+		The two types of $\solver$ constructed by \verb*|be_newton| and \verb*|be_fixed| call the \verb*|newton| and \verb*|fixed| functions, which implement Newton's method and the fixed point method and were defined in Homework 1 and 2. For reference, they can be found in Listings \ref{lst:newton} and \ref{lst:fixed} (I modified them slightly for this project -- they no longer output the state at each iteration step, but now provide an option to log the final number of steps, which we will need later).
+		
+		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Newton's method}, label=lst:newton]{newton.m}
+		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={The fixed point method}, label=lst:fixed]{fixed.m}
 	\end{alphaparts}
 \end{document}
