@@ -3,8 +3,8 @@ function result = backward_euler(solver, g_a, a, b, h)
 % get as close to b as possible without going past on the last step
 num_steps = floor((b - a) / h);
 
-y = zeros(1, num_steps);
 t = zeros(1, num_steps);
+y = zeros(1, num_steps);
 
 t(1) = a;
 y(1) = y_a;
@@ -16,4 +16,4 @@ for j = 2:num_steps
     y(j) = solver(y(j-1), t(j), h);
 end
 
-result = y;
+result = [t, y];
