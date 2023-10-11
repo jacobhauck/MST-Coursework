@@ -270,7 +270,11 @@
 		\begin{equation}
 			\solver(x_0, t, h) = \text{solution $x$ of } \big[x = x_0 + hf(t,x)\big].
 		\end{equation}
-		I define two solver functions, one that uses Newton's method, and one that uses the fixed point method. In Listing \ref{lst:backward_euler} is the abstract backward Euler method implementation (copied from \verb*|backward_euler.m|).
+		I define two solver functions, one that uses Newton's method, and one that uses the fixed point method. 
+		
+		In Listing \ref{lst:backward_euler} is the abstract backward Euler method implementation (copied from \verb*|backward_euler.m|). In Listing 
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Abstract backward Euler method}, label=lst:backward_euler]{backward_euler.m}
+		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={$\solver$ using Newton's method}, label=lst:be_newton]{be_newton.m}
+		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={$\solver$ using the fixed point method}, label=lst:be_fixed]{be_fixed.m}
 	\end{alphaparts}
 \end{document}
