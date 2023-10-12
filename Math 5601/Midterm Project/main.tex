@@ -266,6 +266,11 @@
 	\end{alphaparts}
 	
 	\question
+	In this problem, we attempt to use the backward Euler method to solve the following special case of (\ref{eq:ivp_ode}, \ref{eq:ivp_ic}):
+	\begin{equation}
+		\label{eq:p6:ode}
+		y' = e^{2t}y^2, \qquad y(0) = 0.1, \qquad 0\le t\le 1.
+	\end{equation}
 	\begin{alphaparts}
 		\questionpart
 		\newcommand{\solver}{\mathrm{solver}}
@@ -283,13 +288,13 @@
 		
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={$\solver$ using the fixed point method}, label=lst:be_fixed]{be_fixed.m}
 		
-		The two types of $\solver$ constructed by \verb*|be_newton| and \verb*|be_fixed| call the \verb*|newton| and \verb*|fixed| functions, which implement Newton's method and the fixed point method and were defined in Homework 1 and 2. For reference, they can be found in Listings \ref{lst:newton} and \ref{lst:fixed} (copied from \verb*|newton.m| and \verb*|fixed.m|. I modified them slightly for this project -- they no longer output the state at each iteration step, but now provide an option to log the final number of steps, which we will need later).
+		The two types of $\solver$ constructed by \verb*|be_newton| and \verb*|be_fixed| call the \verb*|newton| and \verb*|fixed| functions, which implement Newton's method and the fixed point method and were defined in Homework 1 and 2. For reference, they can be found in Listings \ref{lst:newton} and \ref{lst:fixed} (copied from \verb*|newton.m| and \verb*|fixed.m|. I modified them slightly for this project -- they no longer output the state at each iteration step, but now provide an option to log the total number of steps, which we will need later).
 		
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Newton's method}, label=lst:newton]{newton.m}
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={The fixed point method}, label=lst:fixed]{fixed.m}
 		
 		\questionpart 
-		In Table \ref{table:p6:b} (summarized from \verb*|p6b_output.txt|) are the numerical values of $y(1)$ (that is, $y_J$) output by the backward Euler method using Newton's method and the fixed point method for the nonlinear equation, with step size $h \in \left\{\frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{32}, \frac{1}{64}, \frac{1}{128}\right\}$.
+		In Table \ref{table:p6:b} (summarized from \verb*|p6_output.txt|) are the numerical values of $y(1)$ (that is, $y_J$) output by the backward Euler method using Newton's method and the fixed point method for the nonlinear equation, with step size $h \in \left\{\frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{32}, \frac{1}{64}, \frac{1}{128}\right\}$.
 		\begin{table}[H]
 			\centering
 			\begin{tabular}{@{}lll@{}}
@@ -311,7 +316,11 @@
 		\end{table}
 		
 		\questionpart
-		In Table \ref{table:p6:c}
+		Before performing the numerical approximation, we 
+		
+		In Table \ref{table:p6:c} (summarized from \verb*|p6_output.txt|) are the errors between $y(1)$ and the numerical approximation $y_J$ output by the backward Euler method using Newton's method and the fixed point method for the nonlinear equation, with step size $h \in \left\{\frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{32}, \frac{1}{64}, \frac{1}{128}\right\}$.
+		
+		We see that the error decreases by a factor of roughly $2$ each time $h$ decreases by a factor of $2$. This is consistent with backward Euler method's linear convergence: $|y_J - y(1)| = \bigoh(h)$.
 		\begin{table}[H]
 			\centering
 			\begin{tabular}{@{}lll@{}}
@@ -320,16 +329,41 @@
 				\cmidrule{2-3}
 				$h$ & Fixed point method & Newton's method \\
 				\midrule
-				$\frac{1}{4}$ & 0.133040559656 & 0.133042542007 \\[0.4em]
-				$\frac{1}{8}$ & 0.140084791265 & 0.140087879975 \\[0.4em]
-				$\frac{1}{16}$ & 0.143533541626 & 0.143537206437 \\[0.4em]
-				$\frac{1}{32}$ & 0.145236447788 & 0.145241162009 \\[0.4em]
-				$\frac{1}{64}$ & 0.146068376104 & 0.146089330750 \\[0.4em]
-				$\frac{1}{128}$ & 0.146465061447 & 0.146516760703 \\[0.4em]
+				$\frac{1}{4}$ & 1.390002e-02 & 1.389804e-02 \\[0.4em]
+				$\frac{1}{8}$ & 6.855789e-03 & 6.852701e-03 \\[0.4em]
+				$\frac{1}{16}$ & 3.407039e-03 & 3.403374e-03 \\[0.4em]
+				$\frac{1}{32}$ & 1.704133e-03 & 1.699419e-03 \\[0.4em]
+				$\frac{1}{64}$ & 8.722045e-04 & 8.512499e-04 \\[0.4em]
+				$\frac{1}{128}$ & 4.755192e-04 & 4.238199e-04 \\[0.4em]
 				\bottomrule
 			\end{tabular}
-			\caption{Backward Euler $y_J$ values}
+			\caption{Backward Euler errors at $t = b = 1$}
 			\label{table:p6:c}
 		\end{table}
-	\end{alphaparts}
+		
+		\questionpart 
+		We can use the \verb*|log_iterations| option of our \verb*|newton| and \verb*|fixed| functions to log the number of iterations $n_j$ used by the solvers on the $j$th step of the time iteration. The final number of iterations $n_J$ for $h \in \left\{\frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{32}, \frac{1}{64}, \frac{1}{128}\right\}$ are given in Table \ref{table:p6:d}.
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{@{}lll@{}}
+				\toprule
+				& \multicolumn{2}{c}{$n_J$} \\
+				\cmidrule{2-3}
+				$h$ & Fixed point method & Newton's method \\
+				\midrule 
+				$\frac{1}{4}$ 
+				$\frac{1}{8}$ 
+				$\frac{1}{16}$
+				$\frac{1}{32}$ 
+				$\frac{1}{64}$
+				$\frac{1}{128}$ 
+				\bottomrule
+			\end{tabular}
+			\caption{Number of nonlinear solver iterations on last time step}
+			\label{table:p6:d}
+		\end{table}
+		\end{alphaparts}
+		Looking at $n_J$ when $h = \frac{1}{4}$ and $h = \frac{1}{8}$, we see that the fixed point method requires more iterations to converge than the Newton's method. With a small step size, the difference between $y_j$ and $y_{j+1}$ is larger than with a small, making the initial guess to these methods not as good. Therefore, both methods will require several steps to converge. Over the course of many steps, Newton's method should converge faster than the fixed point method (to the same level of error) because it is a second order method, and the fixed point method is only first order.
+		
+		\question 
 \end{document}
