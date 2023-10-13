@@ -268,7 +268,7 @@
 	\question
 	In this problem, we attempt to use the backward Euler method to solve the following special case of (\ref{eq:ivp_ode}, \ref{eq:ivp_ic}):
 	\begin{equation}
-		\label{eq:p6:ode}
+		\label{eq:p8:ode}
 		y' = e^{2t}y^2, \qquad y(0) = 0.1, \qquad 0\le t\le 1.
 	\end{equation}
 	\begin{alphaparts}
@@ -294,31 +294,39 @@
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={The fixed point method}, label=lst:fixed]{fixed.m}
 		
 		\questionpart 
-		In Table \ref{table:p6:b} (summarized from \verb*|p6_output.txt|) are the numerical values of $y(1)$ (that is, $y_J$) output by the backward Euler method using Newton's method and the fixed point method for the nonlinear equation, with step size $h \in \left\{\frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{32}, \frac{1}{64}, \frac{1}{128}\right\}$.
+		In Table \ref{table:p8:b} (summarized from \verb*|p8_output.txt|) are the numerical values of $y(1)$ (that is, $y_J$) output by the backward Euler method using Newton's method and the fixed point method for the nonlinear equation, with step size $h \in \left\{\frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{32}, \frac{1}{64}, \frac{1}{128}\right\}$.
 		\begin{table}[H]
 			\centering
 			\begin{tabular}{@{}lll@{}}
 				\toprule
 				& \multicolumn{2}{c}{$y_J$} \\
 				\cmidrule{2-3}
-				$h$ & Fixed point method & Newton's method \\
+				$h$ & Fixed & Newton \\
 				\midrule
-				$\frac{1}{4}$ & 0.133040559656 & 0.133042542007 \\[0.4em]
-				$\frac{1}{8}$ & 0.140084791265 & 0.140087879975 \\[0.4em]
-				$\frac{1}{16}$ & 0.143533541626 & 0.143537206437 \\[0.4em]
-				$\frac{1}{32}$ & 0.145236447788 & 0.145241162009 \\[0.4em]
-				$\frac{1}{64}$ & 0.146068376104 & 0.146089330750 \\[0.4em]
-				$\frac{1}{128}$ & 0.146465061447 & 0.146516760703 \\[0.4em]
+				$\frac{1}{4}$ & 0.235418015201 & 0.235440531032 \\[0.4em]
+				$\frac{1}{8}$ & 0.165331430895 & 0.165335563041 \\[0.4em]
+				$\frac{1}{16}$ & 0.154566102258 & 0.154571002483 \\[0.4em]
+				$\frac{1}{32}$ & 0.150463955586 & 0.150469141443 \\[0.4em]
+				$\frac{1}{64}$ & 0.148618358067 & 0.148639382119 \\[0.4em]
+				$\frac{1}{128}$ & 0.147724451062 & 0.147777319070 \\[0.4em]
 				\bottomrule
 			\end{tabular}
 			\caption{Backward Euler $y_J$ values}
-			\label{table:p6:b}
+			\label{table:p8:b}
 		\end{table}
 		
 		\questionpart
-		Before performing the numerical approximation, we 
+		We can solve (\ref{eq:p8:ode}) directly by separation of variables.
+		\begin{equation}
+			\frac{y'}{y^2} = e^{2t} \implies -y^{-1} = \frac{1}{2}e^{2t} + C,
+		\end{equation}
+		where $C$ is a constant. Since $y(0) = .1$, it follows that $-10 = \frac{1}{2} + C$, so $C = -\frac{21}{2}$. Therefore,
+		\begin{equation}
+			y(t) = \frac{2}{21- e^{2t}}
+		\end{equation}
+		is the solution of (\ref{eq:p8:ode}).
 		
-		In Table \ref{table:p6:c} (summarized from \verb*|p6_output.txt|) are the errors between $y(1)$ and the numerical approximation $y_J$ output by the backward Euler method using Newton's method and the fixed point method for the nonlinear equation, with step size $h \in \left\{\frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{32}, \frac{1}{64}, \frac{1}{128}\right\}$.
+		In Table \ref{table:p8:c} (summarized from \verb*|p8_output.txt|) are the errors between $y(1)$ and the numerical approximation $y_J$ output by the backward Euler method using Newton's method and the fixed point method for the nonlinear equation, with step size $h \in \left\{\frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{32}, \frac{1}{64}, \frac{1}{128}\right\}$.
 		
 		We see that the error decreases by a factor of roughly $2$ each time $h$ decreases by a factor of $2$. This is consistent with backward Euler method's linear convergence: $|y_J - y(1)| = \bigoh(h)$.
 		\begin{table}[H]
@@ -327,43 +335,86 @@
 				\toprule
 				& \multicolumn{2}{c}{$|y(1) - y_J|$} \\
 				\cmidrule{2-3}
-				$h$ & Fixed point method & Newton's method \\
+				$h$ & Fixed & Newton \\
 				\midrule
-				$\frac{1}{4}$ & 1.390002e-02 & 1.389804e-02 \\[0.4em]
-				$\frac{1}{8}$ & 6.855789e-03 & 6.852701e-03 \\[0.4em]
-				$\frac{1}{16}$ & 3.407039e-03 & 3.403374e-03 \\[0.4em]
-				$\frac{1}{32}$ & 1.704133e-03 & 1.699419e-03 \\[0.4em]
-				$\frac{1}{64}$ & 8.722045e-04 & 8.512499e-04 \\[0.4em]
-				$\frac{1}{128}$ & 4.755192e-04 & 4.238199e-04 \\[0.4em]
+				$\frac{1}{4}$ & 8.847743e-02 & 8.849995e-02 \\[0.4em]
+				$\frac{1}{8}$ & 1.839085e-02 & 1.839498e-02 \\[0.4em]
+				$\frac{1}{16}$ & 7.625522e-03 & 7.630422e-03 \\[0.4em]
+				$\frac{1}{32}$ & 3.523375e-03 & 3.528561e-03 \\[0.4em]
+				$\frac{1}{64}$ & 1.677777e-03 & 1.698801e-03 \\[0.4em]
+				$\frac{1}{128}$ & 7.838704e-04 & 8.367384e-04\\[0.4em]
 				\bottomrule
 			\end{tabular}
 			\caption{Backward Euler errors at $t = b = 1$}
-			\label{table:p6:c}
+			\label{table:p8:c}
 		\end{table}
 		
 		\questionpart 
-		We can use the \verb*|log_iterations| option of our \verb*|newton| and \verb*|fixed| functions to log the number of iterations $n_j$ used by the solvers on the $j$th step of the time iteration. The final number of iterations $n_J$ for $h \in \left\{\frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{32}, \frac{1}{64}, \frac{1}{128}\right\}$ are given in Table \ref{table:p6:d}.
+		We can use the \verb*|log_iterations| option of our \verb*|newton| and \verb*|fixed| functions to log the number of iterations $n_j$ used by the solvers on the $j$th step of the time iteration. The final number of iterations $n_J$ for $h \in \left\{\frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{32}, \frac{1}{64}, \frac{1}{128}\right\}$ are given in Table \ref{table:p8:d} (summarized from \verb*|p8_output.txt|).
 		\begin{table}[H]
 			\centering
 			\begin{tabular}{@{}lll@{}}
 				\toprule
 				& \multicolumn{2}{c}{$n_J$} \\
 				\cmidrule{2-3}
-				$h$ & Fixed point method & Newton's method \\
+				$h$ & Fixed & Newton \\
 				\midrule 
-				$\frac{1}{4}$ 
-				$\frac{1}{8}$ 
-				$\frac{1}{16}$
-				$\frac{1}{32}$ 
-				$\frac{1}{64}$
-				$\frac{1}{128}$ 
+				$\frac{1}{4}$ & 61 & 5 \\[0.4em]
+				$\frac{1}{8}$ & 9 & 2 \\[0.4em]
+				$\frac{1}{16}$ & 5 & 2 \\[0.4em]
+				$\frac{1}{32}$ & 4 & 2 \\[0.4em]
+				$\frac{1}{64}$ & 3 & 1 \\[0.4em]
+				$\frac{1}{128}$ & 2 & 1 \\[0.4em]
 				\bottomrule
 			\end{tabular}
 			\caption{Number of nonlinear solver iterations on last time step}
-			\label{table:p6:d}
+			\label{table:p8:d}
 		\end{table}
+		Looking at $n_J$ when $h = \frac{1}{4}$ and $h = \frac{1}{8}$, we see that the fixed point method requires more iterations to converge than the Newton's method. With a small step size, the difference between $y_j$ and $y_{j+1}$ is larger than with a small, making the initial guess to these methods not as good. Therefore, both methods will require several steps to converge. Over the course of many steps, Newton's method should converge faster than the fixed point method because it is a second order method, and the fixed point method is only first order.
+		
+		\questionpart Referring to Table \ref{table:p8:d} once again, we see that the number of iterations used by the nonlinear solvers on the last step ($j=J$) decreases to just a handful very quickly as $h$ decreases. Recall the estimates for the error of the fixed point method
+		\begin{equation}
+			|x_k - z| \lesssim \tilde{L}^k |x_0 - z|,
+		\end{equation}
+		where $\tilde{L}$ is the Lipchitz constant for $\newg$, and for Newton's method
+		\begin{equation}
+			|x_k - z| \lesssim \left(\frac{M}{2m}|x_0 - z|\right)^{2^k},
+		\end{equation}
+		where $M$ and $m$ are upper and lower bounds on $\newf'$ and $\newf''$. From these estimates, we see that the error of the fixed point method and Newton's method depends on how close the initial value $x_0$ is to the root $z$. In particular, if $x_0$ is closer to $z$, then the bound goes below a fixed tolerance $\varepsilon$ in fewer steps, suggesting that the methods both use fewer steps when their initial point is closer to the target value $z$.
+		
+		On the last step of the iteration, we choose $x_0 = y_{J-1}$ as the initial point of the iteration to solve for $z = y_J$. Since $|y_{J-1} - y(1-h)| = \bigoh(h)$ by the first order convergence of the backward Euler method, and since $y(1-h) \to y(1)$ as $h\to 0$ by the continuity of $y$, it follows that $y_{J-1} \to y(1)$ as $h \to 0$. On the other hand, the first order convergence of the backward Euler method also implies that $|y_J - y(1)| = \bigoh(h)$. Therefore, $y_{J-1} \to y_J$ as $h \to 0$. That is, as we choose a smaller step size, our initial guess $y_{J-1}$ approaches the root $y_J$. By the discussion of the estimates above, this means that the nonlinear solvers should use fewer iterations on the last time step as $h \to 0$, which is exactly what we observe numerically.
 		\end{alphaparts}
-		Looking at $n_J$ when $h = \frac{1}{4}$ and $h = \frac{1}{8}$, we see that the fixed point method requires more iterations to converge than the Newton's method. With a small step size, the difference between $y_j$ and $y_{j+1}$ is larger than with a small, making the initial guess to these methods not as good. Therefore, both methods will require several steps to converge. Over the course of many steps, Newton's method should converge faster than the fixed point method (to the same level of error) because it is a second order method, and the fixed point method is only first order.
 		
 		\question 
+		\begin{alphaparts}
+			\questionpart We consider using the backward Euler method to solve
+			\begin{equation}
+				\label{eq:p9:c:ode}
+				y' = e^{2t}y^2, \qquad y(0) = 0.2, \qquad 0\le t\le 1.
+			\end{equation}
+			Repeating the separation of variables in Problem 8 (c), we can find that
+			\begin{equation}
+				y(t) = \frac{2}{11 - e^{2t}}.
+			\end{equation}
+			Running the same experiments from Problem 8 (checking the error at $t = 1$ and the number of fixed point and Newton iterations for various values of $h$), I notice that the nonlinear solvers fail to converge for smaller step sizes ($\frac{1}{4}$, $\frac{1}{8}$, and $\frac{1}{16}$), and generally the error between $y_J$ and $y(1)$ is higher than it was in Problem 8, despite all other parameters being equal. In Figure
+			
+			\begin{figure}[H]
+				
+			\end{figure}
+			
+			\questionpart We consider using the backward Euler method to solve
+			\begin{equation}
+				\label{eq:p9:d:ode}
+				y' = e^{4t}y^2, \qquad y(0) = 0.1, \qquad 0\le t\le 1.
+			\end{equation}
+			Repeating the separation of variables in Problem 8 (c), we can find that
+			\begin{equation}
+				y(t) = \frac{4}{41 - e^{4t}}.
+			\end{equation}
+			Noting that $y(t) \to\infty$ as $t\to \frac{\log(41)}{4} \approx 0.9284 < 1$, we see that the solution $y$ of (\ref{eq:p9:d:ode}) actually only exists on an interval $\left[0, \frac{\log(41)}{4}\right)$, so when using the backward Euler method to solve on $[0,1]$, we expect something bad (or at least unpredictable) to happen near $t = 0.9284$.
+			
+			Indeed, running the numerical simulation, the numerical values start off approximating $y$ well, but then fail around $t = 0.9284$. Smaller values of $h$ allow the approximation to stay good for longer, but none of them make it past $t = 0.9284$. 
+			
+			Using the fixed point method, the numerical solution blows up near the singularity. Interestingly, however, when using Newton's method and a sufficiently small step size $h$, the numerical solution doesn't blow up but jumps down near $t=0.9284$ and afterwards ``recovers'' and starts approximating a solution of the ODE again (albeit with a different initial condition). Newton's method fails to converge only on one step of the iteration when this happens. In the blow-up cases, the nonlinear solvers fail to converge on every step after $t=0.9284$.
+		\end{alphaparts}
 \end{document}
