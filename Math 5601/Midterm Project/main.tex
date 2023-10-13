@@ -70,7 +70,7 @@
 	\begin{equation}
 		|y_{j+1} - y(t_{j+1})| = \bigoh(h^3).
 	\end{equation}
-	That is, the \textit{local truncation error} of the trapezoidal scheme is of order 3, which means that the accuracy of the method as a whole is of order 2.
+	That is, the \textit{local truncation error} of the trapezoidal scheme is of order 3, which means that the \textit{global truncation error} is of order 2.
 	
 	\question 
 	Consider the Taylor expansion of $y$ about $t_{j+1}$ at the points $t_{j-1}$, $t_j$ and $t_{j+1}$:
@@ -110,7 +110,7 @@
 	\begin{equation}
 		|y_{j+1} - y(t_{j+1})| = \bigoh(h^3).
 	\end{equation}
-	That is, the \textit{local trunction error} of the two-step backward differentiation scheme is of order 3, and the accuracy of the method as a whole is of order 2.
+	That is, the \textit{local trunction error} of the two-step backward differentiation scheme is of order 3, and the \textit{global truncation error} is of order 2.
 	
 	\question
 	Consider the Taylor expansions of $y(t_{j+1})$, $y(t_j)$, $y(t_{j-1})$, and $y(t_{j-2})$ about $t_{j+1}$:
@@ -150,30 +150,30 @@
 	\end{align}
 	then by (\ref{p3:eq:three_step_bdf_est}),
 	\begin{equation}
-		\frac{\alpha_1y(t_{j+1}) + +\alpha_2y(t_j) +\alpha_3y(t_{j-1}) + \alpha_4y(t_{j-2})}{h} = f(t_{j+1},y(t_{j+1})) + \bigoh(h^3).
+		\frac{\alpha_1y(t_{j+1}) +\alpha_2y(t_j) +\alpha_3y(t_{j-1}) + \alpha_4y(t_{j-2})}{h} = f(t_{j+1},y(t_{j+1})) + \bigoh(h^3).
 	\end{equation}
 	If we had $y_{j-2} = y(t_{j-2})$, $y_{j-1} = y(t_{j-1})$, and $y_j = y(t_j)$, and we computed $y_{j+1}$ as the solution of
 	\begin{equation}
-		\frac{\alpha_1y(t_{j+1}) + +\alpha_2y(t_j) +\alpha_3y(t_{j-1}) + \alpha_4y(t_{j-2})}{h} = f(t_{j+1}, y_{j+1}),
+		\frac{\alpha_1y_{j+1} + \alpha_2y_j +\alpha_3y_{j-1} + \alpha_4y_{j-2}}{h} = f(t_{j+1}, y_{j+1}),
 	\end{equation}
-	then $|y_{j+1} - y(t_{j+1})$ would satisfy
+	then $|y_{j+1} - y(t_{j+1})|$ would satisfy
 	\begin{equation}
-		|y_{j+1} - y(t_{j+1})| = |f(t_{j+1}, y_{j+1}) - f(t_{j+1}, y(t_{j+1}))| + \bigoh(h^3).
+		|y_{j+1} - y(t_{j+1})| = \frac{h}{\alpha_1}\cdot|f(t_{j+1}, y_{j+1}) - f(t_{j+1}, y(t_{j+1}))| + \bigoh(h^4).
 	\end{equation}
 	Using the Lipschitz property of $f$, we obtain
 	\begin{equation}
-		|y_{j+1} - y(t_{j+1})|(1-hL) \le \bigoh(h^4).
+		|y_{j+1} - y(t_{j+1})|\cdot\left(1-\frac{hL}{\alpha_1}\right) \le \bigoh(h^4).
 	\end{equation}
-	As $h\to 0$, the quantity $1-hL \to 1$; therefore,
+	As $h\to 0$, the quantity $1-\frac{hL}{\alpha_1} \to 1$; therefore,
 	\begin{equation}
-		|y_{j+1} - y(t_{j+1})| = \bigoh(h^3).
+		|y_{j+1} - y(t_{j+1})| = \bigoh(h^4).
 	\end{equation}
 	That is, the implicit scheme
 	\begin{equation}
 		\label{p3:eq:3_step_bdf_scheme}
-		\frac{\alpha_1y(t_{j+1}) + +\alpha_2y(t_j) +\alpha_3y(t_{j-1}) + \alpha_4y(t_{j-2})}{h} = f(t_{j+1}, y_{j+1})
+		\frac{\alpha_1y(t_{j+1}) + \alpha_2y(t_j) +\alpha_3y(t_{j-1}) + \alpha_4y(t_{j-2})}{h} = f(t_{j+1}, y_{j+1})
 	\end{equation}
-	with $\alpha_1 = \frac{11}{6}$, $\alpha_2 = -\frac{18}{6}$, $\alpha_3 = \frac{9}{6}$, and $\alpha_4 = -\frac{2}{6}$ has 3rd-order accuracy. Since we had to choose these values of $\alpha$ to cancel higher-order terms, these must be the coefficients in the third-order backward differentiation scheme.
+	with $\alpha_1 = \frac{11}{6}$, $\alpha_2 = -\frac{18}{6}$, $\alpha_3 = \frac{9}{6}$, and $\alpha_4 = -\frac{2}{6}$ has 3rd-order global accuracy and 4th order local accuracy. Since we had to choose these values of $\alpha$ to cancel higher-order terms, these must be the coefficients in the third-order backward differentiation scheme.
 	\\
 	\hrule
 	
@@ -396,10 +396,13 @@
 			\begin{equation}
 				y(t) = \frac{2}{11 - e^{2t}}.
 			\end{equation}
-			Running the same experiments from Problem 8 (checking the error at $t = 1$ and the number of fixed point and Newton iterations for various values of $h$), I notice that the nonlinear solvers fail to converge for smaller step sizes ($\frac{1}{4}$, $\frac{1}{8}$, and $\frac{1}{16}$), and generally the error between $y_J$ and $y(1)$ is higher than it was in Problem 8, despite all other parameters being equal. In Figure
+			Running the same experiments from Problem 8 (checking the error at $t = 1$ and the number of fixed point and Newton iterations for various values of $h$), I notice that the nonlinear solvers fail to converge for smaller step sizes ($\frac{1}{4}$, $\frac{1}{8}$, and $\frac{1}{16}$), and generally the error between $y_J$ and $y(1)$ is higher than it was in Problem 8, despite all other parameters being equal (see \verb*|p9_output.txt| for details). In Figure \ref{fig:p9c}, we see that the numerical solution (blue, $h=\frac{1}{128}$) seems to be close to the true solution (orange), but there is still a noticeable error at $t=1$.
 			
 			\begin{figure}[H]
-				
+				\centering
+				\includegraphics[width={\linewidth}]{plot_p9c.png}
+				\caption{The solution of (\ref{eq:p9:c:ode}) (orange) and the numerical solution with $h=\frac{1}{128}$ (blue)}
+				\label{fig:p9c}
 			\end{figure}
 			
 			\questionpart We consider using the backward Euler method to solve
@@ -413,8 +416,30 @@
 			\end{equation}
 			Noting that $y(t) \to\infty$ as $t\to \frac{\log(41)}{4} \approx 0.9284 < 1$, we see that the solution $y$ of (\ref{eq:p9:d:ode}) actually only exists on an interval $\left[0, \frac{\log(41)}{4}\right)$, so when using the backward Euler method to solve on $[0,1]$, we expect something bad (or at least unpredictable) to happen near $t = 0.9284$.
 			
-			Indeed, running the numerical simulation, the numerical values start off approximating $y$ well, but then fail around $t = 0.9284$. Smaller values of $h$ allow the approximation to stay good for longer, but none of them make it past $t = 0.9284$. 
+			Indeed, running the numerical simulation, the numerical values start off approximating $y$ well, but then fail around $t = 0.9284$. Smaller values of $h$ allow the approximation to stay good for longer, but none of them make it past $t = 0.9284$. In Figure \ref{fig:p9d_h128} we can see the numerical solution with $h=\frac{1}{128}$ using Newton's method as the nonlinear solver. In Figure \ref{fig:p9d_h1000}, we can see that the numerical solution stays faithful a little longer when $h = \frac{1}{1000}$.
 			
-			Using the fixed point method, the numerical solution blows up near the singularity. Interestingly, however, when using Newton's method and a sufficiently small step size $h$, the numerical solution doesn't blow up but jumps down near $t=0.9284$ and afterwards ``recovers'' and starts approximating a solution of the ODE again (albeit with a different initial condition). Newton's method fails to converge only on one step of the iteration when this happens. In the blow-up cases, the nonlinear solvers fail to converge on every step after $t=0.9284$.
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=\linewidth]{plot_p9d_h128.png}
+				\caption{The solution of (\ref{eq:p9:d:ode}) (orange) and the numerical solution with $h=\frac{1}{128}$ (blue), using Newton's method as the nonlinear solver.}
+				\label{fig:p9d_h128}
+			\end{figure}
+			
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=\linewidth]{plot_p9d_h1000.png}
+				\caption{The solution of (\ref{eq:p9:d:ode}) (orange) and the numerical solution with $h=\frac{1}{1000}$ (blue), using Newton's method as the nonlinear solver.}
+				\label{fig:p9d_h1000}
+			\end{figure}
+			
+			Using the fixed point method, the numerical solution blows up near the singularity (see Figure \ref{fig:p9d_fixed}). Interestingly, however, when using Newton's method and a sufficiently small step size $h$, the numerical solution doesn't blow up but jumps down near $t=0.9284$ and afterwards ``recovers'' and starts approximating a solution of the ODE again (albeit with a different initial condition). Newton's method fails to converge only on one step of the iteration when this happens. In the blow-up cases, the nonlinear solvers fail to converge on every step after $t=0.9284$ (see \verb*|p9_output.txt| for details).
+			
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=\linewidth]{plot_p9d_fixed.png}
+				\caption{The solution of (\ref{eq:p9:d:ode}) (orange) and the numerical solution with $h=\frac{1}{128}$ (blue), using the \textit{fixed point} method as the nonlinear solver. The numerical solution blows up to infinity near $t=0.9284$, so its graph is cut off on the step where it blew up.}
+				\label{fig:p9d_fixed}
+			\end{figure}
+			
 		\end{alphaparts}
 \end{document}
