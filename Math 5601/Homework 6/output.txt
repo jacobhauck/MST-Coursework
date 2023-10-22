@@ -1,0 +1,24 @@
+>> f = @(x) cos(pi / 4 * x) ./ (sin(pi / 4 * x) .^ 2);
+>> a = 1;
+>> b = 2;
+>> mp_nodes = [(a + b) / 2];
+>> mp_weights = [b - a];
+>> open2_nodes = [(2*a+b)/3, (a+2*b)/3];
+>> open2_weights = [(b - a)/2, (b - a)/2];
+>> simpson_nodes = [a, (a + b) / 2, b];
+>> simpson_weights = [(b - a) / 6, 2 * (b - a) / 3, (b - a) / 6];
+>> part_d_nodes = [a, (2 * a + b) / 3, (a + 2 * b) / 3, b];
+>> part_d_weights = [(b - a) / 8, 3 * (b - a) / 8, 3 * (b - a) / 8, (b - a) / 8];
+>> mp_approximation = quad(f, mp_nodes, mp_weights);
+>> open2_approximation = quad(f, open2_nodes, open2_weights);
+>> simpson_approximation = quad(f, simpson_nodes, simpson_weights);
+>> part_d_approximation = quad(f, part_d_nodes, part_d_weights);
+>> approximations = [mp_approximation, open2_approximation, simpson_approximation, part_d_approximation];
+>> names = ["Midpoint", "Two-Point Open", "Simpson's", "Part (d)"];
+>> for i = 1:4
+  fprintf('%s Rule. Value = %.04e, Actual = %.04e, Error = %.04e\n', names(i), approximations(i), actual, abs(approximations(i) - actual));
+end
+Midpoint Rule. Value = 4.4834e-01, Actual = 5.2739e-01, Error = 7.9052e-02
+Two-Point Open Rule. Value = 4.7203e-01, Actual = 5.2739e-01, Error = 5.5359e-02
+Simpson's Rule. Value = 5.3460e-01, Actual = 5.2739e-01, Error = 7.2035e-03
+Part (d) Rule. Value = 5.3080e-01, Actual = 5.2739e-01, Error = 3.4091e-03
