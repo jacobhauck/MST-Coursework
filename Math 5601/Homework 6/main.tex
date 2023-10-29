@@ -1,0 +1,80 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\usepackage{float}
+\usepackage{booktabs}
+
+\newcommand{\hwnum}{6}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question 
+	We already know the nodes $x_0 = \frac{2a+ b}{3}$ and $x_1 = \frac{a+2b}{3}$. To compute the weights $\alpha_0$ and $\alpha_1$ in the two-point open Newton-Cotes formula, we just compute the following integrals:
+	\begin{equation}
+		\alpha_0 = \int_a^b L_0(x)\dee x, \qquad \alpha_1 = \int_a^b L_1(x)\dee x,
+	\end{equation}
+	where
+	\begin{equation}
+		L_k(x) = \prod_{i=0, i\ne k}^1 \frac{x-x_i}{x_k - x_i}, \qquad k\in\{0,1\}
+	\end{equation}
+	from the definition of Lagrange polynomials. Then $L_0(x) = \frac{x-x_1}{x_0-x_1}$, and $L_1(x) = \frac{x-x_0}{x_1-x_0}$. Hence
+	\begin{align}
+		\alpha_0 &= \int_a^b \frac{x-x_1}{x_0-x_1}\dee x = \frac{1}{2(x_0-x_1)}(x-x_1)^2\big\vert_a^b\\
+		&= -\frac{3}{2(b-a)}\left[\frac{(b-a)^2}{9} - \frac{4(b-a)^2}{9}\right] \\
+		&= \frac{b-a}{2},
+	\end{align}
+	and
+	\begin{align}
+		\alpha_1 &= \int_a^b \frac{x-x_0}{x_1-x_0}\dee x = \frac{1}{2(x_1-x_0)}(x-x_0)^2\big\vert_a^b \\
+		&= \frac{3}{2(b-a)}\left[\frac{4(b-a)^2}{9} - \frac{(b-a)^2}{9}\right] \\
+		&= \frac{b-a}{2}.
+	\end{align}
+	This results in the Newton-Cotes formula with two-point open rule
+	\begin{equation}
+		\int_a^bf(x)\dee x \approx \alpha_0f(x_0) + \alpha_1f(x_1) = \frac{b-a}{2}f\left(\frac{2a+b}{3}\right) + \frac{b-a}{2}f\left(\frac{b-a}{2}\right).
+	\end{equation}
+	
+	\question
+	Suppose that we have a numerical quadrature for $\hat{f}(\hat{x})$ on $[0,1]$ defined by
+	\begin{equation}
+		\hat{J}(\hat{f}) = \int_a^b \hat{f}(\hat{x})\dee\hat{x} \approx \hat{Q}(\hat{f}) = \sum_{j=0}^m \hat{\alpha}_j \hat{f}(\hat{x}_j).
+	\end{equation}
+	If we want to compute the integral of $f(x)$ on $[a,b]$, then we can make the change of variables $x = a + (b-a)\hat{x}$, which is a one-to-one correspondence between $x \in [a,b]$ and $\hat{x} \in [0,1]$ with $\dee x = (b-a)\dee\hat{x}$, to obtain
+	\begin{equation}
+		J(f) = \int_a^bf(x)\dee x = \int_0^1 f(a + (b-a)\hat{x})(b-a)\dee\hat{x}.
+	\end{equation}
+	Define $\hat{f}(\hat{x}) = f(a+(b-a)\hat{x})$. Then we obtain a numerical quadrature $Q(f)$ for $J(f)$ by using our numerical quadrature $\hat{Q}(\hat{f})$ to approximate the integral of $\hat{f}$ on $[0,1]$:
+	\begin{align}
+		J(f) &= (b-a)\int_0^1\hat{f}\dee\hat{x} = (b-a)\hat{Q}(\hat{f}) = \sum_{j=0}^m (b-a)\hat{\alpha}_j \hat{f}(\hat{x}_j) \\
+		&= \sum_{j=0}^m (b-a)\hat{\alpha}_jf(a+(b-a)\hat{x}_j) = \sum_{j=0}^m \alpha_jf(x_j) \\
+		&=: Q(f),
+	\end{align}
+	if we define $\alpha_j = (b-a)\hat{\alpha}_j$ and $x_j = a + (b-a)\hat{x}_j$.
+	
+	\question 
+	We use the given Newton-Cotes formulas to approximate
+	\begin{equation}
+		J = \int_1^2\frac{\cos\left(\frac{\pi}{4}x\right)}{\sin^2\left(\frac{\pi}{4}x\right)}\dee x.
+	\end{equation}
+	The following table summarizes the output of the MATLAB code I used to perform these calculations -- see \verb*|output.txt| and \verb*|quad.m|. Note that we use the affine transformation process derived in Problem 2 to transform the quadrature nodes given in part (d) for $[0,1]$ to those for $[1,2]$.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{@{}lllll@{}}
+			\toprule
+			Part & Method & Approximation & Actual & Error \\
+			\midrule
+			(a) & Midpoint & 4.4834e-01 & 5.2739e-01 & 7.9052e-02 \\
+			(b) & Two-Point Open & 4.7203e-01 & 5.2739e-01 & 5.5359e-02 \\
+			(c) & Simpson & 5.3460e-01 & 5.2739e-01 & 7.2035e-03 \\
+			(d) & -- & 5.3080e-01 & 5.2739e-01 & 3.4091e-03 \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	As shown in the table, the two-point open rule has lower error than the midpoint rule (one-point open). Simpson's rule (3-point closed) has even less error, and the rule given in part (d) (four-point closed?) has the smallest error.
+	
+	Here is the code for \verb*|quad.m| (just does numerical quadrature given a function, weights and nodes).
+	\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{quad.m}
+\end{document}

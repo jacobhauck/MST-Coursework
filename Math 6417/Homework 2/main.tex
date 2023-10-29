@@ -7,6 +7,8 @@
 \begin{document}
 	\maketitle
 	
+	\question
+	
 	A continuous function $\sigma : \R \to \R$ is called \textbf{sigmoidal} if there exists $T > 0$ such that
 	\begin{equation}
 		\sigma(t) = \begin{cases}
@@ -14,125 +16,260 @@
 			0 & t \le -T.
 		\end{cases}
 	\end{equation}
-	Let $\sigma$ be sigmoidal in the following problems.
+	Let $\sigma$ be sigmoidal in the following.
 	
-	\question Let $y \in \R^n$, and $\theta, \phi \in \R$. For $x \in \R^n$, define
-	\begin{equation}
-		\sigma_\lambda(x; \theta,\phi) = \sigma\left(\lambda\left(y^Tx + \theta\right) + \phi\right).
-	\end{equation}
-	Then
-	\begin{equation}
-		\sigma_\lambda(x;\theta,\phi) \to \gamma(x) = \begin{cases}
-			1 & y^Tx + \theta > 0 \\
-			0 & y^Tx + \theta < 0 \\
-			\sigma(\phi) & y^Tx + \theta = 0
-		\end{cases} \qquad \text{ as } \lambda \to\infty.
-	\end{equation}
-	\begin{proof}
-		We use proof by cases.
-		\begin{enumerate}
-			\item If $y^Tx + \theta > 0$, then
-			\begin{equation}
-				\lambda \ge \frac{T - \phi}{y^Tx + \theta} \implies \lambda(y^Tx + \theta) + \phi \ge T \implies \sigma_\lambda(x;\theta,\phi) = 1,
-			\end{equation}
-			so $\sigma_\lambda(x;\theta, \phi) \to 1 = \gamma(x)$ as $\lambda \to\infty$.
-			\item If $y^Tx + \theta < 0$, then
-			\begin{equation}
-				\lambda \ge \frac{-T - \phi}{y^T x + \theta}\implies \lambda(y^Tx +\theta) + \phi \le -T \implies \sigma_\lambda(x;\theta,\phi) = 0,
-			\end{equation}
-			so $\sigma_\lambda(x;\theta,\phi) \to 0 = \gamma(x)$ as $\lambda \to\infty$.
-			\item If $y^Tx +\theta =0$, then $\sigma_\lambda(x;\phi,\theta) = \sigma(\phi)$ for all $\lambda$, so $\sigma_\lambda(x;\phi,\theta) \to \sigma(\phi) = \gamma(x)$ as $\lambda \to \infty$.
-		\end{enumerate}
-	\end{proof}
-	
-	\question
-	\newcommand{\zset}{\Pi_{y,\theta}}
-	\newcommand{\pset}{H_{y,\theta}}
-	Let $y \in \R^n$, let $\zset = \left\{x\mid y^Tx + \theta = 0\right\}$, and let $\pset=\left\{x\mid y^Tx+\theta > 0\right\}$. If $\mu$ is a finite Borel measure on $[0,1]^n$ such that
-	\begin{equation}
-		\label{eq:mu_zero_cond}
-		\int_{[0,1]^n}\sigma_\lambda(x)\dee\mu(x) = 0 \qquad \text{for all } \lambda, \theta, \phi\in\R,
-	\end{equation}
-	then
-	\begin{equation}
-		\sigma(\phi)\mu(\zset) + \mu(\pset) = 0\qquad \text{for all } \lambda, \theta, \phi\in\R.
-	\end{equation}
-	\begin{proof}
-		Fix $\theta,\phi\in\R$. For any $\lambda \in \R$, the function $\sigma_\lambda(\,\cdot\,;\theta,\phi)$ is clearly dominated on $[0,1]^n$ by the constant function $g(x) = \max\limits_{t\in[-T,T]}|\sigma(t)|$. The following statements are true.
-		\begin{enumerate}
-			\item Open subsets of $[0,1]^n$ (in the relative topology of $[0,1]^n$) are $\mu$-measurable by the definition of a Borel measure.
-			\item $g$ is constant, so it is continuous, meaning that $g^{-1}(U)$ is open for any open set $U$ (in the relative topology of $[0,1]^n$).
-			\item 1. and 2. imply that $g^{-1}(U)$ is $\mu$-measurable for any open set $U$ (in the relative topology of $[0,1]^n$).
-			\item 3. implies that $g$ is $\mu$-measurable.
-			\item $[0,1]^n$ is open in the relative topology on $[0,1]^n$, so it is $\mu$-measurable by 1.
-			\item $g$ is constant on the $\mu$-measurable set $[0,1]^n$, so $g$ is simple with respect to the measure $\mu$ by definition.
-			\item Simple functions are always integrable, so, by 6., $g$ is integrable with respect to $\mu$.
-			\item $\sigma$ is continuous, and $x\mapsto\lambda (y^Tx + \theta) + \phi$ is also continuous, so $\sigma_\lambda(\,\cdot\,;\theta,\phi)$, the composition, of the two, is also continuous.
-			\item By 8., $\sigma_\lambda(\,\cdot\,;\theta,\phi)$ is continuous on $[0,1]^n$, so $\sigma_\lambda^{-1}(U;\theta,\phi)$ is open for any open set $U$ (in the relative topology of $[0,1]^n$).
-			\item 1. and 9. imply that $\sigma_\lambda^{-1}(U;\theta,\phi)$ is open for any open set $U$ (in the relative topology of $[0,1]^n$).
-			\item 10. implies that $\sigma_\lambda(\,\cdot\,;\theta,\phi)$ is $\mu$-measurable.
-		\end{enumerate}
-		Let $\{\lambda_n\}$ be any sequence of real numbers such that $\lambda_n \to \infty$ as $n\to\infty$. Then $\sigma_{\lambda_n}(x;\theta,\phi) \to \gamma(x)$ as $n \to \infty$ for all $x \in [0,1]^n$ by the previous problem, and $\{\sigma_{\lambda_n}(\,\cdot\,;\theta,\phi)\}$ and $g$ satisfy the hypotheses of the Dominated Convergence Theorem, so
-		\begin{align}
-			0&=\lim_{n\to\infty}\int_{[0,1]^n}\sigma_{\lambda_n}(x;\theta,\phi)\dee\mu(x) \\
-			&= \int_{[0,1]^n} \gamma(x)\dee\mu(x) \\
-			&= \int_{[0,1]^n \setminus (\zset \cup \pset)} \gamma(x)\dee\mu(x) + \int_{\zset}\gamma(x)\dee\mu(x) + \int_{\pset}\gamma(x)\dee\mu(x)  \\
-			&= \int_{[0,1]^n\setminus(\zset\cup\pset)} 0\dee\mu(x) + \int_{\zset}\sigma(\phi)\dee\mu(x) + \int_{\pset}1\dee\mu(x) \\
-			&= \sigma(\phi)\mu(\zset) + \mu(\pset).
-		\end{align}
-	\end{proof}
-	
-	\question
-	Suppose that $\mu$ satisfies (\ref{eq:mu_zero_cond}). Then $\mu = 0$. 
-	\begin{proof}
-		Define the linear functional $F: L^\infty(\R) \to \R$ by
+	\begin{arabicparts}
+		\questionpart
+		Fix $y, \theta, \phi \in \R$, and define
 		\begin{equation}
-			F(h) = \int_{[0,1]^n}h\left(y^Tx\right)\dee\mu(x)
+			\label{eq:sigma_lambda_def}
+			\sigma_\lambda(x) = \sigma(\lambda(yx + \theta) + \phi), \qquad x \in \R.
 		\end{equation}
-		First, let $h = \chi_{[a,\infty)}$ for some $a \in \R$. Choose $\theta = -a$, and $\phi = T$. Then $\sigma(\phi) = 1$, and
+		Then
 		\begin{equation}
-			h(y^Tx) = 1 \iff y^Tx \ge a \iff y^Tx + \theta  \ge 0 \iff y^Tx \in \zset \cup \pset.
+			\lim_{\lambda\to\infty}\sigma_\lambda(x) = \gamma(x) = \begin{cases}
+				1 & yx + \theta > 0 \\
+				0 & yx + \theta < 0 \\
+				\sigma(\phi) & yx + \theta = 0.
+			\end{cases}
 		\end{equation}
-		If $y^Tx \notin \zset \cup \pset$, then $h(y^Tx) = \chi_{[a,\infty)}(y^Tx) = 0$, because characteristic functions can only be 0 or 1. Therefore, by the previous problem,
-		\begin{align}
-			F(h) &= \int_{[0,1]^n}h(y^Tx)\dee\mu(x) \\
-			&= \int_{\zset}1\dee \mu(x) + \int_{\pset} 1\dee\mu(x) \\
-			&= 1\cdot\mu(\zset) + \mu(\pset) = \sigma(\phi)\mu(\zset) + \mu(\pset) = 0.
-		\end{align}
-		Second, for $a,b\in \R$, the characteristic function $\chi_{[a,b)}$ can be written as $\chi_{[a,\infty)} - \chi_{[b,\infty)}$. Since $F$ is linear, it follows that $F\left(\chi_{[a,b)}\right) = 0$.
-	\end{proof}
-	
-	\question
-	\newcommand{\neural}{\mathcal{N}}
-	Let $\neural$ be the set of all functions $G \in C[0,1]$ of the form
-	\begin{equation}
-		G(x) = \sum_{j=1}^n \alpha_j\sigma(y_jx + \theta_j),
-	\end{equation}
-	for some $\alpha_j, y_j, \theta_j \in \R$. Then $\neural$ is dense in $C[0,1]$ in the uniform norm.
-	\begin{proof}
-		It is clear that $\neural$ is a subspace of $C[0,1]$. Then $\overline{\neural}$ is a closed subspace of $C[0,1]$.
+		\begin{proof}
+			We use proof by cases. For any $x \in \R$, there are exactly three possibilities.
+			\begin{enumerate}[label=\Roman*.]
+				\item $yx + \theta > 0$.
+				
+				Set $\Lambda = \frac{T-\phi}{yx + \theta}$. Then $\lambda \ge \Lambda$ implies that $\lambda(yx+\theta) + \phi \ge T$, so $\sigma_\lambda(x) = 1$ because $\sigma$ is sigmoidal. Therefore, $\sigma_\lambda(x) \to 1 = \gamma(x)$ as $\lambda \to\infty$.
+				
+				\item $yx + \theta < 0$.
+				
+				Set $\Lambda = \frac{-T-\phi}{yx+\theta}$. Then $\lambda \ge \Lambda$ implies that $\lambda(yx+\theta) + \phi \le -T$, so $\sigma_\lambda(x) = 0$ because $\sigma$ is sigmoidal. Therefore, $\sigma_\lambda(x) \to 0 = \gamma(x)$ as $\lambda \to \infty$.
+				
+				\item $yx + \theta = 0$.
+				
+				In this case, $\sigma_\lambda(x) = \sigma(\phi)$ for all $\lambda$, so clearly $\sigma_\lambda(x) \to \sigma(\phi) = \gamma(x)$ as $\lambda \to \infty$.
+			\end{enumerate}
+		\end{proof}
 		
-		Suppose that $\neural$ is \textit{not} dense in $C[0,1]$. Then there exists some function $f \in C[0,1]$ such that $f \notin \overline{\neural}$. Define the linear functional $\mu_0$ on the subspace $\mathrm{span}\{\overline{\neural}, f\}$ by setting
+		\newcommand{\zeroset}{{\Pi_{y,\theta}}}
+		\newcommand{\posset}{{H_{y,\theta}}}
+		\newcommand{\negset}{{N_{y,\theta}}}
+		\newcommand{\propstar}{(*)}
+		\questionpart 
+		For any $y, \theta \in \R$, define
 		\begin{equation}
-			\mu_0(G + af) = a.
+			\zeroset = \{x \in [0,1] : yx + \theta = 0\}, \qquad \posset = \{x \in [0,1] : yx + \theta > 0\}.
 		\end{equation}
-		This is well-defined because every element $g \in \mathrm{span}\{\overline{\neural}, f\}$ can be written uniquely in the form $g = G + af$, where $G \in \neural$, and $a \in \R$. Indeed, if we had $G,G' \in \neural$, and $a,a' \in \R$ such that $G + af = G' + a'f$, then $G-G' = (a'-a)f$, and $a \ne a'$ would imply that $f \in \neural$, so $a = a'$, and $G = G'$.
+		If $\mu$ is a finite Borel measure on $[0,1]$, then we say that $\mu$ has property $\propstar$ if and only if
+		\begin{equation}
+			\tag{$*$}
+			\int_0^1\sigma_\lambda(x)\dee\mu(x) = 0 \quad \text{for all}\;\lambda, y, \theta, \phi \in \R.
+		\end{equation}
+		If $\mu$ has property $\propstar$, then
+		\begin{equation}
+			0 = \mu(\posset) + \sigma(\phi)\mu(\zeroset) \quad \text{for all}\; y, \theta,\phi \in \R.
+		\end{equation}
+		\begin{proof}
+			Let $y, \theta, \phi \in \R$ be given. Since $\sigma$ is continuous, it is bounded on $[-T,T]$, say by $M > 0$. Since $\sigma$ is sigmoidal, it follows that $\{\sigma(t) : t \notin [-T,T]\} = \{0,1\} \subseteq \{\sigma(t) : t \in [-T,T]\}$, so $|\sigma(t)| \le M$ for all $t \in \R$. This implies that $|\sigma_\lambda(x)| = |\sigma(\lambda(yx+\theta) + \phi)| \le M$ for all $x \in [0,1]$ and all $\lambda$.
+			
+			The constant function $M$ is integrable on $[0,1]$, and $\sigma_\lambda \to \gamma$ pointwise on $[0,1]$ as $\lambda \to \infty$ by the previous part, so, by the Dominated Convergence Theorem\footnote{$\sigma_\lambda$ is inetgrable because it is continuous},
+			\begin{equation}
+				\lim_{\lambda\to\infty} \int_0^1\sigma_\lambda \dee\mu = \int_0^1\gamma\dee\mu.
+			\end{equation}
+			Define $\negset = [0,1]\setminus(\posset \cup \zeroset)$, so that $[0,1] = \posset \cup \zeroset \cup \negset$ disjointly. Then\footnote{Each of $\posset$, $\zeroset$ and $\negset$ is measurable because they are just intervals, and $\mu$ is Borel}
+			\begin{align}
+				0 &= \int_0^1\gamma\dee\mu = \int_\posset \gamma\dee\mu + \int_\zeroset\gamma\dee\mu + \int_\negset\gamma\dee\mu\\
+				&= \mu(\posset) + \sigma(\phi)\mu(\zeroset)
+			\end{align}
+			because $\gamma\big\vert_\posset = 1$, $\gamma\big\vert_\zeroset = \sigma(\phi)$, and $\gamma\big\vert_\negset = 0$ by definition.
+		\end{proof}
 		
-		The functional $\mu_0$ is clearly linear because
+		\questionpart
+		If $\mu$ has property $\propstar$, then $\mu = 0$.
+		\begin{proof}
+			Let $\mu$ have property $\propstar$. If we choose $\phi = -T$, then $\sigma(\phi) = 0$, so by the previous part, $\mu(\posset) = 0$ for all $y, \theta \in \R$. Then, if we choose $\phi = T$ so that $\sigma(\phi) = 1$, we see that, by the previous part, $\mu(\zeroset) = 0$ for all $y, \theta\in \R$, as well.
+			
+			A simple series of deductions shows that\footnote{$[a,b)$ is measurable because $\mu$ is Borel} $\mu([a,b)) =0$ for all $0 \le a \le b \le 1$:
+			\begin{itemize}
+				\item If we choose $y = 0$ and $\theta = 0$, then $\zeroset = [0,1]$, so $\mu([0,1]) = 0$.
+				\item Given $a \in [0,1]$, if we choose $y = -1$ and $\theta = a$, then $\posset = [0,a)$, so $\mu([0,a)) = 0$.
+				\item Hence, given $a \in [0,1]$, we have $0 = \mu([0,1]) = \mu([0,a)) + \mu([a, 1]) = 0 + \mu([a,1])$, so $\mu([a,1]) = 0$.
+				\item Finally, given $0 \le a \le b \le 1$, we have $0 = \mu([a,1]) = \mu([a,b)) + \mu([b,1]) = \mu([a,b)) + 0$, so $\mu([a,b)) = 0$.
+			\end{itemize}
+			
+			The set of finite Borel measures on $[0,1]$ can be shown to be isomorphic as a Banach space\footnote{Using the uniform norm in $C([0,1])$} to $(C([0,1]))^*$ by defining the action of a measure $\mu$ on a continuous function $h \in C([0,1])$ by
+			\begin{equation}
+				\mu(h) = \int_0^1h\dee\mu.
+			\end{equation}
+			Hence, we only need to show that $\mu = 0$ as an element of $(C([0,1]))^*$, that is, $\mu(h) = 0$ for all $h \in C([0,1])$.
+			
+			We start by showing that $\mu\left(\chi_{[a,b)}\right) = 0$ for all $0 \le a \le b \le 1$. This is easy enough because
+			\begin{equation}
+				\mu\left(\chi_{[a,b)}\right) = \int_0^1 \chi_{[a,b)}\dee\mu = \mu([a,b)) = 0.
+			\end{equation}
+			Given $h \in C([0,1])$ and a natural number $n$, we can choose $\delta > 0$ such that $|h(t) - h(s)| < \frac{1}{n}$ for all $t,s \in [0,1]$ satisfying $|t-s| < \delta$. Choose a partition $\{t_i\}_{i=1}^{N_n}$ of $[0,1]$ such that $t_i - t_{i-1} < \delta$ for $i =1,2,\dots,N_n$.
+			
+			Define the function
+			\begin{equation}
+				h_n(t) = \begin{cases}
+					\sum\limits_{i=1}^{N_n} m_i\cdot\chi_{[t_{i-1}, t_i)}(t) & t \in [0,1) \\
+					h(1) & t = 1,
+				\end{cases}
+			\end{equation}
+			where $m_i = \min\limits_{t \in [t_{i-1}, t_i]} h(t)$. Since $h$ is continuous, it achieves the value $m_i$ for some $t^* \in [t_{i-1},t_i]$. On the other hand, $h_n(t) = m_i$ for all $t \in [t_{i-1}, t_i)$. For all $t \in [t_{i-1}, t_i)$, we have $|t^* - t| < \delta$ by the construction of the partition, so for all $t \in [t_{i-1}, t_i)$,
+			\begin{equation}
+				|h(t) - h_n(t)| = |h(t) - m_i| = |h(t) - h(t^*)| < \frac{1}{n}.
+			\end{equation}
+			Since this holds for all $i$, and $h_n(1) = h(1)$ for all $n$, it follows that $h_n \to h$ uniformly on $[0,1]$.
+			
+			Clearly $h_n$ is simple by construction, so $h_n$ is measurable for all $n$. Therefore, by the uniform convergence of $h_n$ to $h$,
+			\begin{align}
+				\mu(h) &= \int_0^1h\dee \mu = \lim_{n\to\infty}\int_0^1h_n\dee\mu \\
+				&= \lim_{n\to\infty}\left[h(1)\int_{\{1\}}\dee\mu  + \sum_{i=1}^{N_n}m_i\int_{[t_{i-1},t_i)}\chi_{[t_{i-1}, t_i)} \dee \mu\right] \\
+				&= \lim_{n\to\infty}\left[h(1)\mu(\{1\}) + \sum_{i=1}^{N_n}m_i\mu([t_{i-1},t_i))\right] \\
+				&= \lim_{n\to\infty}h(1)\mu([1,1]) \\[0.5em]
+				&= \lim_{n\to\infty}0 = 0
+			\end{align}
+			because $\mu([t_{i-1},t_i)) = 0$ for all $i$, and $\mu(\{1\}) = \mu([1,1]) = 0$ by the third bullet near the beginning of the proof.
+			
+			Thus, $\mu(h) = 0$ for all $h \in C([0,1])$, that is, $\mu = 0$.
+		\end{proof}
+		
+		\newcommand{\nn}{\mathcal{N}}
+		\questionpart 
+		Let $\nn$ denote the set of functions $G: [0,1] \to \R$ of the form
 		\begin{equation}
-			\mu_0(r(G + af) + s(G' + a'f)) = \mu_0((rG + sG') + (sa + ra')f) = sa + ra' = s\mu_0(G+af) + r\mu_0(G'+a'f).
+			G(x) = \sum_{j=1}^N \alpha_j \sigma(y_jx + \theta_j)
 		\end{equation}
-		Furthermore, $\mu_0(\neural) = \{0\}$ because
-		\begin{equation}
-			\mu_0(G) = \mu_0(G + 0f) = 0.
-		\end{equation}
-		Finally, $\mu_0$ is dominated by the sublinear functional $p =\frac{\lVert \cdot \rVert}{\lVert f \rVert}$ because
-		\begin{equation}
-			|\mu_0(G + af)| = |a| = \frac{\lVert af\rVert}{\lVert f\rVert} \le \frac{\lVert G+af\rVert + \lVert G \rVert}{\lVert f \rVert}
-		\end{equation}
-	\end{proof}
+		for some positive integer $N$ and parameters $\alpha_j, y_j, \theta_j \in \R$, $j=1,2,\dots,N$. Then $\nn$ is dense in $C([0,1])$ in the uniform norm.
+		\begin{proof}
+			Since $\sigma$ is continuous, it follows easily that $G$ is continuous for all $G \in \nn$. Hence, $\nn \subseteq C([0,1])$. It is obvious that $\nn$ is nonempty, but $\nn$ is also closed under linear combinations of elements of $\nn$ because, given $G,G'\in\nn$ and $p,p' \in \R$, there exist positive integers $N, N'$, parameters $\alpha_j, y_j, \theta_j$, $j=1,2,\dots N$, and parameters $\alpha_j', y_j', \theta_j'$, $j=1,2,\dots,N'$ such that
+			\begin{align}
+				pG + p'G' &= p\sum_{j=1}^N \alpha_j\sigma(y_jx + \theta_j) + p'\sum_{j=1}^{N'}\alpha_j'\sigma(y_j'x + \theta_j') \\
+				&= \sum_{j=1}^{N+N'}\beta_j\sigma(z_jx+\vartheta_j),
+			\end{align}
+			taking $\beta_j = p\alpha_j$, $z_j = y_j$, $\vartheta_j = \theta_j$ if $j \le N$, and $\beta_j = p'\alpha_{j-N}'$, $z_j = y_{j-N}'$, $\vartheta_j = \theta_{j-N}'$ if $j > N$. Thus, $pG + p'G' \in \nn$ by definition, and $\nn$ is a vector subspace of $C([0,1])$.
+			
+			Then $\overline{\nn}$ is also a subspace. Suppose that $\overline{\nn} \ne C([0,1])$. Then we can choose some $g \in C([0,1]) \setminus \overline{\nn}$. Let $d = \mathrm{dist}(g, \overline{\nn})$. Then $d > 0$ because $\overline{\nn}$ is closed. By the Mazur separation lemma 1, there exists some $\mu \in (C([0,1]))^*$ such that $\mu(g) = d$, and $\mu(G) = 0$ for all $G \in \overline{\nn}$.
+			
+			Clearly $\sigma_\lambda \in \nn \subseteq \overline{\nn}$ for any choice of $\lambda, y, \theta, \phi \in \R$; thus, $\mu(\sigma_\lambda) = 0$ for all $\sigma_\lambda$. Using the fact that $\mu$ is a finite Borel measure on $[0,1]$ (as mentioned in the previous part) with
+			\begin{equation}
+				\mu(h) = \int_0^1h\dee \mu \quad \text{for all}\; h\in C([0,1]),
+			\end{equation}
+			we see that
+			\begin{equation}
+				0 = \mu(\sigma_\lambda) = \int_0^1\sigma_\lambda\dee\mu
+			\end{equation}
+			for all $\sigma_\lambda$. That is, $\mu$ has property $\propstar$. Therefore, by the previous part, $\mu = 0$. This contradicts the fact that $\mu(g) = d \ne 0$. Hence, $\overline{\nn} = C([0,1])$, which is equivalent to saying that $\nn$ is dense in $C([0,1])$.
+		\end{proof}
+	\end{arabicparts}
 	
 	\question
-	
+	For any positive integer $n$, define the linear functional $\ell_n : C([0,1]) \to \R$ by
+	\begin{equation}
+		\ell_n(f) = \sum_{j=0}^n w_j^n f(x_j^n),
+	\end{equation}
+	where $\{x_j^n\}_{j=0}^n$ is a partition of $[0,1]$, and $\{w_j^n\}_{j=0}^n$ is a sequence of real numbers. $\ell_n(f)$ is meant to be a numerical quadrature formula for the integral of $f$ on $[0,1]$ with weight function $w \in L^1([0,1])$.
+	\begin{arabicparts}
+		\questionpart 
+		Equipping $C([0,1])$ with the uniform norm, the functional $\ell_n$ is a bounded, linear functional, and the induced norm of $\ell_n$ is given by
+		\begin{equation}
+			\lVert \ell_n \rVert = \sum_{j=0}^n |w_j^n|.
+		\end{equation}
+		\begin{proof}
+			Let $f,g \in C([0,1])$, and let $\alpha,\beta \in \R$. Then
+			\begin{align}
+				\ell_n(\alpha f+ \beta g) &= \sum_{j=0}^n w_j^n(\alpha f(x_j^n) + \beta g(x_j^n)) = \alpha\sum_{j=0}^n w_j^nf(x_j^n) + \beta\sum_{j=0}^n w_j^ng(x_j^n) \\
+				&= \alpha\ell_n(f) + \beta\ell_n(g),
+			\end{align}
+			so $\ell_n$ is linear.
+			
+			Let $f \in C([0,1])$ have $\lVert f \rVert \le 1$. Then $|f(x)| \le 1$ for all $x \in [0,1]$ by the definition of $\lVert f\rVert$, and
+			\begin{equation}
+				|\ell_n(f)| \le \sum_{j=0}^n |w_j^n|\cdot|f(x_j^n)| \le \sum_{j=0}^n |w_j^n|.
+			\end{equation}
+			Since $f$ was arbitrary with norm bounded by $1$,
+			\begin{equation}
+				\lVert \ell_n\rVert \le \sum_{j=0}^n |w_j^n|.
+			\end{equation}
+			On the other hand, we can choose $f \in C([0,1])$ such that $\lVert f\rVert = 1$, and $f(x_j^n) = \sgn(w_j^n)$, the sign of $w_j^n$, by considering the piecewise linear function that interpolates between the points $\{(x_j^n, \sgn(w_j^n))\}_{j=0}^n$ (if all the $w_j^n$ are zero for some fixed $n$, then choose $f = 1$). Hence,
+			\begin{equation}
+				\lVert \ell_n\rVert \ge \frac{|\ell_n(f)|}{\lVert f\rVert} = \left|\sum_{j=0}^n w_j^n f(x_j^n)\right| = \sum_{j=0}^n|w_j^n|
+			\end{equation}
+			because $|w_j^n| = w_j^n\cdot\sgn(w_j^n) = w_j^nf(x_j^n)$. Therefore,
+			\begin{equation}
+				\lVert\ell_n\rVert = \sum_{j=0}^n |w_j^n|.
+			\end{equation}
+		\end{proof}
+		
+		\questionpart
+		Suppose that the formula converges in the sense that
+		\begin{equation}
+			\label{eq:formaul_convergence}
+			\lim_{n\to\infty} \left|\int_0^1 f(x)w(x)\dee x - \ell_n(f)\right| = 0 \quad \text{for all}\; f\in C([0,1]).
+		\end{equation}
+		Then
+		\begin{equation}
+			\sup_{n\ge 0} \left(\sum_{j=0}^n |w_j^n|\right) < \infty.
+		\end{equation}
+		\begin{proof}
+			By the Banach-Steinhaus theorem (with $X = C([0,1])$, $Y=\R$, and $T_\alpha =\ell_\alpha$, $\alpha=1,2,\dots$, in the notation of the slides), either $\{\lVert\ell_n\rVert\}_{n=1}^\infty$ is bounded, or $\sup\limits_{n\ge 0}|\ell_n(f)| = \infty$ for some $f \in C([0,1])$. The second possibility is false, because, by the convergence assumption (\ref{eq:formaul_convergence}), the sequence $\{\ell_n(f)\}_{n=1}^\infty$ converges to a finite number for all $f \in C([0,1])$, and convergent sequences are bounded. Therefore, $\{\lVert \ell_n\rVert\}$ is bounded.
+			
+			Since
+			\begin{equation}
+				\lVert \ell_n\rVert = \sum_{j=0}^n |w_j^n|,
+			\end{equation}
+			it follows that
+			\begin{equation}
+				\left\{\sum_{j=0}^n |w_j^n|\right\}_{n=1}^\infty
+			\end{equation}
+			is bounded, that is,
+			\begin{equation}
+				\sup_{n\ge 0} \left(\sum_{j=0}^n |w_j^n|\right) < \infty.
+			\end{equation}
+		\end{proof}
+		
+		\questionpart Suppose that
+		\begin{equation}
+			\label{eq:ell_n_bounded}
+			\sup_{n\ge 0} \left(\sum_{j=0}^n|w_j^n|\right) < \infty.
+		\end{equation}
+		Suppose furthermore that for any polynomial $p(x)$ defined on $[0,1]$
+		\begin{equation}
+			\label{eq:polynomial_convergence}
+			\lim_{n\to\infty}\left|\int_0^1p(x)w(x)\dee x - \ell_n(p)\right| = 0.
+		\end{equation}
+		Then the quadrature formula $\ell_n$ works on all of $C([0,1])$ in the sense that
+		\begin{equation}
+			\lim_{n\to\infty}\left|\int_0^1 f(x)w(x)\dee x  - \ell_n(f)\right| = 0 \quad \text{for all} \; f\in C([0,1]).
+		\end{equation}
+		\begin{proof}
+			Let $f \in C([0,1])$, and let $\varepsilon > 0$ be given. By the Weierstrass Approximation Theorem, we can choose a polynomial $p(x)$ defined on $[0,1]$ such that
+			\begin{equation}
+				\lVert p - f\rVert_{C([0,1])} < \varepsilon,
+			\end{equation}
+			where $\lVert \cdot \rVert_{C([0,1])}$ is the usual uniform norm.
+		
+			Furthermore, by (\ref{eq:polynomial_convergence}), we can choose $N$ large enough that
+			\begin{equation}
+				\left|\int_0^1 p(x)w(x)\dee x - \ell_n(p)\right| < \varepsilon
+			\end{equation}
+			for all $n > N$, and, by (\ref{eq:ell_n_bounded}), we can choose $M > 0$ such that
+			\begin{equation}
+				\sum_{j=0}^n |w_j^n| < M
+			\end{equation}
+			for all $n \ge0$. Therefore, if $n > N$, then
+			\begin{align}
+				\left|\int_0^1 f(x)w(x)\dee x - \ell_n(f)\right| &\le \left|\int_0^1(f(x) - p(x))w(x)\dee x\right| \\
+				&\quad+ \left|\ell_n(p) - \ell_n(f)\right| + \left|\int_0^1p(x)w(x)\dee x - \ell_n(p)\right| \\
+				&\le \varepsilon\int_0^1|w(x)|\dee x + \sum_{j=0}^n |p(x_j^n) - f(x_j^n)|\cdot|w_j^n| + \varepsilon \\
+				&\le (\lVert w \rVert_{L^1} + M + 1)\varepsilon.
+			\end{align}
+			Since $\lVert w \rVert_{L^1} + M + 1$ is independent of $n$ and $\varepsilon > 0$ was arbitrary, it follows that
+			\begin{equation}
+				\lim_{n\to\infty}\left|\int_0^1 f(x)w(x)\dee x - \ell_n(f)\right| = 0.
+			\end{equation}
+			Thus, the quadrature rule works for the arbitrary continuous function $f \in C([0,1])$, and, consequently, for all functions in $C([0,1])$.
+		\end{proof}
+	\end{arabicparts}
 	
 \end{document}
