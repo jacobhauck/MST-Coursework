@@ -1,0 +1,34 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+
+\newcommand{\hwnum}{7}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question
+	Let $x_0, x_1, x_2$ and $w_0, w_1, w_2$ be the nodes and weights of the the three-point Gaussian quadrature for $\int_{-1}^1 f(x)\dee x$. Then the quadrature must be exact for $f(x)= x^n$, $n\in\{0,1,2,3,4,5\}$. That is,
+	\begin{equation}
+		\int_{-1}^1 x^n \dee x = \sum_{j=0}^3 w_j x_j^n, \qquad n\in\{0,1,2,3,4,5\}.
+	\end{equation}
+	Since
+	\begin{equation}
+		\int_{-1}^1 x^n \dee x = \frac{x^{n+1}}{n+1}\big\vert_{-1}^1 = \begin{cases}
+			\frac{2}{n+1} & n \text{ even} \\
+			0 & n \text{ odd},
+		\end{cases}
+	\end{equation}
+	we obtain the following system of six equations in the six unknowns $x_0, x_1, x_2$ and $w_0, w_1, w_2$:
+	\begin{alignat*}{2}
+		2 &= w_0 + w_1 + w_2 &\qquad 0 & = w_0x_0 + w_1x_1 + w_2x_2 \\[0.3em]
+		\frac{2}{3} &= w_0x_0^2 + w_1x_1^2 + w_2x_2^2 &\qquad 0 & = w_0x_0^3 + w_1x_1^3 + w_2x_2^3 \\[0.3em]
+		\frac{2}{5} &= w_0x_0^4 + w_1x_1^4 + w_2x_2^4 &\qquad 0 & = w_0x_0^5 + w_1x_1^5 + w_2x_2^5.
+	\end{alignat*}
+	Using the following \verb*|solve| command in MATLAB gives the solution of this nonlinear system of equations.
+	\begin{lstlisting}[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]
+
+	\end{lstlisting}
+\end{document}
