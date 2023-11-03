@@ -8,7 +8,86 @@
 	\maketitle
 	
 	\question
-	
-	
+	Let $B(\cdot,\cdot)$ be a continuous, bilinear form on a real Hilbert space $H$. Suppose that $B$ is coercive in the sense that there is some $\alpha > 0$ such that $B(x,x) \ge \alpha\lVert x\rVert^2$ for all $x \in H$.
+	\begin{arabicparts}
+		\questionpart 
+		Let $y \in H$. Then the map $f_y : H \to \R$ defined by $f_y(x) = B(x,y)$ is a bounded linear functional on $H$. Consequently, there exists a unique $w \in H$ such that $B(x,y) = f_y(x) = (x,w)$ for all $x \in H$.
+		\begin{proof}
+			Firstly, it is clear that $f_y$ is linear; indeed, given $a_1, a_2 \in \R$ and $x_1, x_2 \in H$,
+			\begin{equation}
+				f_y(a_1x_1+a_2x_2) = B(a_1x_1+a_2x_2,y) = a_1B(x_1,y) + a_2B(x_2,y) = a_1f_y(x_1) + a_2f_y(x_2)
+			\end{equation}
+			by the bilinearity of $B$.
+			
+			Secondly, $B(\cdot, y)=f_y$ must be continuous because $B$ is continuous. Hence, $f_y$ is bounded.
+			
+			Thirdly, by the Riesz representation theorem, there exists a unique $w \in H$ such that $B(x,y) = f_y(x) = (x,w)$ for all $x \in H$.
+		\end{proof}
+		
+		\questionpart 
+		Given $y \in H$, by 1.1), there is a unique $w$ such that $B(x,y) = (x,w)$ for all $x \in H$; this defines a function $A: H \to H$, where $Ay = w$. Then $A$ is a bounded, linear operator on $H$, that is, $A \in B(H)$.
+		\begin{proof}
+			Let $a_1, a_2 \in \R$ and $y_1, y_2 \in H$. Then for all $x \in H$,
+			\begin{equation}
+			\begin{aligned}
+				(x, A(a_1y_1+a_2y_2)) &= B(x,a_1y_1 + a_2y_2) = a_1B(x,y_1) + a_2B(x,y_2) = a_1(x,Ay_1) + a_2(x,Ay_2) \\
+				&= (x, a_1Ay_1 + a_2Ay_2).
+			\end{aligned}
+			\end{equation}
+			Thus, $w=A(a_1y_1+a_2y_2)$ and $w' = a_1Ay_1 + a_2Ay_2$ satisfy the property that $B(x,a_1y_1+a_2y_2) = (x,w) = (x,w')$ for all $x \in H$. Since there is only one element of $H$ that can satisfy this property by the Riesz representation theorem, it follows that $w=w'$, that is, $A(a_1y_1 + a_2y_2) = a_1Ay_1 + a_2Ay_2$. Therefore, $A$ is linear.
+			
+			Note that $B$ is continuous if and only if (see, e.g., Theorem 8.10 assumption (a) in Arbogast and Bona) there exists some $M > 0$ such that
+			\begin{equation}
+				|B(x,y)| \le M\lVert x\rVert \lVert y\rVert, \quad \text{for all } x, y\in H.
+			\end{equation}
+			Let $y \in H$. Then
+			\begin{equation}
+				\lVert Ay\rVert = \left|\left(\frac{Ay}{\lVert Ay\rVert}, Ay\right)\right|=\left|B\left(\frac{Ay}{\lVert Ay\rVert},y \right)\right| \le M \lVert y\rVert.
+			\end{equation}
+			Since $y$ was arbitrary, it follows that $A$ is bounded, and $\lVert A \rVert \le M$. Thus, $A$ is a bounded, linear operator on $H$.
+		\end{proof}
+		
+		\questionpart
+		$A$ is bounded below in the sense that there exists $\gamma > 0$ such that $\lVert A y\rVert \ge \gamma \lVert y\rVert$ for all $y \in H$.
+		\begin{proof}
+			This follows from the coercivity of $B$: for all $y \in H$,
+			\begin{equation}
+				\lVert Ay\rVert \lVert y\rVert \ge |(y, Ay)| = |B(y, y)| \ge \alpha \lVert y \rVert^2,
+			\end{equation}
+			so $\lVert Ay\rVert \ge \alpha \lVert y\rVert$ for all $y \in H$, as claimed.
+		\end{proof}
+		
+		\questionpart
+		$A$ is one-to-one, and the range of $A$ is closed.
+		\begin{proof}
+			Let $y_1, y_2 \in H$, and suppose that $Ay_1 = Ay_2$. Then, by the previous part,
+			\begin{equation}
+				\lVert y_1 - y_2\rVert \le \frac{1}{\gamma}\lVert A(y_1 - y_2)\rVert = \frac{1}{\gamma}\lVert Ay_1 - Ay_2\rVert = 0.
+			\end{equation}
+			Therefore, $y_1 = y_2$. This shows that $A$ is one-to-one.
+			
+			Let $R(A)$ denote the range of $A$. We show that $H \setminus R(A)$ is open. Indeed, let $w \in R(A)$.
+		\end{proof}
+		
+		\questionpart
+		$A$ is onto.
+		\begin{proof}
+			Suppose that $x \in R(A)^\perp$, that is, $(x, w) = 0$ for all $w \in R(A)$. This implies that $(x, Ay) = 0$ for all $y \in H$, which is equivalent to saying that $B(x, y) = 0$ for all $y \in H$. In particular, if we choose $y = x$, then $\lVert x\rVert^2 \le \frac{1}{\alpha}|B(x, x)| = 0$. Therefore, $x = 0$. This shows that $R(A)^\perp = \{0\}$ because $x$ was arbitrary. 
+			
+			Let $y \in H$. Since $R(A)$ is a closed subspace of $H$ by (1.4), there exists a best approximation $w \in R(A)$ of $y$, which satisfies the property $(y - w, x) = 0$ for all $x \in R(A)$ (Theorem 3.7 and Corollary 3.8 in Arbogast and Bona). That is, $y-w \in R(A)^\perp$. Since $R(A)^\perp =\{0\}$ by the above, it follows that $y-w = 0$, and $y=w \in R(A)$. Since $y$ was arbitrary and $R(A) \subseteq H$, it follows that $R(A) = H$, that is, $A$  is onto.
+		\end{proof}
+		
+		\questionpart
+		$A$ is invertible.
+		\begin{proof}
+			By the previous two parts, $A$ is bijective, so it has a set-theoretic inverse function $A^{-1}$. By 1.2), $A$ is bounded. Therefore, by the open mapping theorem, $A$ maps open sets to open sets, which means that the preimage of an open set under $A^{-1}$ is open, that is, $A^{-1}$ is continuous. Therefore, $A$ is invertible.
+		\end{proof}
+		
+		\questionpart
+		Given $f \in H^{*}$, the Riesz representation theorem implies that there exists a unique $w \in H$ such that $f(x) = (x,w)$ for all $x \in H$, and we can view $H^{*}$ and $H$ as the same under the correspondence $f \leftrightarrow w$.
+		
+		\questionpart
+		Consider the equation $B(x,y) = f(x)$ for all $x \in H$, where $f \in H^{*}$. By the remark in part 1.7), we can choose $w \in H$ such that $f(x) = (x,w)$ for all $x \in H$. Then the equation is equivalent to $B(x,y) = (x,w)$ for all $x \in H$. If $y$ is a solution of this equation, then, by the definition of $A$, we must have $Ay = w$. Using the invertibility of $A$, we obtain $y = A^{-1}w$ as the unique solution of the equation. Viewing $f$ and $w$ as the same under the correspondence in 1.7), we might also write $y = A^{-1}f$.
+	\end{arabicparts}
 	
 \end{document}
