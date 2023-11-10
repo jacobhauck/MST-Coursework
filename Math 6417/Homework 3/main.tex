@@ -90,4 +90,249 @@
 		Consider the equation $B(x,y) = f(x)$ for all $x \in H$, where $f \in H^{*}$. By the remark in part 1.7), we can choose $w \in H$ such that $f(x) = (x,w)$ for all $x \in H$. Then the equation is equivalent to $B(x,y) = (x,w)$ for all $x \in H$. If $y$ is a solution of this equation, then, by the definition of $A$, we must have $Ay = w$. Using the invertibility of $A$, we obtain $y = A^{-1}w$ as the unique solution of the equation. Viewing $f$ and $w$ as the same under the correspondence in 1.7), we might also write $y = A^{-1}f$.
 	\end{arabicparts}
 	
+	\question
+	\newcommand{\ltwo}{L^2([-\pi, \pi])}
+	\newcommand{\hm}{{H^{-1}}}
+	Define
+	\begin{equation}
+		H = \left\{f \in \ltwo : f(x) = \sum_{j\ne 0}f_je^{ijx}\;\text{some}\;\{f_j\}\;\text{such that}\;\sum_{j\ne 0}j^2|f_j|^2 < \infty\right\},
+	\end{equation}
+	and define
+	\begin{equation}
+		\hm = \left\{f(x) = \sum_{j\ne0}f_je^{ijx} : \sum_{j\ne 0}j^{-2}|f_j|^2 < \infty\right\}.
+	\end{equation}
+	
+	Before working the problems using these spaces, we make a few general remarks.
+	
+	\begin{itemize}
+		\item For our purposes, the sum for $f(x)$ in $\hm$ is really a formal interpretation, but we can still rigorously interpret $\hm$ as the set of all sequences of complex numbers satisfying the summability condition. To facilitate this interpretation, define
+		\begin{equation}
+			\label{eq:hm_seq}
+			S_\hm = \left\{\{f_j\}_{j\ne 0}\subseteq \C : \sum_{j\ne 0}j^{-2}|f_j|^2 < \infty\right\}.
+		\end{equation}
+		
+		\item
+		As for $H$, we recall that $\{e^{ijx}\}$ is an orthogonal basis for $\ltwo$ (using the $L^2$ inner product), and every element $f \in L^2([-\pi, \pi])$ has a unique sequence of coefficients $\{f_j\}$ such that
+		\begin{equation}
+			\label{eq:l2_basis}
+			f(x) = \sum_{j} f_j e^{ijx},
+		\end{equation}
+		where the limit of the sum is taken in the $\ltwo$ sense, and, conversely, given any sequence $\{f_j\}$ such that $\sum\limits_{j} |f_j|^2 < \infty$, there is a function $f \in \ltwo$ such that $\{f_j\}$ are the coefficients of $f$ in the sense of (\ref{eq:l2_basis}).
+		
+		\item 
+		Define
+		\begin{equation}
+			\label{eq:h_seq}
+			S_H = \left\{\{f_j\}_{j\ne 0}\subseteq \C : \sum_{j\ne 0} j^2|f_j|^2 < \infty\right\}
+		\end{equation}
+		By the previous remark, we see that $H$ is in one-to-one correspondence with $S_H$.
+		
+		\item We can equip $S_H$ and $S_\hm$ with element-wise addition and scalar multiplication operators, which make them into vector spaces. Indeed, if $\{f_j\} \in S_H$, and $\{g_j\} \in S_H$, then, by the Cauchy-Schwartz inequality,
+		\begin{equation}
+			\sum_{j\ne 0} j^2|f_j + g_j|^2 \le \sum_{j\ne0}j^2|f_j|^2 + 2\left(\sum_{j\ne0}j^2|f_j|^2\right)^\frac{1}{2}\left(\sum_{j\ne0}j^2|g_j|^2\right)^\frac{1}{2} + \sum_{j\ne0}j^2|g_j|^2 < \infty,
+		\end{equation}
+		and if $\alpha \in \C$,
+		\begin{equation}
+			\sum_{j\ne 0}j^2|\alpha f_j|^2 = |\alpha|^2\sum_{j\ne 0}j^2|f_j|^2 < \infty.
+		\end{equation}
+		Similar reasoning proves that $S_\hm$ is closed under element-wise addition and scalar multiplication. Thus, $S_H$ and $S_\hm$ are vector spaces, since they are nonempty (contain the zero sequence) and are closed under the vector space operations of the vector space of all sequences of complex numbers.
+	\end{itemize}
+	
+	\begin{arabicparts}
+		\questionpart
+		$H$ and $\hm$ are Hilbert spaces under the inner products
+		\begin{equation}
+			(f,g)_H = \sum_{j\ne 0} j^2f_j\bar{g}_j, \qquad (f,g)_{H^{-1}} = \sum_{j\ne 0}j^{-2}f_j\bar{g}_j.
+		\end{equation}
+		
+		\begin{proof}
+			We can break this proof into 4 parts. For each space $G \in \{H, \hm\}$, we need to show that
+			
+			\begin{enumerate}
+				\item $G$ is a vector space;
+				\item $(\cdot,\cdot)_G$ is well-defined;
+				\item $(\cdot,\cdot)_G$ is an inner product on $G$;
+				\item and $G$ is complete with respect to the norm $\lVert \cdot \rVert_G = \sqrt{(\cdot,\cdot)_G}$, that is, the norm induced by $(\cdot,\cdot)_G$.
+			\end{enumerate}
+			
+			\textbf{Proof of (a)}
+			
+			For $G = \hm$, the result is trivial; we are interpreting $\hm$ as $S_\hm$, which we already showed was a vector space in the preliminary remarks.
+			
+			For $G = H$, we show that $H$ is a subspace of $\ltwo$. Let $f, g\in H$, and let $\alpha, \beta \in \C$. By the preliminary remarks, we can find $\{f_j\}, \{g_j\} \in S_H$ such that
+			\begin{equation}
+				f(x) = \sum_{j\ne 0}f_je^{ijx}, \qquad g(x) = \sum_{j\ne 0 }g_je^{ijx}.
+			\end{equation}
+			Since $\{\alpha f_j + \beta g_j\} \in S_H$ by the preliminary remarks, and
+			\begin{equation}
+				(\alpha f + \beta g)(x) = \sum_{j\ne 0}(\alpha f_j + \beta g_j)e^{ijx},
+			\end{equation}
+			it follows that $\alpha f + \beta g \in H$. Thus, $H$ is a subspace of $\ltwo$.
+			
+			\textbf{Proof of (b)}
+			
+			Let $G\in \{H,\hm\}$, and let $f, g\in G$ with corresponding sequences of coefficients $\{f_j\},\{g_j\}\in S_G$. Define $\sigma(H) =1$ and $\sigma(\hm)  =-1$. Then the inner product
+			\begin{equation}
+				(f,g)_G = \sum_{j\ne 0} j^{2\sigma(G)}f_j\bar{g}_j
+			\end{equation}
+			converges by the Cauchy-Schwarz inequality; indeed, it converges absolutely because
+			\begin{equation}
+				\sum_{j\ne 0} j^{2\sigma(G)}|f_j||\bar{g}_j| \le \left(\sum_{j\ne0}j^{2\sigma(G)}|f_j|^2\right)^\frac{1}{2}\left(\sum_{j\ne 0}j^{2\sigma(G)}|g_j|^2\right)^\frac{1}{2} < \infty.
+			\end{equation}
+			Lastly, the value of the inner-product is well-defined because the sequences $\{f_j\}$ and $\{g_j\}$ are uniquely determined by $f$ and $g$ by the preliminary remarks.
+			
+			\textbf{Proof of (c)}
+			
+			For $G \in \{H,\hm\}$, in order to show that $(\cdot,\cdot)_G$ is an inner product, we need to show that $(\cdot,\cdot)_G$ is
+			\begin{itemize}
+				\item conjugate symmetric,
+				\item linear in the first argument,
+				\item and positive definite.
+			\end{itemize}
+			
+			Let $f,g \in G$ with corresponding coefficients $\{f_j\}, \{g_j\} \in S_G$. Then
+			\begin{equation}
+				(g,f)_G = \sum_{j\ne0}j^{2\sigma(G)}g_j\bar{f}_j = \overline{\sum_{j\ne0}j^{2\sigma(G)}\bar{g}_jf_j} = \overline{(f,g)_G},
+			\end{equation}
+			so $(\cdot,\cdot)_G$ is conjugate symmetric. If $\alpha,\beta \in \C$, and $\tilde{f} \in G$ with corresponding coefficients $\{\tilde{f}_j\} \in S_G$, then the coefficients of $\alpha f + \beta \tilde{f}$ in $S_G$ are clearly $\{\alpha f_j + \beta \tilde{f}_j\}$. Therefore,
+			\begin{align}
+				(\alpha f + \beta \tilde{f}, g)_G &= \sum_{j\ne 0}j^{2\sigma(G)}(\alpha f_j + \beta \tilde{f}_j)\bar{g}_j \\
+				&= \alpha \sum_{j\ne0}j^{2\sigma(G)}f_j\bar{g}_j + \beta\sum_{j\ne 0}j^{2\sigma(G)}\tilde{f}_j\bar{g}_j = \alpha(f,g)_G + \beta(\tilde{f},g)_G.
+			\end{align}
+			That is, $(\cdot,\cdot)_G$ is linear in the first argument. Finally, observe that
+			\begin{equation}
+				(f,f)_G = \sum_{j\ne 0} j^{2\sigma(G)}f_j\bar{f}_j = \sum_{j\ne0}j^{2\sigma(G)} |f_j|^2 \ge 0.
+			\end{equation}
+			If $(f,f)_G = 0$, then, since each term of the series for $(f,f)_G$ is nonnegative, it follows that each term must be zero, that is, $j^{2\sigma(G)}|f_j|^2 = 0$. This implies that $f_j = 0$ for all $j$ because $j^{2\sigma(G)} \ne 0$. Therefore, $f = 0$. This shows that $(\cdot,\cdot)_G$ is positive definite.
+			
+			\textbf{Proof of (d)}
+			
+			Let $G \in \{H,\hm\}$, and let $\{f^n\}_{n=1}^\infty$ be a Cauchy sequence in $G$ with respect to the norm $\lVert \cdot \rVert_G$ induced by the inner product $(\cdot,\cdot)_G$. Let $\{f^n_j\}$ be the corresponding coefficients of $f^n$ in $S_G$.
+			
+			Then, given $\varepsilon>0$, we can choose $N$ such that $n,m > N$ implies that
+			\begin{equation}
+				\varepsilon > \lVert f^n - f^m\rVert_G^2 = (f^n-f^m,f^n-f^m)_G = \sum_{j\ne 0}j^{2\sigma(G)}|f^n_j-f^m_j|^2.
+			\end{equation}
+			Since each term of the above series is nonnegative, it follows that for all $j$ and all $n,m > N$,
+			\begin{equation}
+				j^{2\sigma(G)}|f^n_j - f^m_j|^2 < \varepsilon.
+			\end{equation}
+			Thus, given $\varepsilon' > 0$, we can set $\varepsilon = \frac{\sqrt{\varepsilon'}}{j^{\sigma(G)}}$, for which we may choose $N_j$ such that $n,m > N_j$ implies that $|f^n_j - f^m_j| < \varepsilon'$. Thus, $\{f^n_j\}_{n=1}^\infty$ is a Cauchy sequence for all $j$. By the completeness of $\C$, each of these sequences has a limit, say $f_j \in \C$.
+			
+			Then $\{f_j\} \in S_G$. Indeed, let $J > 0$ be an integer, and define $\mathcal{J}_J = \{j \in \Z \setminus\{0\} : |j| \le J\}$. Since $\mathcal{J}_J$ is finite, by the convergence of the sequences $\{f^n_j\}_{n=1}^\infty$, we can choose $n$ such that $|f_j - f^n_j| < \frac{1}{J^2}$ for all $j \in \mathcal{J}_J$. Then
+			\begin{equation}
+			\label{eq:f_j_est}
+			\begin{aligned}
+				\sum_{j \in \mathcal{J}_J} j^{2\sigma(G)}|f_j|^2 &= \sum_{j\in\mathcal{J}_J} j^{2\sigma(G)}\left(|f_j - f^n_j|^2 + (f_j - f^n_j)\bar{f}^n_j + \overline{(f_j-f^n_j)}f^n_j + |f^n_j|^2\right) \\
+				&\le \sum_{j\in\mathcal{J}_J}\frac{j^{2\sigma(G)}}{J^4} + 2\left(\sum_{j\in\mathcal{J}_J}j^{2\sigma(G)}|f_j-f^n_j|^2\right)^\frac{1}{2}\left(\sum_{j\in\mathcal{J}_J}j^{2\sigma(G)}|f^n_j|^2\right)^\frac{1}{2}\\
+				&\quad + \sum_{j\in\mathcal{J}_J}j^{2\sigma(G)}|f^n_j|^2.
+			\end{aligned}
+			\end{equation}
+			Since $2\sigma(G) \le 2$, and $j \in \mathcal{J}_J$ implies that $|j| \le J$, it follows that $\frac{j^{2\sigma(g)}}{J^4} \le \frac{1}{j^2}$ for $j \in \mathcal{J}_J$. Also, it is well-known that
+			\begin{equation}
+				\lim_{J\to\infty} \sum_{j\in\mathcal{J}}\frac{1}{j^2} = \lim_{J\to\infty}2\sum_{j=1}^J\frac{1}{j^2} = \frac{\pi^2}{3}.
+			\end{equation}
+			Therefore,
+			\begin{equation}
+				\sum_{j\in\mathcal{J}_J}\frac{j^{2\sigma(G)}}{J^4} \le \frac{\pi^2}{3}.
+			\end{equation}
+			Furthermore, by the definition of $\lVert\cdot\rVert_G$,
+			\begin{equation}
+				\lVert f^n\rVert_G^2 = \lim_{J\to\infty} \sum_{j\in\mathcal{J}_J}j^{2\sigma(G)}|f^n_j|^2.
+			\end{equation}
+			Hence,
+			\begin{equation}
+				\sum_{j\in\mathcal{J}_J}j^{2\sigma(G)}|f^n_j|^2 \le \lVert f^n\rVert_G^2.
+			\end{equation}
+			The sequence $\{f^n\}$ is Cauchy with respect to $\lVert\cdot\rVert_G$, so it must be bounded with respect to $\lVert \cdot\rVert_G$, that is, there exists $K > 0$ such that $\lVert f^n \rVert_G \le K$ for all $n$.
+			
+			Combining these observations with (\ref{eq:f_j_est}), we get
+			\begin{equation}
+				\sum_{j\in\mathcal{J}_J} j^{2\sigma(G)}|f_j|^2 \le \frac{\pi^2}{3} + \frac{2K\pi}{\sqrt{3}} + K^2
+			\end{equation}
+			for all $J > 0$. This implies that
+			\begin{equation}
+				\sum_{j\ne 0} j^{2\sigma(G)}|f_j|^2 < \infty,
+			\end{equation}
+			so $\{f_j\} \in S_G$.
+			
+			Thus, there is a function $f \in G$ whose coefficients in $S_G$ are $\{f_j\}$. If we can show that $f^n \to f$ in $\lVert \cdot \rVert_G$, then we will have shown that $G$ is complete with respect to $\lVert \cdot\rVert_G$, that is, $G$ is a Hilbert space.
+			
+			Let $\varepsilon > 0$ be given. Then we can choose $N$ such that $n,m > N$ implies that $\lVert f^n - f^m \rVert < \varepsilon$. Let $n > N$. For $J > 0$, we can choose $m > n$ such that $|f_j-f^m_j| < \frac{\varepsilon}{J^4}$ for all $j \in \mathcal{J}_J$. Then, by a similar computation to (\ref{eq:f_j_est}),
+			\begin{equation}
+				\begin{aligned}
+				\sum_{j\in\mathcal{J}_J} j^{2\sigma(G)}|f_j - f^n_j|^2 &\le \sum_{j\in\mathcal{J}_J}\frac{\varepsilon j^{2\sigma(G)}}{J^4} + 2\left(\sum_{j\in\mathcal{J}_J}j^{2\sigma(G)}|f_j-f^n_j|^2\right)^\frac{1}{2}\left(\sum_{j\in\mathcal{J}_J}j^{2\sigma(G)}|f^n_j-f^m_j|^2\right)^\frac{1}{2}
+				\quad \\
+				&\quad{}+ \sum_{j\in\mathcal{J}_J}j^{2\sigma(G)}|f^n_j - f^m_j|^2\\
+				&\le \varepsilon\frac{\pi^2}{3} + 2\lVert f-f^n\rVert_G\cdot\lVert f^n - f^m\rVert_G + \lVert f^n - f^m\rVert_G^2 \\
+				&\le \left(\frac{\pi^2}{3} + \lVert f-f^n\rVert_G + \varepsilon\right)\varepsilon
+				\end{aligned}
+			\end{equation}
+			Since $\{f^n\}$ is Cauchy, $\{f-f^n\}$ is also Cauchy, and therefore also bounded; that is, there exists $L > 0$ such that $\lVert f-f^n\rVert \le L$ for all $n$. 
+			
+			Hence, for all $\varepsilon > 0$ and all $J > 0$, we have $n>N$ implies
+			\begin{equation}
+				\sum_{j\in\mathcal{J}_J}j^{2\sigma(G)}|f_j-f^n_j|^2 \le \left(\frac{\pi^2}{3}+L + \varepsilon\right)\varepsilon.
+			\end{equation}
+			Therefore, $n > N$ implies that
+			\begin{equation}
+				\lVert f-f^n\rVert_G^2 \le \left(\frac{\pi^2}{3}+L+\varepsilon\right)\varepsilon.
+			\end{equation}
+			Hence, for any $\varepsilon' > 0$, we can choose $N'$ such that $n > N'$ implies that
+			\begin{equation}
+				\lVert f-f^n\rVert_G \le \varepsilon'.
+			\end{equation}
+			That is, $f \to f^n$ in $\lVert\cdot\rVert_G$. Therefore, $G$ is complete.
+			
+			This shows that $G$ is a Hilbert space for $G \in \{H, \hm\}$.
+		\end{proof}
+		
+		\questionpart
+		For $f,g \in H$, define
+		\begin{equation}
+			B(f,g) = \sum_{j\ne 0}(ij + j^2)f_j\bar{g}_j.
+		\end{equation}
+		Then $B$ is a continuous, coercive, bilinear form; that is, $B$ satisfies the assumptions of the Lax-Milgram theorem.
+		
+		\begin{proof}
+			Like $(\cdot,\cdot)_H$, the function $B$ is well-defined because the sequences $\{f_j\}$ and $g_j$ in its definition are uniquely determined by $f$ and $g$, and the series converges absolutely because, by the Cauchy-Schwarz inequality,
+			\begin{equation}
+				\sum_{j\ne 0}|ij+j^2|\cdot|f_j|\cdot|\bar{g}_j| \le \left(\sum_{j\ne0}|ij+j^2||f_j|^2\right)^\frac{1}{2}\left(\sum_{j\ne0}|ij+j^2||g_j|^2\right)^\frac{1}{2} \le \sqrt{2}\lVert f\rVert_H\lVert G\rVert_H
+			\end{equation}
+			because $|ij+j^2| = \sqrt{j^2 +j^4}\le\sqrt{2j^4} \le \sqrt{2}j^2$ for all integers $j \ne0$. This also shows that $B$ is continuous because
+			\begin{equation}
+				|B(f,g)| \le \sum_{j\ne 0}|ij+j^2|\cdot |f_j|\cdot|\bar{g}_j| \le \sqrt{2}\lVert f\rVert_H\lVert g\rVert_H.
+			\end{equation}
+			
+			The function $B$ is bilinear because, if $f,\tilde{f}, g, \tilde{g} \in H$ with corresponding coefficients $\{f_j\}, \{\tilde{f}_j\},\{g_j\}, \{\tilde{g}_j\}\in S_H$, and $\alpha,\beta,\gamma,\delta\in\R$, then
+			\begin{align}
+				B(\alpha f+\beta\tilde{f}, \gamma g + \delta \tilde{g}) &= \sum_{j\ne0}(ij + j^2)(\alpha f_j + \beta \tilde{f}_j)(\gamma\bar{g}_j + \delta\overline{\tilde{g}}_j) \\
+				&= \alpha\gamma\sum_{j\ne0}(ij+j^2)f_j\bar{g}_j + \beta\gamma\sum_{j\ne 0}(ij+j^2)\tilde{f}_j\bar{g}_j \\
+				&\quad{}+\alpha\delta \sum_{j\ne0}(ij+j^2)f_j\overline{\tilde{g}}_j + \beta\delta\sum_{j\ne0}(ij+j^2)\tilde{f}_j\overline{\tilde{g}}_j\\
+				&= \alpha\gamma B(f,g) + \beta\gamma B(\tilde{f}, g) + \alpha\delta B(f,\tilde{g}) + \beta\delta B(\tilde{f},\tilde{g}),
+			\end{align}
+			as $\{\alpha f_j + \beta \tilde{f}_j\} \in S_H$ are the coefficients of $\alpha f + \beta \tilde{f}$.
+			Finally, $B$ is coercive because
+			\begin{equation}
+				|B(f,f)| = \left|\sum_{j\ne0}(ij + j^2)|f_j|^2\right| = \left[\left(\sum_{j\ne 0}j|f_j|^2\right)^2 + \left(\sum_{j\ne0}j^2|f_j|^2\right)^2\right]^\frac{1}{2} \ge \sum_{j\ne0}j^2|f_j|^2 = \lVert f\rVert_H^2.
+			\end{equation}
+		\end{proof}
+		
+		\questionpart
+		We can view $f \in \hm$ as an element of $H^*$ under the action
+		\begin{equation}
+			f(g) = \sum_{j\ne 0}g_j\bar{f}_j
+		\end{equation}
+		for $g \in H$, where $\{f_j\} \in S_\hm$ and $\{g_j\} \in S_H$ are the coefficients of $f$ and $g$.
+		\begin{proof}
+			As with $(\cdot,\cdot)_H$ and $B(\cdot,\cdot)$, the functional $f(g)$ is well-defined because the sequences $\{f_j\}$ and $\{g_j\}$ are uniquely determined by $f$ and $g$, and the series converges absolutely because
+			\begin{equation}
+				\left|\sum_{j\ne 0}g_j\bar{f}_j\right| \le \sum_{j\ne 0}j^{-1}|f_j|\cdot j|g_j| \le \left(\sum_{j\ne0}j^{-2}|f_j|^2\right)^\frac{1}{2}\left(\sum_{j\ne0}j^2|g_j|^2\right)^\frac{1}{2} \le \lVert f\rVert_\hm\lVert g\rVert_H.
+			\end{equation}
+			The functional $f$ is also linear because, given $\alpha,\beta \in \C$, and $g, \tilde{g} \in H$ with coefficients $\{g_j\},\{\tilde{g}_j\}\in S_H$,
+			\begin{equation}
+				f(\alpha g+ \beta\tilde{g}) =\sum_{j\ne 0}\bar{f}_j(\alpha g_j + \tilde{g}_j) = \alpha \sum_{j\ne 0}g_j\bar{f}_j + \beta\sum_{j\ne0}\tilde{g}_j\bar{f}_j = \alpha f(g) + \beta f(\tilde{g})
+			\end{equation}
+		\end{proof}
+	\end{arabicparts}
 \end{document}
