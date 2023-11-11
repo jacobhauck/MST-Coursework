@@ -1,0 +1,105 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\usepackage[ruled, linesnumbered]{algorithm2e}
+\SetKwComment{tcp}{  \% }{}
+
+\newcommand{\hwnum}{8}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question
+	Consider the formula
+	\begin{equation}
+		\label{eq:approx}
+		\int_0^h f(x)\dee x \approx h\left[Af(0) + Bf\left(\frac{h}{3}\right) + Cf(h)\right]
+	\end{equation}
+	\begin{alphaparts}
+		\questionpart
+		Formula (\ref{eq:approx}) is exact for all polynomials of degree 2 or less if and only if it is exact for $f(x) = 1$, $f(x) = x$, and $f(x) = x^2$. Therefore, to be exact for all polynomial of degree 2 or less, we need to choose $A,B,C$ such that
+		\begin{align}
+			\int_0^h1\dee x &= h = h(A + B + C), \\
+			\int_0^hx\dee x &= \frac{h^2}{2} = h\left[\frac{Bh}{3} + Ch\right], \\
+			\int_0^hx^2\dee x &= \frac{h^3}{3} = h\left[\frac{Bh^2}{9} + Ch^2\right].
+		\end{align}
+		Then
+		\begin{align}
+			A + B + C &= 1, \\
+			\frac{B}{3} + C &= \frac{1}{2}, \\
+			\frac{B}{9} + C &= \frac{1}{3}.
+		\end{align}
+		The last two equation imply that $B = \frac{3}{4}$, and $C = \frac{1}{4}$. Together with the first equation, this gives $A = 0$.
+		\questionpart Suppose that the trapezoid rule for $\int_0^2f(x)\dee x$ gives the approximation $\frac{1}{2}$, but formula (\ref{eq:approx}) gives $\frac{1}{4}$. If $f(0) = 3$, then $f\left(\frac{2}{3}\right) = 1$.
+		\begin{proof}
+			The trapezoid rule for $\int_0^2f(x)\dee x$ is $f(0)\cdot\frac{2-0}{2} + f(2)\cdot\frac{2-0}{2} = f(0) + f(2)$. Thus, $f(0) + f(2) = \frac{1}{2}$, so $f(2) = -\frac{5}{2}$. Using (\ref{eq:approx}) with $h = 2$, we must have
+			\begin{equation}
+				\frac{1}{4} = 2\cdot\left[0\cdot f(0) + \frac{3}{4}f\left(\frac{2}{3}\right) +\frac{1}{4}f(2)\right] = 2\cdot\left[\frac{3}{4}f\left(\frac{2}{3}\right) - \frac{5}{8}\right].
+			\end{equation}
+			Hence, $1 = 6f\left(\frac{2}{3}\right) - 5$, which implies that $f\left(\frac{2}{3}\right) =1$.
+		\end{proof}
+	\end{alphaparts}
+	
+	\question
+	\begin{alphaparts}
+		\questionpart
+		Recall our algorithm (version 2) for the forward phase of Gaussian elimination (Algorithm \ref{alg:gauss_elimination_forward}).
+		\begin{algorithm}[h]
+			\caption{Forward Phase of Gaussian Elimination}
+			\label{alg:gauss_elimination_forward}
+			\KwData{$A=\{a_{ij}\}$, an $n\times n$ nonsingular matrix.}
+			\KwData{$b=\{b_i\}$, an $n\times 1$ column vector.}
+			\KwResult{Matrix $A$ and vector $b$ after forward phase of Gaussian elimination; that is, $A$ and $b$ are modified so that $A$ is upper triangular, but the solution $x$ of $Ax=b$ is the same as before.}
+			\For{$k=1,2,\dots, n-1$}{
+				\For{$i=k+1, \dots,n$}{
+					$m_{ik} \gets \frac{a_{ik}}{a_{kk}}$\;
+					\For{$j=k,\dots,n$}{
+						$a_{ij} \gets a_{ij} - m_{ik}a_{kj}$\;
+					}
+					$b_i \gets b_i - m_{ik}b_k$\;
+				}
+			}
+		\end{algorithm}
+		We notice the multiplications and divisions occur on lines 3, 5, and 7 in the algorithm. Thus, the total number of multiplications and divisions is the total number of times these instructions are performed. For a given value of $k$, where $1 \le k \le n-1$, the loop starting on line 2 is performed $n - (k+1) + 1 = n-k$ times. Therefore, lines 3 and 7 are performed
+		\begin{equation}
+			N_{3,7} = \sum_{k=1}^{n-1}(n-k) = \sum_{k=1}^{n-1} k = \frac{(n-1)n}{2}
+		\end{equation}
+		times. For a given value of $k$ and $i$, the loop at line 4 is executed $n-k+1$ times. Therefore, line 5 is performed a total of
+		\begin{equation}
+			N_5 = \sum_{k=1}^{n-1}\sum_{i=k+1}^n (n-k+1) = \sum_{k=1}^{n-1}(n-k)(n-k+1) = \sum_{k=1}^{n-1}k(k+1) =\frac{(2n-1)n(n-1)}{6} + \frac{(n-1)n}{2}
+		\end{equation}
+		times. Finally, the total number of multiplications and divisions is
+		\begin{equation}
+			N_{3,7} + N_5 = \frac{1}{3}n^3 + \frac{5(n-1)n}{6} = \frac{1}{3}n^3 + \bigoh(n^2).
+		\end{equation}
+		
+		\questionpart
+		Recall the algorithm for the backward phase of Gaussian elimination (Algorithm \ref{alg:gauss_elimination_backward}).
+		\begin{algorithm}[h]
+			\caption{Backward Phase of Gaussian Elimination}
+			\label{alg:gauss_elimination_backward}
+			\KwData{$A = \{a_{ij}\}$, an $n\times n$ nonsingular, upper triangular matrix.}
+			\KwData{$b = \{b_i\}$, an $n\times 1$ column vector.}
+			\KwResult{The solution $x = \{x_i\}$ of $Ax=b$ as an $n\times 1$ column vector.}
+			\For{$i=n,n-1,\dots,1$}{
+				$x_i \gets b_i$\;
+				\For(\tcp*[h]{Loop does no iterations when $i=n$}){$j=i+1,\dots,n$}{
+					$x_i \gets x_i - a_{ij}x_j$\;
+				}
+				$x_i \gets \frac{x_i}{a_{ii}}$\;
+			}
+		\end{algorithm}
+		We see that one multiplication/division occurs on lines 4 and 6, so the total number of multiplications and division is equal to the total number of times these instructions are performed. Clearly, the instruction on line 6 is performed $n$ times.
+		
+		For a given value of $i$, where $1 \le i \le n$, the loop at line performs $n - (i+1) + 1 = n-i$ iterations, so line 4 is executed a total of
+		\begin{equation}
+			N_4 = \sum_{i=1}^n (n-i) = \sum_{i=0}^{n-1}i =\frac{(n-1)n}{2}
+		\end{equation}
+		times. Thus, the total number of multiplications and divisions is
+		\begin{equation}
+			n + N_4 = n + \frac{(n-1)n}{2} = \frac{n^2 + n}{2}.
+		\end{equation}
+	\end{alphaparts}
+\end{document}

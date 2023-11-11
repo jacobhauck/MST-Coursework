@@ -1,0 +1,26 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+
+\newcommand{\hwnum}{9}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question
+	\newcommand{\atwo}{A^{(2)}}
+	Let $A$ be a nonsingular matrix, and let $\atwo$ be the matrix from the lecture slides in the second step of Gaussian elimination. Then there exists $s \ge 2$ such that $a_{2s}^{(2)} \ne 0$.
+	\begin{proof}
+		Suppose on the contrary. By the Gaussian elimination process, we know that $a_{21}^{(2)} = 0$. If there is no $s \ge 2$ such that $a_{2s}^{(2)} \ne 0$, then the whole second row of $\atwo$ is zero. Hence, expanding by cofactors along the second row, we see that the determinant of $\atwo$ is
+		\begin{equation}
+			\det\left(\atwo\right) = 0\cdot\det(B_1) + 0\cdot\det(B_2) + \cdots +0\cdot\det(B_n) = 0,
+		\end{equation}
+		where $B_i$ is the cofactor corresponding to $a^{(2)}_{2i}$. Then $\atwo$ is singular.
+		
+		This is a contradiction because $\atwo$ was obtained from $A$ by elementary row operations, and $A$ was nonsingular, and applying row operations to a nonsingular matrix must result in a nonsingular matrix.
+	\end{proof}
+	
+	\question
+\end{document}
