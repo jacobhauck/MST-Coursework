@@ -1,0 +1,11 @@
+model1 arguments:
+    TokenEmbedding(arithmetic_easy_tokens, 256),
+    30, 5, 5, 8, 1024, p_dropout=.05
+
+model2 arguments:
+    TokenEmbedding(arithmetic_easy_tokens, 512),
+    30, 6, 6, 8, 2048, p_dropout=0.1
+
+model3 arguments:
+    TokenEmbedding(simple_tokens, 256),
+    130, 6, 6, 8, 1024, p_dropout=0.1
