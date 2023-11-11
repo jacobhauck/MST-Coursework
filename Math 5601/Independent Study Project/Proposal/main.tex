@@ -1,0 +1,30 @@
+\documentclass{article}
+\usepackage{geometry}[margin=.5in]
+\usepackage{parskip}
+
+\title{Math 5601 Independent Study Project Proposal}
+\author{Jacob Hauck}
+
+
+\begin{document}
+	\maketitle
+	
+	For my independent study project in Math 5601, I plan to study the \verb*|maxvol| algorithm for computing the CUR decomposition of a matrix \cite{goreinov_2010}.
+	
+	I will attempt to fulfill two goals for this project.
+	\begin{enumerate}
+		\item I will explain in my own words the theoretical estimates provided in \cite{goreinov_2010}.
+		\begin{enumerate}
+			\item For this part, I will read the paper and rewrite the important definitions and proofs with more explanation, details and commentary.
+		\end{enumerate}
+		\item I will create a NumPy implementation of the \verb*|maxvol| algorithm as it is described in \cite{goreinov_2010}.
+		\begin{enumerate}
+			\item First, I will create my own pseudocode description of the algorithm based on the theoretical understanding gained from the first part of the project.
+			\item Second, I will convert the pseudocode into actual Python code, implementing matrices using NumPy.
+			\item Third, I will test the algorithm on random matrices (following \cite{goreinov_2010}) to validate that it is correct and that the method is effective.
+		\end{enumerate}
+	\end{enumerate}
+	
+	\bibliographystyle{plain}
+	\bibliography{references.bib}
+\end{document}
