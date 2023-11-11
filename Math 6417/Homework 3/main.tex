@@ -66,7 +66,23 @@
 			\end{equation}
 			Therefore, $y_1 = y_2$. This shows that $A$ is one-to-one.
 			
-			Let $R(A)$ denote the range of $A$. We show that $H \setminus R(A)$ is open. Indeed, let $w \in R(A)$.
+			Let $R(A)$ denote the range of $A$. To show that $R(A)$ is closed, we need to show that if $\{w_n\} \subset R(A)$ is any sequence that converges to $w$, then $w\in R(A)$. To this end, let $\{w_n\} \subseteq R(A)$ be a convergent sequence, and let $w$ be its limit. Since $w_n \in R(A)$ for all $n$, there exists $y_n \in H$ such that $w_n = Ay_n$ for all $n$. We can use the coercivity of $B$ to show that $\{y_n\}$ is convergent.
+			
+			Indeed, for all $m,n$ and all $x\in H$, the definition of $A$ implies that $|B(x,y_n-y_m)| = |(x,w_n-w_m)| \le \lVert x\rVert \lVert w_n - w_m\rVert$. Since $\{w_n\}$ converges, it is Cauchy; hence,
+			\begin{align}
+				&\forall \varepsilon > 0: \exists N: n,m > N \rightarrow \lVert w_n - w_m\rVert < \varepsilon \\
+				\implies & \forall \varepsilon > 0: \exists N: n,m > N \rightarrow \forall x \in H : |B(x,y_n-y_m)| \le \lVert x \rVert \lVert w_n - w_m\rVert < \lVert x\rVert\varepsilon \\
+				\implies & \forall \varepsilon > 0: \exists N: n,m > N \rightarrow \alpha \lVert y_n - y_m\rVert^2 \le |B(y_n-y_m, y_n-y_m)| < \lVert y_n -y_m\rVert\varepsilon \\
+				\implies & \forall \varepsilon > 0: \exists N: n,m > N \rightarrow \lVert y_n -y_m\rVert < \frac{\varepsilon}{\alpha},
+			\end{align}
+			which implies that $\{y_n\}$ is Cauchy. Therefore, there exists $y \in H$ such that $y_n \to y$ as $n \to \infty$. Let $x \in H$, and let $\varepsilon > 0$ be given. By the continuity of $B$ and the inner product and the convergence of $\{y_n\}$ and $\{w_n\}$, there exists $n$ large enough that $|B(x,y-y_n)| < \frac{\varepsilon}{2}$, and $|(x,w-w_n)| < \frac{\varepsilon}{2}$. Then
+			\begin{equation}
+			\begin{aligned}
+				|B(x,y) - (x,w)| &= |B(x,y-y_n) + B(x,y_n) - (x,w_n) -(x,w-w_n)| \\
+				&\le |B(x,y-y_n)| + |(x,w-w_n)| < \varepsilon.
+			\end{aligned}
+			\end{equation}
+			Since $\varepsilon> 0$ was arbitrary and $x \in H$ was arbitrary, it follows that $B(x,y) = (x,w)$ for all $x \in H$. This implies that $w = Ay$ by the definition of $A$, and $w \in R(A)$. Since the convergent sequence $\{w_n\}\subseteq R(A)$ was arbitrary, and its limit $w \in R(A)$, it follows that $R(A)$ is closed.
 		\end{proof}
 		
 		\questionpart
@@ -90,4 +106,16 @@
 		Consider the equation $B(x,y) = f(x)$ for all $x \in H$, where $f \in H^{*}$. By the remark in part 1.7), we can choose $w \in H$ such that $f(x) = (x,w)$ for all $x \in H$. Then the equation is equivalent to $B(x,y) = (x,w)$ for all $x \in H$. If $y$ is a solution of this equation, then, by the definition of $A$, we must have $Ay = w$. Using the invertibility of $A$, we obtain $y = A^{-1}w$ as the unique solution of the equation. Viewing $f$ and $w$ as the same under the correspondence in 1.7), we might also write $y = A^{-1}f$.
 	\end{arabicparts}
 	
+	\question
+	Define
+	\begin{gather}
+		\label{eq:h}
+		H = \left\{f \in L^2(-\pi, \pi) : f(x) = \sum_{j\ne 0} f_j e^{ijx},\;\text{some }\{f_j\} \subset \C \text{ where } \sum_{j\ne 0} j^2|f_j|^2 < \infty\right\}, \\
+		\label{eq:hm1}
+		H^{-1} = \left\{\sum_{j\ne 0} f_j e^{ijx} : \{f_j\} \subset \C \text{ where } \sum_{j\ne 0} j^{-2}|f_j|^2 < \infty\right\}.
+	\end{gather}
+	
+	\begin{arabicparts}
+		\questionpart
+	\end{arabicparts}
 \end{document}
