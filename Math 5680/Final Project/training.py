@@ -267,9 +267,39 @@ class QATransformerTrainer:
           batch_callback(i_epoch, i_batch)
 
     return batch_losses, batch_accuracies
-  
 
-  import time
+  def evaluate(self, test_dl, verbosity: int = 1):
+    """
+    :param test_dl: data loader for the test dataset
+    :param verbosity: 0 for no messages, 1 for progress bars
+    """
+
+    # put model in evaluation mode (turn off dropout)
+    self.model.eval()
+    
+    # counters
+    n_correct = 0
+    n_total = 0
+    
+    # turn off gradient computations to speed up inference
+    with torch.no_grad():
+      if verbosity == 1:
+        test_dl = tqdm.notebook.tqdm(test_dl, unit='batches', position=0)
+      
+      for batch in test_dl:
+        qas = zip(*batch)
+        if verbosity == 1:
+          qas = tqdm.notebook.tqdm(qas, unit='questions', position=1)
+
+        for question, answer in qas:
+          model_answer = self.model(question)
+          
+          if model_answer.lower() == answer.lower():
+            n_correct += 1
+          
+          n_total += 1
+    
+    return n_correct / n_total
 
 
 class SavePeriodicallyCallback:

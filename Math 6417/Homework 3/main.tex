@@ -391,7 +391,7 @@
 			\end{equation}
 			for all $f,g\in H$ with $\{f_j\} = \varphi(f)$ and $\{g_j\} = \varphi(g)$. This implies that $B$ is continuous because $B$ is bilinear.
 			
-			For coercivity, let $f \in H$, and observe that
+			For coercivity, observe that
 			\begin{equation}
 				|B(f,f)| = \left|\sum_{j\ne0}(ij+j^2)|f_j|^2\right| = \left(\left[\sum_{j\ne0}j|f_j|^2\right]^2 + \left[\sum_{j\ne0}j^2|f_j|^2\right]^2\right)^\frac{1}{2} \ge \lVert f\rVert_H.
 			\end{equation}
@@ -399,11 +399,11 @@
 		\end{proof}
 		
 		\questionpart
-		$\hm \subseteq H^*$ if we assign $f \in \hm$ with $\{f_j\} = \psi(f)$ the action
+		$\hm \subseteq H^*$ if we assign the following action to $f \in \hm$:
 		\begin{equation}
 			f(g) = \sum_{j\ne0}f_j\bar{g}_j,
 		\end{equation}
-		where $\{g_j\}=\varphi(g)$.
+		where $\{g_j\}=\varphi(g)$, and $\{f_j\} = \psi(f)$.
 		
 		\begin{proof}
 			Let $f\in H$. Note that because $H$ is a real Hilbert space, an element of $H^*$ should be a real-valued, bounded linear functional. Thanks to the isomorphisms $\varphi$ and $\psi$, the action of $f \in \hm$ is well-defined, but we still need to show that the series converges to a real number. Then, we need to show that $f$ is linear over $\R$ and bounded. Then we will have $f \in H^*$, completing the proof.
@@ -452,12 +452,15 @@
 		\end{proof}
 		
 		\questionpart
-		Given $f \in \hm$, if $u$ satisfies (\ref{eq:weak_form}), then $u$ solves the ODE
+		Suppose that $f \in \hm \cap \ltwo$, and $u$ satisfies (\ref{eq:weak_form}) and is twice differentiable. Then $u$ is a solution of the ODE
 		\begin{equation}
-			u' -u'' = f.
+			 = f.
 		\end{equation}
 		\begin{proof}
-			
+			Set $\{u_j\} = \varphi(u)$, and $\{f_j\} = \psi(f)$. For any $x \in H$,
+			\begin{equation}
+				\sum_{j\ne 0}(ij + j^2)x_j\bar{u}_j = \sum_{j\ne0}f_j\bar{x}_j, \qquad \{x_j\} = \varphi(x).
+			\end{equation}
 		\end{proof}
 	\end{arabicparts}
 \end{document}
