@@ -28,8 +28,12 @@
 		\end{proof}
 		
 		\questionpart 
-		Given $y \in H$, by 1.1), there is a unique $w$ such that $B(x,y) = (x,w)$ for all $x \in H$; this defines a function $A: H \to H$, where $Ay = w$. Then $A$ is a bounded, linear operator on $H$, that is, $A \in B(H)$.
+		Given $y \in H$, by 1.1), there is a unique $w\in H$ such that $B(x,y) = (x,w)$ for all $x \in H$; this defines a function $A: H \to H$, where $Ay = w$. Then $A$ is a bounded, linear operator on $H$, that is, $A \in B(H)$.
 		\begin{proof}
+			There are two steps to this proof: showing that $A$ is linear, and showing that $A$ is bounded.
+			
+			\textbf{Step 1: linearity}
+			
 			Let $a_1, a_2 \in \R$ and $y_1, y_2 \in H$. Then for all $x \in H$,
 			\begin{equation}
 			\begin{aligned}
@@ -37,7 +41,9 @@
 				&= (x, a_1Ay_1 + a_2Ay_2).
 			\end{aligned}
 			\end{equation}
-			Thus, $w=A(a_1y_1+a_2y_2)$ and $w' = a_1Ay_1 + a_2Ay_2$ satisfy the property that $B(x,a_1y_1+a_2y_2) = (x,w) = (x,w')$ for all $x \in H$. Since there is only one element of $H$ that can satisfy this property by the Riesz representation theorem, it follows that $w=w'$, that is, $A(a_1y_1 + a_2y_2) = a_1Ay_1 + a_2Ay_2$. Therefore, $A$ is linear.
+			Thus, $w=A(a_1y_1+a_2y_2)$ and $w' = a_1Ay_1 + a_2Ay_2$ satisfy the property that $B(x,a_1y_1+a_2y_2) = (x,w) = (x,w')$ for all $x \in H$. By the Riesz representation theorem, there is only one element of $H$ that can satisfy this property; therefore, $w=w'$, or $A(a_1y_1 + a_2y_2) = a_1Ay_1 + a_2Ay_2$. Thus, $A$ is linear.
+			
+			\textbf{Step 2: boundedness}
 			
 			Note that $B$ is continuous if and only if (see, e.g., Theorem 8.10 assumption (a) in Arbogast and Bona) there exists some $M > 0$ such that
 			\begin{equation}
@@ -47,7 +53,7 @@
 			\begin{equation}
 				\lVert Ay\rVert = \left|\left(\frac{Ay}{\lVert Ay\rVert}, Ay\right)\right|=\left|B\left(\frac{Ay}{\lVert Ay\rVert},y \right)\right| \le M \lVert y\rVert.
 			\end{equation}
-			Since $y$ was arbitrary, it follows that $A$ is bounded, and $\lVert A \rVert \le M$. Thus, $A$ is a bounded, linear operator on $H$.
+			Since $y$ was arbitrary, it follows that $A$ is bounded, and $\lVert A \rVert \le M$.
 		\end{proof}
 		
 		\questionpart
@@ -69,23 +75,23 @@
 			\end{equation}
 			Therefore, $y_1 = y_2$. This shows that $A$ is one-to-one.
 			
-			Let $R(A)$ denote the range of $A$. To show that $R(A)$ is closed, we need to show that if $\{w_n\} \subset R(A)$ is any sequence that converges to $w$, then $w\in R(A)$. To this end, let $\{w_n\} \subseteq R(A)$ be a convergent sequence, and let $w$ be its limit. Since $w_n \in R(A)$ for all $n$, there exists $y_n \in H$ such that $w_n = Ay_n$ for all $n$. We can use the coercivity of $B$ to show that $\{y_n\}$ is convergent.
+			Let $R(A)$ denote the range of $A$, and let $\{w_n\} \subseteq R(A)$ be a convergent sequence in the range of $A$. By the definition of $R(A)$, there exists $y_n \in H$ such that $w_n = Ay_n$.
 			
-			Indeed, for all $m,n$ and all $x\in H$, the definition of $A$ implies that $|B(x,y_n-y_m)| = |(x,w_n-w_m)| \le \lVert x\rVert \lVert w_n - w_m\rVert$. Since $\{w_n\}$ converges, it is Cauchy; hence,
+			Let $\varepsilon > 0$ be given. Since $\{w_n\}$ is convergent, it is also Cauchy, so we can choose $N$ such that $n,m > N$ implies that $\lVert w_n - w_m\rVert < \varepsilon$. By the linearity of $A$, we have $A(y_n-y_m) = w_n-w_m$; hence,
 			\begin{align}
-				&\forall \varepsilon > 0: \exists N: n,m > N \rightarrow \lVert w_n - w_m\rVert < \varepsilon \\
-				\implies & \forall \varepsilon > 0: \exists N: n,m > N \rightarrow \forall x \in H : |B(x,y_n-y_m)| \le \lVert x \rVert \lVert w_n - w_m\rVert < \lVert x\rVert\varepsilon \\
-				\implies & \forall \varepsilon > 0: \exists N: n,m > N \rightarrow \alpha \lVert y_n - y_m\rVert^2 \le |B(y_n-y_m, y_n-y_m)| < \lVert y_n -y_m\rVert\varepsilon \\
-				\implies & \forall \varepsilon > 0: \exists N: n,m > N \rightarrow \lVert y_n -y_m\rVert < \frac{\varepsilon}{\alpha},
+				\alpha \lVert y_n-y_m\rVert^2 &\le |B(y_n-y_m,y_n-y_m)| = |(y_n-y_m,w_n-w_m)|\le \lVert y_n-y_m\rVert\cdot \lVert w_n - w_m\rVert \\
+				&\le \varepsilon\lVert y_n-y_m\rVert
 			\end{align}
-			which implies that $\{y_n\}$ is Cauchy. Therefore, there exists $y \in H$ such that $y_n \to y$ as $n \to \infty$. Let $x \in H$, and let $\varepsilon > 0$ be given. By the continuity of $B$ and the inner product and the convergence of $\{y_n\}$ and $\{w_n\}$, there exists $n$ large enough that $|B(x,y-y_n)| < \frac{\varepsilon}{2}$, and $|(x,w-w_n)| < \frac{\varepsilon}{2}$. Then
+			if $n,m > N$. Thus, $n,m >N$ implies that $\lVert y_n - y_m\rVert < \frac{\varepsilon}{\alpha}$. This implies that  $\{y_n\}$ Cauchy.
+			
+			Since $H$ is complete, there exists $y \in H$ such that $y_n \to y$ as $n \to \infty$. Let $x \in H$, and let $\varepsilon > 0$ be given. By the continuity of $B$ and the inner product and the convergence of $\{y_n\}$ and $\{w_n\}$, there exists $n$ large enough that $|B(x,y-y_n)| < \frac{\varepsilon}{2}$, and $|(x,w-w_n)| < \frac{\varepsilon}{2}$. Then
 			\begin{equation}
 			\begin{aligned}
 				|B(x,y) - (x,w)| &= |B(x,y-y_n) + B(x,y_n) - (x,w_n) -(x,w-w_n)| \\
 				&\le |B(x,y-y_n)| + |(x,w-w_n)| < \varepsilon.
 			\end{aligned}
 			\end{equation}
-			Since $\varepsilon> 0$ was arbitrary and $x \in H$ was arbitrary, it follows that $B(x,y) = (x,w)$ for all $x \in H$. This implies that $w = Ay$ by the definition of $A$, and $w \in R(A)$. Since the convergent sequence $\{w_n\}\subseteq R(A)$ was arbitrary, and its limit $w \in R(A)$, it follows that $R(A)$ is closed.
+			Since $\varepsilon> 0$ was arbitrary and $x \in H$ was arbitrary, it follows that $B(x,y) = (x,w)$ for all $x \in H$. This implies that $w = Ay$ by the definition of $A$, which means that $w \in R(A)$. Since the convergent sequence $\{w_n\}\subseteq R(A)$ was arbitrary, and its limit $w \in R(A)$, it follows that $R(A)$ is closed.
 		\end{proof}
 		
 		\questionpart
@@ -110,7 +116,7 @@
 	\end{arabicparts}
 	
 	\question
-	\newcommand{\ltwo}{L^2(-\pi,\pi)}
+	\newcommand{\ltwo}{{L^2(-\pi,\pi)}}
 	\newcommand{\hm}{{H^{-1}}}
 	Let $e_j \in \ltwo$ be defined by $e_j(x) = \frac{1}{\sqrt{2\pi}}e^{ijx}$ for $j \in \Z$. Define
 	\begin{equation}
@@ -128,9 +134,11 @@
 		\end{equation}
 		
 		\begin{proof}
-		Before we can show that $H$ and $\hm$ are real Hilbert spaces, we need to make sense of their definitions (and of the definitions of the inner products). For the definition $H$, there isn't much trouble -- its elements are elements of $\ltwo$. For the definition $H^{-1}$, the series might not converge to an element of $\ltwo$ (say, $f_j = 1$ for all $j$), so it's not clear in what sense the convergence of the series should be taken (at least, I don't feel like working it out here, as it won't be critical to the rest of these exercises). Nevertheless, we can understand $H$ in terms of a corresponding space of coefficient sequences, which is isomorphic to $H$ as a real vector space. By analogy, then, we can understand $H^{-1}$ in terms of its corresponding space of coefficient sequences, which will suffice for our purposes. We will come back to the inner products later.
+		Before we can show that $H$ and $\hm$ are real Hilbert spaces, we need to study their definitions. For the definition $H$, there isn't much trouble -- its elements are just elements of $\ltwo$. For the definition $H^{-1}$, the series might not converge to an element of $\ltwo$ (say, $f_j = 1$ for all $j$), so understanding what the convergence of the infinite sum means is more difficult. 
 		
-		To understand the spaces of coefficient sequences, we introduce the following Lemma showing that $H$ is a real vector space isomorphic to its space of coefficient sequences.
+		As we will see, we can understand $H$ in terms of a corresponding space of coefficient sequences, which is isomorphic to $H$ as a real vector space. By analogy, then, we can understand $H^{-1}$ in terms of its corresponding space of coefficient sequences, which will suffice for our purposes.
+		
+		To understand these spaces of coefficient sequences, we introduce the following Lemma showing that $H$ is a real vector space isomorphic to its space of coefficient sequences.
 		\begin{lemma}
 		Define
 		\begin{equation}
@@ -148,19 +156,19 @@
 			
 			\textbf{Step 1: definition of $\varphi$}
 			
-			Let $f \in H$. Then $f \in \ltwo$. Recalling from our lecture that $\basis = \left\{e_j\right\}_{j\in\Z}$ is an orthonormal basis for $\ltwo$, it follows that there is exactly one sequence of coefficients $\{g_j\}\subseteq\C$ such that
+			Let $f \in H$. Then $f \in \ltwo$. Recalling from our lecture that $\{e_j\}_{j\in\Z}$ is an orthonormal basis for $\ltwo$, it follows that there exists exactly one sequence of coefficients $\{g_j\}\in\ell^2(\Z)$ such that
 			\begin{equation}
 				f = \sum_{j\in\Z}g_je_j.
 			\end{equation}
-			Since there must be \textit{some} sequence of coefficients $\{f_j\} \subseteq\C$ such that
+			On the other hand, since $f\in H$, there must be a sequence of coefficients $\{f_j\} \subseteq\C$ such that
 			\begin{equation}
-				f = \sum_{j\ne 0}f_je_j,\qquad \sum_{j\ne0}j^2|f_j|^2,
+				f = \sum_{j\ne 0}f_je_j,\qquad \sum_{j\ne0}j^2|f_j|^2 < \infty,
 			\end{equation}
-			it follows by the uniqueness of $\{g_j\}$ that $g_0 = 0$, and $g_j = f_j$ for all $j \ne 0$. Furthermore, since $f = \bar{f}$, it follows that
+			It follows by the uniqueness of $\{g_j\}$ that $g_0 = 0$, and $g_j = f_j$ for all $j \ne 0$. Furthermore, since $f = \bar{f}$, it follows that
 			\begin{equation}
 				\bar{f}(x) = \n\overline{\sum_{j\ne 0}f_je^{ijx}} = \n\sum_{j\ne 0}\bar{f}_je^{-ijx}=\n\sum_{j\ne0}\bar{f}_{-j}e^{ijx} = f(x).
 			\end{equation}
-			That is, $f = \sum\limits_{j\ne 0}\bar{f}_{-j}e_j$; by the uniqueness of $\{g_j\}$ again, we must have $\bar{f}_{-j} = g_j = f_j$ for all $j \ne 0$. Hence, $\{f_j\} \in S_H$. Since $\{f_j\}$ is uniquely determined by $f$ by the uniqueness of $\{g_j\}$, it follows that we can define a function $\varphi : H \to S_H$ by $\varphi(f) = \{f_j\}$.
+			That is, $f = \sum\limits_{j\ne 0}\bar{f}_{-j}e_j$; by the uniqueness of $\{g_j\}$ again, we must have $\bar{f}_{-j} = g_j = f_j$ for all $j \ne 0$. Hence, $\{f_j\} \in S_H$. Since $\{f_j\}$ is uniquely determined by $f$ by the uniqueness of $\{g_j\}$, we can define a function $\varphi : H \to S_H$ by $\varphi(f) = \{f_j\}$.
 			
 			\textbf{Step 2: $\varphi$ is a one-to-one correspondence}
 			
@@ -174,7 +182,7 @@
 			\begin{equation}
 				\sum_{j\in\Z}|g_j|^2 = \sum_{j\ne 0}|f_j|^2 \le \sum_{j\ne 0}j^2|f_j|^2 < \infty
 			\end{equation}
-			because $\{f_j\} \in S_H$. Therefore, $\{g_j\} \in \ell^2(\Z)$, and $f = F^{-1}(\{g_j\}) \in \ltwo$. By the definition of $F$, we have
+			because $\{f_j\} \in S_H$. Therefore, $\{g_j\} \in \ell^2(\Z)$, and $f = F^{-1}(\{g_j\}) \in \ltwo$. By the definition of $F$ and the fact that $\{e_j\}$ is an orthonormal basis, we have
 			\begin{equation}
 				f = F^{-1}(\{g_j\}) = \sum_{j\in\Z}g_je_j = \sum_{j\ne 0}f_je_j.
 			\end{equation}
@@ -190,14 +198,13 @@
 			
 			\textbf{Step 3: $H$ and $S_H$ are real vector spaces}
 			
-			$H$ is a nonempty subset (it contains 0) of the real vector space $\ltwo$, and $S_H$ is a nonempty subset (it contains 0) of the real vector space $\C^{\Z \setminus \{0\}}$ (the space of all sequences of complex numbers). Thus, it suffices to show that $H$ and $S_H$ are subspaces of these two vector spaces. 
+			$H$ is a nonempty subset (it contains 0) of the real vector space $\ltwo$, and $S_H$ is a nonempty subset (it contains 0) of the real vector space $\ell^2(\Z \setminus \{0\})$. Thus, it suffices to show that $H$ and $S_H$ are subspaces of these two vector spaces. 
 			
 			Let $\{f_j\}, \{g_j\} \in S_H$, and let $\alpha,\beta\in\R$. Then $\{h_j\} = \alpha\{f_j\} + \beta\{g_j\} \in S_H$ because $\bar{h}_{-j} = \alpha\bar{f}_{-j} + \beta\bar{g}_{-j} = \alpha f_j + \beta g_j = h_j$, and
 			\begin{align}
-				\sum_{j\ne 0}j^2|h_j|^2 &= \sum_{j\ne0}j^2|\alpha f_j +\beta g_j|^2 = \sum_{j\ne 0}j^2(\alpha^2|f_j|^2 + \alpha\beta(f_j\bar{g}_j + \bar{f}_jg_j) +\beta^2|g_j|^2)\\
-				&\le \alpha^2\sum_{j\ne 0}j^2|f_j|^2 + 2\alpha\beta\left(\sum_{j\ne0}j^2|f_j|^2\right)^\frac{1}{2}\left(\sum_{j\ne0}j^2|g_j|^2\right)^\frac{1}{2} + \beta^2\sum_{j\ne0}j^2|g_j|^2 < \infty
+				\sum_{j\ne 0}j^2|h_j|^2 = \sum_{j\ne0}j^2|\alpha f_j +\beta g_j|^2 \le 2\alpha^2\sum_{j\ne0}j^2|f_j|^2 + 2\beta^2\sum_{j\ne0}< j^2|g_j|^2 < \infty
 			\end{align}
-			by the Cauchy-Schwarz inequality. Thus, $S_H$ is a real vector subspace of the space of all sequences of complex numbers.
+			since $|\alpha f_j + \beta g_j|^2 \le 2(\alpha^2|f_j|^2 + \beta^2|g_j|^2)$ for all $j$. Thus, $S_H$ is a real vector subspace of the space of all sequences of complex numbers.
 			
 			Now let $f,g \in H$, and $\alpha,\beta\in\R$. Set $\{f_j\} = \varphi(f)$, and $\{g_j\} = \varphi(g)$. Then $\{h_j\} = \alpha\{f_j\} + \beta\{g_j\}\in S_H$, so we can define $h =\varphi^{-1}(\{h_j\})$. By the definition of $h$, we have
 			\begin{equation}
@@ -220,12 +227,15 @@
 		\end{equation}
 		then we can understand $\hm$ to be a real vector space isomorphic to $S_\hm$. Note that $S_\hm$ is indeed a real vector space; like $S_H$, it is a nonempty subset (it contains 0) of the vector space of all sequences of complex numbers, and if $\{f_j\}, \{g_j\} \in S_\hm$, and $\alpha,\beta\in\R$, then $\{h_j\} = \alpha\{f_j\} + \beta\{g_j\} \in S_H$ because $\bar{h}_{-j} = \alpha\bar{f}_{-j} + \beta\bar{g}_{-j} = \alpha f_j + \beta g_j = h_j$, and
 		\begin{align}
-			\sum_{j\ne 0}j^2|h_j|^2 &= \sum_{j\ne0}j^{-2}|\alpha f_j +\beta g_j|^2 = \sum_{j\ne 0}j^{-2}(\alpha^2|f_j|^2 + \alpha\beta(f_j\bar{g}_j + \bar{f}_jg_j) +\beta^2|g_j|^2)\\
-			&\le \alpha^2\sum_{j\ne 0}j^{-2}|f_j|^2 + 2\alpha\beta\left(\sum_{j\ne0}j^{-2}|f_j|^2\right)^\frac{1}{2}\left(\sum_{j\ne0}j^{-2}|g_j|^2\right)^\frac{1}{2} + \beta^2\sum_{j\ne0}j^{-2}|g_j|^2 < \infty
+			\sum_{j\ne 0}j^{-2}|h_j|^2 = \sum_{j\ne0}j^{-2}|\alpha f_j +\beta g_j|^2 \le 2\alpha^2\sum_{j\ne0}j^{-2}|f_j|^2 + 2\beta^2\sum_{j\ne0}j^{-2}|g_j|^2 < \infty
 		\end{align}
-		by the Cauchy-Schwarz inequality. From here on, we will assume that there exists an isomorphism (of real vector spaces) $\psi: \hm \to S_\hm$.
+		since $|\alpha f_j + \beta g_j|^2 \le 2(\alpha^2|f_j|^2 + \beta^2|g_j|^2)$ for all $j$. 
 		
-		Now we turn to the issue of equipping $H$ and $\hm$ with inner products. The given inner products are defined in terms of the sequence representations of elements of $H$ and $\hm$; this is well-defined due to the (actual) isomorphism between $H$ and $S_H$ and the (assumed) isomorphism between $\hm$ and $S_\hm$. It also allows us to work with $S_\hm$ without needing to worry about how to interpret its elements -- we only need to work with the well-defined sequence representations in $S_\hm$.
+		We notice that it is possible for the series in the definition of $\hm$ to converge for some $\{f_j\} \in S_\hm$. In particular, if $\{f_j\} \in \ell^2(\Z \setminus\{0\})$, then the series converges to a function $f \in \ltwo$. Moreover, by the same reasoning in Lemma 1, the function $f$ is uniquely determined by the coefficients $\{f_j\}$, and vice versa.
+		
+		Thus, when $f\in\ltwo$, and the coefficients $\{f_j\}$ of $f$ with respect to the orthonormal basis $\{e_j\}$ belong to $\ell^2(\Z\setminus\{0\})$ with $f_0 =0$ and $f_j = \bar{f}_{-j}$, it makes sense to view $f$ as an element of $\hm$, and we can define a function $\psi: \hm \to S_\hm$ by $\psi(f) = \{f_j\}_{j\ne0}$. By the exact same reasoning in Lemma 1, we can easily verify that $\psi$ is one-to-one and linear. This gives us an interpretation of at least some of the elements of $\hm$; from now on, we will simply assume that $\psi$ can be extended to an isomorphism between $\hm$ and $S_\hm$.
+		
+		Now we turn to the issue of equipping $H$ and $\hm$ with inner products. The given inner products are defined in terms of the sequence representations of elements of $H$ and $\hm$; this is well-defined due to the (actual) isomorphism between $H$ and $S_H$ and the (assumed) isomorphism between $\hm$ and $S_\hm$. It also allows us to work with $S_\hm$ without needing to worry about how to interpret its elements -- we will only need to work with the sequence representations in $S_\hm$.
 		
 		We need to show that $H$ and $\hm$ are real inner product spaces when equipped with $(\cdot,\cdot)_H$ and $(\cdot,\cdot)_\hm$ as inner products. We wrap this into the following Lemma.
 		\begin{lemma}
@@ -267,7 +277,7 @@
 			
 			Let $f,g \in G$, and let $\{f_j\} = \rho(f)$, and $\{g_j\} = \rho(g)$. Then
 			\begin{equation}
-				(f,g)_G = \sum_{j\ne0}j^{2s}f_j\bar{g}_j = \sum_{j\ne0}j^{2s}f_{-j}\bar{g}_{-j} = \sum_{j\ne0}g_j\bar{f}_j = (g,f)_G.
+				(f,g)_G = \sum_{j\ne0}j^{2s}f_j\bar{g}_j = \sum_{j\ne0}j^{2s}f_{-j}\bar{g}_{-j} = \sum_{j\ne0}j^{2s}g_j\bar{f}_j = (g,f)_G.
 			\end{equation}
 			Therefore, $(\cdot,\cdot)_G$ is symmetric.
 			
@@ -275,9 +285,9 @@
 			
 			Let $f,g,h\in G$, and let $\{f_j\} = \rho(f)$, $\{g_j\} = \rho(g)$, and $\{h_j\} = \rho(h)$. Let $\alpha, \beta \in \R$. Then $\rho(\alpha f + \beta g) = \alpha\rho(f) + \beta\rho(g)$ because $\rho$ is linear, so
 			\begin{equation}
-				(\alpha f + \beta g, h)_G = \sum_{j\ne0}j^{2s}(\alpha f_j + \beta g_j)\bar{h}_j = \alpha\sum_{j\ne0}j^{2s}f_j\bar{h}_j + \beta \sum_{j\ne0}f_j\bar{h}_j = \alpha(f,h)_G + \beta(g,h)_G,
+				(\alpha f + \beta g, h)_G = \sum_{j\ne0}j^{2s}(\alpha f_j + \beta g_j)\bar{h}_j = \alpha\sum_{j\ne0}j^{2s}f_j\bar{h}_j + \beta \sum_{j\ne0}j^{2s}g_j\bar{h}_j = \alpha(f,h)_G + \beta(g,h)_G.
 			\end{equation}
-			that is, $(\cdot,\cdot)_G$ is linear in the first argument.
+			Therefore, $(\cdot,\cdot)_G$ is linear in the first argument.
 			
 			\textbf{Step 4: $(\cdot,\cdot)_G$ is positive definite}
 			
@@ -290,7 +300,7 @@
 			This shows that $(\cdot,\cdot)_G$ is positive definite.
 		\end{proof}
 		
-		Now we know that $H$ and $\hm$ are real inner product spaces, so there is only one more thing to show in order to prove that they are real Hilbert spaces: they need to be complete with respect to the norms $\lVert\cdot\rVert_H$ and $\lVert\cdot\rVert_\hm$ induced by their inner products. For the sake of organization, we put this in one last Lemma.
+		Now we know that $H$ and $\hm$ are real inner product spaces, so there is only one more thing to show in order to prove that they are real Hilbert spaces: they need to be complete with respect to the norms $\lVert\cdot\rVert_H$ and $\lVert\cdot\rVert_\hm$ induced by their inner products. For the sake of organization, we put this proof inside one last Lemma.
 		
 		\begin{lemma}
 			For $G \in \{H,H^{-1}\}$ and $s = s_G$, $\rho = \rho_G$ defined as in Lemma 2, the space $G$ is complete with respect to the norm $\lVert\cdot\rVert_G$ induced by the inner product $(\cdot,\cdot)_G$ from Lemma 2.
@@ -304,47 +314,40 @@
 				\begin{equation}
 					\varepsilon^2 > \lVert f^n - f^m\rVert_G^2 = \sum_{j\ne0}j^{2s}|f^n_j - f^m_j|^2,
 				\end{equation}
-				where $\{f^n_j\} = \rho(f^n)$. Since each term in the summation is nonnegative, this means that $|j^sf^n_j - j^sf^m_j| < \varepsilon$ for all $n, m > N$. Thenl $\{j^sf^n_j\}_{n=1}^\infty$ is Cauchy for all $j \ne 0$. Thus, by the completeness of $\C$, the sequence $\{j^sf^n_j\}$ converges to a limit $j^sf_j \in \C$ as $n \to\infty$.
+				where $\{f^n_j\} = \rho(f^n)$. Since each term in the summation is nonnegative, this means that $|j^sf^n_j - j^sf^m_j| < \varepsilon$ for all $n, m > N$. Then $\{j^sf^n_j\}_{n=1}^\infty$ is Cauchy for all $j \ne 0$. Thus, by the completeness of $\C$, the sequence $\{j^sf^n_j\}$ converges to a limit $j^sf_j \in \C$ as $n \to\infty$.
 				
 				\newcommand{\idx}{\mathcal{J}_J}
 				Since $j^s\bar{f}^n_j = j^sf^n_{-j}$ for all $j$ and all $n$, taking the limit as $n \to \infty$ and using the continuity of the complex conjugate function, we get $j^s\bar{f}_j = j^sf_{-j}$ for all $j\ne0$. Since $j^s \ne 0$, it follows that $\bar{f}_j = f_{-j}$ for all $j\ne 0$.
 				
-				Furthermore, by the convergence of $\{j^sf^n_j\}$ to $j^sf_j$, for all $J > 0$, we can choose $n$ large enough that $|j^sf_j - j^sf^n_j|^2 \le J^{-1}$ for all $0 < |j| \le J$. Then
+				Furthermore, by the convergence of $\{j^sf^n_j\}$ to $j^sf_j$, for all $J > 0$, we can choose $n$ large enough that $|j^sf_j - j^sf^n_j|^2 \le \frac{1}{2J}$ for all $0 < |j| \le J$. Then
 				\begin{align}
-					\sum_{0<|j|\le J}j^{2s}|f_j|^2 &= \sum_{0<j\le |J|}|j^sf_j - j^sf^n_j|^2 + j^{2s}f_j\bar{f}^n_j +j^{2s}\bar{f}_jf^n_j + j^{2s}|f^n_j|^2 \\
-					&= \sum_{0<|j|\le J} |j^sf_j - j^sf^n_j|^2 + j^{2s}(f_j-f^n_j)\bar{f}^n_j + j^{2s}\overline{(f_j-f^n_j)}f^n_j + 3j^{2s}|f^n_j|^2\\
-					&\le 2 + 2\left(\sum_{0<|j|\le J}|j^sf_j-j^sf^n_j|^2\right)^\frac{1}{2}\left(\sum_{0<|j|\le J}j^{2s}|f^n_j|^2\right)^\frac{1}{2} + 3\sum_{0<|j|\le J}j^{2s}|f^n_j|^2\\
-					&\le 2 + 2\sqrt{2}\lVert f^n\rVert_G + 3\lVert f^n\rVert_G^2.
+					\sum_{0<|j|\le J}j^{2s}|f_j|^2 &= \sum_{0<j\le|J|}|j^sf_j - j^sf^n_j + j^sf^n_j|^2\le 2\sum_{0<|j|\le J} |j^sf_j - j^sf^n_j|^2  +2\sum_{0<j\le|J|}j^{2s}|f^n_j|^2\\
+					&\le 4 +2\lVert f^n\rVert_G^2.
 				\end{align}
 				Since $\{f^n\}$ is Cauchy in $\lVert\cdot\rVert_G$, it must be bounded; that is, there exists $M > 0$ such that $\lVert f^n\rVert_G \le M$ for all $n$. Then
 				\begin{equation}
-					\sum_{0<|j|\le J}j^{2s}|f_j|^2 \le 2 + 2\sqrt{2}M + 3M^2
+					\sum_{0<|j|\le J}j^{2s}|f_j|^2 \le 4 + 2M^2
 				\end{equation}
 				for all $J > 0$. This implies that
 				\begin{equation}
-					\sum_{j\ne 0}j^{2s}|f_j|^2 \le 2 + 2\sqrt{2}M+3M^2 < \infty.
+					\sum_{j\ne 0}j^{2s}|f_j|^2 \le 4 + 2M^2 < \infty.
 				\end{equation}
 				Therefore, $\{f_j\} \in S_G$, and we can define our candidate limit as $f = \rho^{-1}(\{f_j\})$.
 				
 				\textbf{Step 2: showing that the candidate is the limit}
 				
-				Let $\varepsilon > 0$ be given. Since $\{f^n\}$ is Cauchy, we can choose $N$ such that $n,m > N$ implies that $\lVert f^n - f^m\rVert_G^2 < \varepsilon$. By the convergence of $\{j^sf^n_j\}$, for any $J > 0$, we can choose $m_J > N$ such that for all $0 < |j| \le J$ we have $|j^sf_j-j^sf^{m_J}_j|^2 < \varepsilon J^{-1}$. Then
+				Let $\varepsilon > 0$ be given. Since $\{f^n\}$ is Cauchy, we can choose $N$ such that $n,m > N$ implies that $\lVert f^n - f^m\rVert_G^2 < \varepsilon$. By the convergence of $\{j^sf^n_j\}$, for any $J > 0$, we can choose $m_J > N$ such that for all $0 < |j| \le J$ we have $|j^sf_j-j^sf^{m_J}_j|^2 < \frac{\varepsilon}{2J}$. Then
 				\newcommand{\lJ}{{0<|j|\le J}}
 				\begin{align}
-					\sum_\lJ j^{2s}|f_j - f^n_j|^2 &= \sum_\lJ |j^sf_j - j^sf^n_j| = \sum_\lJ |j^sf_j - j^sf^{m_J}_j + (j^sf^{m_J}_j - j^sf^n_j)|^2 \\
-					&= \sum_\lJ |j^sf_j - j^sf^{m_J}_j|^2 + (j^sf_j-j^sf^{m_J}_j)\overline{(j^sf^{m_J}_j-j^sf^n_j)} \\
-					&\qquad\qquad\quad{}+ \overline{(j^sf_j-j^sf^{m_J}_j)}(j^sf^{m_J}_j-j^sf^n_j) + |j^sf^{m_J}-j^sf^n_j|^2\\
-					&\le 2\varepsilon + 2\left(\sum_\lJ |j^sf_j - j^sf^{m_J}_j|^2\right)^\frac{1}{2}\left(\sum_\lJ|j^sf^{m_J}_j-j^sf^n_j|^2\right)^\frac{1}{2} \\
-					&\qquad{}+ \sum_\lJ |j^sf^{m_J}_j -j^sf^n_j|^2 \\
-					&\le 2\varepsilon + 2\sqrt{2\varepsilon}\lVert f^{m_J} - f^n\rVert_G + \lVert f^{m_J} -f^n\rVert_G^2 \\
-					&\le 2\varepsilon + 2\sqrt{2}\varepsilon + \varepsilon
-					\le \left(3+2\sqrt{2}\right)\varepsilon.
+					\sum_\lJ j^{2s}|f_j - f^n_j|^2 &= \sum_\lJ |(j^sf_j - j^sf^{m_J}_j) + (j^sf^{m_J}_j - j^sf^n_j)|^2 \\
+					&\le 2\sum_\lJ |j^sf_j - j^sf^{m_J}_j|^2 + 2\sum_\lJ j^{2s}|f^{m_J}-f^n_j|^2\\
+					&\le 2\varepsilon + 2\lVert f^{m_J} -f^n\rVert_G^2 \le 4\varepsilon
 				\end{align}
-				Since this estimate is independent of $J$, it follows that
+				if $n > N$. Since this estimate is independent of $J$, it follows that
 				\begin{equation}
-					\lVert f - f^n\rVert_G^2 = \sum_{j\ne 0}j^{2s}|f_j-f^n_j| < \left(3+2\sqrt{2}\right)\varepsilon
+					\lVert f - f^n\rVert_G^2 = \sum_{j\ne 0}j^{2s}|f_j-f^n_j| < 4\varepsilon
 				\end{equation}			
-				whenever $n > N$. Therefore, $f^n \to f$ as $n\to \infty$ in $\lVert \cdot \rVert_G$.
+				if $n > N$. Therefore, $f^n \to f$ as $n\to \infty$ in $\lVert \cdot \rVert_G$.
 			\end{proof}
 		\end{lemma}
 		
@@ -401,12 +404,12 @@
 		\questionpart
 		$\hm \subseteq H^*$ if we assign the following action to $f \in \hm$:
 		\begin{equation}
-			f(g) = \sum_{j\ne0}f_j\bar{g}_j,
+			f(g) = \sum_{j\ne0}f_j\bar{g}_j, \qquad g\in H,
 		\end{equation}
 		where $\{g_j\}=\varphi(g)$, and $\{f_j\} = \psi(f)$.
 		
 		\begin{proof}
-			Let $f\in H$. Note that because $H$ is a real Hilbert space, an element of $H^*$ should be a real-valued, bounded linear functional. Thanks to the isomorphisms $\varphi$ and $\psi$, the action of $f \in \hm$ is well-defined, but we still need to show that the series converges to a real number. Then, we need to show that $f$ is linear over $\R$ and bounded. Then we will have $f \in H^*$, completing the proof.
+			Let $f\in \hm$. Note that, because $H$ is a real Hilbert space, an element of $H^*$ should be a real-valued, bounded linear functional. Thanks to the isomorphisms $\varphi$ and $\psi$, the action of $f \in \hm$ is well-defined, but we still need to show that the series converges to a real number. Then, we need to show that $f$ is linear over $\R$ and bounded. Then we will have $f \in H^*$, completing the proof.
 			
 			\textbf{Step 1: $f(g)$ converges to a real number}
 			
@@ -452,15 +455,109 @@
 		\end{proof}
 		
 		\questionpart
-		Suppose that $f \in \hm \cap \ltwo$, and $u$ satisfies (\ref{eq:weak_form}) and is twice differentiable. Then $u$ is a solution of the ODE
+		Suppose that $u$ satisfies (\ref{eq:weak_form}). Then, formally, $u$ solves the ODE
 		\begin{equation}
-			 = f.
+			-(u' + u'')= f.
+		\end{equation}
+		Rigorously, if $f \in \ltwo \cap \hm$, then $u$ is twice differentiable, and
+		\begin{equation}
+			-(u'(x) + u''(x)) = f(x).
 		\end{equation}
 		\begin{proof}
-			Set $\{u_j\} = \varphi(u)$, and $\{f_j\} = \psi(f)$. For any $x \in H$,
+			We start by showing that $u$ solves the ODE formally. Then, for the subclass of elements of $\hm$ that we made sense of in the definition of $\psi$, we show that $u$ is indeed twice differentiable and solves the ODE in a rigorous sense.
+			
+			\textbf{Formal analysis}
+			
+			Set $\{u_j\} = \varphi(u)$, and $\{f_j\} = \psi(f)$. Formally,
 			\begin{equation}
-				\sum_{j\ne 0}(ij + j^2)x_j\bar{u}_j = \sum_{j\ne0}f_j\bar{x}_j, \qquad \{x_j\} = \varphi(x).
+				u'(x) = \sum_{j\ne0}iju_je^{ijx}, \qquad u''(x) = -\sum_{j\ne0}j^2u_je^{ijx}.
 			\end{equation}
+			Thus, for all $x\in H$, if $\{x_j\} = \varphi(x)$ and $\{u'_j\} = \varphi(u')$, and $\{u''_j\}=\varphi(u'')$, then
+			\begin{equation}
+				\label{eq:ode_manip}
+				\sum_{j\ne0}f_j\bar{x}_j = \sum_{j\ne0}(ij + j^2)x_j\bar{u}_j = \sum_{j\ne 0}(-ij+j^2)x_{-j}\bar{u}_{-j} = -\sum_{j\ne0}(u'_j + u''_j)\bar{x}_j.
+			\end{equation}
+			Choosing $x = e_j$ gives $f_j = -(u'_j + u''_j)$ for all $j$, so $f = -(u' + u'')$.
+			
+			\textbf{Rigorous analysis}
+			
+			Being more rigorous, suppose that $f \in \ltwo\cap \hm$. Set $\{u_j\} = \varphi(u)$, and $\{f_j\} = \psi(f)$. Define the coefficient sequences $\{u'_j\} = \{iju_j\}$ and $\{u''_j\} = \{-j^2u_j\}$. Then
+			\begin{equation}
+				\sum_{j\ne0}j^{-2}|u'_j|^2 \le \sum_{j\ne0} j^2|u_j|^2 < \infty,\qquad\sum_{j\ne0}j^{-2}|u''_j|^2 = \sum_{j\ne0}j^2|u_j|^2 <\infty.
+			\end{equation}
+			Therefore, $\{u'_j\}, \{u''_j\}\in\hm$. Let $u' = \psi^{-1}(\{u'_j\})$, and $u'' = \psi^{-1}(\{u''_j\})$. If $x \in H$ with $\{x_j\} =\varphi(x)$, the same calculation as in (\ref{eq:ode_manip}) gives
+			\begin{equation}
+				\label{eq:fourier_ode}
+				\sum_{j\ne0}f_j\bar{x}_j = -\sum_{j\ne0}(u'_j+u''_j)\bar{x}_j.
+			\end{equation}
+			We can choose $\{x_j\} \in S_H$ such that $x_j = 0$ if $j \ne \pm k$ and $x_{\pm k} = 1$. Then (\ref{eq:fourier_ode}) implies that
+			\begin{equation}
+				\label{eq:pos}
+				f_{-k} + f_k = -(u'_{-k} + u'_k + u''_{-k}+u''_k).
+			\end{equation}
+			We can also choose $\{x_j\} \in S_H$ such that $x_j = 0$ if $j\ne \pm k$ and $x_{\pm k} = \pm i$. Then (\ref{eq:fourier_ode}) implies that
+			\begin{equation}
+				\label{eq:neg}
+				-f_{-k} + f_k = -(-u'_{-k} + u'_k -u''_{-k} + u''_k).
+			\end{equation}
+			Together, (\ref{eq:pos}) and (\ref{eq:neg}) imply that $f_j = -(u'_j + u''_j)$ for all $j\ne0$. This implies that $f = -(u' + u'')$ by the linearity of $\psi$.
+			
+			We observe that $u' \in \ltwo$ because
+			\begin{equation}
+				\sum_{j\ne0}|u'_j|^2 = \sum_{j\ne0}j^2|u_j|^2 <\infty.
+			\end{equation}
+			Then $u'' = -f-u' \in \ltwo$ because $f\in\ltwo$. This implies that $\sum\limits_{j\ne 0}j^4|u_j|^2 < \infty$ because $\{u''_j\} = \{-j^2u_j\}$ are the Fourier coefficients of $u''$ with respect to the orthonormal basis $\{e_j\}$ if $u'' \in \ltwo$.
+		\end{proof}
+		
+		\questionpart
+		Any bounded set in $H$ is pre-compact in $\ltwo$.
+		
+		\begin{proof}
+			Let $A$ be a bounded set in $H$; that is, there is some $M > 0$ such that $\lVert g \rVert_H^2\le M$ for all $g \in A$.
+			
+			We recall that $\{e_j\}$ is an orthonormal basis in $\ltwo$. Hence, for any $f \in \ltwo$ (see Arbogast and Bona, Theorem 3.18 part (iii)),
+			\begin{equation}
+				\lVert f\rVert_\ltwo^2 = \sum_{j} |f_j|^2, \qquad f_j = (f,e_j).
+			\end{equation}
+			If $f \in H$ as well, then $\{f_j\} = \varphi(f)$, so
+			\begin{equation}
+				\lVert f\rVert_\ltwo^2 = \sum_{j}|f_j|^2 \le \sum_{j\ne 0}j^2|f_j|^2 = \lVert f\rVert_H^2.
+			\end{equation}
+			This implies that $A$ is bounded in $\ltwo$ in addition to $H$. Then $\overline{A}$ is also bounded in $\ltwo$, because the closure of a bounded set is bounded. We need to show that $\overline{A}$ is also compact.
+			
+			To this end, let $\{f^n\}$ be a sequence in $\overline{A}$. Since $\overline{A}$ is bounded in $\ltwo$, and $\ltwo$ is a Hilbert space, there exists a weakly convergent subsequence $\{f^{n_k}\}$ of $\{f^n\}$. That is, there exists $f \in \ltwo$ such that $f^{n_k}_j \to f_j$ for all $j$, where $f^{n_k}_j = (f^{n_k},e_j)$, and $f_j = (f,e_j)$. If we can show that $f^{n_k}\to f$ strongly as well, then we are done.
+			
+			Before that, however, we need the following fact: for all $g \in A$ and all $J > 0$,
+			\begin{equation}
+				\sum_{|j|> J} |g_j|^2 \le \frac{1}{J^2}\sum_{|j| > J}j^2|g_j|^2 \le \frac{M}{J^2}, \qquad \{g_j\} = \varphi(g).
+			\end{equation}
+			Therefore, given $\varepsilon > 0$, we can choose $J > 0$ such that for all $g \in A$,
+			\begin{equation}
+				\label{eq:uniform_tails}
+				\sum_{|j| > J}|g_j|^2 < \varepsilon, \qquad \{g_j\}=\varphi(g).
+			\end{equation}
+			
+			Now we show that $\{f^{n_k}\}$ converges strongly. Since $\ltwo$ is complete, we only need to show $\{f^{n_k}\}$ is Cauchy in $\lVert\cdot\rVert_\ltwo$.
+			
+			Let $\varepsilon > 0$ be given. Then we can choose $J > 0$ such that for all $g \in A$,
+			\begin{equation}
+				\sum_{|j| > J}|g_j|^2 < \varepsilon, \qquad \{g_j\} = \varphi(g).
+			\end{equation}
+			Since $\{f^{n_k}_j\}_{k=1}^\infty$ is convergent for all $j$, it is also Cauchy for all $j$. Thus, we can choose $K$ large enough that $k,\ell > K$ implies that $|f^{n_k}_j - f^{n_\ell}_j|^2 < \frac{\varepsilon}{2J+1}$ for all $0 \le |j| \le J$. Then
+			\begin{equation}
+				\lVert f^{n_k} - f^{n_\ell}\rVert_\ltwo^2 = \sum_{|j| \le J}|f^{n_k}_j - f^{n_\ell}_j|^2 + \sum_{|j|>J}|f^{n_k}_j - f^{n_\ell}_j|^2 \le \varepsilon + \sum_{|j|>J}|f^{n_k}_j - f^{n_\ell}_j|^2
+			\end{equation}
+			if $k,\ell > K$. Since $f^{n_k} \in \overline{A}$, for all $k$, we can choose $g^k \in A$ such that $\lVert f^{n_k} - g^k\rVert_\ltwo^2 < \varepsilon$. Hence, if ${g^k_j} = \varphi(g^k)$, then
+			\begin{align}
+				\lVert f^{n_k} - f^{n_\ell}\rVert_\ltwo^2 &\le \varepsilon + \sum_{|j|>J} |(f^{n_k}_j - g^k_j) + (g^k_j - g^\ell_j) + (g^\ell_j - f^{n_\ell}_j)|^2\\
+				&\le \varepsilon + 3\sum_{|j|>J}|f^{n_k}_j - g^k_j|^2 + 3\sum_{|j|>J}|f^{n_\ell}-g^\ell_j|^2 + 3\sum_{|j|>J}|g^k_j-g^\ell_j|^2\\
+				&\le \varepsilon + 3\lVert f^{n_k} - g^k\rVert_\ltwo^2 + 3\lVert f^{n_\ell}-g^\ell\rVert_\ltwo^2 \\
+				&\qquad{}+ 6\sum_{|j|>J}|g^k_j|^2 + 6\sum_{|j|>J}|g^\ell_j|^2\\
+				&\le 19\varepsilon
+			\end{align}
+			if $k,\ell > K$. This implies that $\{f^{n_k}\}$ is Cauchy in $\lVert\cdot\rVert_\ltwo$. Therefore, $\{f^{n_k}\}$ converges in $\ltwo$.
+			
+			Thus, any sequence in $\overline{A}$ has a convergent subsequence. This implies that $\overline{A}$ is compact, and $A$ is pre-compact.
 		\end{proof}
 	\end{arabicparts}
 \end{document}
