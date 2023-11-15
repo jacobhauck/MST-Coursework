@@ -84,14 +84,11 @@
 			\end{align}
 			if $n,m > N$. Thus, $n,m >N$ implies that $\lVert y_n - y_m\rVert < \frac{\varepsilon}{\alpha}$. This implies that  $\{y_n\}$ Cauchy.
 			
-			Since $H$ is complete, there exists $y \in H$ such that $y_n \to y$ as $n \to \infty$. Let $x \in H$, and let $\varepsilon > 0$ be given. By the continuity of $B$ and the inner product and the convergence of $\{y_n\}$ and $\{w_n\}$, there exists $n$ large enough that $|B(x,y-y_n)| < \frac{\varepsilon}{2}$, and $|(x,w-w_n)| < \frac{\varepsilon}{2}$. Then
+			Since $H$ is complete, there exists $y \in H$ such that $y_n \to y$ as $n \to \infty$. By the continuity of $A$,
 			\begin{equation}
-			\begin{aligned}
-				|B(x,y) - (x,w)| &= |B(x,y-y_n) + B(x,y_n) - (x,w_n) -(x,w-w_n)| \\
-				&\le |B(x,y-y_n)| + |(x,w-w_n)| < \varepsilon.
-			\end{aligned}
+				Ay = \lim_{n\to \infty}Ay_n = \lim_{n\to\infty} w_n = w.
 			\end{equation}
-			Since $\varepsilon> 0$ was arbitrary and $x \in H$ was arbitrary, it follows that $B(x,y) = (x,w)$ for all $x \in H$. This implies that $w = Ay$ by the definition of $A$, which means that $w \in R(A)$. Since the convergent sequence $\{w_n\}\subseteq R(A)$ was arbitrary, and its limit $w \in R(A)$, it follows that $R(A)$ is closed.
+			This means that $w \in R(A)$. Since the convergent sequence $\{w_n\}\subseteq R(A)$ was arbitrary, and its limit $w \in R(A)$, it follows that $R(A)$ is closed.
 		\end{proof}
 		
 		\questionpart
@@ -105,7 +102,7 @@
 		\questionpart
 		$A$ is invertible.
 		\begin{proof}
-			By the previous two parts, $A$ is bijective, so it has a set-theoretic inverse function $A^{-1}$. By 1.2), $A$ is bounded. Therefore, by the open mapping theorem, $A$ maps open sets to open sets, which means that the preimage of an open set under $A^{-1}$ is open, that is, $A^{-1}$ is continuous. Therefore, $A$ is invertible.
+			By the previous two parts, $A$ is bijective, so it has a set-theoretic inverse function $A^{-1}$. By 1.2), $A$ is bounded and linear, and by 1.5) it is surjective. Therefore, by the open mapping theorem, $A$ maps open sets to open sets, which means that the preimage of an open set under $A^{-1}$ is open, that is, $A^{-1}$ is continuous. Therefore, $A$ is invertible.
 		\end{proof}
 		
 		\questionpart
@@ -488,11 +485,10 @@
 				-f_{-k} + f_k = -(-u'_{-k} + u'_k -u''_{-k} + u''_k).
 			\end{equation}
 			Together, (\ref{eq:pos}) and (\ref{eq:neg}) imply that $f_j = -(u'_j + u''_j)$ for all $j\ne0$. This implies that $f = -(u' + u'')$ by the linearity of $\psi$.
-			
-			\end{proof}
-			
-		This can be made into a classical ODE solution by adding assumptions to $u$. For example, if $u \in C^2[-\pi,\pi]$, and $u$ is periodic, then the Fourier series of $u$ and $u'$ are continuous, and $u'$ and $u''$ are piecewise smooth, meaning that the Fourier series of $u$ and $u'$ may be differentiated term-by-term.
 		
+			\end{proof}	
+			
+			This can be made into a classical ODE solution by adding assumptions. For example, if $u \in C^2[-\pi,\pi]$, and $u$ is periodic, then the Fourier series of $u$ and $u'$ are continuous, and $u'$ and $u''$ are piecewise smooth, meaning that the Fourier series of $u$ and $u'$ may be differentiated term-by-term.
 		\questionpart
 		Any bounded set in $H$ is pre-compact in $\ltwo$.
 		
