@@ -23,4 +23,27 @@
 	\end{proof}
 	
 	\question
+	Let $A = \{a_{ij}\}$, and consider the SOR iteration for solving $Ax = b$:
+	\begin{equation}
+		x^{(k+1)}_i = (1-\sigma)x^{(k)}_i + \frac{\sigma}{a_{ii}}\left[b_i - \sum_{j=1}^{i-1}a_{ij}x^{(k+1)}_j - \sum_{j=i}^na_{ij}x^{(k)}_j\right], \qquad i=1,2,\dots,n.
+	\end{equation}
+	If $L$ is the lower-triangular part of $A$ and $U$ is the upper-triangular part, and $D$ is the diagonal, so that $A = L + U +D$, then the SOR iteration becomes
+	\begin{align}
+		x^{(k+1)} &= (1-\sigma)x^{(k)} + \sigma D^{-1}\left[b -Lx^{(k+1)} - Ux^{(k)}\right] \\
+		\implies (D + \sigma L)x^{(k+1)} &= ((1-\sigma)D-\sigma U)x^{(k)} + \sigma b \\
+		\implies x^{(k+1)} &= \left(L + \frac{1}{\sigma}D\right)^{-1}\left(\frac{1}{\sigma}D - D - U\right)x^{(k)} + \left(L + \frac{1}{\sigma}D\right)^{-1}b \\
+		&= -\left(L+\frac{1}{\sigma}D\right)^{-1}\left(D - \frac{1}{\sigma}D +U\right)x^{(k)} +\left(L+\frac{1}{\sigma}D\right)^{-1}b.
+	\end{align}
+	Define $M = L + \frac{1}{\sigma}D$, and $N = -\left(D-\frac{1}{\sigma}D+U\right)$. Then
+	\begin{equation}
+		x^{(k+1)} = M^{-1}Nx^{(k)} + M^{-1}b,
+	\end{equation}
+	and
+	\begin{equation}
+		A = L + D + U = \left(L+\frac{1}{\sigma}D\right) + \left(D - \frac{1}{\sigma}D + U\right) = M - N.
+	\end{equation}
+	Therefore, SOR is an iterative method that uses the $M$ and $N$ defined above.
+	
+	\question
+	
 \end{document}
