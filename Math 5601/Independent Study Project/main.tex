@@ -1,0 +1,295 @@
+\documentclass{article}
+\input{../../standardcmd.tex}
+\input{../../theorems.tex}
+
+\usepackage[left=3cm, right=3cm]{geometry}
+\usepackage{parskip}
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+
+\input{commands.tex}
+
+\author{Jacob Hauck}
+\title{Math 5601 Independent Study Project}
+\date{}
+
+\begin{document}
+	\maketitle
+	
+	\section{Introduction}
+	
+	\section{Theory}
+	
+	\begin{dfn} \textnormal{\bf(Index slice)}
+		\label{def:index_slice}
+		Let $m \le n$, where $m$ and $n$ are integers. Define the \textbf{index slice from $m$ to $n$} by the sequence
+		\begin{equation}
+			m: n = \{i\}_{i=m}^n.
+		\end{equation}
+	\end{dfn}
+	
+	\begin{dfn} \textnormal{\bf(Submatrix)}
+		\label{def:submatrix}
+		Let $A \in \R^{m\times n}$ be a matrix. Let $I = \{I_i\}_{i=1}^r$ be a sequence of distinct row indices of $A$, and let $J = \{J_j\}_{j=1}^c$ be a sequence of distinct column indices of $A$. The \textbf{submatrix of $A$ with rows $I$ and columns $J$} is the matrix $A(I,J) \in \R^{r\times c}$ with entries
+		\begin{equation}
+			[A(I,J)]_{ij} = A_{I_iJ_j}.
+		\end{equation}
+		If the special symbol $:$ is used as row indices or column indices, it means the entire sequence $1:m$ or $1:n$.
+		
+		If $I$ or $J$ is a single integer $i$ or $j$ instead of a sequence, we take this to mean $I = i:i$ or $J = j:j$, the sequence consisting of that one integer.
+	\end{dfn}
+	
+	\newcommand{\skel}[1]{\mathscr{S}_{#1}}
+	\begin{dfn} \textnormal{\bf(Skeleton decomposition)}
+		\label{def:skeleton}
+		Let $A \in \R^{m\times n}$, and let $B = A(I,J) \in \R^{r\times r}$ be a nonsingular, square submatrix of $A$. Then the \textbf{skeleton decomposition of $A$ with core $B = A(I,J)$} is given by
+		\begin{equation}
+			\skel{B} = A(:,J)A(I,J)^{-1}A(I,:) \in \R^{m\times n}.
+		\end{equation}
+	\end{dfn}
+	
+	\begin{thm}
+		\label{thm:skeleton_submatrix_exact}
+		Let $A \in \R^{m\times n}$. If $B = A(I,J) \in \R^{r\times r}$ is a square submatrix of $A$ with rank $r$, then
+		\begin{equation}
+			\label{eq:skeleton_submatrix_exact}
+			A(I,J) = \skel{B}(I,J).
+		\end{equation}
+	\end{thm}
+	
+	\begin{proof}
+		Let $C = \{b_{ij}\} = A(I,J)^{-1}$. Then, for $i,j\in 1:r$,
+		\begin{align}
+			[\rhs(\ref{eq:skeleton_submatrix_exact})]_{ij} &= \sum_{k=1}^r\sum_{\ell=1}^rA_{I_iJ_k}C_{k\ell}A_{I_\ell J_j} = \sum_{k=1}^r\sum_{\ell=1}^rA(I,J)_{ik}C_{k\ell}A(I,J)_{\ell j} \\
+			&= [A(I,J)A(I,J)^{-1}A(I,J)]_{ij} = A_{I_iJ_j} = A(I,J)_{ij} \\
+			&= [\lhs(\ref{eq:skeleton_submatrix_exact})]_{ij},
+		\end{align}
+		which completes the proof.
+	\end{proof}
+	
+	\begin{dfn} \textnormal{\bf(Standard basis)}
+		\label{def:standard_basis}
+		Let $e_j \in \R^n$ denote the $j$th standard basis vector in $\R^n$.
+	\end{dfn}
+	
+	\begin{thm} \textnormal{\bf(Exact skeleton decomposition)}
+		\label{thm:skeleton_exact}
+		Let $A \in \R^{m\times n}$ be a matrix with rank $r$. If $B = A(I,J) \in \R^{r\times r}$ is a square submatrix of $A$ with rank $r$, then
+		\begin{equation}
+			\label{eq:skeleton_exact}
+			A = \skel{B}.
+		\end{equation}
+	\end{thm}
+	
+	\begin{proof}
+		The columns of $A$ at indices $J$ (that is, $\{A(:, J_j)\}_{j=1}^r$) are linearly independent because
+		\begin{equation}
+			\sum_{j=1}^r\alpha_j A(:, J_j) = 0 \implies \sum_{j=1}^r \alpha_j A(I, J_j) = 0 \implies\alpha_j = 0, \quad j \in 1:r
+		\end{equation}
+		because the columns $\{A(I,J_j)\}_{j=1}^r$ of $A(I,J)$ must be linearly independent by the fact that $A(I,J)$ has rank $r$.
+		
+		Thus, since $A$ has rank $r$, every other column of $A$ must be a linear combination of the columns at indices $J$. That is, there exists $\{\alpha_{\ell j}\}$ for $j \in 1:r$ and $\ell\in 1:n$ such that
+		\begin{equation}
+			A(:, \ell) = \sum_{j=1}^r \alpha_{\ell j} A(:, J_j).
+		\end{equation}
+		Define $\varphi : \R^r \to \spn\{A(:, J_j) \mid j \in 1:r\}$ by $\varphi(e_j) = A(:,J_j)$. Clearly, $\varphi$ is linear and onto. By the linear independence of $\{A(:,J_j)\}$, $\varphi$ maps an $r$-dimensional space onto an $r$-dimensional space, so $\varphi$ must also be one-to-one. Thus, $\varphi$ is invertible, with $\varphi^{-1}(A(:, J_j)) = e_j$ for $j \in 1:r$.
+		
+		Let $x \in \R^n$. Viewing $A$ and $A(I,J)$ as linear mappings defined by matrix-vector multiplication, we have
+		\begin{align}
+			(A(I,J)\circ \varphi^{-1} \circ A)(x) &= (A(I,J)\circ\varphi^{-1})\left(\sum_{\ell=1}^nA(:, \ell)x_\ell\right) = \sum_{\ell=1}^nx_\ell A(I,J)\varphi^{-1}(A(:,\ell)) \\
+			&=\sum_{\ell=1}^nx_\ell A(I,J)\varphi^{-1}\left(\sum_{j=1}^r\alpha_{\ell j}A(:,J_j)\right)\\
+			&=\sum_{\ell=1}^nx_\ell A(I,J)\sum_{j=1}^r\alpha_{\ell j} e_j =\sum_{\ell=1}^nx_\ell \sum_{j=1}^r\alpha_{\ell j}A(I, J_j)\\
+			&= \sum_{\ell=1}^nx_\ell\left(\sum_{j=1}^r\alpha_{\ell j}A(:,J_j)\right)(I,:) = \sum_{\ell=1}^n A(I, \ell) x_\ell \\
+			&= A(I, :)x.
+		\end{align}
+		Since $x$ was arbitrary, and $A(I,J)$ and $\varphi^{-1}$ are invertible, it follows that
+		\begin{equation}
+			A = \varphi \circ A(I,J)^{-1}\circ A(I,:)
+		\end{equation}
+		as a linear map. 
+		
+		For any $x \in \R^n$, we can write $A(I,J)^{-1}A(I,:)x$ as a linear combination of $\{e_j\}_{j=1}^r$; that is, there exists $\{\beta_j\}$ such that
+		\begin{equation}
+			A(I,J)^{-1}A(I,:)x = \sum_{j=1}^r\beta_j e_j.
+		\end{equation}
+		Then
+		\begin{equation}
+			Ax = \varphi\left(\sum_{j=1}^r\beta_je_j\right) = \sum_{j=1}^r\beta_j A(:,J_j) = A(:,J)\sum_{j=1}^r\beta_je_j = A(:,J)A(I,J)^{-1}A(I,:)x.
+		\end{equation}
+		Since $x$ was arbitrary, (\ref{eq:skeleton_exact}) follows.
+	\end{proof}
+	
+	\newcommand{\chebnorm}[1]{\norm{#1}_\infty}
+	\begin{dfn} \textnormal{\bf(Chebyshev Norm)}
+		\label{def:chebyshev_norm}
+		If $A \in \R^{m\times n}$, define the \textbf{Chebyshev norm} of $A$ by
+		\begin{equation}
+			\label{eq:chebyshev_norm}
+			\chebnorm{A} = \max_{i,j} |A_{ij}|.
+		\end{equation}
+	\end{dfn}
+	
+	\newcommand{\vol}{\mathcal{V}}
+	\begin{dfn} \textnormal{\bf(Volume)}
+		\label{def:volume}
+		Let $A \in \R^{r\times r}$ be a square matrix. Then the \textbf{volume} of $A$ is defined to be
+		\begin{equation}
+			\vol(A) = |\det(A)|.
+		\end{equation}
+	\end{dfn}
+	
+	\newcommand{\msq}{\blacksquare}
+	\begin{dfn} \textnormal{\bf(Maximum volume submatrix)}
+		\label{def:max_volume_submatrix}
+		Let $A \in \R^{m\times n}$. A submatrix $A_\msq = A(I,J) \in \R^{r\times r}$ of $A$ is a \textbf{rank-$r$ maximum volume submatrix} of $A$ if
+		\begin{equation}
+			\vol(A_\msq) = \max\Big\{\vol(A(I', J')) \mid A(I',J') \in \R^{r\times r} \textnormal{ is a submatrix of } A\Big\}.
+		\end{equation}
+		We will typically denote maximum volume submatrices of $A$ by $A_\msq$.
+	\end{dfn}
+	
+	\begin{thm} \textnormal{\bf(Approximate skeleton decomposition)}
+		\label{thm:skeleton_approx}
+		Let $A \in \R^{m\times n}$ be a matrix with singular values $\{\sigma_i\}$. If $A_\msq = A(I,J)$ is a rank-$r$ maximum volume submatrix of $A$, then
+		\begin{equation}
+			\chebnorm{A - \skel{A_\msq}} \le (r+1)\sigma_{r+1},
+		\end{equation}
+		where $\sigma_{\max\{m,n\}+1} = 0$ by convention.
+	\end{thm}
+	
+	\begin{proof}
+		
+	\end{proof}
+	
+	\newcommand{\dsq}{\square}
+	\begin{dfn} \textnormal{\bf(Dominant submatrix of a tall matrix)}
+		\label{def:dominant_submatrix}
+		Let $A \in \R^{m\times r}$ have rank $r$ (which means that $m \ge r$). A nonsingular, square submatrix $A_\dsq = A(I,:) \in \R^{r\times r}$ of $A$ is a \textbf{dominant submatrix} of $A$ if
+		\begin{equation}
+			\chebnorm{AA_{\dsq}^{-1}} \le 1.
+		\end{equation}
+		We will typically denote dominant submatrices of $A$ by $A_\dsq$.
+	\end{dfn}
+	
+	\begin{lem}
+		\label{lem:submatrix_prod}
+		Let $A\in \R^{m\times r}$, and let $B\in \R^{r\times r}$. Then for any row indices $I$ of $A$,
+		\begin{equation}
+			(AB)(I,:) = A(I,:)B.
+		\end{equation}
+	\end{lem}
+	
+	\begin{proof}
+		Observe that
+		\begin{equation}
+			[(AB)(I,:)]_{ij} = (AB)_{I_ij} = \sum_{k=1}^rA_{I_ik}B_{kj} = \sum_{k=1}^rA(I,:)_{ik}B_{kj} = [A(I,:)B]_{ij}, \quad i\in 1:n,\; j\in 1:r,
+		\end{equation}
+		so $(AB)(I,:) = A(I,:)B$.
+	\end{proof}
+	
+	\begin{lem}
+		\label{lem:submatrix_volume_and_matrix_multiplication}
+		Let $A \in \R^{m\times r}$, and let $B \in \R^{r\times r}$ be nonsingular. If $A(I,:), A(I',:)\in \R^{r\times r}$ are square submatrices of $A$, and $A(I',:)$ is nonsingular, then $(AB)(I',:)$ is nonsingular, and
+		\begin{equation}
+			\label{eq:vol_ratio_equality}
+			\frac{\vol(A(I,:))}{\vol(A(I',:))} = \frac{\vol((AB)(I,:))}{\vol((AB)(I',:))}.
+		\end{equation}
+	\end{lem}
+	
+	\begin{proof} 
+		By Lemma \ref{lem:submatrix_prod}, $(AB)(I,:) = A(I,:)B$, and $(AB)(I',:) = A(I',:)B$. Thus, 
+		\begin{align}
+			\det((AB)(I',:)) = \det(A(I',:)B) = \det(A(I',:))\det(B) \ne 0.
+		\end{align}
+		Similarly, $\det((AB)(I,:)) = \det(A(I,:))\det(B)$. Therefore,
+		\begin{equation}
+			\frac{\det((AB)(I,:))}{\det((AB)(I',:))} = \frac{\det(A(I,:))\det(B)}{\det(A(I',:))\det(B)} = \frac{\det(A(I,:))}{\det(A(I',:))}.
+		\end{equation}
+		Taking the absolute value on both sides gives (\ref{eq:vol_ratio_equality}).
+	\end{proof}
+	
+	\begin{thm} \textnormal{\bf(Maximum volume submatrices are dominant)}
+		\label{thm:maxvol_implies_dominant}
+		Let $A \in \R^{m\times r}$ have rank $r$, and let $A_\msq \in \R^{r\times r}$ be a maximum volume submatrix of $A$. Then $A_\msq$ is a dominant submatrix of $A$.
+		\begin{proof}
+			Since the rank of $A$ is $r$, there must be a set of $r$ linearly independent rows of $A$, say at indices $I'$. Then $A(I',:)$ is nonsingular, and $\vol(A(I',:)) > 0$. This implies that $\vol(A_\msq) \ge \vol(A(I',:)) > 0$.
+			
+			Since $\vol(A_\msq) > 0$, it follows that $A_\msq$ is invertible. Define $B = AA_\msq^{-1}$. There is some row index sequence $I$ such that $A_\msq = A(I,:)$. By Lemma \ref{lem:submatrix_volume_and_matrix_multiplication}, $A_\msq$ has maximal volume in $A$ if and only if $B(I,:)$ has maximal volume in $B$, as multiplication by the invertible matrix $A_\msq^{-1}$ preserves the ratios of $r\times r$ submatrix volumes.
+			
+			Furthermore, $B(I,:)$ is the identity matrix $I_{r\times r}$ because, by Lemma \ref{lem:submatrix_prod},
+			\begin{equation}
+				B(I,:) = \left(AA_\msq^{-1}\right)(I,:) = A(I,:)A_\msq^{-1} = A_\msq A_\msq^{-1} = I_{r\times r}.
+			\end{equation}
+			Thus, $B(I,:)$ is dominant in $B$ if and only if $\chebnorm{BB(I,:)^{-1}} = \chebnorm{B} = \chebnorm{AA_\msq^{-1}}\le 1$, that is, if and only if $A_\msq$ is dominant in $A$.
+			
+			We now prove the claim by contradiction. Suppose that $A_\msq$ is not dominant in $A$. Then $B(I,:)$ is not dominant in $B$; that is, there exists $k \in 1:m$ and $j \in 1:r$ such that $|B_{kj}| > 1$. 
+			
+			Let $I'_i = I_i$ if $i \ne j$, and let $I'_j = k$. Then every row of $B(I',:)$ is a row of $I_{r\times r}$ except for the $j$th row, which is the $k$th row of $B$. That is,
+			\begin{equation}
+				B(I',:) = \left[\begin{matrix}
+					1 & 0 & 0&\dots & 0 \\
+					0 & 1 & 0 & \dots & 0 \\
+					\vdots & \vdots &\vdots & \ddots & \vdots \\
+					&  & B(k, :) \;(j\text{th row})& & \\
+					\vdots & \vdots &\vdots & \ddots & \vdots \\
+					0 & 0 & 0 & \dots & 1
+				\end{matrix}\right].
+			\end{equation}
+			Expanding by cofactors and expanding on the $j$th row of $B(I',:)$ last shows that
+			\begin{equation}
+				|\det(B(I',:))| = |B_{kj}| > 1.
+			\end{equation}
+			This means that $\vol(B(I',:)) > 1 = \vol(B(I,:))$, so $B(I,:)$ is not maximal in $B$. Then $A_\msq$ is not maximal in $A$, which is a contradiction.
+			
+			Hence, $A_\msq$ is dominant in $A$.
+		\end{proof}
+	\end{thm}
+	
+	\newcommand{\euc}[1]{\lVert #1 \rVert_2}
+	\begin{lem} \textnormal{\bf(Hadamard's Inequality)}
+		\label{lem:hadamard_inequality}
+		Let $A \in \R^{m\times m}$. Then
+		\begin{equation}
+			\label{eq:hadamard_inequality}
+			\vol(A) \le \prod_{i=1}^m\euc{A(:, i)},
+		\end{equation}
+		where $\euc{\cdot}$ is the Euclidean vector norm.
+	\end{lem}
+	\begin{proof}
+		CITE
+	\end{proof}
+	
+	\begin{thm} \textnormal{\bf(Approximation by dominant submatrix)}
+		\label{thm:dominant_volume_bound}
+		Let $A \in \R^{m\times r}$ have rank $r$, and let $A_\msq$ be a maximum volume submatrix of $A$. Then
+		\begin{equation}
+			\label{eq:dominant_volume_bound}
+			\vol(A_\dsq) \ge r^{-\frac{r}{2}}\vol(A_\msq)
+		\end{equation}
+		for all dominant submatrices $A_\dsq$ of $A$. The inequality is sharp.
+	\end{thm}
+	
+	\begin{proof}
+		Let $A_\dsq$ be a dominant submatrix of $A$, and let $B = AA_\dsq^{-1}$. By definition, $\chebnorm{B} \le 1$. Thus, if we take $r$ rows of $B$ at indices $I$, then $\chebnorm{B(I,:)}\le 1$ as well, which implies that $\euc{B(I,j)} \le \sqrt{r}$. By Hadamard's inequality (Lemma \ref{lem:hadamard_inequality}), then,
+		\begin{equation}
+			\vol(B(I,:)) \le \prod_{j=1}^r \euc{B(I,j)} \le r^\frac{r}{2},
+		\end{equation}
+		with equality holding if $\{B(I,j)\}_{j=1}^r$ forms an orthogonal set.
+		
+		In particular, choose $I$ such that $A_\msq = A(I,:)$. By Lemma \ref{lem:submatrix_prod}, we have 
+		\begin{equation}
+			r^{\frac{r}{2}} \ge \vol(B(I,:)) = |\det(B(I,:))| = |\det(A(I,:))\det(A_\dsq^{-1})| = \frac{\vol(A_\msq)}{\vol(A_\dsq)}.
+		\end{equation}
+		Then (\ref{eq:dominant_volume_bound}) follows.
+		
+		If we choose $A = (1, 1)^T$, then the maximum volume submatrix of $A$ is $A_\msq = [1]$, with volume 1. If we set $A_\dsq = A_\msq$ and note that $r=1$ for this choice of $A$, we see that $\vol(A_\dsq) = 1 = r^{-\frac{r}{2}}\vol(A_\msq)$.
+	\end{proof}
+	
+	\section{The \maxvol{} Algorithm}
+	
+	\section{Implementation in \texttt{NumPy}}
+	
+	\section{Experiments}
+	
+	\section{Conclusion}
+\end{document}
