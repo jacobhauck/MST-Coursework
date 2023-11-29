@@ -4,8 +4,9 @@
 
 \usepackage[left=3cm, right=3cm]{geometry}
 \usepackage{parskip}
-\usepackage{amssymb,amsmath}
-\usepackage{mathrsfs}
+\usepackage{amssymb}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\usepackage{listings}
 
 \input{commands.tex}
 
@@ -39,12 +40,11 @@
 		If $I$ or $J$ is a single integer $i$ or $j$ instead of a sequence, we take this to mean $I = i:i$ or $J = j:j$, the sequence consisting of that one integer.
 	\end{dfn}
 	
-	\newcommand{\skel}[1]{\mathscr{S}_{#1}}
-	\begin{dfn} \textnormal{\bf(Skeleton decomposition)}
+	\begin{dfn} \textnormal{\bf(Skeleton)}
 		\label{def:skeleton}
-		Let $A \in \R^{m\times n}$, and let $B = A(I,J) \in \R^{r\times r}$ be a nonsingular, square submatrix of $A$. Then the \textbf{skeleton decomposition of $A$ with core $B = A(I,J)$} is given by
+		Let $A \in \R^{m\times n}$, and let $B = A(I,J) \in \R^{r\times r}$ be a nonsingular, square submatrix of $A$. Then the \textbf{skeleton of $A$ with core $G = B^{-1}$} is given by
 		\begin{equation}
-			\skel{B} = A(:,J)A(I,J)^{-1}A(I,:) \in \R^{m\times n}.
+			\skel{G} = A(:,J)A(I,J)^{-1}A(I,:) \in \R^{m\times n}.
 		\end{equation}
 	\end{dfn}
 	
@@ -53,18 +53,22 @@
 		Let $A \in \R^{m\times n}$. If $B = A(I,J) \in \R^{r\times r}$ is a square submatrix of $A$ with rank $r$, then
 		\begin{equation}
 			\label{eq:skeleton_submatrix_exact}
-			A(I,J) = \skel{B}(I,J).
+			A(I,:) = \skel{G}(I,:), \qquad A(:,J) = \skel{G}(:,J),
 		\end{equation}
+		where $G = B^{-1}$.
 	\end{thm}
 	
 	\begin{proof}
-		Let $C = \{b_{ij}\} = A(I,J)^{-1}$. Then, for $i,j\in 1:r$,
+		For $i\in 1:r$, $j\in 1:n$,
 		\begin{align}
-			[\rhs(\ref{eq:skeleton_submatrix_exact})]_{ij} &= \sum_{k=1}^r\sum_{\ell=1}^rA_{I_iJ_k}C_{k\ell}A_{I_\ell J_j} = \sum_{k=1}^r\sum_{\ell=1}^rA(I,J)_{ik}C_{k\ell}A(I,J)_{\ell j} \\
-			&= [A(I,J)A(I,J)^{-1}A(I,J)]_{ij} = A_{I_iJ_j} = A(I,J)_{ij} \\
-			&= [\lhs(\ref{eq:skeleton_submatrix_exact})]_{ij},
+			\skel{G}(I,:)_{ij} &= \skel{G}(I_i, j) = \sum_{k=1}^r\sum_{\ell=1}^rA_{I_iJ_k}G_{k\ell}A_{I_\ell j} = \sum_{k=1}^r\sum_{\ell=1}^rA(I,J)_{ik}G_{k\ell}A(I,:)_{\ell j} \\
+			&= \big[A(I,J)GA(I,:)\big]_{ij} = [A(I,:)]_{ij}.
 		\end{align}
-		which completes the proof.
+		For $i\in 1:m$, $j\in 1:r$,
+		\begin{align}
+			\skel{G}(:, J)_{ij} &= \skel{G}(i, J_j) = \sum_{k=1}^r\sum_{\ell=1}^rA_{iJ_k}G_{k\ell}A_{I_\ell J_j} = \sum_{k=1}^r\sum_{\ell=1}^rA(:,J)_{ik}G_{k\ell}A(I,J)_{\ell j} \\
+			&= \big[A(:,J)GA(I,J)\big]_{ij} = [A(:,J)]_{ij}.
+		\end{align}
 	\end{proof}
 	
 	\begin{dfn} \textnormal{\bf(Standard basis)}
@@ -72,13 +76,14 @@
 		Let $e_j \in \R^n$ denote the $j$th standard basis vector in $\R^n$.
 	\end{dfn}
 	
-	\begin{thm} \textnormal{\bf(Exact skeleton decomposition)}
-		\label{thm:skeleton_exact}
-		Let $A \in \R^{m\times n}$ be a matrix with rank $r$. If $B = A(I,J) \in \R^{r\times r}$ is a square submatrix of $A$ with rank $r$, then
+	\begin{thm} \textnormal{\bf(Skeleton decomposition)}
+		\label{thm:skeleton}
+		Let $A \in \R^{m\times n}$ be a matrix with rank $r$. If $B = A(I,J) \in \R^{r\times r}$ is a square submatrix of $A$ with rank $r$, and $G = B^{-1}$, then
 		\begin{equation}
-			\label{eq:skeleton_exact}
-			A = \skel{B}.
+			\label{eq:skeleton}
+			A = \skel{G},
 		\end{equation}
+		and $\skel{G}$ is called a \textbf{skeleton decomposition} of $A$ with \textbf{core} $G$.
 	\end{thm}
 	
 	\begin{proof}
@@ -116,10 +121,9 @@
 		\begin{equation}
 			Ax = \varphi\left(\sum_{j=1}^r\beta_je_j\right) = \sum_{j=1}^r\beta_j A(:,J_j) = A(:,J)\sum_{j=1}^r\beta_je_j = A(:,J)A(I,J)^{-1}A(I,:)x.
 		\end{equation}
-		Since $x$ was arbitrary, (\ref{eq:skeleton_exact}) follows.
+		Since $x$ was arbitrary, (\ref{eq:skeleton}) follows.
 	\end{proof}
 	
-	\newcommand{\chebnorm}[1]{\norm{#1}_\infty}
 	\begin{dfn} \textnormal{\bf(Chebyshev Norm)}
 		\label{def:chebyshev_norm}
 		If $A \in \R^{m\times n}$, define the \textbf{Chebyshev norm} of $A$ by
@@ -129,7 +133,6 @@
 		\end{equation}
 	\end{dfn}
 	
-	\newcommand{\vol}{\mathcal{V}}
 	\begin{dfn} \textnormal{\bf(Volume)}
 		\label{def:volume}
 		Let $A \in \R^{r\times r}$ be a square matrix. Then the \textbf{volume} of $A$ is defined to be
@@ -138,7 +141,6 @@
 		\end{equation}
 	\end{dfn}
 	
-	\newcommand{\msq}{\blacksquare}
 	\begin{dfn} \textnormal{\bf(Maximum volume submatrix)}
 		\label{def:max_volume_submatrix}
 		Let $A \in \R^{m\times n}$. A submatrix $A_\msq = A(I,J) \in \R^{r\times r}$ of $A$ is a \textbf{rank-$r$ maximum volume submatrix} of $A$ if
@@ -148,20 +150,316 @@
 		We will typically denote maximum volume submatrices of $A$ by $A_\msq$.
 	\end{dfn}
 	
-	\begin{thm} \textnormal{\bf(Approximate skeleton decomposition)}
-		\label{thm:skeleton_approx}
-		Let $A \in \R^{m\times n}$ be a matrix with singular values $\{\sigma_i\}$. If $A_\msq = A(I,J)$ is a rank-$r$ maximum volume submatrix of $A$, then
+	\begin{dfn} \textnormal{\bf(Pseudo-skeleton decomposition)}
+		Let $A \in \R^{m\times n}$ be a matrix, and let $I$ and $J$ be sequences of row indices of $A$ of length $r$. If $G \in \R^{r\times r}$, then
 		\begin{equation}
-			\chebnorm{A - \skel{A_\msq}} \le (r+1)\sigma_{r+1},
+			B = A(:, J) G A(I,:)
 		\end{equation}
-		where $\sigma_{\max\{m,n\}+1} = 0$ by convention.
-	\end{thm}
+		is called a \textbf{pseudo-skeleton decomposition} of $A$ with \textbf{core} $G$, \textbf{row indices $I$}, and \textbf{column indices $J$}.
+	\end{dfn}
+	
+	\begin{lem} \textnormal{\bf(Submatrix of a product)}
+	\label{lem:submatrix_prod}
+	Let $A\in \R^{m\times r}$, and let $B\in \R^{r\times n}$. Then for any row indices $I$ of $A$,
+	\begin{equation}
+		(AB)(I,:) = A(I,:)B,
+	\end{equation}
+	and for any column indices $J$ of $B$,
+	\begin{equation}
+		(AB)(:,J) = AB(:,J).
+	\end{equation}
+	\end{lem}
+	
+	\begin{lem}
+		\label{lem:chebyshev_estimate}
+		For any square matrix $A \in \R^{n\times n}$,
+		\begin{equation}
+			\euc{A} \le n\chebnorm{A}
+		\end{equation}
+		where $\euc{\cdot}$ is the spectral norm. This inequality is sharp.
+	\end{lem}
 	
 	\begin{proof}
+		Let $x \in \R^n$. Overloading $\euc{\cdot}$ to also mean the Euclidean vector norm in $\R^n$, the Cauchy-Schwarz inequality implies that
+		\begin{equation}
+			\euc{Ax} = \sqrt{\sum_{i=1}^n|Ax_i|^2} = \sqrt{\sum_{i=1}^n\left|\sum_{j=1}^nA_{ij}x_j\right|^2} \le \sqrt{\sum_{i=1}^n\left(\sum_{j=1}^n|A_{ij}|^2\right)\left(\sum_{j=1}^n|x_j|^2\right)}.
+		\end{equation}
+		By definition, $|A_{ij}|^2 \le \chebnorm{A}^2$, so
+		\begin{equation}
+			\euc{Ax} \le \sqrt{\sum_{i=1}^n n\chebnorm{A}^2\euc{x}^2} = n\chebnorm{A}\euc{x}.
+		\end{equation}
+		If $\euc{x} \ne 0$, then
+		\begin{equation}
+			\frac{\euc{Ax}}{\euc{x}} \le n\chebnorm{A}.
+		\end{equation}
+		Taking the supremum over $x \ne 0$ on both sides completes the proof of the inequality.
 		
+		For the sharpness, take $x\in \R^n$ such that $x_j = n^{-\frac{1}{2}}$ for $j \in 1:n$, so that $\euc{x} = 1$, and take $A \in \R^{n\times n}$ such that $A_{ij} = 1$ for all $i,j \in 1:n$. Then $\chebnorm{A} = 1$, and
+		\begin{equation}
+			\euc{Ax} = \sqrt{\sum_{i=1}^n\left|\sum_{j=1}^nn^{-\frac{1}{2}}\right|^2} = \sqrt{n^2} = n = n \chebnorm{A}.
+		\end{equation}
+		This implies that $\euc{A} \ge n\chebnorm{A}$, so the inequality is sharp.
 	\end{proof}
 	
-	\newcommand{\dsq}{\square}
+	\begin{lem} \textnormal{\bf(Submatrix determinants)}
+		\label{lem:submatrix_determinant}
+		If $A$ and $D$ are square matrices, then
+		\begin{equation}
+			\det\left(\left[\begin{matrix}A & B \\ C & D\end{matrix}\right]\right) = \begin{cases}
+				\det(A)\det(D-CA^{-1}B) & \text{if $A^{-1}$ exists}, \\
+				\det(D)\det(A-BD^{-1}C) & \text{if $D^{-1}$ exists}.
+			\end{cases}
+		\end{equation}
+	\end{lem}
+	
+	\begin{proof}
+	See, for example, the proof of (6.2.1) by Meyer \cite{meyer_2008}.
+	\end{proof}
+	
+	\begin{lem} \textnormal{\bf(Submatrix Inversion)}
+		\label{lem:submatrix_inversion}
+		If $A$ and $D$ are square matrices, and $A^{-1}$ exists, then the block matrix
+		\begin{equation}
+			X = \left[\begin{matrix}
+				A & B \\
+				C & D
+			\end{matrix}\right]
+		\end{equation}
+		is invertible if and only if $\Gamma = D - CA^{-1}B$ is invertible, and
+		\begin{equation}
+			X^{-1} = \left[\begin{matrix}
+				A^{-1} + A^{-1}B\Gamma^{-1}CA^{-1} & -A^{-1}B\Gamma^{-1} \\
+				-\Gamma^{-1}CA^{-1}& \Gamma^{-1}
+			\end{matrix}\right].
+		\end{equation}
+	\end{lem}
+	
+	\begin{proof}
+		We can show that $\Gamma$ is invertible implies that $X$ is invertible by showing that the formula given for $X^{-1}$ is a left inverse of $X$ by direct computation, which, coincidentally, proves the correctness of the formula as well:
+		\begin{multline}
+			\left[\begin{matrix}
+				A^{-1} + A^{-1}B\Gamma^{-1}CA^{-1} & -A^{-1}B\Gamma^{-1} \\
+				-\Gamma^{-1}CA^{-1}& \Gamma^{-1}
+			\end{matrix}\right]\cdot\left[\begin{matrix}
+				A & B \\
+				C & D
+			\end{matrix}\right]\\
+			\begin{aligned}
+			&= \left[\begin{matrix}
+				I + A^{-1}B\Gamma^{-1}C - A^{-1}B\Gamma^{-1}C & A^{-1}B + A^{-1}B\Gamma^{-1}CA^{-1}B -A^{-1}B\Gamma^{-1}D  \\
+				-\Gamma^{-1}C+\Gamma^{-1}C & -\Gamma^{-1}CA^{-1}B + \Gamma^{-1}D
+			\end{matrix}\right] \\
+			&= \left[\begin{matrix}
+				I &  A^{-1}B + A^{-1}B\Gamma^{-1}\left(CA^{-1}B-D\right)\\
+				0 & \Gamma^{-1}\left(D - CA^{-1}B\right)
+			\end{matrix}\right]\\
+			&=\left[\begin{matrix}
+				I & A^{-1}B - A^{-1}B \\
+				0 & I
+			\end{matrix}\right] = I.
+			\end{aligned}
+		\end{multline}
+		If $X$ is not invertible, then by Lemma \ref{lem:submatrix_determinant} we have $0 =\det(X) = \det(A)\det(D-CA^{-1}B) = \det(A)\det(\Gamma)$, which implies that $\Gamma$ is not invertible because $\det(A) \ne 0$.
+	\end{proof}
+	
+	\begin{lem} \textnormal{\bf(Cauchy interlacing theorem)}
+		\label{lem:cauchy_interlace}
+		Let $A \in \R^{n\times n}$ be a symmetric matrix with eigenvalues $\lambda_1 \le \lambda_2 \le \cdots \le \lambda_n$. Let $A(I,I) \in \R^{r\times r}$ be a submatrix with the same row and column indices\footnote{Usually called a \textbf{principal submatrix}.} $I$ of $A$. If $\mu_1 \le \mu_2 \le\cdots\le\mu_r$ are the eigenvalues of $A(I,I)$, then
+		\begin{equation}
+			\label{eq:interlace}
+			\lambda_k \le \mu_k \le \lambda_{k + (n-r)}, \qquad k\in 1:r.
+		\end{equation}
+		The condition in (\ref{eq:interlace}) is known as the \textbf{interlacing of the eigenvalues}.
+	\end{lem}
+	
+	\begin{proof}
+		See, for example, the proof of Parlett's Theorem 10.1.1 and the following Remark 10.1.1 \cite{parlett_1998}.
+	\end{proof}
+	
+	\begin{lem} \textnormal{\bf(Interlacing of singular values)}
+		\label{lem:singular_interlace}
+		Let $A \in \R^{m\times n}$, and let $A(I,J) \in \R^{r\times r}$ be a submatrix of $A$ with row indices $I$ and column indices $J$. If $\sigma_1 \ge \sigma_2 \ge \cdots\ge \sigma_{\ell}$ are the singular values of $A$, where $\ell = \min\{m,n\}$, and $\rho_1 \ge \rho_2 \ge\cdots \rho_r$ are the singular values of $A(I,J)$, then
+		\begin{alignat}{2}
+			\sigma_k &\ge \rho_k,& &\qquad k \in 1:r \\
+			\rho_k &\ge \sigma_{k + m+n -2r},&&\qquad k \in 1:(\max\{m,n\} - 2r).
+		\end{alignat}
+	\end{lem}
+	
+	\begin{proof}
+		Define
+		\begin{equation}
+			M = \left[\begin{matrix}
+				0 & A^T \\
+				A & 0
+			\end{matrix}\right] \in \R^{(m+n)\times(m+n)}.
+		\end{equation}
+		We note that $\lambda\ne 0$ is an eigenvalue of $M$ if and only if
+		\begin{align}
+			0 &= \det(M - \lambda I_{(m+n)\times(m+n)}) = \det\left[\begin{matrix}
+				-\lambda I_{n\times n} & A^T \\
+				A & -\lambda I_{m\times m}
+			\end{matrix}\right] \\
+			&= \det(-I_{n\times n}\lambda)\det(-I_{n\times n}\lambda + \lambda^{-1}A^TA)
+		\end{align}
+		by Lemma \ref{lem:submatrix_determinant}. The lattermost expression is 0 if and only if $\det(A^TA - \lambda^2I_{n\times n}) = 0$, that is, if and only if $\lambda$ is a singular value of $A$. Thus, the nonzero singular values of $A$ and the nonzero eigenvalues of $M$ are the same.
+		
+		Define
+		\begin{equation}
+			N = \left[\begin{matrix}
+				0 & A(I,J)^T \\
+				A(I,J) & 0
+			\end{matrix}\right].
+		\end{equation}
+		By nearly identical reasoning to that above, we can show that the nonzero eigenvalues of $N$ and the singular values of $A(I,J)$ are the same.
+		
+		Noting that $M$ is symmetric, and $N$ is a submatrix of $M$ with the row and column indices
+		\begin{equation}
+			I' = \{J_1, \dots, J_r, I_1,\dots,I_r\}, \qquad J' = \{J_1, \dots, J_r, I_1,\dots,I_r\} = I',
+		\end{equation}
+		we can apply Lemma \ref{lem:cauchy_interlace} to $M$ and $N$. Let $\lambda_1 \le \lambda_2\cdots \le \lambda_{m+n}$ be the eigenvalues of $M$, and let $\mu_1\le \mu_2\le\cdots\le \mu_{2r}$ be the eigenvalues of $N$. Accounting for the fact that the nonzero eigenvalues of $N$ are $\rho_r \le \rho_{r-1} \le \cdots \le \rho_1$, and the nonzero eigenvalues of $M$ are $\sigma_\ell \le \sigma_{\ell-1} \le \cdots \le \sigma_1$, we must have
+		\begin{equation}
+			\lambda_{m+n-k} = \sigma_{k+1}, \quad k \in 0:(\ell -1), \qquad \mu_{2r-k} = \rho_{k+1}, \quad k \in 0:(r-1),
+		\end{equation}
+		and all the other eigenvalues of $M$ and $N$ are 0.
+		
+		Then, by Lemma \ref{lem:cauchy_interlace},
+		\begin{align}
+			&\lambda_k \le \mu_k \le \lambda_{k+(m+n-2r)}, \qquad k \in 1:2r \\
+			\implies&\lambda_{2r-k} \le \mu_{2r-k} \le \lambda_{m+n-k}, \qquad k \in 0:(2r-1) \\
+			\implies&\lambda_{m+n -(m+n-2r+k)} \le \rho_{k+1} \le \sigma_{k+1}, \qquad k \in 0:(r-1) \\
+			\implies&\rho_k \le \sigma_k, \quad k \in 1:r, \qquad \sigma_{m+n -2r+k} \le \rho_k, \quad k\in 1:r\;\text{and}\;m+n-2r+k \le \ell \\
+			\implies&\rho_k \le \sigma_k, \quad k \in 1:r, \qquad \sigma_{m+n -2r+k} \le \rho_k, \quad 1\le k \le 2r-\max\{m,n\}.
+		\end{align}
+	\end{proof}
+	
+	\begin{thm} \textnormal{\bf(Maximum volume pseudo-skeleton)}
+		\label{thm:maxvol_pseudo-skeleton}
+		Let $A \in \R^{m\times n}$ be a matrix with singular values $\{\sigma_i\}$ in nonascending order. If $A_\msq = A(I,J)$ is a rank-$r$ maximum volume submatrix of $A$, then
+		\begin{equation}
+			\chebnorm{A - \skel{A_\msq^{-1}}} \le (r+1)\sigma_{r+1},
+		\end{equation}
+		where $\sigma_{\min\{m,n\}+1} = 0$ by convention, and $\skel{A_\msq^{-1}}$ is the pseudo-skeleton decomposition of $A$ using rows and columns $I$ and $J$, with core $A_\msq^{-1}$.
+	\end{thm}
+	
+	\newcommand{\biggermat}{\widehat{A}}
+	\begin{proof}
+		Define $E = A - \skel{A_\msq^{-1}}$. By Theorem \ref{thm:skeleton_submatrix_exact}, $E_{ij} = 0$ if $i =I_{i'}$ for some $i'$ or $j = J_{j'}$ for some $j'$. If $i$ does not appear in the sequence $I$ and $j$ does not appear in the sequence $J$, then define $\gamma = E_{ij}$, so that
+		\begin{align}
+			\gamma &= A(i,j) - \skel{A_\msq^{-1}}(i,j) = A(i,j) - \sum_{k=1}^r\sum_{\ell=1}^rA(i,J_k)A_\msq^{-1}(k,\ell)A(I_\ell,j) \\
+			&= A(i,j) - A(i,J)A_\msq^{-1}A(I,j).
+		\end{align}
+		If we can show that this arbitrary (potentially) nonzero element of $E$ satisfies $|\gamma| \le (r+1)\sigma_{r+1}$, then $\chebnorm{E} \le (r+1)\sigma_{r+1}$, and the proof is complete.
+		
+		Extend $I$ to $I'$ by setting $I'_{r+1} = i$, and extend $J$ to $J'$ by setting $J'_{r+1} = j$. Define the matrix $\biggermat = A(I',J')$. By construction, we have
+		\begin{equation}
+			\biggermat = \left[\begin{matrix}
+				A_\msq &  A(I, j) \\
+				A(i, J) & A(i,j)
+			\end{matrix}\right].
+		\end{equation}
+		We note that by Lemma \ref{lem:submatrix_inversion}, the matrix $\biggermat$ is invertible if and only if $\gamma = A(i,j) - A(i,J)A_\msq^{-1}A(I,j)$ is invertible, that is, nonzero. If $\gamma = 0$, then certainly $|\gamma| \le (r+1)\sigma_{r+1}$. 
+		
+		Suppose that $\gamma \ne 0$. Then $\biggermat$ is invertible, and by Lemma \ref{lem:submatrix_inversion},
+		\begin{equation}
+			\biggermat^{-1} = \left[\begin{matrix}
+				A_\msq^{-1} + A_\msq^{-1}A(I,j)\gamma^{-1}A(i,J)A_\msq^{-1} & -A_\msq^{-1}A(I,j)\gamma^{-1} \\
+				-\gamma^{-1}A(i,J)A_\msq^{-1} & \gamma^{-1}
+			\end{matrix}\right].
+		\end{equation}
+		Hence $\chebnorm{\biggermat^{-1}} \ge \left|\gamma^{-1}\right|$. On the other hand, by Lemma \ref{lem:submatrix_prod}, for $\ell \in 1:(r+1)$, the column $\biggermat^{-1}(:, \ell)$ satisfies the equation
+		\begin{equation}
+			\biggermat\biggermat^{-1}(:,\ell) = I_{(r+1)\times(r+1)}(:,\ell) = e_\ell.
+		\end{equation}
+		Let $k \in 1:(r+1)$. Since $\biggermat$ is invertible, Cramer's ruler implies that
+		\begin{equation}
+			\biggermat^{-1}(k,\ell) = \frac{\det(M)}{\det\left(\biggermat\right)},
+		\end{equation}
+		where $M$ is the matrix with $M(:, k) = e_\ell$, and $M(:, k') = \biggermat(:, k')$ if $k' \ne \ell$. That is,
+		\begin{equation}
+			M = \left[\begin{matrix}
+				\biggermat(:, 1) & \cdots & \biggermat(:,k -1) & e_\ell& \biggermat(:,k + 1) & \cdots \biggermat(:, r+1)
+			\end{matrix}\right].
+		\end{equation}
+		Let $I'' = \{1,2,\dots k -1, k + 1, \dots, r+1\}$. Expanding by cofactors on the $k$th column of $M$, we get $|\det(M)| = |\det(M')|$, where $M' = M(I'',I'')$. Since $M$ coincides with $\biggermat$ on all but the $k$th column, it follows that $M' = M(I'', I'') = \biggermat(I'',I'') = A(I',J')(I'', I'')$. Hence, $M'$ is an $r \times r$ submatrix of $A$. 
+		
+		By the maximality of the volume of $A_\msq$, it follows that
+		\begin{equation}
+			\left|\biggermat^{-1}(k,\ell)\right| = \frac{|\det(M')|}{\left|\det\left(\biggermat\right)\right|} =|\det(M')|\cdot \left|\det\left(\biggermat^{-1}\right)\right| \le \left|\det\left(A_\msq\right)\right|\cdot \left|\det\left(\biggermat^{-1}\right)\right|.
+		\end{equation}
+		By Lemma \ref{lem:submatrix_determinant},
+		\begin{equation}
+			\det\left(\biggermat\right) = \det\left(A_\msq\right)\left(A(i,j)-A(i,J)A_\msq^{-1}A(I,j)\right) = \det\left(A_\msq\right)\gamma,
+		\end{equation}
+		so
+		\begin{equation}
+			\left|\det(A_\msq)\right|\cdot \left|\det\left(\biggermat^{-1}\right)\right| = \left|\gamma^{-1}\right|.
+		\end{equation}
+		Therefore, $\left|\biggermat^{-1}(k,\ell)\right| \le \left|\gamma^{-1}\right|$. Since $k$ and $\ell$ were arbitrary, it follows that $\chebnorm{\biggermat^{-1}} \le \left|\gamma^{-1}\right|$. Thus, $\chebnorm{\biggermat^{-1}} = \left|\gamma^{-1}\right|$.
+		
+		Recall that $\sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_{\min\{m,n\}}$ are the singular values of $A$, and let $\rho_1 \ge \rho_2 \ge \cdots \ge \rho_{r+1}$ be the singular values of $\biggermat$. By Lemma \ref{lem:singular_interlace}, we must have $\sigma_{r+1} \ge \rho_{r+1}$. Since $\{\rho_k^{-1}\}_{k=1}^{r+1}$ are the singular values of $\biggermat^{-1}$, it follows that $\rho_{r+1}^{-1}$ is the largest singular value of $\biggermat^{-1}$; hence, by Lemma \ref{lem:chebyshev_estimate},
+		\begin{equation}
+			\sigma_{r+1}^{-1} \le \rho_{r+1}^{-1} = \euc{\biggermat^{-1}} \le (r+1)\chebnorm{\biggermat^{-1}} = (r+1)\left|\gamma^{-1}\right|.
+		\end{equation}
+		It follows that
+		\begin{equation}
+			|\gamma| \le (r+1)\sigma_{r+1}.
+		\end{equation}
+		Since $\gamma$ was an arbitrary nonzero element of $E$, we conclude that
+		\begin{equation}
+			\chebnorm{E} \le (r+1)\sigma_{r+1}.
+		\end{equation}
+	\end{proof}
+	
+	\begin{thm} \textnormal{\bf(Quasi-maximum volume pseudo-skeleton)}
+		Let $A \in \R^{m\times n}$ be a matrix with singular values $\{\sigma_i\}$ in nonascending order. If $A_\msq = A(I,J)$ is a rank-$r$ maximum volume submatrix of $A$, and $B = A(I', J')$ is a rank-$r$ submatrix of $A$ that has quasi-maximal volume in $A$ in the sense that there exists $\nu > 0$ such that
+		\begin{equation}
+			\vol(B) \ge \nu \vol(A),
+		\end{equation}
+		then
+		\begin{equation}
+			\chebnorm{A - \skel{B^{-1}}} \le \nu^{-1}(r+1)\sigma_{r+1}.
+		\end{equation}
+	\end{thm}
+	
+	\renewcommand{\biggermat}{\widehat{B}}
+	\begin{proof}
+		We proceed in a manner nearly the same as in the proof of Theorem \ref{thm:maxvol_pseudo-skeleton}. If we define $E = A - \skel{B^{-1}}$, then $E$ is zero at row indices $I'$ and column indices $J'$ by Theorem \ref{thm:skeleton_submatrix_exact}. If we take an arbitrary nonzero entry $\gamma = E_{ij}$, then $i$ and $j$ do not occur in $I'$ or $J'$.
+		
+		Define
+		\begin{equation}
+			\biggermat = \left[\begin{matrix}
+				B & B(I, j) \\
+				B(i,J) & B(i,j)
+			\end{matrix}\right].
+		\end{equation}
+		By reasoning analogous to that used in the proof of Theorem \ref{thm:maxvol_pseudo-skeleton}, we can show that for any $k, \ell \in 1:(r+1)$,
+		\begin{equation}
+			\left|\biggermat^{-1}(k,\ell)\right| = |\det(M')|\cdot\left|\det\left(\biggermat^{-1}\right)\right|
+		\end{equation}
+		for some $r\times r$ submatrix $M'$ of $A$. Applying the quasi-maximal volume property of $B$, we get
+		\begin{equation}
+			\left|\biggermat^{-1}(k,\ell)\right| \le \left|\det\left(A_\msq\right)\right| \cdot \left|\det\left(\biggermat^{-1}\right)\right| \le \nu^{-1} \left|\det\left(B\right)\right| \cdot \left|\det\left(\biggermat^{-1}\right)\right|.
+		\end{equation}
+		Applying Lemma \ref{lem:submatrix_determinant} in the same way we did in Theorem \ref{thm:maxvol_pseudo-skeleton}, we get
+		\begin{equation}
+			\left|\gamma^{-1}\right| = \left|\det\left(B\right)\right| \cdot \left|\det\left(\biggermat^{-1}\right)\right|.
+		\end{equation}
+		Therefore,
+		\begin{equation}
+			\left|\biggermat^{-1}(k,\ell)\right| \le \nu^{-1}\left|\gamma^{-1}\right|.
+		\end{equation}
+		This implies that $\chebnorm{\biggermat^{-1}} \le \nu^{-1}\left|\gamma^{-1}\right|$, as $k$ and $\ell$ were arbitrary.
+		On the other hand, we can also obtain the estimate
+		\begin{equation}
+			\sigma_{r+1}^{-1} \le (r+1)\chebnorm{\biggermat^{-1}}
+		\end{equation}
+		by the same reasoning that was used in Theorem \ref{thm:maxvol_pseudo-skeleton}. Thus,
+		\begin{equation}
+			|\gamma| \le \nu^{-1}(r+1)\sigma_{r+1}.
+		\end{equation}
+		Since $\gamma$ was an arbitrary nonzero element of $E$, it follows that $\chebnorm{E} \le \nu^{-1}(r+1)\sigma_{r+1}$.
+	\end{proof}
+	
 	\begin{dfn} \textnormal{\bf(Dominant submatrix of a tall matrix)}
 		\label{def:dominant_submatrix}
 		Let $A \in \R^{m\times r}$ have rank $r$ (which means that $m \ge r$). A nonsingular, square submatrix $A_\dsq = A(I,:) \in \R^{r\times r}$ of $A$ is a \textbf{dominant submatrix} of $A$ if
@@ -171,20 +469,18 @@
 		We will typically denote dominant submatrices of $A$ by $A_\dsq$.
 	\end{dfn}
 	
-	\begin{lem}
-		\label{lem:submatrix_prod}
-		Let $A\in \R^{m\times r}$, and let $B\in \R^{r\times r}$. Then for any row indices $I$ of $A$,
-		\begin{equation}
-			(AB)(I,:) = A(I,:)B.
-		\end{equation}
-	\end{lem}
-	
 	\begin{proof}
 		Observe that
 		\begin{equation}
-			[(AB)(I,:)]_{ij} = (AB)_{I_ij} = \sum_{k=1}^rA_{I_ik}B_{kj} = \sum_{k=1}^rA(I,:)_{ik}B_{kj} = [A(I,:)B]_{ij}, \quad i\in 1:n,\; j\in 1:r,
+			[(AB)(I,:)]_{ij} = (AB)_{I_ij} = \sum_{k=1}^rA_{I_ik}B_{kj} = \sum_{k=1}^rA(I,:)_{ik}B_{kj} = [A(I,:)B]_{ij}, \quad i\in 1:m,\; j\in 1:n,
 		\end{equation}
 		so $(AB)(I,:) = A(I,:)B$.
+		
+		Similarly,
+		\begin{equation}
+			[(AB)(:,J)]_{ij} = (AB)_{iJ_j} = \sum_{k=1}^rA_{ik}B_{kJ_j} = \sum_{k=1}^rA_{ik}B(:,J)_{kj} = [AB(:,J)]_{ij}, \quad i\in 1:m,\; j\in 1:n,
+		\end{equation}
+		so $(AB)(:,J) = AB(:,J)$.
 	\end{proof}
 	
 	\begin{lem}
@@ -206,6 +502,45 @@
 			\frac{\det((AB)(I,:))}{\det((AB)(I',:))} = \frac{\det(A(I,:))\det(B)}{\det(A(I',:))\det(B)} = \frac{\det(A(I,:))}{\det(A(I',:))}.
 		\end{equation}
 		Taking the absolute value on both sides gives (\ref{eq:vol_ratio_equality}).
+	\end{proof}
+	
+	\begin{lem} \textnormal{\bf(Hadamard's Inequality)}
+		\label{lem:hadamard_inequality}
+		Let $A \in \R^{m\times m}$. Then
+		\begin{equation}
+			\label{eq:hadamard_inequality}
+			\vol(A) \le \prod_{j=1}^m\euc{A(:, j)},
+		\end{equation}
+		where $\euc{\cdot}$ is the Euclidean vector norm.
+	\end{lem}
+	\begin{proof}
+		See Example 6.1.4 in Meyer's linear algebra textbook \cite{meyer_2008}.
+	\end{proof}
+	
+	\begin{thm} \textnormal{\bf(Approximation by dominant submatrix)}
+		\label{thm:dominant_volume_bound}
+		Let $A \in \R^{m\times r}$ have rank $r$, and let $A_\msq$ be a maximum volume submatrix of $A$. Then
+		\begin{equation}
+			\label{eq:dominant_volume_bound}
+			\vol(A_\dsq) \ge r^{-\frac{r}{2}}\vol(A_\msq)
+		\end{equation}
+		for all dominant submatrices $A_\dsq$ of $A$. The inequality is sharp.
+	\end{thm}
+	
+	\begin{proof}
+		Let $A_\dsq$ be a dominant submatrix of $A$, and let $B = AA_\dsq^{-1}$. By definition, $\chebnorm{B} \le 1$. Thus, if we take $r$ rows of $B$ at indices $I$, then $\chebnorm{B(I,:)}\le 1$ as well, which implies that $\euc{B(I,j)} \le \sqrt{r}$. By Hadamard's inequality (Lemma \ref{lem:hadamard_inequality}), then,
+		\begin{equation}
+			\vol(B(I,:)) \le \prod_{j=1}^r \euc{B(I,j)} \le r^\frac{r}{2},
+		\end{equation}
+		with equality holding if $\{B(I,j)\}_{j=1}^r$ forms an orthogonal set.
+		
+		In particular, choose $I$ such that $A_\msq = A(I,:)$. By Lemma \ref{lem:submatrix_prod}, we have 
+		\begin{equation}
+			r^{\frac{r}{2}} \ge \vol(B(I,:)) = |\det(B(I,:))| = |\det(A(I,:))\det(A_\dsq^{-1})| = \frac{\vol(A_\msq)}{\vol(A_\dsq)}.
+		\end{equation}
+		Then (\ref{eq:dominant_volume_bound}) follows.
+		
+		If we choose $A = (1, 1)^T$, then the maximum volume submatrix of $A$ is $A_\msq = [1]$, with volume 1. If we set $A_\dsq = A_\msq$ and note that $r=1$ for this choice of $A$, we see that $\vol(A_\dsq) = 1 = r^{-\frac{r}{2}}\vol(A_\msq)$.
 	\end{proof}
 	
 	\begin{thm} \textnormal{\bf(Maximum volume submatrices are dominant)}
@@ -245,51 +580,333 @@
 		\end{proof}
 	\end{thm}
 	
-	\newcommand{\euc}[1]{\lVert #1 \rVert_2}
-	\begin{lem} \textnormal{\bf(Hadamard's Inequality)}
-		\label{lem:hadamard_inequality}
-		Let $A \in \R^{m\times m}$. Then
-		\begin{equation}
-			\label{eq:hadamard_inequality}
-			\vol(A) \le \prod_{i=1}^m\euc{A(:, i)},
-		\end{equation}
-		where $\euc{\cdot}$ is the Euclidean vector norm.
-	\end{lem}
-	\begin{proof}
-		CITE
-	\end{proof}
+	\section{The \maxvol{} Algorithm}
 	
-	\begin{thm} \textnormal{\bf(Approximation by dominant submatrix)}
-		\label{thm:dominant_volume_bound}
-		Let $A \in \R^{m\times r}$ have rank $r$, and let $A_\msq$ be a maximum volume submatrix of $A$. Then
+	\begin{dfn} \textnormal{\bf($\delta$-dominant submatrix)}
+		\label{def:delta_dominant_submatrix}
+		Let $A \in \R^{m\times r}$ have rank $r$ (which means that $m \ge r$), and let $\delta > 0$. A nonsingular, square submatrix $A_\dsq = A(I,:) \in \R^{r\times r}$ of $A$ is a \textbf{$\delta$-dominant submatrix} of $A$ if
 		\begin{equation}
-			\label{eq:dominant_volume_bound}
-			\vol(A_\dsq) \ge r^{-\frac{r}{2}}\vol(A_\msq)
+			\chebnorm{AA_{\dsq}^{-1}} \le 1 + \delta.
 		\end{equation}
-		for all dominant submatrices $A_\dsq$ of $A$. The inequality is sharp.
+	\end{dfn}
+	
+	\begin{algorithm}
+		\caption{\maxvol{}}\label{alg:maxvol}
+		\KwIn{A matrix $A \in \R^{n\times r}$ of rank $r$}
+		\KwIn{Tolerance $\delta \ge 0$}
+		\KwOut{A matrix $A_\dsq \in \R^{r\times r}$ that is $\delta$-dominant in $A$}
+		Initialize a nonsingular submatrix $A_\tsq$ of $A$\;
+		\Repeat{$|B_{ij}| \le 1 + \delta$} {
+			$B \gets AA_\tsq^{-1}$\;
+			$i,j\gets \argmax\limits_{i',j'} |B_{i'j'}|$\;
+			\If{$|B_{ij}| > 1 + \delta$} {
+				$A_\tsq(j, :) \gets A(i,:)$\;
+			}
+		}
+		$A_\dsq \gets A_\tsq$\;
+	\end{algorithm}
+	
+	\begin{thm} \textnormal{\bf(Correctness of \maxvol{})}
+		\label{thm:maxvol_correctness}
+		Let $\matstep{k}$ be the matrix $A_\tsq$ in the \maxvol{} algorithm after $k$ steps of the loop. Then
+		\begin{enumerate}
+			\item $\matstep{k}$ is invertible,
+			\item the sequence of volumes $\left\{\vol\left(\matstep{k}\right)\right\}$ is strictly increasing,
+			\item the \maxvol{} algorithm terminates in a finite number of steps $c$,
+			\item the output $A_\dsq$ is $\delta$-dominant in $A$,
+			\item if $\delta > 0$, then the number of steps $c$ before the algorithm terminates is bounded by
+			\begin{equation}
+				\label{eq:maxvol_steps_bound}
+				c \le \frac{\log(\vol(A_\dsq)) - \log\left(\vol\left(\matstep{0}\right)\right)}{\log(1+\delta)} \le \frac{\log(\vol(A_\msq)) - \log\left(\vol\left(\matstep{0}\right)\right)}{\log(1+\delta)} .
+			\end{equation}
+		\end{enumerate}
 	\end{thm}
 	
 	\begin{proof}
-		Let $A_\dsq$ be a dominant submatrix of $A$, and let $B = AA_\dsq^{-1}$. By definition, $\chebnorm{B} \le 1$. Thus, if we take $r$ rows of $B$ at indices $I$, then $\chebnorm{B(I,:)}\le 1$ as well, which implies that $\euc{B(I,j)} \le \sqrt{r}$. By Hadamard's inequality (Lemma \ref{lem:hadamard_inequality}), then,
-		\begin{equation}
-			\vol(B(I,:)) \le \prod_{j=1}^r \euc{B(I,j)} \le r^\frac{r}{2},
-		\end{equation}
-		with equality holding if $\{B(I,j)\}_{j=1}^r$ forms an orthogonal set.
+		The first matrix $\matstep{0}$ is invertible by construction (the initialization of $\matstep{0}$ as an invertible submatrix can always be done because the rank of $A$ is $r$). Suppose for induction that $\matstep{k}$ is invertible for some $k \ge 0$. If $k = c$, then we are done. Otherwise, if $(i,j) = \argmax\limits_{i',j'}|B_{i'j'}|$, where $B = A\left(\matstep{k}\right)^{-1}$, then $|B_{ij}| \ge 1 + \delta$.
 		
-		In particular, choose $I$ such that $A_\msq = A(I,:)$. By Lemma \ref{lem:submatrix_prod}, we have 
+		Let $I^{(k)}$ be the row indices in $A$ of the submatrix $\matstep{k}$, and let $I^{(k+1)}$ be the row indices in $A$ of $\matstep{k+1}$. Then, by line 6 of Algorithm \ref{alg:maxvol}, $I^{(k+1)}_\ell = I^{(k)}_\ell$ if $\ell \ne j$, and $I^{(k+1)}_j = i$. By Lemma \ref{lem:submatrix_prod}, 
 		\begin{equation}
-			r^{\frac{r}{2}} \ge \vol(B(I,:)) = |\det(B(I,:))| = |\det(A(I,:))\det(A_\dsq^{-1})| = \frac{\vol(A_\msq)}{\vol(A_\dsq)}.
+			\label{eq:b_on_submat_is_identity}
+			B\left(I^{(k)},:\right) = A\left(I^{(k)},:\right)\left(\matstep{k}\right)^{-1}=\matstep{k}\left(\matstep{k}\right)^{-1} =I_{r\times r},
 		\end{equation}
-		Then (\ref{eq:dominant_volume_bound}) follows.
-		
-		If we choose $A = (1, 1)^T$, then the maximum volume submatrix of $A$ is $A_\msq = [1]$, with volume 1. If we set $A_\dsq = A_\msq$ and note that $r=1$ for this choice of $A$, we see that $\vol(A_\dsq) = 1 = r^{-\frac{r}{2}}\vol(A_\msq)$.
+		and
+		\begin{equation}
+			B\left(I^{(k+1)},:\right) = A\left(I^{(k+1)},:\right)\left(\matstep{k}\right)^{-1}=\matstep{k+1}\left(\matstep{k}\right)^{-1}.
+		\end{equation}
+		On the other hand, since $I^{(k+1)}$ differs from $I^{(k)}$ only in the $j$th entry, we must have
+		\begin{equation}
+			 B\left(I^{(k+1)},:\right) = \left[\begin{matrix}
+				1 & 0 & 0&\dots & 0 \\
+				0 & 1 & 0 & \dots & 0 \\
+				\vdots & \vdots &\vdots & \ddots & \vdots \\
+				&  & B(i, :) \;(j\text{th row})& & \\
+				\vdots & \vdots &\vdots & \ddots & \vdots \\
+				0 & 0 & 0 & \dots & 1
+			\end{matrix}\right].
+		\end{equation}
+	 	Expanding by cofactors and expanding on the $j$th row last, we obtain
+	 	\begin{equation}
+	 		\frac{\vol\left(\matstep{k+1}\right)}{\vol\left(\matstep{k}\right)} = \left|\det\left(\matstep{k+1}\left(\matstep{k}\right)^{-1}\right)\right| = \left|\det\left(B\left(I^{(k+1)},:\right)\right)\right| = |B_{ij}| > 1 + \delta.
+	 	\end{equation}
+	 	This implies that 
+	 	\begin{equation}
+	 		\label{eq:volume_increase}
+	 		\vol\left(\matstep{k+1}\right) > (1+\delta)\vol\left(\matstep{k}\right) > 0,
+	 	\end{equation}
+	 	which shows that $\matstep{k+1}$ is invertible. By induction, $\matstep{k}$ is invertible for all $k$. Moreover, (\ref{eq:volume_increase}) also shows that $\left\{\vol\left(\matstep{k}\right)\right\}$ is strictly increasing.
+	 	
+	 	Since the volume of $\matstep{k}$ increases with $k$, each $\matstep{k}$ is distinct. There are only finitely many submatrices of $A$, and at least one is $\delta$-dominant (one of the maximum volume submatrices certainly is). Since each $\matstep{k}$ is distinct, $\matstep{k}$ must eventually be $\delta$-dominant for some $k$. The stopping criterion on line 8 of Algorithm \ref{alg:maxvol} is satisfied if and only if $\matstep{k}$ is $\delta$-dominant, so the algorithm terminates in finitely many steps $c$, and the output is $\delta$-dominant.
+	 	
+	 	Iterating the inequality in (\ref{eq:volume_increase}), we obtain
+	 	\begin{equation}
+	 		\vol\left(\matstep{c}\right) \ge (1+\delta)^c\vol\left(\matstep{0}\right),
+	 	\end{equation}
+	 	which implies the first inequality in (\ref{eq:maxvol_steps_bound}) because $A_\dsq = \matstep{c}$. The second inequality is trivially true by the maximality of $\vol\left(A_\msq\right)$.
 	\end{proof}
 	
-	\section{The \maxvol{} Algorithm}
+	\begin{lem} \textnormal{\bf(Sherman-Morrison formula)}
+		\label{lem:sherman_morrison}
+		Suppose that $A \in \R^{n\times n}$ is invertible, and let $u,v\in\R^{n\times 1}$ be nonzero column vectors. Then $A + uv^T$ is invertible if and only if $1 + vA^{-1}u^T \ne 0$, and
+		\begin{equation}
+			\left(A+ uv^T\right)^{-1} = A^{-1} - \frac{\left(A^{-1}u\right)\left(v^TA^{-1}\right)}{1 + v^TA^{-1}u}.
+		\end{equation}
+	\end{lem}
+	
+	\begin{proof}
+		See Section 2 in an old paper by Bartlett \cite{bartlett_1951}.
+	\end{proof}
+	
+	\begin{thm} \textnormal{\bf(Complexity of \maxvol)}
+		Let $B^{(k)}$ be the matrix $B$ and let $\matstep{k}$ be the matrix $A_\tsq$ in the \maxvol{} algorithm after $k$ steps. Then $B^{(k+1)}$ and $\matstep{k+1}$ can be computed in $\bigoh(nr)$ operations from $B^{(k)}$ and $\matstep{k}$. Therefore, the overall cost of the iterative portion of \maxvol{} is $\bigoh(cnr)$, where $c$ is the number of iteration steps.
+	\end{thm}
+	
+	\begin{proof}
+		We can write $\matstep{k+1}$ in terms of $\matstep{k}$ as
+		\begin{equation}
+			\matstep{k+1} = \matstep{k} + e_j\left(A(i,:) - \matstep{k}(j,:)\right),
+		\end{equation}
+		where $e_j$ is the $j$th standard basis vector as a column vector. If we define $q = e_j$, and if we define $v = \left(A(i,:) - \matstep{k}(j,:)\right)^T$, then
+		\begin{equation}
+			\matstep{k+1} = \matstep{k} + qv^T.
+		\end{equation}
+		By the Sherman-Morrison formula (Lemma \ref{lem:sherman_morrison}),
+		\begin{equation}
+			\label{eq:a_inv_update}
+			\left(\matstep{k+1}\right)^{-1} = \left(\matstep{k}\right)^{-1} - \frac{\left(\matstep{k}\right)^{-1}qv^T\left(\matstep{k}\right)^{-1}}{1 +v^T\left(\matstep{k}\right)^{-1}q}.
+		\end{equation}
+		By Lemma \ref{lem:submatrix_prod},
+		\begin{align}
+			v^T\left(\matstep{k}\right)^{-1} &= \left(A(i,:) - \matstep{k}(j,:)\right)\left(\matstep{k}\right)^{-1} \\
+			&= A(i,:)\left(\matstep{k}\right)^{-1} - e_j^T \\
+			&= B^{(k)}(i,:) - e_j^T.
+		\end{align}
+		Therefore, $v^T\left(\matstep{k}\right)^{-1}q = B^{(k)}(i,:)e_j - e_j^Te_j = B^{(k)}_{ij}-1$.
+		Multiplying both sides of (\ref{eq:a_inv_update}) by $A$ gives
+		\begin{align}
+			B^{(k+1)} &= B^{(k)} - \frac{1}{B^{(k)}_{ij}}B^{(k)}e_jv^T\left(\matstep{k}\right)^{-1} \\
+			\label{eq:b_update}
+			&=B^{(k)} - \frac{1}{B^{(k)}_{ij}}B^{(k)}(:,j)\left(B^{(k)}(i,:) - e_j^T\right).
+		\end{align}
+		The update rule for $B^{(k)}$ given in (\ref{eq:b_update}) involves a $n\times 1$ by $1\times r$ matrix multiplication, scalar and $n\times r$ matrix multplication, and $n\times r$ matrix subtraction. Hence, it requires $\bigoh(nr)$ operations to complete. The update rule for $\matstep{k}$ is $\bigoh(1)$ because we only need to keep track of which rows of $A$ are in $\matstep{k}$, and on each step only one row changes. 
+		
+	\end{proof}
 	
 	\section{Implementation in \texttt{NumPy}}
+	
+	\subsection{Practical update rules}
+	Most of \maxvol{} is trivial to implement in \texttt{NumPy}. The trickiest part is the efficient updating of $B$ and $A_\tsq$ (lines 3 and 6 in Algorithm \ref{alg:maxvol}). Let $B^{(k)}$ be the matrix $B$ in \maxvol{} after $k$ steps, and let $I^{(k)}$ be the row indices in $A$ of $A_\tsq$ after $k$ steps. Let $J^{(k)}$ be the other row indices of $A$ that do not occur in the sequence $I^{(k)}$. 
+	
+	
+	\textbf{Updating $A_\tsq$}
+	
+	To update $A_\tsq$, we only need to update $I^{(k)}$. Let $i,j$ be the indices obtained on line 4 of Algorithm \ref{alg:maxvol}. The update for $A_\tsq$ is that the $j$th row of $A_\tsq$ becomes the $i$th row of $A$, so
+	\begin{equation}
+		I^{(k+1)}_\ell = \begin{cases}
+			I^{(k)}_\ell & \ell \ne j \\
+			i & \ell = j.
+		\end{cases}
+	\end{equation}
+	If we reuse the memory for $I^{(k)}$ for $I^{(k+1)}$, this means only doing one update operation. 
+	
+	\textbf{Using $Z$ instead of $B$}
+	
+	We know from our analysis that on each step $B^{(k)}\left(I^{(k)},:\right) = I_{r\times r}$ (recall (\ref{eq:b_on_submat_is_identity})). Therefore, it would be more efficient to store only the rows of $B^{(k)}$ at indices $J^{(k)}$. Let $Z^{(k)} = B^{(k)}\left(J^{(k)},:\right)$ denote the matrix of these rows.
+	
+	Let $Z^{(k)}_{i'j'}$ be the maximum modulus element of $Z^{(k)}$. If we used $Z^{(k)}_{i'j'}$ in place of $B^{(k)}_{ij}$ in Algorithm \ref{alg:maxvol}, then the result of the algorithm would be unchanged. Indeed, on the $k$th loop iteration, there are two possibilities.
+	\begin{enumerate}
+		\item $Z^{(k)}_{i'j'} = B^{(k)}_{ij}$, in which case we may take $j = j'$ and $i = J^{(k)}_{i'}$. The rest of the loop iteration proceeds as it would using $B^{(k)}_{ij}$.
+		\item $Z^{(k)}_{i'j'}$ is not the maximum modulus element in $B^{(k)}$. In this case, $\left|Z^{(k)}_{i'j'}\right| \le \left|B^{(k)}_{ij}\right| = 1 \le 1 + \delta$, so whether we use $Z^{(k)}_{i'j'}$ or $B^{(k)}_{ij}$, the loop should exit immediately.
+	\end{enumerate}
+	In any case, then, using $Z^{(k)}_{i'j'}$ in place of $B^{(k)}_{ij}$ has no effect on the result of the algorithm.
+	
+	\textbf{Updating $Z$}
+	
+	Now updating $B^{(k)}$ amounts to updating $Z^{(k)}$. Recall the efficient, rank-1 update rule for $B$:
+	\begin{equation}
+		\label{eq:b_update_2}
+		B^{(k+1)} = B^{(k)} - \frac{1}{B^{(k)}_{ij}}B^{(k)}(:,j)\left(B^{(k)}(i,:) - e_j^T\right),
+	\end{equation}
+	where $i,j$ are the indices obtained on line 4 of Algorithm \ref{alg:maxvol}. Taking the submatrix with row indices $J^{(k+1)}$ on both sides of (\ref{eq:b_update_2}), applying Lemma \ref{lem:submatrix_prod} and using $Z^{(k)}_{i'j'}$ in place of $B^{(k)}_{ij}$ as discussed above, we get
+	\begin{equation}
+		\label{eq:z_update_partial}
+		Z^{(k+1)} = B^{(k)}\left(J^{(k+1)}, :\right) - \frac{1}{Z^{(k)}_{i'j'}}B^{(k)}\left(J^{(k+1)}, j\right)\left(B^{(k)}(i,:) - e_j^T\right).
+	\end{equation}
+	Evidently, we will also need to keep track of $J^{(k)}$ for all $k$ in order to find $Z^{(k+1)}$. To update $J^{(k)}$, we need to ensure that $J^{(k+1)}$ contains all indices not in $I^{(k+1)}$. Only one index in $I^{(k+1)}$ is different from $I^{(k)}$; namely, $I^{(k+1)}_j = i$ instead of $I^{(k)}_j$. Thus, we need to remove $i$ from $J^{(k+1)}$ and replace it with $I^{(k)}_j$. Let $i'$ be the index such that $J^{(k)}_{i'} = i$. Then we can obtain $J^{(k+1)}$ by the rule
+	\begin{equation}
+		J^{(k+1)}_\ell = \begin{cases}
+			J^{(k)}_\ell & \ell \ne i', \\
+			I^{(k)}_j & \ell = i'.
+		\end{cases}
+	\end{equation}
+	Like the update rule for $I^{(k)}$, this also only requires one operation if we reuse the memory for $J^{(k)}$ for $J^{(k+1)}$. 
+	
+	With this rule in place, we can relate $Z^{(k+1)}$ to $Z^{(k)}$ using (\ref{eq:z_update_partial}). Let $L = \{1,2,\dots, i'-1,i'+1,\dots,n-r\}$. Then $J^{(k+1)}_{L_\ell} = J^{(k)}_{L_\ell}$ for all $\ell$. Therefore,
+	\begin{equation}
+		\left(B^{(k)}\left(J^{(k+1)},:\right)\right)\left(L,:\right) = \left(B^{(k)}\left(J^{(k)}, :\right)\right)\left(L, :\right) = Z^{(k)}(L,:).
+	\end{equation}
+	Taking the submatrix with row indices $L$ on both sides of (\ref{eq:z_update_partial}), we obtain
+	\begin{equation}
+		Z^{(k+1)}(L,:) = Z^{(k)}(L, :) - \frac{1}{Z^{(k)}_{i'j'}}Z^{(k)}(L, j)\left(B^{(k)}(i,:) - e_j^T\right).
+	\end{equation}
+	Recalling that $j = j'$ and $i = J^{(k)}_{i'}$, we get
+	\begin{equation}
+		\label{eq:z_update_l_part}
+		Z^{(k+1)}(L,:) = Z^{(k)}(L, :) - \frac{1}{Z^{(k)}_{i'j}}Z^{(k)}(L, j)\left(Z^{(k)}(i',:) - e_j^T\right).
+	\end{equation}
+	Similarly, if we take the submatrix with row indices $\{i'\}$ on both sides of (\ref{eq:z_update_partial}), then, by the definition of $J^{(k+1)}$, we get
+	\begin{align}
+		Z^{(k+1)}(i', :) &= B^{(k)}\left(I^{(k)}_j,:\right) - \frac{1}{Z^{(k)}_{i'j}}B^{(k)}\left(I^{(k)}_j, j\right)\left(B^{(k)}(i,:) - e_j^T\right) \\
+		\label{eq:z_update_iprime_part}
+		&= e_j^T - \frac{1}{Z^{(k)}_{i'j}}\left(Z^{(k)}(i',:) - e_j^T\right)
+	\end{align}
+	because $B^{(k)}\left(I^{(k)}_j, :\right) = \left(B^{(k)}\left(I^{(k)}, :\right)\right)(j,:) = I_{r\times r}(j,:) = e_j^T$.
+	
+	Let $D$ be a matrix with $D(L,:) = Z^{(k)}(L,:)$ and $D(i',:) = e_j^T$. Then, using $D$, we can incorporate the update rule (\ref{eq:z_update_iprime_part}) into (\ref{eq:z_update_l_part}):
+	\begin{equation}
+		\label{eq:z_update_full}
+		Z^{(k+1)} = D - \frac{1}{Z^{(k)}_{i'j}}D(:, j)\left(Z^{(k)}(i',:) - e_j^T\right).
+	\end{equation}
+	Thus, we can compute $Z^{(k+1)}$ from $Z^{(k)}$ using this update rule.
+	
+	\subsection{Step-by-step design in \texttt{NumPy}}
+	\lstset{language=python, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false}
+	
+	\newcommand{\va}{\texttt{a}}
+	\newcommand{\vinitialrows}{\texttt{initial\_rows}}
+	\newcommand{\vdelta}{\texttt{delta}}
+	\newcommand{\vmaxiter}{\texttt{max\_iter}}
+	
+	\textbf{Function signature}
+	
+	We begin with the signature of the \maxvol{} function. We need the matrix $A$, of course, which we will store in a \texttt{NumPy} array called \va. Next, we need the parameter $\delta$, which we will store in the variable \vdelta, and an iteration limit, which store in the variable \vmaxiter. We also allow for an optional initial submatrix, specified by a list or array of row indices, which we name \vinitialrows. The return value should be the $\delta$-dominant matrix $A_\dsq$, which we return in terms of its row indices in the given matrix $A$. Thus, we arrive at the signature in Listing \ref{lst:signature}.
+	\begin{lstlisting}[caption={function signature}, label=lst:signature]
+def maxvol(
+    a: NDArray[np.float],  # shape = (n, r)
+    initial_rows: Optional[NDArray[np.int]] = None,  # shape = (r,)
+    delta: float = 1e-2,
+    max_iter: int = 100
+) -> Optional[NDArray[np.int]]:  # shape = (r,)
+	\end{lstlisting}
+	
+	If we are given a square matrix $A$, then the rest of the algorithm will generate indexing errors; in any case, the maximum volume submatrix of a square tall matrix is the matrix itself, so we can return early if a square matrix is given. If \texttt{n} and \texttt{r} are the numbers of rows and columns of $A$, then this check is given by Listing \ref{lst:check_square}.
+	\begin{lstlisting}[caption={square matrix check}, label=lst:check_square]
+if n == r:
+    return np.arange(r)
+	\end{lstlisting}
+	We note that \texttt{np.arange(r)} generates an array whose entries are $1,2,\dots, r$. This is precisely the sequence of row indices of the entire square matrix, as desired.
+	
+	\textbf{Initialization of $\matstep{0}$}
+	
+	Next, we move on to the issue of initializing the nonsingular starting submatrix $\matstep{0}$. If \vinitialrows{} is supplied, then we will assume that the user has ensured that \vinitialrows{}  determines a nonsingular submatrix. If \vinitialrows{} is not supplied, then it is up to us to determine a nonsingular submatrix. This can be done easily by applying Gaussian elimination with partial pivoting (that is, with row pivotoing). We note that Gaussian elimination on the $n\times r$ matrix $A$ requires $r$ elimination steps, each of which requires $\bigoh(nr)$ computations, giving the entire process a computational complexity of $\bigoh(nr^2)$, which is acceptable (we are mainly concerned with linear complexity in $n$).
+	
+	If \vinitialrows{} is given, then we need to compute the indices of the rows of $A$ not in the initial submatrix as well, as we need them to work with $Z^{(k)}$. We can do Gaussian elimination using the \texttt{scipy.linalg.lu} function, which will return the permutation of the rows obtained by partial pivoting. This is given as an array of row indices; the first $r$ elements of the permutation determine a nonsingular submatrix, and the remaining elements give us the rows of $A$ not in the submatrix. We store the current submatrix row indices in the variable \texttt{submat\_rows}, and the current remaining row indices in \texttt{other\_rows}. Thus, the initialization is given in Listing \ref{lst:a0_initial}.
+	\begin{lstlisting}[caption={$\matstep{0}$ initialization}, label=lst:a0_initial]
+if initial_rows is None:
+    # p_indices=True to get row index array instead of permutation matrix.
+    # Return of lu is a tuple (p, l, u). We only need the p entry, 
+    # which is the array of row indices of the permutation.
+    p = scipy.linalg.lu(a, p_indices=True)[0]
+    
+    submat_rows = p[:r]  # get first r elements
+    other_rows = p[r:]  # get remaining elements
+else:
+    submat_rows = initial_rows
+    
+    # find other rows by building a set of all indices and set-subtracting
+    # given initial submatrix row indices. Then convert to array of indices.
+    other_rows_set = set(range(n)).difference(map(int, submat_rows))
+    other_rows = np.array(tuple(other_rows_set))
+	\end{lstlisting}
+	
+	\textbf{Initialization of $Z^{(0)}$}
+	
+	We have an efficient update rule for $Z^{(k)}$, but we still need to initialize $Z^{(0)}$. The only way to do this is by using the definition, that is (by Lemma \ref{lem:submatrix_prod}),
+	\begin{equation}
+		Z^{(0)} = B^{(0)}\left(J^{(0)}, :\right) = A\left(J^{(0)}, :\right)\left(\matstep{0}\right)^{-1}.
+	\end{equation}
+	\newcommand{\vz}{\texttt{z}}
+	The most stable and efficient way to do this is by using a linear system solver (rather than computing the inverse of $\matstep{0}$ explicitly). This can be done fairly easily with \texttt{np.linalg.solve}. The main wrinkle is that we are multiplying by an inverse matrix on the \textit{right}, and this command computes the product with an inverse matrix on the \textit{left}. We can deal with this by transposing the inputs and transposing the output of \texttt{np.linalg.solve}. 
+	
+	Noting that $A\left(J^{(0)}, :\right)$ can be obtained by taking the rows of \va{} stored in \texttt{other\_rows}, and $\matstep{0}$ can be obtained by taking the rows of \va{} stored in \texttt{submat\_rows}, the initialization of $Z^{(0)}$, which we store in the variable \vz{}, is given in Listing \ref{lst:z_initial}.
+	\begin{lstlisting}[caption={$Z^{(0)}$ initialization}, label=lst:z_initial]
+z = np.linalg.solve(a[submat_rows].T, a[other_rows].T).T
+	\end{lstlisting}
+	We remark that \texttt{np.linalg.solve} uses Gaussian elimination on $\matstep{0} \in \R^{r\times r}$ to solve $n$ equations, so this step has a computational complexity of $\bigoh(nr^2 + r^3) \subseteq \bigoh(nr^2)$, which is acceptable.
+	
+	\textbf{Loop setup}
+	
+	Python doesn't have a \texttt{do}-\texttt{while}/\texttt{repeat}-\texttt{until} loop construct; since we want to terminate after \vmaxiter{} iterations in any case, we can use a \texttt{for} loop and \texttt{if}-\texttt{break} to simulate the repeat-until in Algorithm \ref{alg:maxvol}. Furthermore, the \texttt{if} statement in Algorithm \ref{alg:maxvol} is the same as the loop stopping condition, so we can use the \texttt{if}-\texttt{break} simultaneously to exit the loop and to do the \texttt{if} statement on line 5. Thus, the beginning of our loop computes the maximum modulus element of $Z^{(k)}$ (that is, the Chebyshev norm) and exits if its modulus is less than $1 + \delta$. If we need to exit the loop, then we also need to return \texttt{submat\_rows} immediately, so we can do the exit and return all at once. See Listing \ref{lst:loop}.
+	\begin{lstlisting}[caption={loop setup}, label=lst:loop]
+# use dummy index _, as we don't need the iteration index
+for _ in range(max_iter):
+
+    # np.argmax returns the index in the flattened array, so unravel
+    # to get the 2-dimensional index.
+    i_rel, j = np.unravel_index(np.argmax(np.abs(z)), z.shape)
+    max_mod_el = z[i_rel, j]
+    
+    if np.abs(max_mod_el) < 1 + delta:
+        return submat_rows
+	\end{lstlisting}
+	
+	\textbf{Updating $Z$}
+	
+	For the $Z$ update, we recall the update rule (\ref{eq:z_update_full}). Since most of the content of $D$ is the same as $Z^{(k)}$, we can store the $i'$ row of $Z^{(k)}$, then replace the $j$ row of $Z^{(k)}$ with $e_j^T$, so that $Z^{(k)}$ becomes $D$. This requires $2r$ and $r$ units of extra memory instead of $n-r$ copy operations and $(n-r)r$ units of extra memory. Thus, the update of \vz{} is given in Listing \ref{lst:z_update}.
+	\begin{lstlisting}[caption={$Z$ update}, label=lst:z_update]
+# Save i' row of z and subtract e_j^T.
+right = z[i_rel].copy()
+right[j] -= 1.
+
+# Store e_j^T in the i' row of z.
+z[i_rel, :] = 0.
+z[i_rel, j] = 1.
+
+# In-place update of z. Divide by max_mod_el before matrix multiply.
+z -= z[:, j : j+1] @ (right[None] / max_mod_el)
+	\end{lstlisting}
+	
+	\textbf{Updating row indices}
+	
+	The last thing to do is to update the row index sequence of the current submatrix and the row indices of the current $Z$ matrix. Following the update rules for $I^{(k)}$ and $J^{(k)}$, we see that this amounts to swapping the values \texttt{submat\_rows[j]} and \texttt{other\_rows[i\_rel]}, as in Listing \ref{lst:row_update}.
+	\begin{lstlisting}[caption={row index update}, label=lst:row_update]
+temp = submat_rows[j]
+submat_rows[j] = other_rows[i_rel]
+other_rows[i_rel] = temp
+	\end{lstlisting}
+	
+	\textbf{Return value}
+	
+	If the loop does not exit as a result of having found a $\delta$-dominant submatrix, that is, if the loop completes \vmaxiter{} iterations, then we want to return \texttt{None} to indicate the failure to converge. By default, if no \texttt{return} statement is encountered in a Python function, then the function returns \texttt{None}, so we simply leave the rest of the function after the loop blank.
+	
+	\subsection{Complete code}
+	Bringing all the snippets above together, we obtain the full code for the \maxvol{} algorithm (Listing \ref{lst:maxvol}).
+	\lstinputlisting[firstline=8, lastline=81, caption={\texttt{NumPy} implementation of \maxvol{}}, label=lst:maxvol]{maxvol.py}
 	
 	\section{Experiments}
 	
 	\section{Conclusion}
+	
+	\bibliographystyle{plain}
+	\bibliography{references.bib}
 \end{document}

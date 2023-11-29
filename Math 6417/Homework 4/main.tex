@@ -1,0 +1,93 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\newcommand{\hwnum}{4}
+
+\begin{document}
+	\maketitle
+	
+	\question
+	Define the \textbf{Fourier transform operator} $\fourier: L^1(\R) \to L^\infty(\R)$ by
+	\begin{equation}
+		\label{eq:fourier_transform}
+		\fourier(f)(y) = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}f(x)\dee x.
+	\end{equation}
+	
+	\begin{arabicparts}
+		\questionpart We note that the function $x \mapsto e^{iyx}f(x)$ is clearly integrable if $f$ is, so the integral in (\ref{eq:fourier_transform}) exists for all $y$. We show that $\fourier (f) \in L^\infty(\R)$ as claimed, and $\norm{\fourier f}_{L^\infty} \le \frac{1}{\sqrt{2\pi}}\norm{f}_{L^1}$. Indeed, for $y \in \R$,
+		\begin{align}
+			|\fourier(f)(y)| &= \frac{1}{\sqrt{2\pi}}\left|\int_{-\infty}^\infty e^{iyx}f(x)\dee x\right| \\
+			&\le \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty \left|e^{iyx}f(x)\right|\dee x = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty |f(x)|\dee x = \frac{1}{\sqrt{2\pi}}\norm{f}_{L^1}.
+		\end{align}
+		Therefore, $\norm{\fourier f}_{L^\infty} \le \frac{1}{\sqrt{2\pi}}\norm{f}_{L^1}$.
+		
+		\questionpart Suppose that $f \in C^2(\R)$, and $f, f', f'' \in L^1(\R)$, and $f(x), f'(x), f''(x)\to 0$ as $x\to\pm\infty$. Then there exists a constant $C$ such that $|y^2\fourier(f)(y)| \le C$ for all $y \in \R$. Furthermore, $\fourier(f) \in L^1(\R)$.
+		
+		\begin{proof}
+			Since $f'' \in L^1(\R)$, we can take its Fourier transform, which yields
+			\begin{equation}
+				\fourier(f'')(y) = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}f''(x)\dee x.
+			\end{equation}
+			We can integrate by parts because $f', f\in L^1(\R)$ and are continuous, and $f(x), f'(x)\to 0$ as $x \to\pm \infty$. This gives
+			\begin{align}
+				\fourier(f'')(y) &= \frac{1}{\sqrt{2\pi}}\left[f'(x)e^{iyx}\Big\vert_{-\infty}^\infty - iy\int_{-\infty}^\infty e^{iyx}f'(x)\dee x\right]\\
+				&= \frac{iy}{\sqrt{2\pi}}\left[-f(x)e^{iyx}\Big\vert_{-\infty}^\infty + iy\int_{-\infty}^\infty e^{iyx}f(x)\dee x\right] \\
+				&= -y^2\fourier(f)(y).
+			\end{align}
+			By the reasoning in 1.1), it follows that
+			\begin{equation}
+				|y^2\fourier (f)(y)| = |\fourier(f'')(y)| \le \frac{1}{\sqrt{2\pi}}\norm{f''}_{L^1}
+			\end{equation}
+			for all $y \in \R$.
+			
+			Thus, if $C = \frac{1}{\sqrt{2\pi}}\norm{f''}_{L^1}$, then $|\fourier(f)(y)|\le \frac{C}{y^2}$ for all $y \in \R$. On the other hand, $\fourier(f) \in L^\infty(\R)$ by part 1.1), so $\fourier(f)$ is dominated by the integrable function
+			\begin{equation}
+				\phi(y) = \begin{cases}
+					\norm{\fourier(f)}_{L^\infty} & y \in [-1,1], \\
+					\frac{C}{y^2} & \text{otherwise}.
+				\end{cases}
+			\end{equation}
+			By the integral comparison test, $\fourier(f) \in L^1(\R)$.
+		\end{proof}
+		
+		\questionpart Formally, $\fourier^2(f)(y) = f(-y)$.
+		
+		\begin{proof}
+			Let $\delta_{x_0} = \delta(x-x_0)$, where $\delta$ is the Dirac delta function. Then, formally,
+			\begin{equation}
+				\fourier(\delta_{x_0})(y) = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}\delta(x-x_0)\dee x = \frac{e^{iyx_0}}{\sqrt{2\pi}}.
+			\end{equation}
+			Next, we note that if $f \in C^1\cap L^1(\R)$, and $f' \in L^1(\R)$, and $f(x)\to 0$ as $x\to\pm\infty$, then we can use integration by parts to show that
+			\begin{align}
+				\fourier(f')(y) &= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}f'(x)\dee x = \frac{1}{\sqrt{2\pi}}\left[e^{iyx}f(x)\Big\vert_{-\infty}^\infty - iy\int_{-\infty}^\infty e^{iyx}f(x)\dee x\right] \\
+				&= -iy\fourier(f)(y).
+			\end{align}
+			On the other hand, let $f\in L^1(\R)$, and define $g(x) = ixf(x)$. If $g \in L^1(\R)$ as well, then
+			\begin{align}
+				\dl{}{y} \fourier(f)(y) &= \dl{}{y}\int_{-\infty}^\infty e^{iyx}f(x)\dee x =\int_{-\infty}^\infty \pl{}{y}\left[e^{iyx}f(x)\right]\dee x \\
+				&= \int_{-\infty}^\infty e^{iyx}ixf(x)\dee x = \fourier(g)(y).
+			\end{align}
+			If we take $f(x) = e^{-ax^2}$, then $f$ satisfies the above assumptions. Since $f'(x) = -2axf(x)$,
+			\begin{equation}
+				2ai \dl{}{y}\fourier(f)(y) = 2ai\fourier(i(\cdot)f(\cdot))(y) = \fourier(-2a(\cdot)f(\cdot))(y) = \fourier(f')(y) =-iy\fourier(f)(y).
+			\end{equation}
+			Hence, $\fourier(f)(y)$ is the unique solution of the IVP
+			\begin{equation}
+				u' = -\frac{1}{2a}u,\qquad u(0) = \fourier(f)(0).
+			\end{equation}
+			Since
+			\begin{equation}
+				\fourier(f)(0) = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{-ax^2}\dee x = \frac{1}{\sqrt{2a}},
+			\end{equation}
+			it follows that
+			\begin{equation}
+				\fourier(f)(y) = \frac{1}{\sqrt{2a}} e^{-\frac{y^2}{4a}}.
+			\end{equation}
+			Thus, formally, if $\phi_a(x) = e^{-ax^2}$, then
+			\begin{equation}
+				\fourier(1)(y) = \lim_{a\to 0}\fourier(\phi_a)(y)= \lim_{a\to 0}\frac{1}{\sqrt{2a}}e^{-\frac{y^2}{4a}}.
+			\end{equation}
+		\end{proof}
+	\end{arabicparts}
+\end{document}
