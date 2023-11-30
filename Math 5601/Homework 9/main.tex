@@ -45,5 +45,12 @@
 	Therefore, SOR is an iterative method that uses the $M$ and $N$ defined above.
 	
 	\question
+	To program the Jacobi and Gauss-Seidel methods, I split the iterative solver into two parts. In the first part, the matrix $B$ and vector $c$ in the iterative form $x^{(k+1)} = Bx^{(k)} + c$ are computed. In the second part, the iteration is performed. The iteration can be done the same way regardless of how $B$ and $c$ are computed, so it is implemented once in the \verb*|solve_iterative.m| file. The Jacobi and Gauss-Seidel methods calculate $B$ and $c$ from $A$ and $b$ differently. These calculations are in the \verb*|jacobi.m| and \verb*|gauss_seidel.m| files. Here is a copy of the code for convenience.
+	\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{solve_iterative.m}
 	
+	\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{jacobi.m}
+	
+	\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{gauss_seidel.m}
+	
+	The solution of the given system is $x = 0$. The Jacobi method converges to $x=0$, but the Gauss-Seidel method does not; instead, it alternates between $x_0$ and $-x_0$. See \verb*|output.txt| for the MATLAB output from the Jacobi and Gauss-Seidel iterations.
 \end{document}
