@@ -26,7 +26,7 @@ def maxvol(
     assert r <= n
 
     # In the edge case that a is square, the best we can do is return a
-    # itself (that is, the submatrix rows are all the rows)
+    # itself (that is, the submatrix rows are all the rows).
     if n == r:
         return np.arange(r)
 
@@ -39,19 +39,19 @@ def maxvol(
         # of a nonsingular submatrix. This operation is O(nr^2).
         p = scipy.linalg.lu(a, p_indices=True)[0]
 
-        # submatrix rows are packed into the first r indices
+        # Nonsingular submatrix rows are packed into the first r indices,
         submat_rows = p[:r]
-        # and other rows are in the remaining indices
+        # and other rows are in the remaining indices.
         other_rows = p[r:]
     else:
-        # use given rows of a
-        submat_rows = initial_rows
-        # get other rows of a
+        # Use given rows of a.
+        submat_rows = np.array(initial_rows, dtype=int)
+        # Get other rows of a.
         other_rows_set = set(range(n)).difference(map(int, submat_rows))
         other_rows = np.array(tuple(other_rows_set))
     
     # Get initial z = a[other_rows] @ (a[submat_rows])^{-1}.
-    # Use np.linalg.solve instead to avoid computing matrix inverse.
+    # Use np.linalg.solve to avoid computing matrix inverse.
     # Note that this operation is O(nr^2).
     z = np.linalg.solve(a[submat_rows].T, a[other_rows].T).T
 
@@ -78,7 +78,7 @@ def maxvol(
         submat_rows[j] = other_rows[i_rel]
         other_rows[i_rel] = temp
     
-    # default return value is None
+    # Default return value is None.
 
 
 def pseudo_skeleton(a, r, rtol=1e-2, max_iter=100, delta_mv=1e-2, max_iter_mv=100):

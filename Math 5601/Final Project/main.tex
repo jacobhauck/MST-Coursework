@@ -22,45 +22,112 @@
 	\end{align}
 	
 	\question
-	Consider the second-order ODE (\ref{eq:ode}).
+	Consider the second-order ODE (\ref{eq:ode}). Multiplying by $v \in H^1([a,b])$ and integrating by parts gives
+	\begin{equation}
+		\label{eq:ibp}
+		\int_a^bfv = c(b)u'(b)v(b) - c(a)u'(a)v(a) - \int_a^b cu'v.
+	\end{equation}
 	
 	\begin{alphaparts}
 		\questionpart Suppose we have the boundary conditions
 		\begin{equation}
 			u'(a) = p_a, \qquad u(b) = g_b.
 		\end{equation}
-		Multiplying the ODE by a test function $v$ and integrating by parts, we have
+		Equation (\ref{eq:ibp}) still holds, and we can impose the condition $v(b) = 0$ because we already know that $u(b) = p_b$. Since $u'(a) = p_a$, equation (\ref{eq:ibp}) becomes
 		\begin{equation}
-			\int_a^b f(x)v(x)\dee x = \int_a^b \dl{}{x}\left(c(x)\dl{u(x)}{x}\right) v(x)\dee x = c(x)u'(x)v(x)\Big\vert_a^b - \int_a^b c(x)u'(x)v'(x)\dee x.
+			\int_a^b fv = -c(a)p_av(a) - \int_a^bcu'v'
 		\end{equation}
-		If we choose $v(b) = 0$, then we are led to the weak formulation: find $u \in C^1([a,b])$ with $u(b) = g_b$ such that 
-		\begin{equation}
-			-c(a)p_av(a) - \int_a^b c(x)u'(x)v'(x)\dee x = \int_a^b f(x)v(x)\dee x
-		\end{equation}
-		for all $v \in C^1([a,b])$ with $v(b) = 0$.
+		for all $v \in H^1([a,b])$ such that $v(b) = 0$, which is our weak formulation of (\ref{eq:ode}) with the given boundary conditions.
 		
 		\questionpart Suppose we have the boundary conditions
 		\begin{equation}
-			u'(a) = p_a, \qquad u'(b) + q_b u(b) = p_b.
+			u'(a) = p_a, \qquad u'(b) + q_bu(b) = p_b.
 		\end{equation}
-		Multiplying the ODE by a test function $v$ and integrating by parts, we have
+		Equation (\ref{eq:ibp}) still holds. Since $u'(b) = p_b - q_bu(b)$, and $u'(a) = p_a$, we get
 		\begin{equation}
-			\int_a^b f(x)v(x)\dee x = \int_a^b \dl{}{x}\left(c(x)\dl{u(x)}{x}\right) v(x)\dee x = c(x)u'(x)v(x)\Big\vert_a^b - \int_a^b c(x)u'(x)v'(x)\dee x.
+			\int_a^bfv = c(b)(p_b - q_bu(b))v(b) - c(a)p_av(a) - \int_a^bcu'v'
 		\end{equation}
+		for all $v \in H^1([a,b])$, which is our weak formulation of (\ref{eq:ode}) with the given boundary conditions.
+		
+		\questionpart Suppose we have the boundary conditions
+		\begin{equation}
+ 			u'(a) = p_a,\qquad u'(b) = p_b.
+		\end{equation}
+		Equation (\ref{eq:ibp}) still holds. Since $u'(a) = p_a$, and $u'(b) = p_b$, we get
+		\begin{equation}
+			\label{eq:weak_neumann}
+			\int_a^bfv = c(b)p_bv(b) - c(a)p_av(a) - \int_a^bcu'v'
+		\end{equation}
+		for all $v \in H^1([a,b])$, which is our weak formulation of (\ref{eq:ode}) with the given boundary conditions.
+		
+		We note that solutions of this formulation are not unique. Indeed, if $u \in H^1([a,b])$ satisfies (\ref{eq:weak_neumann}) for all $v \in H^1([a,b])$, then so does $u + \alpha$, where $\alpha \in \R$ is any real number because $(u+\alpha)' = u'$ regardless of what $\alpha$ is, and the weak formulation depends only on $u'$.
 	\end{alphaparts}
 	
-	\question
+	\question Consider the Poisson equation
+	\begin{equation}
+		\label{eq:poisson}
+		\nabla \cdot (c\nabla u) = f \; \text{in}\; D.
+	\end{equation}
+	Using integration by parts, we have
+	\begin{equation}
+		\label{eq:ibp2}
+		\int_D fv = \int_D \nabla \cdot(c\nabla u)v = \int_{\partial D} cv \nabla u \cdot n \dee S - \int_D c\nabla u \cdot \nabla v,
+	\end{equation}
+	where $\text{d}S$ is the surface measure on $\partial D$, and $v \in H^1\left(\overline{D}\right)$.
+	
+	\begin{alphaparts}
+		\questionpart Suppose that we have the boundary condition
+		\begin{equation}
+			u = g \;\text{on}\;\partial D.
+		\end{equation}
+		Equation (\ref{eq:ibp2}) still holds. Since we know the value of $u$ on $\partial D$, we can set $v = 0$ on $\partial D$. Then we get
+		\begin{equation}
+			\int_D fv = - \int_D c\nabla u\cdot \nabla v
+		\end{equation}
+		for all $v \in H^1\left(\overline{D}\right)$ such that $v = 0$ on $\partial D$, which is our weak formulation of (\ref{eq:poisson}) with the given boundary condition.
+		
+		\questionpart Suppose that we have the boundary condition
+		\begin{equation}
+			\nabla u\cdot n + qu = p \;\text{on}\;\partial D,
+		\end{equation}
+		where $n$ is the outward unit normal vector to $\partial D$, and $p$ and $q$ are functions on $\partial D$. Equation (\ref{eq:ibp2}) still holds. Since $\nabla u \cdot n = p - qu$ on $\partial D$, it follows that
+		\begin{equation}
+			\int_D fv = \int_{\partial D} cv(p-qu)\dee S - \int_D c\nabla u\cdot\nabla v
+		\end{equation}
+		for all $v \in H^1\left(\overline{D}\right)$, which is our weak formulation of (\ref{eq:poisson}) with the given boundary condition.
+	\end{alphaparts}
 	
 	\question
 	If $u \in C^2[a,b]$, then
 	\begin{align}
+		\label{eq:lin_interp_value}
 		\lVert u - I_hu\rVert_\infty &\le \frac{1}{8}h^2\lVert u'' \rVert_\infty,\\
+		\label{eq:lin_interp_deriv}
 		\lVert (u - I_hu)'\rVert_\infty &\le \frac{1}{2}h\lVert u''\rVert_\infty.
 	\end{align}
 	\begin{proof}
-		Consider the interior $(x_i, x_{i+1})$ of the $i$th element of $[a,b]$, where $1 \le i\le N$. For $x \in (x_i, x_{i+1})$, Taylor's Theorem implies that there is some $\xi \in (x_i, x_{i+1})$ such that
+		Consider the interval $[x_i, x_{i+1}]$, where $1 \le i \le N$. Restricted to this interval, $I_hu$ is the degree-1 Lagrange polynomial interpolation of $u$ on with nodes $x_i$ and $x_{i+1}$. By the error formula for Lagrange polynomial approximation in the slides,
 		\begin{equation}
-			u(x) = u(x_i) + (x-x_i)u'(x_i) + \frac{1}{2}(x-x_i)^2u''(\xi).
+			u(x) - I_hu(x) = \frac{f''(\xi(x))(x-x_i)(x-x_{i+1})}{2}
+		\end{equation}
+		for some $\xi(x) \in [x_i,x_{i+1}]$. Then
+		\begin{equation}
+			|u(x) - I_hu(x)| \le \lVert f''\rVert_\infty \cdot \frac{1}{2}(x-x_i)(x_{i+1}-x).
+		\end{equation}
+		The function $g(x) = (x-x_i)(x_{i+1} -x)$ is a downward-opening parabola, so it achieves maximum halfway between its roots $x_i$ and $x_{i+1}$. Therefore,
+		\begin{align}
+			|u(x) - I_hu(x)| &\le \lVert f'' \rVert_\infty \cdot\frac{\left(\frac{x_i + x_{i+1}}{2} - x_i\right)\left(x_{i+1}-\frac{x_i + x_{i+1}}{2}\right)}{2} \\
+			&=  \lVert f''\rVert_\infty \frac{(x_{i+1} - x_i)^2}{8} = \frac{h^2}{8}\lVert f''\rVert_\infty.
+		\end{align}
+		Since this holds for all $x \in [x_i, x_{i+1}]$ and all $1\le i \le N$, it holds for all $x \in [a,b]$. Therefore, the inequality (\ref{eq:lin_interp_value}) follows.
+		
+		Let $1 \le i \le N$, and let $x \in [x_i, x_{i+1}]$. By the Mean Value Theorem, there exists $ c\in [x_i, x_{i+1}]$ such that
+		\begin{equation}
+			u'(c) = \frac{u(x_{i+1}) - u(x_i)}{x_{i+1} - x_i} = (I_hu)'(x).
+		\end{equation}
+		Then $(I_hu)'$ is the degree-0 Lagrange polynomial interpolation of $u'$ with node $c$. By the error formula for Lagrange polynomial approximation in the slides,
+		\begin{equation}
+			u'(x) - (I_hu)'(x) = u''(\xi(x))(x-c)
 		\end{equation}
 	\end{proof}
 \end{document}
