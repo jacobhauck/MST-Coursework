@@ -1,0 +1,66 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\usepackage{float}
+\usepackage{booktabs}
+
+\renewcommand{\hwtype}{Final Project}
+\newcommand{\hwnum}{}
+\renewcommand{\questiontype}{Problem}
+
+
+\begin{document}
+	\maketitle
+	
+	Consider the following second-order ODE with Dirichlet boundary conditions:
+	\begin{align}
+		\label{eq:ode}
+		\dl{}{x}\left(c(x)\dl{u(x)}{x}\right) &= f(x),\qquad a \le x \le b, \\
+		\label{eq:bc}
+		u(a) = g_a,\quad u(b) &= g_b.
+	\end{align}
+	
+	\question
+	Consider the second-order ODE (\ref{eq:ode}).
+	
+	\begin{alphaparts}
+		\questionpart Suppose we have the boundary conditions
+		\begin{equation}
+			u'(a) = p_a, \qquad u(b) = g_b.
+		\end{equation}
+		Multiplying the ODE by a test function $v$ and integrating by parts, we have
+		\begin{equation}
+			\int_a^b f(x)v(x)\dee x = \int_a^b \dl{}{x}\left(c(x)\dl{u(x)}{x}\right) v(x)\dee x = c(x)u'(x)v(x)\Big\vert_a^b - \int_a^b c(x)u'(x)v'(x)\dee x.
+		\end{equation}
+		If we choose $v(b) = 0$, then we are led to the weak formulation: find $u \in C^1([a,b])$ with $u(b) = g_b$ such that 
+		\begin{equation}
+			-c(a)p_av(a) - \int_a^b c(x)u'(x)v'(x)\dee x = \int_a^b f(x)v(x)\dee x
+		\end{equation}
+		for all $v \in C^1([a,b])$ with $v(b) = 0$.
+		
+		\questionpart Suppose we have the boundary conditions
+		\begin{equation}
+			u'(a) = p_a, \qquad u'(b) + q_b u(b) = p_b.
+		\end{equation}
+		Multiplying the ODE by a test function $v$ and integrating by parts, we have
+		\begin{equation}
+			\int_a^b f(x)v(x)\dee x = \int_a^b \dl{}{x}\left(c(x)\dl{u(x)}{x}\right) v(x)\dee x = c(x)u'(x)v(x)\Big\vert_a^b - \int_a^b c(x)u'(x)v'(x)\dee x.
+		\end{equation}
+	\end{alphaparts}
+	
+	\question
+	
+	\question
+	If $u \in C^2[a,b]$, then
+	\begin{align}
+		\lVert u - I_hu\rVert_\infty &\le \frac{1}{8}h^2\lVert u'' \rVert_\infty,\\
+		\lVert (u - I_hu)'\rVert_\infty &\le \frac{1}{2}h\lVert u''\rVert_\infty.
+	\end{align}
+	\begin{proof}
+		Consider the interior $(x_i, x_{i+1})$ of the $i$th element of $[a,b]$, where $1 \le i\le N$. For $x \in (x_i, x_{i+1})$, Taylor's Theorem implies that there is some $\xi \in (x_i, x_{i+1})$ such that
+		\begin{equation}
+			u(x) = u(x_i) + (x-x_i)u'(x_i) + \frac{1}{2}(x-x_i)^2u''(\xi).
+		\end{equation}
+	\end{proof}
+\end{document}

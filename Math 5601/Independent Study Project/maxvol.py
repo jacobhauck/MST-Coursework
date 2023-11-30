@@ -1,49 +1,113 @@
+from typing import Optional
+from numpy.typing import NDArray
+
 import numpy as np
+import scipy
 
 
-def maxvol(a, initial_rows, delta=1e-2, max_iter=100):
+def maxvol(
+        a: NDArray[np.float],
+        initial_rows: Optional[NDArray[np.int]] = None,
+        delta: float = 1e-2,
+        max_iter: int = 100
+) -> Optional[NDArray[np.int]]:
     """
-    :param a: An n x r matrix
-    :param initial_rows: a set of row indices in the matrix a giving us
-    an initial nonsingular r x r submatrix
-    :param delta: tolerance for maximal element
+    :param a: An n x r matrix of rank r.
+    :param initial_rows: A set of row indices in the matrix a giving us
+    an initial nonsingular r x r submatrix. Uses Gaussian elimination to
+    choose an initial set of rows if initial_rows is None.
+    :param delta: delta-dominance delta value.
+    :param max_iter: Maximum number of maxvol iterations.
+    :return: Row indices of a delta-dominant submatrix of a. None if
+    convergence fails to occur within max_iter iterations.
     """
-    r = a.shape[1]
+    # input validation
+    n, r = a.shape
+    assert r <= n
 
-    # permute rows of a so that initial_rows are the upper rows
-    # Since the only modifications to a we will make are swapping rows,
-    # we will just store the permutation of the rows of a in the index arrays
-    # (upper_rows, lower_rows), and modify these instead of modifying a
-    # directly, which is slightly more efficient.
-    upper_rows = initial_rows
+    # In the edge case that a is square, the best we can do is return a
+    # itself (that is, the submatrix rows are all the rows)
+    if n == r:
+        return np.arange(r)
 
-    # get lower rows of a
-    lower_rows = np.array(set(range(r)).difference(map(int, upper_rows)))
+    # Initialize a nonsingular submatrix.
+    # We only track the rows of the submatrix, as we do
+    # not need the submatrix itself in the algorithm, and we can always
+    # retrieve the submatrix from the original matrix using the row indices.
+    if initial_rows is None:
+        # Use Gaussian elimination with partial pivoting to get rows
+        # of a nonsingular submatrix. This operation is O(nr^2).
+        p = scipy.linalg.lu(a, p_indices=True)[0]
 
-    # get initial lower part z of a @ (a[uppper_rows])^{-1}.
-    # upper part is I by construction
-    z = a[lower_rows] @ np.linalg.inv(a[upper_rows])
+        # submatrix rows are packed into the first r indices
+        submat_rows = p[:r]
+        # and other rows are in the remaining indices
+        other_rows = p[r:]
+    else:
+        # use given rows of a
+        submat_rows = initial_rows
+        # get other rows of a
+        other_rows_set = set(range(n)).difference(map(int, submat_rows))
+        other_rows = np.array(tuple(other_rows_set))
+    
+    # Get initial z = a[other_rows] @ (a[submat_rows])^{-1}.
+    # Use np.linalg.solve instead to avoid computing matrix inverse.
+    # Note that this operation is O(nr^2).
+    z = np.linalg.solve(a[submat_rows].T, a[other_rows].T).T
 
     for _ in range(max_iter):
-        # get rows to swap by searching for maximum modulus element of z
+        # Get rows to swap by finding the maximum modulus element of z.
         i_rel, j = np.unravel_index(np.argmax(np.abs(z)), z.shape)
+        max_mod_el = z[i_rel, j]
+
+        # Stop if the current submatrix is delta-dominant.
+        if np.abs(max_mod_el) < 1 + delta:
+            return submat_rows
         
-        # stop if we have a large enough volume submatrix
-        if np.abs(z[i_rel, j]) < 1 + delta:
-            break
-        
-        # update lower part of a @ a_sq_inv. Upper part is always I
-        ell = z[:, j]
-        ell[i_rel] += 1.
+        # Update z.
+        right = z[i_rel].copy()
+        right[j] -= 1.
 
-        r = z[i_rel]
-        r[j] -= 1.
+        z[i_rel, :] = 0.
+        z[i_rel, j] = 1.
 
-        z -= ell[:, None] @ (r[None, :] / z[i_rel, j])
+        z -= z[:, j : j+1] @ (right[None] / max_mod_el)
 
-        # update permutation of rows of a instead of a itself
-        temp = lower_rows[i_rel]
-        lower_rows[i_rel] = upper_rows[j]
-        upper_rows[j] = temp
+        # Update row index sequences.
+        temp = submat_rows[j]
+        submat_rows[j] = other_rows[i_rel]
+        other_rows[i_rel] = temp
+    
+    # default return value is None
 
-    return upper_rows, lower_rows
+
+def pseudo_skeleton(a, r, rtol=1e-2, max_iter=100, delta_mv=1e-2, max_iter_mv=100):
+    col_indices = np.arange(r)
+    current_approx = np.zeros_like(a)
+
+    for _ in range(max_iter):
+        # row cycle
+        q = np.linalg.qr(a[:, col_indices])[0]
+        row_indices = maxvol(q, delta=delta_mv, max_iter=max_iter_mv)
+
+        # col cycle
+        q = np.linalg.qr(a[row_indices, :].T)[0]
+        col_indices = maxvol(q, delta=delta_mv, max_iter=max_iter_mv)
+
+        left = a[:, col_indices]
+        right = np.linalg.solve(q[col_indices].T, q.T)
+        next_approx = left @ right
+
+        cauchy_error = np.linalg.norm(current_approx - next_approx)
+        if cauchy_error < rtol * np.linalg.norm(current_approx):
+            return row_indices, col_indices, left, right
+
+        current_approx = next_approx
+
+
+def truncated_svd(a, r):
+    m, n = a.shape
+    assert r <= min(m, n)
+
+    u, d, vt = np.linalg.svd(a, full_matrices=False)
+    return u[:, :r] * d[None, :r], vt[:r]
