@@ -4,6 +4,7 @@
 
 \usepackage{float}
 \usepackage{booktabs}
+\usepackage[ruled,linesnumbered]{algorithm2e}
 
 \renewcommand{\hwtype}{Final Project}
 \newcommand{\hwnum}{}
@@ -121,14 +122,35 @@
 		\end{align}
 		Since this holds for all $x \in [x_i, x_{i+1}]$ and all $1\le i \le N$, it holds for all $x \in [a,b]$. Therefore, the inequality (\ref{eq:lin_interp_value}) follows.
 		
-		Let $1 \le i \le N$, and let $x \in [x_i, x_{i+1}]$. By the Mean Value Theorem, there exists $ c\in [x_i, x_{i+1}]$ such that
+		Let $1 \le i \le N$, and let $x \in (x_i, x_{i+1})$. By Taylor's Theorem,
+		\begin{align}
+			u(x_i) &= u(x) + (x_i -x)u'(x) + \frac{1}{2}(x_i-x)^2u''(\xi(x_i)) \\
+			u(x_{i+1}) &= u(x) + (x_{i+1} - x)u'(x) + \frac{1}{2}(x_{i+1}-x)^2u''(\xi(x_{i+1}))
+		\end{align}
+		for some $\xi(x_i), \xi(x_{i+1}) \in [x_i, x_{i+1}]$. Then
 		\begin{equation}
-			u'(c) = \frac{u(x_{i+1}) - u(x_i)}{x_{i+1} - x_i} = (I_hu)'(x).
+			u(x_{i+1}) - u(x_i) = (x_{i+1} -x_i)u'(x) + \frac{1}{2}(x_{i+1}-x)^2u''(\xi(x_{i+1})) - \frac{1}{2}(x_i-x)^2u''(\xi(x_i)).
 		\end{equation}
-		Then $(I_hu)'$ is the degree-0 Lagrange polynomial interpolation of $u'$ with node $c$. By the error formula for Lagrange polynomial approximation in the slides,
+		Since $I_hu(x) = \frac{u(x_{i+1})- u(x_i)}{x_{i+1} - x_i}(x-x_i) + u(x_i)$ for $x \in (x_i, x_{i+1})$, it follows that $(I_hu')(x) = \frac{u(x_{i+1})- u(x_i)}{x_{i+1} - x_i}$ for $x \in (x_i, x_{i+1})$. Thus,
+		\begin{align}
+			(u-I_hu)'(x) &= u'(x) - (I_hu)'(x) = u'(x) - \frac{u(x_{i+1} - u(x_i))}{x_{i+1}-x_i} \\
+			&= \frac{(x_i-x)^2}{2(x_{i+1}-x_i)}u''(\xi(x_i)) - \frac{(x_{i+1}-x)^2}{2(x_{i+1}-x_i)}u''(\xi(x_{i+1}))
+		\end{align}
+		if $x \in (x_i, x_{i+1})$. Taking absolute values on both sides gives
+		\begin{align}
+			|(u-I_hu)'(x)| &\le \frac{1}{2(x_{i+1}-x_i)}\left[(x_i-x)^2|u''(\xi(x_i))| + (x_{i+1}-x)^2|u''(\xi(x_{i+1}))|\right] \\
+			&\le \frac{1}{2h}\left[(x_i-x)^2 + (x_{i+1}-x)^2\right]\lVert u'' \rVert_\infty \\
+			&= \frac{1}{2h}g(x)\lVert u'' \rVert_\infty,
+		\end{align}
+		where $g(x) = (x_i-x)^2 + (x_{i+1}-x)^2$. We note that $g'(x) = 4x - 2(x_{i+1} + x_i)$, so $g$ achieves a maximum on $[x_i, x_{i+1}]$ when $g'(x) = 0$, that is, when $x = \frac{x_{i+1}+x_i}{2}$, or else when $x \in \{x_i, x_{i+1}\}$, by the Extreme Value Theorem. If $x \in \{x_i, x_{i+1}\}$, then $g(x) = h^2$, and if $x = \frac{x_i + x_{i+1}}{2}$, then $g(x) = \frac{h^2}{2}$. Therefore, the maximum of $g$ on $[x_i,x_{i+1}]$ is $h^2$, and
 		\begin{equation}
-			u'(x) - (I_hu)'(x) = u''(\xi(x))(x-c)
+			|(u-I_hu)'(x)| \le \frac{h}{2}\lVert u'' \rVert_\infty
 		\end{equation}
+		if $x \in (x_i, x_{i+1})$. Since $i$ was arbitrary, this inequality holds for all $x \in [a,b]$ except at the nodes $\{x_i\}$ where $I_hu$ is potentially not differentiable. The $L^\infty$ norm $\lVert \cdot \rVert_\infty$ does not depend on the value of a function at finitely many points, so it follows that
+		\begin{equation}
+			\lVert (u-I_hu)'\rVert_\infty \le \frac{1}{2}h\lVert f''\rVert_\infty,
+		\end{equation}
+		as desired.
 	\end{proof}
 	
 	\question 
@@ -213,7 +235,7 @@
 				-cB^{-1}d^{-1} & d^{-1}
 			\end{matrix}\right].
 		\end{equation}
-		Then $A^{-1}$ is lower-triangular because $B^{-1}$ is lower triangular.
+		Then $A^{-1}$ is lower-triangular because $B^{-1}$ is lower triangular. Hence, the inverse of any nonsingular, lower-triangular matrix is also lower-triangular by induction.
 	\end{proof}
 	
 	\question 
@@ -243,12 +265,36 @@
 	
 	\question
 	\begin{alphaparts}
-		\questionpart 
+		\questionpart
+		
+		\begin{algorithm}
+			\KwIn{A symmetric, positive-definite, $n\times n$ matrix $A$}
+			\KwIn{A symmetric, positive-definite, $n\times n$ matrix $M$ that is easy to invert (the preconditioner)}
+			\KwIn{A vector $b$ of length $n$}
+			\KwIn{Initial guess $x^{(0)}$ for the solution of $Ax=b$}
+			\KwIn{Residual tolerance $\varepsilon > 0$}
+			\KwOut{Approximate solution $x$ of $Ax = b$}
+			\tcp{Initialization}
+			$r^{(0)} \gets b - Ax^{(0)}$\;
+			$d^{(0)} \gets M^{-1}r^{(0)}$\;
+			$k \gets 0$\;
+			\tcp{Iteration}
+			\While{$\left\lVert r^{(k)}\right\rVert \ge \varepsilon$}{
+				\tcp{Update $x^{(k)}$}
+				$\alpha^{(k)} \gets \frac{\left(r^{(k)}\right)^TM^{-1}r^{(k)}}{\left(d^{(k)}\right)^TAd^{(k)}}$\;
+				$x^{(k+1)} \gets x^{(k)} + \alpha^{(k)}d^{(k)}$\;
+				\tcp{Update search direction and residual}
+				$r^{(k+1)} \gets r^{(k)} - \alpha^{(k)}Ad^{(k)}$\;
+				$\beta^{(k+1)} \gets \frac{\left(r^{(k+1)}\right)^TM^{-1}r^{(k+1)}}{\left(r^{(k)}\right)^TM^{-1}r^{(k)}}$\;
+				$d^{(k+1)}\gets M^{-1}r^{(k+1)} + \beta^{(k+1)}d^{(k)}$\;
+			}
+		\end{algorithm}
 		\questionpart 
 	\end{alphaparts}
 	
 	\question 
 	\begin{alphaparts}
-		\questionpart
+		\questionpart 
+		
 	\end{alphaparts}
 \end{document}
