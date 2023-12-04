@@ -295,6 +295,17 @@
 	\question 
 	\begin{alphaparts}
 		\questionpart 
+		The main implementation of the finite element method for our second-order BVP is found in \verb*|fem_dirichlet_1d.m|, and copied below. In order to avoid code duplication, this function takes the various data determining the equation as parameters, namely, $a$, $b$, $g_a$, $g_b$, $f$, and $c$, as well as the number of points in the mesh $N$. Most importantly, the method used for numerical integration and the solving of a linear system are passed as parameters as well.	
+		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{fem_dirichlet_1d.m}
+		
+		To apply 4-point Gaussian quadrature, we reuse \verb*|quad.m| from Homework 6 (renamed to \verb*|myquad.m|). Note that the Guass-Legendre quadrature nodes and weights on $[-1,1]$ are given by
+		\begin{equation}
+			x_1 = ...
+		\end{equation}
+		We implement the use of these nodes and weights in \verb*|gauss4_integrator.m|, copied below. Using the MATLAB \verb*|\| operator in the \verb*|solver| parameter is trivial, so we don't need a custom function for it.
+		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{gauss4_integrator.m}
+		
+		\questionpart
 		
 	\end{alphaparts}
 \end{document}
