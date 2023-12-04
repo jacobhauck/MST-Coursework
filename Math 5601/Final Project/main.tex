@@ -306,6 +306,21 @@
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{gauss4_integrator.m}
 		
 		\questionpart
-		
+		The input and output in the command window of MATLAB required to run the code in part (a) with the desired step sizes can be found in \verb*|p8_output.txt|. The errors at $x=2$ and $x=3$ are reproduced in
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{@{}lll@{}}
+				\toprule
+				$h$ & Error at $x=2$ & Error at $x=3$ \\
+				\midrule
+				$\frac{1}{4}$ & 0.146906 & 0.004765 \\[.4em]
+				$\frac{1}{8}$ & 0.073208 & 0.003406 \\[.4em]
+				$\frac{1}{16}$ & 0.036484 & 0.003254 \\[.4em]
+				$\frac{1}{32}$ & 0.018204 & 0.002028 \\[.4em]
+				$\frac{1}{64}$ & 0.009091 & 0.001116 \\[.4em]
+				$\frac{1}{128}$ & 0.004543 & 0.000584 \\[.4em]
+				\bottomrule
+			\end{tabular}
+		\end{table}
 	\end{alphaparts}
 \end{document}
