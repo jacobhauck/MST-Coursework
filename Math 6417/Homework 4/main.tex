@@ -54,11 +54,7 @@
 		\questionpart Formally, $\fourier^2(f)(y) = f(-y)$.
 		
 		\begin{proof}
-			Let $\delta_{x_0} = \delta(x-x_0)$, where $\delta$ is the Dirac delta function. Then, formally,
-			\begin{equation}
-				\fourier(\delta_{x_0})(y) = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}\delta(x-x_0)\dee x = \frac{e^{iyx_0}}{\sqrt{2\pi}}.
-			\end{equation}
-			Next, we note that if $f \in C^1\cap L^1(\R)$, and $f' \in L^1(\R)$, and $f(x)\to 0$ as $x\to\pm\infty$, then we can use integration by parts to show that
+			We note that if $f \in C^1\cap L^1(\R)$, and $f' \in L^1(\R)$, and $f(x)\to 0$ as $x\to\pm\infty$, then we can use integration by parts to show that
 			\begin{align}
 				\fourier(f')(y) &= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}f'(x)\dee x = \frac{1}{\sqrt{2\pi}}\left[e^{iyx}f(x)\Big\vert_{-\infty}^\infty - iy\int_{-\infty}^\infty e^{iyx}f(x)\dee x\right] \\
 				&= -iy\fourier(f)(y).
@@ -74,7 +70,11 @@
 			\end{equation}
 			Hence, $\fourier(f)(y)$ is the unique solution of the IVP
 			\begin{equation}
-				u' = -\frac{1}{2a}u,\qquad u(0) = \fourier(f)(0).
+				u' = -\frac{y}{2a}u,\qquad u(0) = \fourier(f)(0).
+			\end{equation}
+			The general solution of the differential equation is
+			\begin{equation}
+				u(y) = u(0)e^{-\frac{y^2}{4a}}.
 			\end{equation}
 			Since
 			\begin{equation}
@@ -82,12 +82,53 @@
 			\end{equation}
 			it follows that
 			\begin{equation}
+				\label{eq:gaussian_fourier_transform}
 				\fourier(f)(y) = \frac{1}{\sqrt{2a}} e^{-\frac{y^2}{4a}}.
 			\end{equation}
-			Thus, formally, if $\phi_a(x) = e^{-ax^2}$, then
+			Thus, if $\phi_a(x) = e^{-ax^2}$, then, formally,
 			\begin{equation}
-				\fourier(1)(y) = \lim_{a\to 0}\fourier(\phi_a)(y)= \lim_{a\to 0}\frac{1}{\sqrt{2a}}e^{-\frac{y^2}{4a}}.
+				\fourier(1)(y) = \fourier\left(\lim_{a\to 0^+}\phi_a\right)(y) = \lim_{a\to 0^+}\fourier(\phi_a)(y)= \lim_{a\to 0^+}\frac{1}{\sqrt{2a}}e^{-\frac{y^2}{4a}}.
 			\end{equation}
+			We would like to interpret the last limit formally as a constant multiple of the Dirac delta function. Clearly,
+			\begin{equation}
+				\lim_{a\to0^+} \frac{1}{\sqrt{2a}}e^{-\frac{y^2}{4a}} = \begin{cases}
+					0 & y \ne 0, \\
+					\infty & y = 0.
+				\end{cases}
+			\end{equation}
+			At the same time, for any $a > 0$,
+			\begin{equation}
+				\int_{-\infty}^\infty \frac{1}{\sqrt{2a}}e^{-\frac{y^2}{4a}}\dee y = \frac{1}{\sqrt{2a}}\sqrt{4a\pi} = \sqrt{2\pi},
+			\end{equation}
+			so it makes sense formally that we should have $\fourier(1)(y) = \sqrt{2\pi}\delta(y)$.
+			
+			Now, if we consider applying the Fourier transform twice to a function $f$, we get
+			\begin{align}
+				\fourier\fourier(f)(y) &= \frac{1}{2\pi}\int_{-\infty}^\infty\int_{-\infty}^\infty e^{ixy}e^{izx} f(z)\dee z\dee x \\
+				&= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty f(z) \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{ix(y+z)}\dee x\dee z\\
+				&= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty f(z) \fourier(1)(y+z)\dee z \\
+				&= \int_{-\infty}^\infty f(z)\delta(y+z)\dee z \\
+				&= \int_{-\infty}^\infty f(z-y)\delta(z)\dee z \\
+				&= f(-y).
+			\end{align}
 		\end{proof}
+		
+		\questionpart Define $g(y) = f(-y)$ for some function $f$. Based on the formal result from part 1.3), we see immediately that
+		\begin{equation}
+			\fourier^4(f)(y) = \fourier^2(\fourier^2(f))(y) = \fourier^2(g)(y) = g(-y) = f(y).
+		\end{equation}
+		Since $f$ was arbitrary, it follows formally that $\fourier^4 = I$, the identity operator.
+		
+		\questionpart Let $p(x) = x^4$. By the Spectral Mapping Theorem,
+		\begin{equation}
+			p(\sigma(\fourier)) = \sigma(p(\fourier)).
+		\end{equation}
+		Since $p(\fourier) = \fourier^4 = I$, the spectrum of $p(\fourier)$ is just $\sigma(I) = \{1\}$, as the operator $I - \lambda I = (1-\lambda)I$ is invertible, with inverse $\frac{1}{1-\lambda}I$, if and only if $\lambda \ne 1$. Therfore, if $\lambda \in \sigma(\fourier)$, then $p(\lambda) = 1$, that is, $\lambda^4 = 1$. The possible solutions of this equation are $1,-1,i,-i$, so $\sigma(\fourier) \subseteq \{1,-1,i,-i\}$.
+		
+		\questionpart If we reuse the result in equation (\ref{eq:gaussian_fourier_transform}) with $a = \frac{1}{2}$, we see that if $f(x) = e^{-\frac{1}{2}x^2}$, then
+		\begin{equation}
+			\fourier(f)(y) = e^{-\frac{1}{2}y^2}
+		\end{equation}
+		as well. Thus, $\fourier f = f$, so $f$ is an eigenfunction of $\fourier$ with corresponding eigenvalue $1$.
 	\end{arabicparts}
 \end{document}
