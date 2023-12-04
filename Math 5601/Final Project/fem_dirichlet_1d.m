@@ -27,6 +27,12 @@ end
 m_A(1, 1) = -v_c_int(1);
 m_A(n + 1, n + 1) = -v_c_int(n);
 
+% Enforce Dirichlet BC
+m_A(1, :) = 0;
+m_A(1, 1) = 1;
+m_A(n + 1, :) = 0;
+m_A(n + 1, n + 1) = 1;
+
 % Assemble load vector (no BC)
 for j = 2:n
     v_b(j) = integrator(@(x) f(x) .* (x - v_x(j - 1)) / h, v_x(j - 1), v_x(j));
@@ -35,12 +41,6 @@ end
 
 v_b(1) = integrator(@(x) f(x) .* (x - v_x(1)) / h, v_x(1), v_x(2));
 v_b(n + 1) = integrator(@(x) f(x) .* (v_x(n + 1) - x) / h, v_x(n), v_x(n + 1));
-
-% Enforce Dirichlet BC
-m_A(1, :) = 0;
-m_A(1, 1) = 1;
-m_A(n + 1, :) = 0;
-m_A(n + 1, n + 1) = 1;
 
 v_b(1) = ga;
 v_b(n + 1) = gb;
