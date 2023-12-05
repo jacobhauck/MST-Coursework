@@ -1,7 +1,8 @@
 function [B, c] = jacobi(A, b)
 
 d = diag(A);
-N = A - diag(d);
+N = diag(d) - A;
+M_inv = diag(1 ./ d);
 
-c = N * b;
-B = diag(1 ./ d) * N;
+c = M_inv * b;
+B = M_inv * N;
