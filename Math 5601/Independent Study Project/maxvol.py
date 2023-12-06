@@ -6,11 +6,11 @@ import scipy
 
 
 def maxvol(
-        a: NDArray[np.float],
-        initial_rows: Optional[NDArray[np.int]] = None,
+        a: NDArray[np.float64],
+        initial_rows: Optional[NDArray[np.int64]] = None,
         delta: float = 1e-2,
         max_iter: int = 100
-) -> Optional[NDArray[np.int]]:
+) -> Optional[NDArray[np.int64]]:
     """
     :param a: An n x r matrix of rank r.
     :param initial_rows: A set of row indices in the matrix a giving us

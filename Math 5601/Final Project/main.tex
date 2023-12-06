@@ -4,6 +4,7 @@
 
 \usepackage{float}
 \usepackage{booktabs}
+\usepackage{makecell}
 \usepackage[ruled,linesnumbered]{algorithm2e}
 
 \renewcommand{\hwtype}{Final Project}
@@ -333,5 +334,42 @@
 	\end{alphaparts}
 	
 	\question
+	To use our Jacobi and Gauss-Seidel code from Homework 9, we have to wrap the methods in solver functions that can be passed to the last argument of \verb*|fem_dirichlet_1d|. These wrappers are found in \verb*|jacobi_solver.m|, \verb*|gauss_seidel_solver.m|. The code for Gaussian elimination is found in \verb*|gauss_elim.m|, reproduced below.
+	\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{gauss_elim.m}
+	
+	\question
+	The maximum absolute errors on the nodes of the finite element approximations computed in Problem 9 are reported in Table \ref{table:p9}.
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{@{}lllll@{}}
+			\toprule
+			$h$ & \verb*|\| & \makecell{Gaussian \\ elim.} & Jacobi & Gauss-Seidel \\
+			\midrule
+			$\frac{1}{4}$ & 0.003971 & 0.003971 & 0.003957 & 0.003930 \\[.4em]
+			$\frac{1}{8}$ & 0.000990 & 0.000990 & 0.012007 & 0.000632 \\[.4em]
+			$\frac{1}{16}$ & 0.000248 & 0.000248 & 0.078263 & 0.044792 \\[.4em]
+			$\frac{1}{32}$ & 0.000062 & 0.000062 & 0.186714 & 0.131855 \\[.4em]
+			$\frac{1}{64}$ & 0.000016 & 0.000016 & 0.310389 & 0.227323 \\[.4em]
+			$\frac{1}{128}$ & 0.000004 & 0.000004 & 0.420167 & 0.366232 \\[.4em]
+			\bottomrule
+		\end{tabular}
+		\caption{Maximum absolute errors of numerical solutions at all nodes}
+		\label{table:p9}
+	\end{table}
+	There are several observations that can be made about these results.
+	\begin{itemize}
+		\item The error using the MATLAB's \verb*|\| operator to solve the system decreases by a factor of roughly 4 each time $h$ decreases by a factor of 2. This is consistent with the second order convergence rate predicted theoretically.
+		
+		\item The error using Gaussian elimination is virtually the same as the error using \verb*|\| to solve the system. This makes sense, as Gaussian elimination solves the system directly, meaning that it's only error is due to floating-point round-off, and it should be equally as accurate as whatever method \verb*|\| uses.
+		
+		\item The error using the Jacobi and Gauss-Seidel iterative methods starts nearly the same as the error using \verb*|\| and Gaussian elimination, but as $h$ decreases, the error using the iterative methods actually \textit{increases}. This is not a defect of the finite element method, but a result of the slow convergence of the iterative methods.
+		
+		Empirically, I have observed that it takes more iterations for these methods to converge as $h$ decreases. For $h = \frac{1}{4}$, 200 iterations is sufficient to reach a tolerance of $10^{-5}$, but for smaller values of $h$, it is not. Thus, the reason for the increasing error is increasing error in the numerical solution of the linear system.
+		
+		Even if we set the number of iterations high enough to achieve a tolerance of $10^{-5}$, because the error in the finite element method is smaller than this for the smaller values of $h$, the iterative methods still fail to achieve the same level of error. Only if we set the tolerance much lower and the maximum number of iterations even higher do the iterative methods achieve accuracy comparable to \verb*|\| and Gaussian elimination for smaller values of $h$.
+		
+		\item The error using the Gauss-Seidel method increases more slowly than the Jacobi method, indicating that the Gauss-Seidel method has slightly faster convergence.
+		
+	\end{itemize}
 	
 \end{document}

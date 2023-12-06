@@ -5,6 +5,8 @@
 \usepackage[left=3cm, right=3cm]{geometry}
 \usepackage{parskip}
 \usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \usepackage{listings}
 \usepackage{xcolor}
@@ -89,7 +91,7 @@
 	
 	In this project, we will investigate an algorithm known as \maxvol{} \cite{goreinov_2010}, whose purpose is to find a submatrix that is ``good enough'' for the corresponding psuedo-skeleton decomposition to approximate the original matrix well without incurring a computational cost of much greater complexity than is required to store the psuedo-skeleton decomposition (unlike truncated SVD). We will discuss the theory and motivation for the algorithm, provide a \texttt{NumPy} implementation, and perform some numerical experiments to demonstrate the power of the algorithm.
 	
-	Before we move on, we remark that the theory and implementation in this project are woven together from various works, especially those of Goreinov, Oseledets, Tyryshnikov and others \cite{goreinov_1997, goreinov_2010, oseledets_2010a, olshevsky_2001, oseledets_2009, hamm_2022}. We provide one general citation here at the beginning, as many of the proofs and sections below draw on ideas from multiple sources and mix them with my own work to fill in their missing details and connect related results and concepts, making the citation of every specific idea overly complicated. Nevertheless, I have done my best to refer major results to the sources that seem most appropriate.
+	Before we move on, we remark that the theory and implementation in this project are woven together from various works, especially those of Goreinov, Oseledets, Tyrtyshnikov and others \cite{goreinov_1997, goreinov_2010, oseledets_2010a, olshevsky_2001, oseledets_2009, hamm_2022}. We provide one general citation here at the beginning, as many of the proofs and sections below draw on ideas from multiple sources and mix them with my own work to fill in their missing details and connect related results and concepts, making the citation of every specific idea overly complicated. Nevertheless, I have done my best to refer major results to the sources that seem most appropriate.
 	
 	\section{Theory}
 	
@@ -849,11 +851,9 @@
 	
 	\section{The \maxvol{} Algorithm}
 	
-	\minorheading{A small numerical problem}
+	\minorheading{Going even faster}
 	
-	Now we are ready to work out the details of the iterative method described at the end of the last section. First, we will have to make a slight theoretical adjustment. If the current submatrix is $A(I,:)$, then we want to stop the iteration if $A(I,:)$ is dominant in $A$, that is, if $B = AA(I,:)^{-1}$ has no element greater than 1, or $\chebnorm{B} \le 1$. On the other hand, we saw in the proof of Theorem \ref{thm:maxvol_implies_dominant} that $B$ always contains the identity matrix as a submatrix. Therefore, $\chebnorm{B} \ge 1$ no mattter what, and the stopping criterion becomes $\chebnorm{B} = 1$.
-	
-	Generally speaking, conditional branching on the basis of an exact equality when dealing with numbers in a floating-point format can lead to unpredictable behavior due to floating-point round-off error, so we would like to adjust this stopping criterion so that it is an inequality with some tolerance for round-off error. We recall that the choice of 1 in $\chebnorm{AA(I,:)^{-1}} \le 1$, the dominance criterion for $A(I,:)$, was somewhat arbitrary. Indeed, if we increased this by, say, $\delta > 0$, then we can easily prove a volume estimate not much worse than the one in Theorem \ref{thm:dominant_volume_bound} while changing our stopping criterion to $\chebnorm{AA(I,:)^{-1}} \le 1 + \delta$, which gives some room for round-off error.
+	We recall that the choice of 1 in $\chebnorm{AA(I,:)^{-1}} \le 1$, the dominance criterion for $A(I,:)$, was somewhat arbitrary. Indeed, if we increased this by, say, $\delta > 0$, then we can easily prove a volume estimate not much worse than the one in Theorem \ref{thm:dominant_volume_bound} while changing our stopping criterion to $\chebnorm{AA(I,:)^{-1}} \le 1 + \delta$, which is looser and may significantly decrease the number of iterations without much change in performance.
 	
 	To this end, we generalize the definition of dominance as follows.
 	
@@ -865,7 +865,7 @@
 		\end{equation}
 	\end{dfn}
 	
-	As we claimed, a $\delta$-dominant submatrix has almost as much volume as a dominant submatrix, and also has quasi-maximal volume, as a result. The proof is nearly the same as the proof of \ref{thm:dominant_volume_bound}.
+	As we claimed, a $\delta$-dominant submatrix has almost as much volume as a dominant submatrix, and also has quasi-maximal volume, as a result. The proof is nearly the same as the proof of Theorem \ref{thm:dominant_volume_bound}.
 	
 	\begin{thm} \textnormal{\bf(Approximation by $\delta$-dominant submatrix)}
 		\label{thm:delta_dominant_volume_bound}
@@ -892,9 +892,7 @@
 	
 	\minorheading{Correctness and complexity}
 	
-	With the tolerance issue resolved, we are ready to formalize the algorithm that we have been building up to for so long, which is called \maxvol{} because its purpose is to find a $\delta$-dominant submatrix, which, as we saw, is quasi-maximal in volume. The steps in the algorithm are collected formally in Algorithm \ref{alg:maxvol}.
-	
-	Note that we allow $\delta = 0$ for theoretical purposes; even though choosing $\delta = 0$ would not be a good idea in practice, we can still prove that, in the ideal setting of infinite-precision representation of the matrix elements, the \maxvol{} algorithm is capable of finding a truly dominant submatrix in finitely many steps.
+	With the tolerance $\delta$ added, we are ready to formalize the algorithm that we have been building up to for so long, which is called \maxvol{} because its purpose is to find a $\delta$-dominant submatrix, which, as we saw, is quasi-maximal in volume. The steps in the algorithm are collected formally in Algorithm \ref{alg:maxvol}.
 	
 	\begin{algorithm}
 		\caption{\maxvol{}}\label{alg:maxvol}
@@ -991,7 +989,7 @@
 	
 	With this efficient method for updating $B = AA_\tsq^{-1}$, we can fill in the details of \maxvol{} and analyze the computational complexity of the algorithm.
 	
-	\begin{thm} \textnormal{\bf(Complexity of \maxvol \cite{goreinov_2010})}
+	\begin{thm} \textnormal{\bf(Complexity of \maxvol{} \cite{goreinov_2010})}
 		Let $B^{(k)}$ be the matrix $B$ and let $\matstep{k}$ be the matrix $A_\tsq$ in the \maxvol{} algorithm after $k$ steps. Then $B^{(k+1)}$ and $\matstep{k+1}$ can be computed in $\bigoh(nr)$ operations from $B^{(k)}$ and $\matstep{k}$. Therefore, the overall cost of the iterative portion of \maxvol{} is $\bigoh(cnr)$, where $c$ is the number of iteration steps.
 	\end{thm}
 	
@@ -1116,11 +1114,11 @@
 	We begin with the signature of the \maxvol{} function. We need the matrix $A$, of course, which we will store in a \texttt{NumPy} array called \va. Next, we need the parameter $\delta$, which we will store in the variable \vdelta, and an iteration limit, which store in the variable \vmaxiter. We also allow for an optional initial submatrix, specified by a list or array of row indices, which we name \vinitialrows. The return value should be the $\delta$-dominant matrix $A_\dsq$, which we return in terms of its row indices in the given matrix $A$. Thus, we arrive at the signature in Listing \ref{lst:signature}.
 	\begin{lstlisting}[caption={function signature}, label=lst:signature]
 def maxvol(
-    a: NDArray[np.float],  # shape = (n, r)
-    initial_rows: Optional[NDArray[np.int]] = None,  # shape = (r,)
+    a: NDArray[np.float64],  # shape = (n, r)
+    initial_rows: Optional[NDArray[np.int64]] = None,  # shape = (r,)
     delta: float = 1e-2,
     max_iter: int = 100
-) -> Optional[NDArray[np.int]]:  # shape = (r,)
+) -> Optional[NDArray[np.int64]]:  # shape = (r,)
 	\end{lstlisting}
 	
 	If we are given a square matrix $A$, then the rest of the algorithm will generate indexing errors; in any case, the maximum volume submatrix of a square tall matrix is the matrix itself, so we can return early if a square matrix is given. If \texttt{n} and \texttt{r} are the numbers of rows and columns of $A$, then this check is given by Listing \ref{lst:check_square}.
@@ -1219,6 +1217,101 @@ other_rows[i_rel] = temp
 	\lstinputlisting[firstline=8, lastline=81, caption={\texttt{NumPy} implementation of \maxvol{}}, label=lst:maxvol]{maxvol.py}
 	
 	\section{Experiments}
+	
+	In this section, we explore the capabilities of \maxvol{} through several numerical experiments. All experiments can be replicated by running the \texttt{test.ipynb} notebook.
+	
+	\minorheading{Validation}
+	
+	To validate that our implementation is working correctly, we start by applying it to very small matrices, small enough that we can use the brute-force method to find the submatrix of maximal volume. In Table \ref{table:validation} we see the volume of several submatrices obtained by applying \maxvol{} to a $15\times 5$ matrix, alongside the volume of the actual maximum-volume submatrix. The matrices are generated by choosing each entry uniformly and independently at random from the interval $[0,1]$.
+	
+	We observe that in the case of this small problem, \maxvol{} frequently finds an actual maximum-volume submatrix with much less effort than the brute-force method. In the cases when \maxvol{} does not find a maximum-volume submatrix, the submatrix it finds has nearly maximum volume.
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{@{}lll@{}}
+			\toprule
+			Trial \# & \maxvol{} Volume & Maximum Volume \\
+			\midrule
+			1 & 0.536675 & 0.536675\\
+			2 & 0.554545 & 0.554545\\
+			\bf 3 & \bf 0.516685 & \bf 0.523402\\
+			4 & 0.272270 & 0.272270\\
+			5 & 0.393877 & 0.393877\\
+			6 & 0.747953 & 0.747953\\
+			7 & 0.620132 & 0.620132\\
+			\bf 8 & \bf 0.527709 & \bf 0.528394\\
+			\bottomrule
+		\end{tabular}
+		\caption{Volume of submatrices returned by \maxvol{} and actual maximal volumes. Cases where \maxvol{} returned a submatrix with less than maximal volume are in bold (trials 3 and 8).}
+		\label{table:validation}
+	\end{table}
+	
+	We should also make sure that \maxvol{} actually returns a $\delta$-dominant submatrix. This can be verified easily by computing $\chebnorm{AA_{\dsq,\delta}^{-1}}$, where $A_{\dsq,\delta}$ is the submatrix returned by \maxvol{}. This time, we work with random $20000\times 100$ matrices to demonstrate the speed of \maxvol{}. In Table \ref{table:delta_dominance}, we present the computed Chebyshev norms for the returned submatrices, using $\delta = 0.01$. We see that all the returned submatrices are $\delta$-dominant, some just barely.
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{@{}ll@{}}
+			\toprule
+			Trial \# & $\chebnorm{AA_{\dsq,\delta}^{-1}}$ \\
+			\midrule
+			1 & 1.003222\\
+			2 & 1.000000\\
+			3 & 1.002376\\
+			4 & 1.007283\\
+			5 & 1.009181\\
+			\bottomrule
+		\end{tabular}
+		\caption{Checking the $\delta$-dominance condition for submatrices returned by \maxvol{}. We use $\delta = 0.01$.}
+		\label{table:delta_dominance}
+	\end{table}
+	
+	\minorheading{Fast pseudo-skeleton decomposition}
+	
+	Our next experiment involves using \maxvol{} to compute the pseudo-skeleton decomposition using the alternating row-column idea described at the beginning of section 2.3. We compare the speed and accuracy of this method of finding a pseudo-skeleton decomposition to the accuracy and speed of the truncated SVD approximation of the same rank, which, by Theorem \ref{thm:svd} is the best low-rank approximation.
+	
+	To do this effectively, we need a large, dense, almost low-rank matrix. Such a matrix can be constructed easily by sampling from a 2D Gaussian random field. We use the code in Li et al. \cite{li_2023a} with the default settings to generate a $1024\times 1024$ Gaussian random field, and save it in the file \texttt{x.npy}.
+	
+	The singular values of this matrix decay very rapidly, as shown in Figure \ref{fig:singular_values}, which means that it can be well-approximated by a low-rank matrix by Theorem \ref{thm:svd}.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.5\linewidth]{singular_values.png}
+		\caption{Singular values of a 2D Gaussian random field}
+		\label{fig:singular_values}
+	\end{figure}
+	
+	We compute the best rank-20 approximation of this matrix using both truncated SVD and \maxvol{}-based pseudo-skeleton decomposition. The pseudo-skeleton had an error of about 2 times the SVD error in Frobenius norm, which is quite good, considering that the SVD approximation is the best possible. More importantly, the pseudo-skeleton decomposition was computed \textbf{thirty times faster} on average than the SVD, despite the fact that we used the highly optimized \texttt{np.linalg.svd} function to compute the SVD and used slow, high-level Python/\texttt{NumPy} code to compute the \maxvol{}-based pseudo-skeleton decomposition, suggesting that performance improvements of up to 100 times are likely possible.
+	
+	Pictured in Figure \ref{fig:reconstructions} are visualizations of the original Gaussian random field alongside the SVD and pseudo-skeleton approximations.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=\linewidth]{reconstructions.png}
+		\caption{Rank-20 approximations of a 2D Gaussian random field.}
+		\label{fig:reconstructions}
+	\end{figure}
+	
+	\minorheading{Fast optimization with \maxvol{}}
+	
+	The last experiment we did is taken from ``How to Find a Good Submatrix'' \cite{goreinov_2010}. In this experiment, we are given a large $m\times n$ matrix of (known) low rank $r$. We can use the alternating \maxvol{} method used to compute the pseudo-skeleton approximation to find a submatrix with high volume. Then, we find the largest element in absolute value of that submatrix. This element should approximate the largest element in absolute value of the given $m\times n$ matrix.
+	
+	To generate an $m \times n$ matrix of rank $r$, we choose the entries of matrices $U$ and $V$ of sizes $m\times r$ and $n\times r$ uniformly and random. Then, we take the QR decomposition of these matrices to obtain the Q factors $Q_U$ and $Q_V$ of full-rank. Lastly, we select the elements of a diagonal $r\times r$ matrix $D$ all positive and form the random $m\times n$ matrix $M = Q_UDQ_V^T$ of precisely rank $r$.
+	
+	Summarized in Table \ref{table:approximate_maxima} are the results of this experiment on several random $1000\times1000$ matrices. We see that the determined maxima are fairly close to the true maxima, in the sense that they are much better than guessing at random, as evidenced by the mean and standard deviation of the absolute value of elements of the generated matrices.
+	\begin{table}
+		\centering
+		\begin{tabular}{@{}lllll@{}}
+			\toprule
+			Trial \# & True max & True mean & True std. & Approximate max\\
+			\midrule
+			1 & 0.003963 & 0.000538 & 0.000413 & 0.002113\\
+			2 & 0.002888 & 0.000430 & 0.000328 & 0.001758\\
+			3 & 0.003794 & 0.000559 & 0.000422 & 0.002211\\
+			4 & 0.003387 & 0.000437 & 0.000338 & 0.002123\\
+			5 & 0.003824 & 0.000568 & 0.000433 & 0.002476\\
+			\bottomrule
+		\end{tabular}
+		\caption{Approximate maxima found using pseudo-skeleton decomposition}
+		\label{table:approximate_maxima}
+	\end{table}
 	
 	\section{Conclusion}
 	

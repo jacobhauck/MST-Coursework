@@ -11,7 +11,7 @@
 	\maketitle
 	
 	\question
-	Let $B(\cdot,\cdot)$ be a continuous, bilinear form on a real Hilbert space $H$. Suppose that $B$ is coercive in the sense that there is some $\alpha > 0$ such that $|B(x,x)| \ge \alpha\lVert x\rVert^2$ for all $x \in H$.
+	Let $B(\cdot,\cdot)$ be a continuous, bilinear form on a real Hilbert space $H$. Suppose that $B$ is coercive in the sense that there is some $\alpha > 0$ such that $B(x,x) \ge \alpha\lVert x\rVert^2$ for all $x \in H$.
 	\begin{arabicparts}
 		\questionpart 
 		Let $y \in H$. Then the map $f_y : H \to \R$ defined by $f_y(x) = B(x,y)$ is a bounded linear functional on $H$. Consequently, there exists a unique $w \in H$ such that $B(x,y) = f_y(x) = (x,w)$ for all $x \in H$.
@@ -79,7 +79,7 @@
 			
 			Let $\varepsilon > 0$ be given. Since $\{w_n\}$ is convergent, it is also Cauchy, so we can choose $N$ such that $n,m > N$ implies that $\lVert w_n - w_m\rVert < \varepsilon$. By the linearity of $A$, we have $A(y_n-y_m) = w_n-w_m$; hence,
 			\begin{align}
-				\alpha \lVert y_n-y_m\rVert^2 &\le |B(y_n-y_m,y_n-y_m)| = |(y_n-y_m,w_n-w_m)|\le \lVert y_n-y_m\rVert\cdot \lVert w_n - w_m\rVert \\
+				\alpha \lVert y_n-y_m\rVert^2 &\le B(y_n-y_m,y_n-y_m) = (y_n-y_m,w_n-w_m)\le \lVert y_n-y_m\rVert\cdot \lVert w_n - w_m\rVert \\
 				&\le \varepsilon\lVert y_n-y_m\rVert
 			\end{align}
 			if $n,m > N$. Thus, $n,m >N$ implies that $\lVert y_n - y_m\rVert < \frac{\varepsilon}{\alpha}$. This implies that  $\{y_n\}$ Cauchy.
@@ -94,7 +94,7 @@
 		\questionpart
 		$A$ is onto.
 		\begin{proof}
-			Suppose that $x \in R(A)^\perp$, that is, $(x, w) = 0$ for all $w \in R(A)$. This implies that $(x, Ay) = 0$ for all $y \in H$, which is equivalent to saying that $B(x, y) = 0$ for all $y \in H$. In particular, if we choose $y = x$, then $\lVert x\rVert^2 \le \frac{1}{\alpha}|B(x, x)| = 0$. Therefore, $x = 0$. This shows that $R(A)^\perp = \{0\}$ because $x$ was arbitrary. 
+			Suppose that $x \in R(A)^\perp$, that is, $(x, w) = 0$ for all $w \in R(A)$. This implies that $(x, Ay) = 0$ for all $y \in H$, which is equivalent to saying that $B(x, y) = 0$ for all $y \in H$. In particular, if we choose $y = x$, then $\lVert x\rVert^2 \le \frac{1}{\alpha}B(x, x) = 0$. Therefore, $x = 0$. This shows that $R(A)^\perp = \{0\}$ because $x$ was arbitrary. 
 			
 			Let $y \in H$. Since $R(A)$ is a closed subspace of $H$ by (1.4), there exists a best approximation $w \in R(A)$ of $y$, which satisfies the property $(y - w, x) = 0$ for all $x \in R(A)$ (Theorem 3.7 and Corollary 3.8 in Arbogast and Bona). That is, $y-w \in R(A)^\perp$. Since $R(A)^\perp =\{0\}$ by the above, it follows that $y-w = 0$, and $y=w \in R(A)$. Since $y$ was arbitrary and $R(A) \subseteq H$, it follows that $R(A) = H$, that is, $A$  is onto.
 		\end{proof}
@@ -393,9 +393,9 @@
 			
 			For coercivity, observe that
 			\begin{equation}
-				|B(f,f)| = \left|\sum_{j\ne0}(ij+j^2)|f_j|^2\right| = \left(\left[\sum_{j\ne0}j|f_j|^2\right]^2 + \left[\sum_{j\ne0}j^2|f_j|^2\right]^2\right)^\frac{1}{2} \ge \lVert f\rVert_H^2.
+				B(f,f) = \sum_{j\ne0}(ij+j^2)|f_j|^2 = \sum_{j\ne0}j^2|f_j|^2 = \lVert f \rVert_H^2
 			\end{equation}
-			Thus, $B$ is coercive (note that the first summation converges absolutely by a comparison test, by the way: $|j||f_j|^2 \le j^2|f_j|^2$ for all integers $j \ne 0$).
+			because $f_{-j} = \bar{f}_j$. Thus, $B$ is coercive.
 		\end{proof}
 		
 		\questionpart

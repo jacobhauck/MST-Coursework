@@ -61,8 +61,8 @@
 			\end{align}
 			On the other hand, let $f\in L^1(\R)$, and define $g(x) = ixf(x)$. If $g \in L^1(\R)$ as well, then
 			\begin{align}
-				\dl{}{y} \fourier(f)(y) &= \dl{}{y}\int_{-\infty}^\infty e^{iyx}f(x)\dee x =\int_{-\infty}^\infty \pl{}{y}\left[e^{iyx}f(x)\right]\dee x \\
-				&= \int_{-\infty}^\infty e^{iyx}ixf(x)\dee x = \fourier(g)(y).
+				\dl{}{y} \frac{1}{\sqrt{2\pi}}\fourier(f)(y) &= \dl{}{y} \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}f(x)\dee x =\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty \pl{}{y}\left[e^{iyx}f(x)\right]\dee x \\
+				&= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}ixf(x)\dee x = \fourier(g)(y).
 			\end{align}
 			If we take $f(x) = e^{-ax^2}$, then $f$ satisfies the above assumptions. Since $f'(x) = -2axf(x)$,
 			\begin{equation}
@@ -135,8 +135,25 @@
 	\question
 	On this question, we will reuse the notation from Question 2 of Homework 3.
 	
-	Let $\dot{L}^2(-\pi, \pi) = \{f \in L^2(-\pi, \pi) : \mathrm{mean}(f) = 0\}$, where $\mathrm{mean}(f) = \frac{1}{2\pi}\int_{-\pi}^\pi f$.
+	Let $\dot{L}^2(-\pi, \pi) = \{f \in L^2(-\pi, \pi) : f = \bar{f}\text{ and } \mathrm{mean}(f) = 0\}$, where $\mathrm{mean}(f) = \frac{1}{2\pi}\int_{-\pi}^\pi f$. Consider the following problem.
+	\begin{equation}
+		\text{Let } f\in \dot{L}^2(-\pi,\pi). \text{ Find } u\in H \text{ such that } -u'' = f,
+	\end{equation}
+	where $H$ is the space defined in Homework 3.
 	\begin{arabicparts}
-		\questionpart
+		\questionpart Let $f \in \dot{L}^2(-\pi, \pi)$. Then $f \in L^2(-\pi,\pi)$, and, recalling from Homework 3, there exists $\{f_j\} \subset \C$ such that
+		\begin{equation}
+			f = \sum_j f_j e_j, \qquad f_j = (f, e_j).
+		\end{equation}
+		Since $e_0 = \text{constant}$, we have $f_j = (f,e_j) \propto \mathrm{mean}(f) = 0$, so $f_0 = 0$. Furthermore, by an argument we used several times in Homework 3, the fact that $f = \bar{f}$ implies that $f_{-j} = \bar{f}_j$. Lastly, by Parseval's identity,
+		\begin{equation}
+			\sum_{j\ne 0}j^{-2}|f_j|^2 \le \sum_{j\ne0}|f_j|^2 = \lVert f\rVert_2^2 < \infty,
+		\end{equation}
+		so $f \in H^{-1}$ from Homework 3 by definition. Therefore, $\dot{L}^2(-\pi,\pi) \subseteq H^{-1}$.
+		
+		Now suppose that $u \in H$ is twice differentiable, and $-u'' = f$ for some $f \in \dot{L}^2(-\pi,\pi)$. Then $u$ and $u'$ are continuous, and
+		\begin{equation}
+			u'(\pi) - u'(-\pi) = -\int_{-\pi}^\pi f(x)\dee x = 0
+		\end{equation}
 	\end{arabicparts}
 \end{document}
