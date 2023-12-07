@@ -266,9 +266,10 @@
 	
 	\question
 	\begin{alphaparts}
-		\questionpart
 		
-		\begin{algorithm}
+		\questionpart To learn the algorithm for the Preconditioned Conjugate Gradient method (PCG), I found this reference \cite{schewchuk_1994}. In Algorithm \ref{alg:pcg}, I have rewritten the description from \cite{schewchuk_1994} in pseudo-code.
+		
+		\begin{algorithm}[h]
 			\caption{Preconditioned Conjugate Gradient Method (PCG)}
 			\label{alg:pcg}
 			\KwIn{A symmetric, positive-definite, $n\times n$ matrix $A$}
@@ -293,7 +294,69 @@
 			}
 			$x \gets x^{(k)}$\;
 		\end{algorithm}
-		\questionpart 
+		\questionpart To learn about the LU decomposition of a tridiagonal matrix, I read this reference \cite{gallier_2023}. In it, they present the following theorem.
+		
+		Let $A$ be the tridiagonal, $n\times n$ matrix
+		\begin{equation}
+			A = \left[\begin{matrix}
+				b_1 & c_1 &        &         &         &         &         \\
+				a_2 & b_2 & c_2    &         &         &         &         \\
+				    & a_3 & b_3    & c_3     &         &         &         \\
+				    &     & \ddots & \ddots  & \ddots  &         &         \\ 
+				    &     &        & a_{n-2} & b_{n-2} & c_{n-2} &         \\
+				    &     &        &         & a_{n-1} & b_{n-1} & c_{n-1} \\
+				    &     &        &         &         & a_n     & b_n     
+			\end{matrix}\right]
+		\end{equation}
+		
+		Define 
+		\begin{equation}
+			\delta_0 = 1, \qquad \delta_1 = b_1, \qquad \delta_k = b_k\delta_{k-1} - a_kc_{k-1}\delta_{k-2}, \quad 2 \le k \le n.
+		\end{equation}
+		If $A$ is nonsingular, then
+		\begin{equation}
+			A = \left[\begin{matrix}
+				1 & & & & & &\\
+				a_2\frac{\delta_0}{\delta_1} & 1 & & & & &\\
+				  & a_3\frac{\delta_1}{\delta_2} & 1 & & & &\\
+				  & & \ddots  & \ddots & & &\\
+				  & & & a_{n-1}\frac{\delta_{n-3}}{\delta_{n-2}} & 1 &\\
+				  & & & & a_n\frac{\delta_{n-2}}{\delta_{n-1}} & 1
+			\end{matrix}\right]\left[\begin{matrix}
+				\frac{\delta_1}{\delta_0} & c_1  & & & \\
+				& \frac{\delta_2}{\delta_1} & c_2 & &\\
+				& & \ddots & \ddots & \\
+				& & & \frac{\delta_{n-1}}{\delta_{n-2}} & c_{n-1}\\
+				& & & & \frac{\delta_n}{\delta_{n-1}}
+			\end{matrix}\right]
+		\end{equation}
+		is the LU decomposition of $A$. Using this theorem, it is easy to write an algorithm to find the $L$ and $U$ factors in $A = LU$. The steps are summarized in Algorithm \ref{alg:tridiag_lu}.
+		
+		\begin{algorithm}[h]
+			\caption{Tridiagonal LU Decomposition}
+			\label{alg:tridiag_lu}
+			\KwIn{Tridiagonal, $n\times n$, nonsingular matrix $A$}
+			\KwOut{$n\times n$ matrices $L$ and $U$ that are lower and upper triangular and satisfy $LU = A$}
+			\tcp{Compute $\delta_k$}
+			$\delta_0 \gets 1$, $\delta_1 \gets A(1,1)$\;
+			\For{$k =2,\dots,n$}{
+				$\delta_k \gets A(k,k)\delta_{k-1} - A(k, k-1)A(k-1,k)\delta_{k-2}$\;
+			}
+			\tcp{Compute $L$ and $U$}
+			$L \gets I_{n\times n}$, $U \gets 0_{n\times n}$\;
+			\tcp{$L$}
+			\For{$k=2,3,\dots,n$}{
+				$L(k,k-1) \gets A(k,k-1)\frac{\delta_{k-2}}{\delta_{k-1}}$\;
+			}
+			\tcp{$U$ diagonal}
+			\For{$k=1,2,\dots,n$}{
+				$U(k,k) \gets \frac{\delta_k}{\delta_{k-1}}$\;
+			}
+			\tcp{$U$ off-diagonal}
+			\For{$k=2,3,\dots,n$}{
+				$U(k,k+1) \gets A(k,k+1)$\;
+			}
+		\end{algorithm}
 	\end{alphaparts}
 	
 	\question 
@@ -303,9 +366,12 @@
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{fem_dirichlet_1d.m}
 		
 		To apply 4-point Gaussian quadrature, we reuse \verb*|quad.m| from Homework 6 (renamed to \verb*|myquad.m|). Note that the Guass-Legendre quadrature nodes and weights on $[-1,1]$ are given by
-		\begin{equation}
-			x_1 = ...
-		\end{equation}
+		\begin{gather}
+			x_1 = \sqrt{\frac{3}{7} - \frac{2}{7}\sqrt{\frac{6}{5}}}, \quad x_2 = -x_1,\quad  x_3 = \sqrt{\frac{3}{7} + \frac{2}{7}\sqrt{\frac{6}{5}}}, \quad x_4 = -x_3, \\
+			w_1 = \frac{18 + \sqrt{30}}{36}, \quad w_2 = w_1, \quad w_3 = \frac{18 - \sqrt{30}}{36}, \quad w_4 = w_3.
+		\end{gather}
+		The nodes are the roots of the degree 4 orthogonal polynomial (Legendre polynomial) on $[-1,1]$, and the weights are obtained from the exactness condition for polynomials up to degree 3.
+		
 		We implement the use of these nodes and weights in \verb*|gauss4_integrator.m|, copied below. Using the MATLAB \verb*|\| operator in the \verb*|solver| parameter is trivial, so we don't need a custom function for it.
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{gauss4_integrator.m}
 		
@@ -371,5 +437,8 @@
 		\item The error using the Gauss-Seidel method increases more slowly than the Jacobi method, indicating that the Gauss-Seidel method has slightly faster convergence.
 		
 	\end{itemize}
+	
+	\bibliographystyle{plain}
+	\bibliography{references.bib}
 	
 \end{document}
