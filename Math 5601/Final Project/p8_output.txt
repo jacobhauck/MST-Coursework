@@ -1,0 +1,26 @@
+>> a = 1;
+b = 4;
+c = @(x) exp(-sin(x));
+f = @(x) exp(-sin(x)) .* (-cos(x) + cos(x).*sin(x) - 1/4*x.^(-3/2) - 1/2*x.^(-1/2).*cos(x));
+u_true = @(x) cos(x) + sqrt(x);
+ga = u_true(a);
+gb = u_true(b);
+>> for h = [1/4, 1/8, 1/16, 1/32, 1/64, 1/128]
+n = ceil((b - a) / h);
+[v_xh, v_uh] = fem_dirichlet_1d( ...
+    a, b, ga, gb, c, f, n, ...
+    @(f, a, b) gauss4_integrator(f, a, b), ...
+    @(A, b) A \ b ...
+);
+fprintf( ...
+    "Error at x = 2: %f; error at x = 3: %f.\n", ...
+    abs(u_true(2) - lerp(v_uh, 2, 1, 4, n)), ...
+    abs(u_true(3) - lerp(v_uh, 3, 1, 4, n)) ...
+);
+end
+Error at x = 2: 0.003298; error at x = 3: 0.002988.
+Error at x = 2: 0.000822; error at x = 3: 0.000746.
+Error at x = 2: 0.000205; error at x = 3: 0.000187.
+Error at x = 2: 0.000051; error at x = 3: 0.000047.
+Error at x = 2: 0.000013; error at x = 3: 0.000012.
+Error at x = 2: 0.000003; error at x = 3: 0.000003.

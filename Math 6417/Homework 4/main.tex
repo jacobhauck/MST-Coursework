@@ -54,19 +54,15 @@
 		\questionpart Formally, $\fourier^2(f)(y) = f(-y)$.
 		
 		\begin{proof}
-			Let $\delta_{x_0} = \delta(x-x_0)$, where $\delta$ is the Dirac delta function. Then, formally,
-			\begin{equation}
-				\fourier(\delta_{x_0})(y) = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}\delta(x-x_0)\dee x = \frac{e^{iyx_0}}{\sqrt{2\pi}}.
-			\end{equation}
-			Next, we note that if $f \in C^1\cap L^1(\R)$, and $f' \in L^1(\R)$, and $f(x)\to 0$ as $x\to\pm\infty$, then we can use integration by parts to show that
+			We note that if $f \in C^1\cap L^1(\R)$, and $f' \in L^1(\R)$, and $f(x)\to 0$ as $x\to\pm\infty$, then we can use integration by parts to show that
 			\begin{align}
 				\fourier(f')(y) &= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}f'(x)\dee x = \frac{1}{\sqrt{2\pi}}\left[e^{iyx}f(x)\Big\vert_{-\infty}^\infty - iy\int_{-\infty}^\infty e^{iyx}f(x)\dee x\right] \\
 				&= -iy\fourier(f)(y).
 			\end{align}
 			On the other hand, let $f\in L^1(\R)$, and define $g(x) = ixf(x)$. If $g \in L^1(\R)$ as well, then
 			\begin{align}
-				\dl{}{y} \fourier(f)(y) &= \dl{}{y}\int_{-\infty}^\infty e^{iyx}f(x)\dee x =\int_{-\infty}^\infty \pl{}{y}\left[e^{iyx}f(x)\right]\dee x \\
-				&= \int_{-\infty}^\infty e^{iyx}ixf(x)\dee x = \fourier(g)(y).
+				\dl{}{y} \frac{1}{\sqrt{2\pi}}\fourier(f)(y) &= \dl{}{y} \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}f(x)\dee x =\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty \pl{}{y}\left[e^{iyx}f(x)\right]\dee x \\
+				&= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iyx}ixf(x)\dee x = \fourier(g)(y).
 			\end{align}
 			If we take $f(x) = e^{-ax^2}$, then $f$ satisfies the above assumptions. Since $f'(x) = -2axf(x)$,
 			\begin{equation}
@@ -74,7 +70,11 @@
 			\end{equation}
 			Hence, $\fourier(f)(y)$ is the unique solution of the IVP
 			\begin{equation}
-				u' = -\frac{1}{2a}u,\qquad u(0) = \fourier(f)(0).
+				u' = -\frac{y}{2a}u,\qquad u(0) = \fourier(f)(0).
+			\end{equation}
+			The general solution of the differential equation is
+			\begin{equation}
+				u(y) = u(0)e^{-\frac{y^2}{4a}}.
 			\end{equation}
 			Since
 			\begin{equation}
@@ -82,12 +82,226 @@
 			\end{equation}
 			it follows that
 			\begin{equation}
+				\label{eq:gaussian_fourier_transform}
 				\fourier(f)(y) = \frac{1}{\sqrt{2a}} e^{-\frac{y^2}{4a}}.
 			\end{equation}
-			Thus, formally, if $\phi_a(x) = e^{-ax^2}$, then
+			Thus, if $\phi_a(x) = e^{-ax^2}$, then, formally,
 			\begin{equation}
-				\fourier(1)(y) = \lim_{a\to 0}\fourier(\phi_a)(y)= \lim_{a\to 0}\frac{1}{\sqrt{2a}}e^{-\frac{y^2}{4a}}.
+				\fourier(1)(y) = \fourier\left(\lim_{a\to 0^+}\phi_a\right)(y) = \lim_{a\to 0^+}\fourier(\phi_a)(y)= \lim_{a\to 0^+}\frac{1}{\sqrt{2a}}e^{-\frac{y^2}{4a}}.
 			\end{equation}
+			We would like to interpret the last limit formally as a constant multiple of the Dirac delta function. Clearly,
+			\begin{equation}
+				\lim_{a\to0^+} \frac{1}{\sqrt{2a}}e^{-\frac{y^2}{4a}} = \begin{cases}
+					0 & y \ne 0, \\
+					\infty & y = 0.
+				\end{cases}
+			\end{equation}
+			At the same time, for any $a > 0$,
+			\begin{equation}
+				\int_{-\infty}^\infty \frac{1}{\sqrt{2a}}e^{-\frac{y^2}{4a}}\dee y = \frac{1}{\sqrt{2a}}\sqrt{4a\pi} = \sqrt{2\pi},
+			\end{equation}
+			so it makes sense formally that we should have $\fourier(1)(y) = \sqrt{2\pi}\delta(y)$.
+			
+			Now, if we consider applying the Fourier transform twice to a function $f$, we get
+			\begin{align}
+				\fourier\fourier(f)(y) &= \frac{1}{2\pi}\int_{-\infty}^\infty\int_{-\infty}^\infty e^{ixy}e^{izx} f(z)\dee z\dee x \\
+				&= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty f(z) \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{ix(y+z)}\dee x\dee z\\
+				&= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty f(z) \fourier(1)(y+z)\dee z \\
+				&= \int_{-\infty}^\infty f(z)\delta(y+z)\dee z \\
+				&= \int_{-\infty}^\infty f(z-y)\delta(z)\dee z \\
+				&= f(-y).
+			\end{align}
 		\end{proof}
+		
+		\questionpart Define $g(y) = f(-y)$ for some function $f$. Based on the formal result from part 1.3), we see immediately that
+		\begin{equation}
+			\fourier^4(f)(y) = \fourier^2(\fourier^2(f))(y) = \fourier^2(g)(y) = g(-y) = f(y).
+		\end{equation}
+		Since $f$ was arbitrary, it follows formally that $\fourier^4 = I$, the identity operator.
+		
+		\questionpart Let $p(x) = x^4$. By the Spectral Mapping Theorem,
+		\begin{equation}
+			p(\sigma(\fourier)) = \sigma(p(\fourier)).
+		\end{equation}
+		Since $p(\fourier) = \fourier^4 = I$, the spectrum of $p(\fourier)$ is just $\sigma(I) = \{1\}$, as the operator $I - \lambda I = (1-\lambda)I$ is invertible, with inverse $\frac{1}{1-\lambda}I$, if and only if $\lambda \ne 1$. Therfore, if $\lambda \in \sigma(\fourier)$, then $p(\lambda) = 1$, that is, $\lambda^4 = 1$. The possible solutions of this equation are $1,-1,i,-i$, so $\sigma(\fourier) \subseteq \{1,-1,i,-i\}$.
+		
+		\questionpart If we reuse the result in equation (\ref{eq:gaussian_fourier_transform}) with $a = \frac{1}{2}$, we see that if $f(x) = e^{-\frac{1}{2}x^2}$, then
+		\begin{equation}
+			\fourier(f)(y) = e^{-\frac{1}{2}y^2}
+		\end{equation}
+		as well. Thus, $\fourier f = f$, so $f$ is an eigenfunction of $\fourier$ with corresponding eigenvalue $1$.
+	\end{arabicparts}
+	
+	\question
+	On this question, we will reuse the notation from Question 2 of Homework 3.
+	
+	Let $\dot{L}^2(-\pi, \pi) = \{f \in L^2(-\pi, \pi) : f = \bar{f}\text{ and } \mathrm{mean}(f) = 0\}$, where $\mathrm{mean}(f) = \frac{1}{2\pi}\int_{-\pi}^\pi f$. Consider the following problem.
+	\begin{equation}
+		\label{eq:q2_problem}
+		\text{Let } f\in \dot{L}^2(-\pi,\pi). \text{ Find } u\in H \text{ such that } -u'' = f,
+	\end{equation}
+	where $H$ is the space defined in Homework 3.
+	\begin{arabicparts}
+		\questionpart Let $f \in \dot{L}^2(-\pi, \pi)$. Then $f \in L^2(-\pi,\pi)$, and, recalling from Homework 3, there exists $\{f_j\} \subset \C$ such that
+		\begin{equation}
+			f = \sum_j f_j e_j, \qquad f_j = (f, e_j).
+		\end{equation}
+		Since $e_0 = \text{constant}$, we have $f_j = (f,e_j) \propto \mathrm{mean}(f) = 0$, so $f_0 = 0$. Furthermore, by an argument we used several times in Homework 3, the fact that $f = \bar{f}$ implies that $f_{-j} = \bar{f}_j$. Lastly, by Parseval's identity,
+		\begin{equation}
+			\sum_{j\ne 0}j^{-2}|f_j|^2 \le \sum_{j\ne0}|f_j|^2 = \lVert f\rVert_2^2 < \infty,
+		\end{equation}
+		so $f \in H^{-1}$ from Homework 3 by definition. Therefore, $\dot{L}^2(-\pi,\pi) \subseteq H^{-1}$.
+		
+		We claim that for $f \in \dot{L}^2(-\pi,\pi)$ and $u \in H$,
+		\begin{equation}
+			-u'' = f \qquad \iff \qquad B(u,v) = f(v) \quad\forall v\in H,
+		\end{equation}
+		where we define the action of $f$ on $v$ in the same way as in Homework 3, and
+		\begin{equation}
+			B(u,v) = \sum_{j\ne0}j^2u_j\bar{v}_j,\qquad \{u_j\} = \varphi(u),\quad\{v_j\} = \varphi(v),
+		\end{equation}
+		where $\varphi : H \to S_H$ is define as in Homework 3. We use essentially the same formal argument that we used on 2.5) in Homework 3.
+		
+		Suppose that $-u'' = f$, and let $\{f_j\} = \psi(f)$, $\{u_j\} = \varphi(u)$. Formally differentiating the Fourier series for $u$, we have
+		\begin{equation}
+			-\sum_{j\ne0}f_je_j = -f = u'' = \sum_{j\ne0} -j^2u_je_j.
+		\end{equation}
+		Therefore, $f_j = j^2u_j$ for all $j$, and for any $v \in H$,
+		\begin{equation}
+			B(u,v) = \sum_{j\ne0}j^2u_j\bar{v}_j = \sum_{j\ne0}f_j\bar{v}_j = f(v).
+		\end{equation}
+		On the other hand, suppose that $B(u,v) = f(v)$ for all $v \in H$. Clearly, $e_j + e_{-j} \in H$, and $e_j - e_{-j} \in H$, so
+		\begin{equation}
+			j^2u_j + j^2u_{-j} = f_j + f_{-j},\qquad j^2u_j - j^2u_{-j} = f_j - f_{-j},
+		\end{equation}
+		which implies that $j^2u_j = f_j$ for all $j$. By the same formal differentiation reasoning, it follows that $-u'' = f$.
+		
+		The function $B$ is bilinear because for any $\alpha,\beta \in \R$, and any $u,v,w\in H$,
+		\begin{equation}
+			B(\alpha u + \beta v, w) = \sum_{j\ne0}j^2(\alpha u_j + \beta v_j)\bar{w}_j = \alpha\sum_{j\ne0}j^2u_j\bar{w}_j + \beta\sum_{j\ne0}j^2v_j\bar{w}_j = \alpha B(u,w) + \beta B(v,w),
+		\end{equation}
+		and
+		\begin{equation}
+			B(w, \alpha u + \beta v) =\sum_{j\ne0}j^2w_j\overline{\alpha u_j + \beta v_j} = \alpha\sum_{j\ne 0}j^2w_j\bar{u}_j + \beta \sum_{j\ne0}j^2w_j\bar{v}_j = \alpha B(w,u) + \beta B(w,v)
+		\end{equation}
+		because $\varphi(\alpha u + \beta v) = \alpha\varphi(u) + \beta\varphi(v)$.
+		
+		The function $B$ is also continuous because for any $u,v \in H$,
+		\begin{equation}
+			|B(u,v)| = \left|\sum_{j\ne0}j^2u_j\bar{v}_j\right| \le \lVert u\rVert_H \lVert v\rVert_H
+		\end{equation}
+		by the Cauchy-Schwarz inequality.
+		
+		Lastly, $B$ is coercive because for any $u \in H$,
+		\begin{equation}
+			B(u,u) = \sum_{j\ne0}j^2|u_j|^2 = \lVert u_j\rVert_H^2.
+		\end{equation}
+		Hence, the Lax-Milgram Theorem implies that, given $f \in \dot{L}^2(-\pi,\pi) \subseteq H^{-1}$, there is exists a unique $u \in H$ such that $B(u,v) = f(v)$ for all $v \in H$. That is, there exists a unique $u \in H$ such that $-u'' = f$.
+		
+		\questionpart Let $T : \dot{L}^2(-\pi, \pi) \to H$ denote the solution operator of (\ref{eq:q2_problem}), which exists by 2.1). Then $T$ is compact.
+		
+		\begin{proof}
+			Given $f \in \dot{L}^2(-\pi,\pi)$, there exists $u \in H$ such that
+			\begin{equation}
+				\lVert Tf \rVert_H = \lVert u \rVert_H,
+			\end{equation}
+			and $B(u,v) = f(v)$ for all $v \in H$. In particular, if we take $v = u$, we obtain
+			\begin{equation}
+				\lVert u \rVert_H^2 = f(u) = \sum_{j\ne 0}f_j\bar{u}_j \le \lVert u \rVert_H \lVert f\rVert_{L^2},
+			\end{equation} 
+			which implies that $\lVert Tf\rVert_H \le \lVert f\rVert_{L^2}$, so $T$ is bounded.
+			
+			As we showed in 2.1), $Tf = u$ if and only if $f_j = j^2u_j$, where $\{u_j\} = \varphi(u)$, and $\{f_j\} = \psi(f)$. Thus, $u_j = \frac{f_j}{j^2}$.
+			
+			Let $A$ be a bounded set in $\dot{L}^2(-\pi,\pi)$, so that there exists $M > 0$ such that $\lVert f \rVert_{L^2} \le M$ for all $f \in A$. Suppose that $\{u^n\}$ is a sequence in $\overline{T(A)}$. Then for any $n$, we have $u^n = T(f^n)$ for some $f^n \in A$, and $u^n_j = \frac{f^n_j}{j^2}$, where $u^n_j = \varphi(u^n)$, and $f^n_j = \psi(f^n)$.
+			
+			For any $J > 0$ and any $n$,
+			\begin{equation}
+				\label{eq:u_h_norm_est}
+				\sum_{|j| > J} j^2|u^n_j|^2 = \sum_{|j| > J} j^{-2}|f_j^n|^2 \le \frac{1}{J^2}\sum_{|j| > J}|f^n_j|^2 \le \frac{M}{J^2}.
+			\end{equation}
+			Since $T$ is bounded, and $A$ is bounded in $\dot{L}^2(-\pi,\pi)$, the set $T(A)$ is bounded in $H$. The space $H$ is a Hilbert space by Homework 3, so there exists a weakly convergent subsequence of $\{u^n\}$, call it $\{u^{n_k}\}$. Then $\{u^{n_k}_j\}_k$ converges for all $j$. In particular, each such sequence is Cauchy.
+			
+			Let $\varepsilon > 0$ be given. By (\ref{eq:u_h_norm_est}), we can choose $J$ large enough that
+			\begin{equation}
+				\sum_{|j| > J} j^2|u^{n_k}_j|^2 < \varepsilon^2
+			\end{equation}
+			for all $k$. We can also choose $N$ large enough that $k,\ell>N$ implies that $|u^{n_k}_j - u^{n_\ell}_j|^2 < \frac{\varepsilon^2}{2J^3}$ for all $|j| \le J$. Then
+			\begin{align}
+				\lVert u^{n_k} - u^{n_\ell}\rVert_H^2 &= \sum_{|j|\le J}j^2|u^{n_k}_j - u^{n_\ell}_j|^2 + \sum_{|j| > J}j^2|u^{n_k}_j - u^{n_\ell}_j|^2 \\
+				&\le \varepsilon^2 + \sum_{|j|>J}j^2|u^{n_k}_j|^2 + \sum_{|j|>J}j^2|u^{n_\ell}_j|^2\\
+				&\le 3\varepsilon^2,
+			\end{align}
+			so $k,\ell > N$ implies that $\lVert u^{n_k} - u^{n_\ell}\rVert_H < \sqrt{3}\varepsilon$.
+			
+			This implies that $\{u^{n_k}\}_k$ is Cauchy in $H$. Since $H$ is a Hilbert space, it follows that $\{u^{n_k}\}$ converges in $H$. Thus, every sequence in the bounded set $T(A)$ has a convergent subsequence, so $T(A)$ is pre-compact in $H$.
+			
+			This implies that $T$ is compact by definition.
+		\end{proof}
+		
+		\questionpart The operator $T$ is self-adjoint.
+		\begin{proof}
+			Let $f,g \in H$, and define $u = Tf$, and $v = Tg$. Then, by the same reasoning as in 2.1), if $\{u_j\} = \varphi(u)$, $\{v_j\} = \varphi(v)$, $\{f_j\} = \varphi(f)$, and $\{g_j\} = \varphi(g)$, then
+			\begin{equation}
+				u_j = \frac{f_j}{j^2}, \qquad v_j = \frac{g_j}{j^2}.
+			\end{equation}
+			Thus,
+			\begin{equation}
+				(Tf, g)_H = (u, g)_H = \sum_{j\ne0}j^2u_j\bar{g}_j = \sum_{j\ne0}j^2f_j\bar{v}_j = (f,v)_H = (f,Tg)_H,
+			\end{equation}
+			so $T$ is self-adjoint.
+		\end{proof}
+		
+		\questionpart
+		Suppose that $Tf = \lambda f$ for $f \in H$, with $f\ne0$. Note that since $T$ is self-adjoint, we must have $\lambda \in \R$. By the reasoning in 2.1), we must have $j^{-2}f_j = \lambda f_j$ for all $j\ne0$, where $\{f_j\} = \varphi(f)$. Then either $f_j = 0$ or $\lambda = j^{-2}$ for all $j \ne 0$. We cannot have $f_j = 0$ for all $j$, because then $f = 0$ by the linearity of $\varphi^{-1}$.
+		
+		Thus, there exists some $k > 0$ such that $f_{k} \ne0$, which implies that $\lambda = k^{-2}$. The equation $\lambda f_j = j^{-2}f_j$ for all $j$ implies that $f_j = 0$ for all $j \ne \pm k$. Since $f_{-k} = \bar{f}_{k}$, it follows that $f = f_{k}e_{k} + \bar{f}_ke_{-k}$. Supposing that $f_j = a + ib$, we must have
+		\begin{align}
+			f(x) &= \frac{1}{\sqrt{2\pi}}\left((a+ib)e^{ikx} + (a-ib)e^{-ikx}\right) \\
+			&= \frac{1}{\sqrt{2\pi}}\big(a\cos(kx) - b\sin(kx) +ib\cos(kx) + ia\sin(kx)\\
+			&\quad{}+ a\cos(kx) -b\sin(kx) - ib\cos(kx) -ia\sin(kx)\big) \\
+			&= \frac{1}{\sqrt{2\pi}}\left(2a\cos(kx) - 2b\sin(kx)\right).
+		\end{align}
+		Thus, if $\lambda$ is an eigenvalue of $T$, then $\lambda = k^{-2}$ for some integer $k\ne0$, and the corresponding eigenvectors must be linear combinations of $\cos(kx)$ and $\sin(kx)$; that is, the corresponding eigenspace is $\mathrm{span}\{\cos(kx), \sin(kx)\}$. 
+		
+		It is not hard to see by reversing the above logic that the converse is true, namely, that $k^{-2}$ is an eigenvalue of $T$ for all integers $k \ne0$, and its corresponding eigenspace is $\mathrm{span}\{\cos(kx),\sin(kx)\}$.
+		
+		\questionpart
+		Let $c \in \C$ be given. Then for any $j > 0$, there exists $a,b \in R$ such that $ce_j + \bar{c}e_{-j} = a\cos(jx) + b\sin(jx)$; indeed, by the calculation in 2.4), we just need to choose $a = \sqrt{\frac{2}{\pi}}\Re(c)$, and $b = -\sqrt{\frac{2}{\pi}}\Im(c)$. Therefore, given $u \in H$, the partial sum of the Fourier series for $u$ can be written as a linear combination of elements of the set $\mathcal{B} = \{\cos(jx),\sin(jx)\}_{j>0}$. Since $H$ is a Hilbert space, the Fourier series of $u$ converges to $u$, so $u$ is the limit of a sequence of elements of $\mathrm{span}(\mathcal{B})$.
+		
+		In other words, $\mathcal{B}$ is a basis for $H$. In fact, it is an orthogonal basis, as we show now. Let $\{c^k_j\}_j = \varphi(\cos(kx))$, and let $\{s^k_j\}_j = \varphi(\sin(kx))$. Then, by the Euler formula relating $e^{ijx}$ to $\sin(x)$ and $\cos(x)$,
+		\begin{equation}
+			\label{eq:euler}
+			c^k_j = \begin{cases}
+				\sqrt{\frac{\pi}{2}} & j = |k| \\
+				0 & \text{otherwise},
+			\end{cases}\qquad
+			s^k_j = \begin{cases}
+				-i\sqrt{\frac{\pi}{2}}\mathrm{sgn}(j) & j = |k| \\
+				0 & \text{otherwise},
+			\end{cases}
+		\end{equation}
+		where $\mathrm{sgn}(j)$ is the sign of $j$. Hence, for $k, \ell > 0$,
+		\begin{align}
+			(\cos(kx), \cos(\ell x))_H &= \sum_{j\ne0}j^2c^k_j\overline{c^\ell_j} = \begin{cases}
+				0 & k \ne \ell \\
+				\frac{\pi}{2}k^2 & k = \ell,
+			\end{cases}\\
+			(\cos(kx), \sin(\ell x))_H &= \sum_{j\ne0}j^2c^k_j\overline{s^\ell_j} = \begin{cases}
+				0 & k\ne \ell \\
+				\frac{\pi}{2}\left(-i + i\right)k^2 = 0 & k = \ell
+			\end{cases} = 0,\\
+			(\sin(kx), \sin(\ell x))_H &= \sum_{j\ne0}j^2s^k_j\overline{s^\ell_j} = \begin{cases}
+				0 & k\ne \ell \\
+				\frac{\pi}{2}k^2 & k = \ell.
+			\end{cases}
+		\end{align}
+		Therefore, $\mathcal{B}$ is orthogonal in $H$. Moreover, we can clearly modify the elements of $\mathcal{B}$ so that they are orthonormal; if we set $\mathcal{B}' = \left\{\sqrt{\frac{2}{\pi}}j^{-1}\cos(jx), \sqrt{\frac{2}{\pi}}j^{-1}\sin(jx)\right\}$, then $\mathcal{B}'$ is an orthonormal basis for $H$.
+		
+		Finally, we note that $\mathcal{B}'$ is the orthonormal basis that diagonalizes $T$ in the sense of the spectral theorem for self-adjoint, compact operators. Let $c^k = \cos(kx)$, and let $s^k = \sin(kx)$. Define $u^k = T(c^k)$, and $v^k = T(s^k)$, and define $\{u^k_j\} = \varphi(u^k)$, and $\{v^k_j\} = \varphi(v^k)$. By the reasoning in 2.1), and by (\ref{eq:euler}),
+		\begin{equation}
+			u^k_j = j^{-2}c^k_j \implies u^k = k^{-2}c^k, \qquad v^k_j = j^{-2}s^k_j \implies v^k = k^{-2}s^k;
+		\end{equation}
+		that is, $Tf = \lambda f$ for any $f \in \mathcal{B}'$, where $\lambda$ is the eigenvalue corresponding to $f$.
 	\end{arabicparts}
 \end{document}

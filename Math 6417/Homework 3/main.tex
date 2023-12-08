@@ -11,7 +11,7 @@
 	\maketitle
 	
 	\question
-	Let $B(\cdot,\cdot)$ be a continuous, bilinear form on a real Hilbert space $H$. Suppose that $B$ is coercive in the sense that there is some $\alpha > 0$ such that $|B(x,x)| \ge \alpha\lVert x\rVert^2$ for all $x \in H$.
+	Let $B(\cdot,\cdot)$ be a continuous, bilinear form on a real Hilbert space $H$. Suppose that $B$ is coercive in the sense that there is some $\alpha > 0$ such that $B(x,x) \ge \alpha\lVert x\rVert^2$ for all $x \in H$.
 	\begin{arabicparts}
 		\questionpart 
 		Let $y \in H$. Then the map $f_y : H \to \R$ defined by $f_y(x) = B(x,y)$ is a bounded linear functional on $H$. Consequently, there exists a unique $w \in H$ such that $B(x,y) = f_y(x) = (x,w)$ for all $x \in H$.
@@ -79,7 +79,7 @@
 			
 			Let $\varepsilon > 0$ be given. Since $\{w_n\}$ is convergent, it is also Cauchy, so we can choose $N$ such that $n,m > N$ implies that $\lVert w_n - w_m\rVert < \varepsilon$. By the linearity of $A$, we have $A(y_n-y_m) = w_n-w_m$; hence,
 			\begin{align}
-				\alpha \lVert y_n-y_m\rVert^2 &\le |B(y_n-y_m,y_n-y_m)| = |(y_n-y_m,w_n-w_m)|\le \lVert y_n-y_m\rVert\cdot \lVert w_n - w_m\rVert \\
+				\alpha \lVert y_n-y_m\rVert^2 &\le B(y_n-y_m,y_n-y_m) = (y_n-y_m,w_n-w_m)\le \lVert y_n-y_m\rVert\cdot \lVert w_n - w_m\rVert \\
 				&\le \varepsilon\lVert y_n-y_m\rVert
 			\end{align}
 			if $n,m > N$. Thus, $n,m >N$ implies that $\lVert y_n - y_m\rVert < \frac{\varepsilon}{\alpha}$. This implies that  $\{y_n\}$ Cauchy.
@@ -94,7 +94,7 @@
 		\questionpart
 		$A$ is onto.
 		\begin{proof}
-			Suppose that $x \in R(A)^\perp$, that is, $(x, w) = 0$ for all $w \in R(A)$. This implies that $(x, Ay) = 0$ for all $y \in H$, which is equivalent to saying that $B(x, y) = 0$ for all $y \in H$. In particular, if we choose $y = x$, then $\lVert x\rVert^2 \le \frac{1}{\alpha}|B(x, x)| = 0$. Therefore, $x = 0$. This shows that $R(A)^\perp = \{0\}$ because $x$ was arbitrary. 
+			Suppose that $x \in R(A)^\perp$, that is, $(x, w) = 0$ for all $w \in R(A)$. This implies that $(x, Ay) = 0$ for all $y \in H$, which is equivalent to saying that $B(x, y) = 0$ for all $y \in H$. In particular, if we choose $y = x$, then $\lVert x\rVert^2 \le \frac{1}{\alpha}B(x, x) = 0$. Therefore, $x = 0$. This shows that $R(A)^\perp = \{0\}$ because $x$ was arbitrary. 
 			
 			Let $y \in H$. Since $R(A)$ is a closed subspace of $H$ by (1.4), there exists a best approximation $w \in R(A)$ of $y$, which satisfies the property $(y - w, x) = 0$ for all $x \in R(A)$ (Theorem 3.7 and Corollary 3.8 in Arbogast and Bona). That is, $y-w \in R(A)^\perp$. Since $R(A)^\perp =\{0\}$ by the above, it follows that $y-w = 0$, and $y=w \in R(A)$. Since $y$ was arbitrary and $R(A) \subseteq H$, it follows that $R(A) = H$, that is, $A$  is onto.
 		\end{proof}
@@ -393,9 +393,9 @@
 			
 			For coercivity, observe that
 			\begin{equation}
-				|B(f,f)| = \left|\sum_{j\ne0}(ij+j^2)|f_j|^2\right| = \left(\left[\sum_{j\ne0}j|f_j|^2\right]^2 + \left[\sum_{j\ne0}j^2|f_j|^2\right]^2\right)^\frac{1}{2} \ge \lVert f\rVert_H^2.
+				B(f,f) = \sum_{j\ne0}(ij+j^2)|f_j|^2 = \sum_{j\ne0}j^2|f_j|^2 = \lVert f \rVert_H^2
 			\end{equation}
-			Thus, $B$ is coercive (note that the first summation converges absolutely by a comparison test, by the way: $|j||f_j|^2 \le j^2|f_j|^2$ for all integers $j \ne 0$).
+			because $f_{-j} = \bar{f}_j$. Thus, $B$ is coercive.
 		\end{proof}
 		
 		\questionpart
@@ -487,8 +487,7 @@
 			Together, (\ref{eq:pos}) and (\ref{eq:neg}) imply that $f_j = -(u'_j + u''_j)$ for all $j\ne0$. This implies that $f = -(u' + u'')$ by the linearity of $\psi$.
 		
 			\end{proof}	
-			
-			This can be made into a classical ODE solution by adding assumptions. For example, if $u \in C^2[-\pi,\pi]$, and $u$ is periodic, then the Fourier series of $u$ and $u'$ are continuous, and $u'$ and $u''$ are piecewise smooth, meaning that the Fourier series of $u$ and $u'$ may be differentiated term-by-term.
+		
 		\questionpart
 		Any bounded set in $H$ is pre-compact in $\ltwo$.
 		
@@ -503,9 +502,9 @@
 			\begin{equation}
 				\lVert f\rVert_\ltwo^2 = \sum_{j}|f_j|^2 \le \sum_{j\ne 0}j^2|f_j|^2 = \lVert f\rVert_H^2.
 			\end{equation}
-			This implies that $A$ is bounded in $\ltwo$ in addition to $H$. Then $\overline{A}$ is also bounded in $\ltwo$, because the closure of a bounded set is bounded. We need to show that $\overline{A}$ is also compact.
+			This implies that $A$ is bounded in $\ltwo$ in addition to $H$. We need to show that $A$ is pre-compact in $\ltwo$; that is, for any sequence in $A$, there exists a subsequence that converges in $\ltwo$.
 			
-			To this end, let $\{f^n\}$ be a sequence in $\overline{A}$. Since $\overline{A}$ is bounded in $\ltwo$, and $\ltwo$ is a Hilbert space, there exists a weakly convergent subsequence $\{f^{n_k}\}$ of $\{f^n\}$. That is, there exists $f \in \ltwo$ such that $f^{n_k}_j \to f_j$ for all $j$, where $f^{n_k}_j = (f^{n_k},e_j)$, and $f_j = (f,e_j)$. If we can show that $f^{n_k}\to f$ strongly as well, then we are done.
+			To this end, let $\{f^n\}$ be a sequence in $A$. Since $A$ is bounded in $\ltwo$, and $\ltwo$ is a Hilbert space, there exists a weakly convergent subsequence $\{f^{n_k}\}$ of $\{f^n\}$. That is, there exists $f \in \ltwo$ such that $f^{n_k}_j \to f_j$ for all $j$, where $f^{n_k}_j = (f^{n_k},e_j)$, and $f_j = (f,e_j)$. If we can show that $f^{n_k}\to f$ strongly as well, then we are done.
 			
 			Before that, however, we need the following fact: for all $g \in A$ and all $J > 0$,
 			\begin{equation}
@@ -521,23 +520,21 @@
 			
 			Let $\varepsilon > 0$ be given. Then we can choose $J > 0$ such that for all $g \in A$,
 			\begin{equation}
+				\label{eq:tail_estimate}
 				\sum_{|j| > J}|g_j|^2 < \varepsilon, \qquad \{g_j\} = \varphi(g).
 			\end{equation}
 			Since $\{f^{n_k}_j\}_{k=1}^\infty$ is convergent for all $j$, it is also Cauchy for all $j$. Thus, we can choose $K$ large enough that $k,\ell > K$ implies that $|f^{n_k}_j - f^{n_\ell}_j|^2 < \frac{\varepsilon}{2J+1}$ for all $0 \le |j| \le J$. Then
 			\begin{equation}
 				\lVert f^{n_k} - f^{n_\ell}\rVert_\ltwo^2 = \sum_{|j| \le J}|f^{n_k}_j - f^{n_\ell}_j|^2 + \sum_{|j|>J}|f^{n_k}_j - f^{n_\ell}_j|^2 \le \varepsilon + \sum_{|j|>J}|f^{n_k}_j - f^{n_\ell}_j|^2
 			\end{equation}
-			if $k,\ell > K$. Since $f^{n_k} \in \overline{A}$, for all $k$, we can choose $g^k \in A$ such that $\lVert f^{n_k} - g^k\rVert_\ltwo^2 < \varepsilon$. Hence, if ${g^k_j} = \varphi(g^k)$, then
+			if $k,\ell > K$. Since $f^{n_k} \in A$, by (\ref{eq:tail_estimate}),
 			\begin{align}
-				\lVert f^{n_k} - f^{n_\ell}\rVert_\ltwo^2 &\le \varepsilon + \sum_{|j|>J} |(f^{n_k}_j - g^k_j) + (g^k_j - g^\ell_j) + (g^\ell_j - f^{n_\ell}_j)|^2\\
-				&\le \varepsilon + 3\sum_{|j|>J}|f^{n_k}_j - g^k_j|^2 + 3\sum_{|j|>J}|f^{n_\ell}-g^\ell_j|^2 + 3\sum_{|j|>J}|g^k_j-g^\ell_j|^2\\
-				&\le \varepsilon + 3\lVert f^{n_k} - g^k\rVert_\ltwo^2 + 3\lVert f^{n_\ell}-g^\ell\rVert_\ltwo^2 \\
-				&\qquad{}+ 6\sum_{|j|>J}|g^k_j|^2 + 6\sum_{|j|>J}|g^\ell_j|^2\\
-				&\le 19\varepsilon
+				\lVert f^{n_k} - f^{n_\ell}\rVert_\ltwo^2 &\le \varepsilon + \sum_{|j|> J}|f^{n_k}|^2 + \sum_{|j|>J}|f^{n_\ell}|^2\\
+				&\le 3\varepsilon
 			\end{align}
 			if $k,\ell > K$. This implies that $\{f^{n_k}\}$ is Cauchy in $\lVert\cdot\rVert_\ltwo$. Therefore, $\{f^{n_k}\}$ converges in $\ltwo$.
 			
-			Thus, any sequence in $\overline{A}$ has a convergent subsequence. This implies that $\overline{A}$ is compact, and $A$ is pre-compact.
+			Thus, any sequence in $A$ has a convergent subsequence. This implies that $A$ is pre-compact.
 		\end{proof}
 	\end{arabicparts}
 \end{document}
