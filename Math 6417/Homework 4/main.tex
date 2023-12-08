@@ -146,11 +146,11 @@
 		\begin{equation}
 			f = \sum_j f_j e_j, \qquad f_j = (f, e_j).
 		\end{equation}
-		Since $e_0 = \text{constant}$, we have $f_j = (f,e_j) \propto \mathrm{mean}(f) = 0$, so $f_0 = 0$. Furthermore, by an argument we used several times in Homework 3, the fact that $f = \bar{f}$ implies that $f_{-j} = \bar{f}_j$. Lastly, by Parseval's identity,
+		Since $e_0 = \text{constant}$, we have $f_0 = (f,e_0) \propto \mathrm{mean}(f) = 0$, so $f_0 = 0$. Furthermore, by an argument we used several times in Homework 3, the fact that $f = \bar{f}$ implies that $f_{-j} = \bar{f}_j$. Lastly, by Parseval's identity,
 		\begin{equation}
 			\sum_{j\ne 0}j^{-2}|f_j|^2 \le \sum_{j\ne0}|f_j|^2 = \lVert f\rVert_2^2 < \infty,
 		\end{equation}
-		so $f \in H^{-1}$ from Homework 3 by definition. Therefore, $\dot{L}^2(-\pi,\pi) \subseteq H^{-1}$.
+		so $f \in H^{-1}$ from Homework 3 because $\{f_j\}_{j\ne0} \in S_{H^{-1}}$. Therefore, $\dot{L}^2(-\pi,\pi) \subseteq H^{-1}$.
 		
 		We claim that for $f \in \dot{L}^2(-\pi,\pi)$ and $u \in H$,
 		\begin{equation}
@@ -174,7 +174,11 @@
 		\begin{equation}
 			j^2u_j + j^2u_{-j} = f_j + f_{-j},\qquad j^2u_j - j^2u_{-j} = f_j - f_{-j},
 		\end{equation}
-		which implies that $j^2u_j = f_j$ for all $j$. By the same formal differentiation reasoning, it follows that $-u'' = f$.
+		which implies that $j^2u_j = f_j$ for all $j$. By the same formal differentiation reasoning, it follows that $-u'' = f$. Additionally, we have $u \in H$ because
+		\begin{equation}
+			\bar{u}_{-j} = \frac{\bar{f}_{-j}}{j^2} = \frac{f_j}{j^2} = u_j, \qquad \sum_{j\ne0}j^2|u_j|^2 = \sum_{j\ne0}j^2\left|\frac{f_j}{j^2}\right|^2 \le \sum_{j\ne0}|f_j|^2 < \infty,
+		\end{equation}
+		which implies that $\{u_j\} \in S_H$.
 		
 		The function $B$ is bilinear because for any $\alpha,\beta \in \R$, and any $u,v,w\in H$,
 		\begin{equation}
@@ -196,9 +200,9 @@
 		\begin{equation}
 			B(u,u) = \sum_{j\ne0}j^2|u_j|^2 = \lVert u_j\rVert_H^2.
 		\end{equation}
-		Hence, the Lax-Milgram Theorem implies that, given $f \in \dot{L}^2(-\pi,\pi) \subseteq H^{-1}$, there is exists a unique $u \in H$ such that $B(u,v) = f(v)$ for all $v \in H$. That is, there exists a unique $u \in H$ such that $-u'' = f$.
+		Hence, the Lax-Milgram Theorem implies that, given $f \in \dot{L}^2(-\pi,\pi) \subseteq H^{-1} \subseteq H^*$, there is exists a unique $u \in H$ such that $B(u,v) = f(v)$ for all $v \in H$. That is, there exists a unique $u \in H$ such that $-u'' = f$.
 		
-		\questionpart Let $T : \dot{L}^2(-\pi, \pi) \to H$ denote the solution operator of (\ref{eq:q2_problem}), which exists by 2.1). Then $T$ is compact.
+		\questionpart Let $T : \dot{L}^2(-\pi, \pi) \to H$ denote the solution operator of (\ref{eq:q2_problem}), which exists by 2.1). Then $T$ is compact as an operator on $\dot{L}^2(-\pi,\pi)$.
 		
 		\begin{proof}
 			Given $f \in \dot{L}^2(-\pi,\pi)$, there exists $u \in H$ such that
@@ -213,30 +217,38 @@
 			
 			As we showed in 2.1), $Tf = u$ if and only if $f_j = j^2u_j$, where $\{u_j\} = \varphi(u)$, and $\{f_j\} = \psi(f)$. Thus, $u_j = \frac{f_j}{j^2}$.
 			
-			Let $A$ be a bounded set in $\dot{L}^2(-\pi,\pi)$, so that there exists $M > 0$ such that $\lVert f \rVert_{L^2} \le M$ for all $f \in A$. Suppose that $\{u^n\}$ is a sequence in $\overline{T(A)}$. Then for any $n$, we have $u^n = T(f^n)$ for some $f^n \in A$, and $u^n_j = \frac{f^n_j}{j^2}$, where $u^n_j = \varphi(u^n)$, and $f^n_j = \psi(f^n)$.
+			Let $A$ be a bounded set in $\dot{L}^2(-\pi,\pi)$. Then $T(A)$ is bounded in $H$ because $T$ is a bounded operator from $\dot{L}^2(-\pi,\pi)$ to $H$. Then there exists $M > 0$ such that $\lVert u \rVert_H \le M$ for all $u \in T(A)$.
 			
-			For any $J > 0$ and any $n$,
+			Thus, for any $J > 0$ and any $u \in T(A)$,
 			\begin{equation}
-				\label{eq:u_h_norm_est}
-				\sum_{|j| > J} j^2|u^n_j|^2 = \sum_{|j| > J} j^{-2}|f_j^n|^2 \le \frac{1}{J^2}\sum_{|j| > J}|f^n_j|^2 \le \frac{M}{J^2}.
+				\label{eq:u_h_l2_est}
+				\sum_{|j| > J} |u_j|^2 \le \frac{1}{J^2}\sum_{|j|>J}j^2|u_j^2| \le \frac{M}{J^2},
 			\end{equation}
-			Since $T$ is bounded, and $A$ is bounded in $\dot{L}^2(-\pi,\pi)$, the set $T(A)$ is bounded in $H$. The space $H$ is a Hilbert space by Homework 3, so there exists a weakly convergent subsequence of $\{u^n\}$, call it $\{u^{n_k}\}$. Then $\{u^{n_k}_j\}_k$ converges for all $j$. In particular, each such sequence is Cauchy.
+			where $\{u_j\} = \varphi(u)$. We recall from Homework 3 that
+			\begin{equation}
+				\lVert u \rVert_{L^2}^2 = \sum_{j\ne0}|u_j|^2,
+			\end{equation}
+			so the tail of the series form of the $L^2$ norm of $u$ is uniformly small for $u \in T(A)$, which is what allows us to establish the compactness of $T$.
 			
-			Let $\varepsilon > 0$ be given. By (\ref{eq:u_h_norm_est}), we can choose $J$ large enough that
+			Let $\{u^n\}$ be a sequence in $T(A)$. The space $H$ is a Hilbert space by Homework 3, and $\{u^n\}$ is bounded because $T(A)$ is bounded, so there exists a weakly convergent subsequence of $\{u^n\}$, call it $\{u^{n_k}\}$. Then $\{u^{n_k}_j\}_k$ converges for all $j$, where $\{u^{n_k}_j\}$ are the Fourier coefficients of $u^{n_k}$ with respect to $\{e_j\}$. In particular, each such sequence is Cauchy.
+			
+			Let $\varepsilon > 0$ be given. By (\ref{eq:u_h_l2_est}), we can choose $J$ large enough that
 			\begin{equation}
-				\sum_{|j| > J} j^2|u^{n_k}_j|^2 < \varepsilon^2
+				\sum_{|j| > J} |u^{n_k}_j|^2 < \varepsilon^2
 			\end{equation}
-			for all $k$. We can also choose $N$ large enough that $k,\ell>N$ implies that $|u^{n_k}_j - u^{n_\ell}_j|^2 < \frac{\varepsilon^2}{2J^3}$ for all $|j| \le J$. Then
+			for all $k$. We can also choose $N$ large enough that $k,\ell>N$ implies that $|u^{n_k}_j - u^{n_\ell}_j|^2 < \frac{\varepsilon^2}{2J}$ for all $|j| \le J$. Then
 			\begin{align}
-				\lVert u^{n_k} - u^{n_\ell}\rVert_H^2 &= \sum_{|j|\le J}j^2|u^{n_k}_j - u^{n_\ell}_j|^2 + \sum_{|j| > J}j^2|u^{n_k}_j - u^{n_\ell}_j|^2 \\
-				&\le \varepsilon^2 + \sum_{|j|>J}j^2|u^{n_k}_j|^2 + \sum_{|j|>J}j^2|u^{n_\ell}_j|^2\\
-				&\le 3\varepsilon^2,
+				\lVert u^{n_k} - u^{n_\ell}\rVert_{L^2}^2 &= \sum_{|j|\le J}|u^{n_k}_j - u^{n_\ell}_j|^2 + \sum_{|j| > J}|u^{n_k}_j - u^{n_\ell}_j|^2 \\
+				&\le \varepsilon^2 + 2\sum_{|j|>J}|u^{n_k}_j|^2 + 2\sum_{|j|>J}|u^{n_\ell}_j|^2\\
+				&\le 5\varepsilon^2,
 			\end{align}
-			so $k,\ell > N$ implies that $\lVert u^{n_k} - u^{n_\ell}\rVert_H < \sqrt{3}\varepsilon$.
+			so $k,\ell > N$ implies that $\lVert u^{n_k} - u^{n_\ell}\rVert_H < \sqrt{5}\varepsilon$.
 			
-			This implies that $\{u^{n_k}\}_k$ is Cauchy in $H$. Since $H$ is a Hilbert space, it follows that $\{u^{n_k}\}$ converges in $H$. Thus, every sequence in the bounded set $T(A)$ has a convergent subsequence, so $T(A)$ is pre-compact in $H$.
+			This implies that $\{u^{n_k}\}_k$ is Cauchy in $L^2(-\pi,\pi)$. Since $L^2(-\pi,\pi)$ is a Hilbert space, it follows that $\{u^{n_k}\}$ converges to some $u \in L^2(-\pi,\pi)$. It remains to show that $u \in \dot{L}^2(-\pi,\pi)$.
 			
-			This implies that $T$ is compact by definition.
+			We recall from Homework 3 that $\{u^{n_k}_j\}_{j\ne0} = \varphi(u^{n_k})$, so $\overline{u^{n_k}_j} = u^{n_k}_{-j}$ for all $k$ and all $j\ne0$, and $u^{n_k}_0 = 0$ for all $k$. Taking the limit as $k\to\infty$, we get $\bar{u}_j = \bar{u}_{-j}$ for all $j \ne 0$, and $u_0 = 0$. Thus, $\bar{u} = u$ by the same reasoning used several times in Homework 3, and $\mathrm{mean}(u)\propto (u,e_0)=u_0=0$; therefore, $u \in \dot{L}^2(-\pi,\pi)$ by definition.
+			
+			Thus, every sequence in the bounded set $T(A)$ has a convergent subsequence, so $T(A)$ is pre-compact in $H$. This implies that $T$ is compact by definition.
 		\end{proof}
 		
 		\questionpart The operator $T$ is self-adjoint.
@@ -300,8 +312,8 @@
 		
 		Finally, we note that $\mathcal{B}'$ is the orthonormal basis that diagonalizes $T$ in the sense of the spectral theorem for self-adjoint, compact operators. Let $c^k = \cos(kx)$, and let $s^k = \sin(kx)$. Define $u^k = T(c^k)$, and $v^k = T(s^k)$, and define $\{u^k_j\} = \varphi(u^k)$, and $\{v^k_j\} = \varphi(v^k)$. By the reasoning in 2.1), and by (\ref{eq:euler}),
 		\begin{equation}
-			u^k_j = j^{-2}c^k_j \implies u^k = k^{-2}c^k, \qquad v^k_j = j^{-2}s^k_j \implies v^k = k^{-2}s^k;
+			u^k_j = k^{-2}c^k_j \implies u^k = k^{-2}c^k, \qquad v^k_j = k^{-2}s^k_j \implies v^k = k^{-2}s^k;
 		\end{equation}
-		that is, $Tf = \lambda f$ for any $f \in \mathcal{B}'$, where $\lambda$ is the eigenvalue corresponding to $f$.
+		Recall from 2.4) that the eigenvalues of $T$ are $k^{-2}$, where $k$ is a positive integer, with corresponding eigenfunctions $s^k$ and $c^k$. Thus, we have shown that the set of eigenfunctions $\mathcal{B}'$ is an orthonormal basis for $H$, and for any eigenfunction $f \in \mathcal{B}'$, we have $Tf = \lambda f$, where $\lambda$ is the eigenvalue corresponding to $f$.
 	\end{arabicparts}
 \end{document}
