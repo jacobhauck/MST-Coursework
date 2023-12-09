@@ -1,0 +1,61 @@
+>> a = 1;
+b = 4;
+c = @(x) exp(-sin(x));
+f = @(x) exp(-sin(x)) .* (-cos(x) + cos(x).*sin(x) - 1/4*x.^(-3/2) - 1/2*x.^(-1/2).*cos(x));
+u_true = @(x) cos(x) + sqrt(x);
+ga = u_true(a);
+gb = u_true(b);
+fig = figure;
+plot_index = 1;
+>> for h = [1/4, 1/8, 1/16, 1/32, 1/64, 1/128]
+n = ceil((b - a) / h);
+[v_xh, v_uh_matlab] = fem_dirichlet_1d( ...
+     a, b, ga, gb, c, f, n, ...
+     @(f, a, b) gauss4_integrator(f, a, b), ...
+     @(A, b) A \ b ...
+);
+[v_xh, v_uh_gauss_elim] = fem_dirichlet_1d( ...
+    a, b, ga, gb, c, f, n, ...
+    @(f, a, b) gauss4_integrator(f, a, b), ...
+    @(A, b) gauss_elim(A, b) ...
+);
+[v_xh, v_uh_jacobi] = fem_dirichlet_1d( ...
+    a, b, ga, gb, c, f, n, ...
+    @(f, a, b) gauss4_integrator(f, a, b), ...
+    @(A, b) jacobi_solver(A, b) ...
+);
+[v_xh, v_uh_gauss_seidel] = fem_dirichlet_1d( ...
+    a, b, ga, gb, c, f, n, ...
+    @(f, a, b) gauss4_integrator(f, a, b), ...
+    @(A, b) gauss_seidel_solver(A, b) ...
+);
+subplot(6,4,plot_index);
+plot_index = plot_index + 1;
+plot(v_xh, v_uh_matlab);
+if plot_index <= 5
+    title('MATLAB');
+end
+ylim([0.6, 1.6]);
+ylabel(sprintf("h = 1/%d", round(1/h)));
+subplot(6,4,plot_index);
+plot_index = plot_index + 1;
+plot(v_xh, v_uh_gauss_elim);
+if plot_index <= 5
+    title('Gaussian Elimination');
+end
+ylim([0.6, 1.6]);
+subplot(6,4,plot_index);
+plot_index = plot_index + 1;
+plot(v_xh, v_uh_jacobi);
+if plot_index <= 5
+    title('Jacobi Iteration');
+end
+ylim([0.6, 1.6]);
+subplot(6,4,plot_index);
+plot_index = plot_index + 1;
+plot(v_xh, v_uh_gauss_seidel);
+if plot_index <= 5
+    title('Gauss-Seidel Iteration');
+end
+ylim([0.6, 1.6]);
+end
