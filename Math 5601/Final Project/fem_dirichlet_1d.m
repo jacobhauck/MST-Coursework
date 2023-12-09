@@ -6,7 +6,7 @@ function [x, u] = fem_dirichlet_1d( ...
 h = (b - a) / n;
 x = linspace(a, b, n + 1);
 
-A = zeros(n + 1, n + 1);
+A = sparse(n + 1, n + 1);
 b_load = zeros(n + 1, 1);
 
 % Compute integral of c(x) over each element

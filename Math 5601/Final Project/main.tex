@@ -11,7 +11,6 @@
 \newcommand{\hwnum}{}
 \renewcommand{\questiontype}{Problem}
 
-
 \begin{document}
 	\maketitle
 	
@@ -291,6 +290,8 @@
 				$r^{(k+1)} \gets r^{(k)} - \alpha^{(k)}Ad^{(k)}$\;
 				$\beta^{(k+1)} \gets \frac{\left(r^{(k+1)}\right)^TM^{-1}r^{(k+1)}}{\left(r^{(k)}\right)^TM^{-1}r^{(k)}}$\;
 				$d^{(k+1)}\gets M^{-1}r^{(k+1)} + \beta^{(k+1)}d^{(k)}$\;
+				\tcp{Go to next step}
+				$k \gets k + 1$\;
 			}
 			$x \gets x^{(k)}$\;
 		\end{algorithm}
@@ -400,11 +401,15 @@
 	\end{alphaparts}
 	
 	\question
-	To use our Jacobi and Gauss-Seidel code from Homework 9, we have to wrap the methods in solver functions that can be passed to the last argument of \verb*|fem_dirichlet_1d|. These wrappers are found in \verb*|jacobi_solver.m|, \verb*|gauss_seidel_solver.m|. The code for Gaussian elimination is found in \verb*|gauss_elim.m|, reproduced below.
-	\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{gauss_elim.m}
+	To use our Jacobi and Gauss-Seidel code from Homework 9, we have to wrap the methods in solver functions that can be passed to the last argument of \verb*|fem_dirichlet_1d|. These wrappers are found in \verb*|jacobi_solver.m|, \verb*|gauss_seidel_solver.m|. The code for Gaussian elimination is found in \verb*|gauss_elim.m|, reproduced below. 
+	The plots of the approximate solutions for each method and each $h$ value can be found in Figure \ref{fig:plots}. See \verb*|p9_output.txt| for the command window commands used to generate the plots.
+	
+	\begin{minipage}{\linewidth}
+		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{gauss_elim.m}
+	\end{minipage}
 	
 	\question
-	The maximum absolute errors on the nodes of the finite element approximations computed in Problem 9 are reported in Table \ref{table:p9}.
+	The maximum absolute errors on the nodes of the finite element approximations computed in Problem 9 are reported in Table \ref{table:p10}. See \verb*|p10_output.txt| for the commands entered in the command window to generate this data.
 	\begin{table}[h]
 		\centering
 		\begin{tabular}{@{}lllll@{}}
@@ -420,7 +425,7 @@
 			\bottomrule
 		\end{tabular}
 		\caption{Maximum absolute errors of numerical solutions at all nodes}
-		\label{table:p9}
+		\label{table:p10}
 	\end{table}
 	There are several observations that can be made about these results.
 	\begin{itemize}

@@ -10,6 +10,7 @@
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{hyperref}
 
 \input{commands.tex}
 
@@ -460,7 +461,7 @@
 	
 	Regrettably, matters are not this simple. As it turns out, though, making the above idea rigorous will lead us to a requirement on $A(I,J)$ from which we can build an efficient algorithm for finding a submatrix that satisfies our target inequality, so we will forge ahead.
 	
-	There is an explicit relationship between the elements of an inverse matrix and the elements of the original matrix: Cramer's rule. By Cramer's ruler,
+	There is an explicit relationship between the elements of an inverse matrix and the elements of the original matrix: Cramer's rule. According to Cramer's rule,
 	\begin{equation}
 		\left|\widehat{A}^{-1}_{ij}\right| = \left|\det(M)\det\left(\widehat{A}^{-1}\right)\right|,
 	\end{equation}
@@ -547,7 +548,7 @@
 	\end{equation}
 	which implies our target inequality (\ref{eq:theory_goal}).
 	
-	We recall that $|\det(M)|$ is the absolute value of the determinant of some $r\times r$ submtrix of $A$. Thus, the most straightforward way to ensure that $|\det(M)|\lesssim |\det(A(I,J))|$ is to choose $A(I,J)$ so that the absolute value of its determinant is maximal among all $r\times r$ submatrices of $A$.  We note that this has the added perk of ensuring that $A(I,J)$ is nonsinguluar if the rank of $A$ is at least $r$\footnote{If the rank of $A$ is less than $r$, then there is still a way to apply our algorithm anyway using QR decomposition \cite{goreinov_2010}.}.
+	We recall that $|\det(M)|$ is the absolute value of the determinant of some $r\times r$ submtrix of $A$. Thus, the most straightforward way to ensure that $|\det(M)|\lesssim |\det(A(I,J))|$ is to choose $A(I,J)$ so that the absolute value of its determinant is maximal among all $r\times r$ submatrices of $A$.  We note that this has the added perk of ensuring that $A(I,J)$ is nonsinguluar if the rank of $A$ is at least\footnote{If the rank of $A$ is less than $r$, then there is still a way to apply the algorithm anyway using QR decomposition \cite{goreinov_2010}.} $r$.
 	
 	The absolute value of the determinant of a matrix has a special geometric interpretation: it is the volume of the parallelipiped bounded by the column vectors of the matrix. Inspired by this, we define the \textbf{volume} of a square matrix to be the absolute value of its determinant.
 	
@@ -653,13 +654,13 @@
 		\end{equation}
 	\end{proof}
 	
-	The reasoning in the motivation section ultimately required us to choose $A(I,J)$ so that $\vol{M} \lesssim \vol(A(I,J))$, but it didn't require a hard inequality. Therefore, it seems likely that we can extend Theorem \ref{thm:maxvol_pseudo-skeleton} to provide an estimate on the error of the pseudo-skeleton decomposition when $A(I,J)$ merely has \textit{nearly} maximal volume. Indeed, it is not difficult at all.
+	The reasoning in the motivation section ultimately required us to choose $A(I,J)$ so that $\vol(M) \lesssim \vol(A(I,J))$, but it didn't require a hard inequality. Therefore, it seems likely that we can extend Theorem \ref{thm:maxvol_pseudo-skeleton} to provide an estimate on the error of the pseudo-skeleton decomposition when $A(I,J)$ merely has \textit{nearly} maximal volume. Indeed, it is not difficult at all.
 	
 	\begin{thm} \textnormal{\bf(Quasi-maximum volume pseudo-skeleton \cite{olshevsky_2001})}
 		\label{thm:quasi-maximum_volume_pseudo-skeleton}
 		Let $A \in \R^{m\times n}$ be a matrix with singular values $\{\sigma_i\}$ in nonascending order. If $A_\msq = A(I,J)$ is a rank-$r$ maximum volume submatrix of $A$, and $B = A(I', J')$ is a rank-$r$ submatrix of $A$ that has \textbf{quasi-maximal volume in $A$} in the sense that there exists $\nu > 0$ such that
 		\begin{equation}
-			\vol(B) \ge \nu \vol(A),
+			\vol(B) \ge \nu \vol(A_\msq),
 		\end{equation}
 		then
 		\begin{equation}
@@ -853,7 +854,7 @@
 	
 	\minorheading{Going even faster}
 	
-	We recall that the choice of 1 in $\chebnorm{AA(I,:)^{-1}} \le 1$, the dominance criterion for $A(I,:)$, was somewhat arbitrary. Indeed, if we increased this by, say, $\delta > 0$, then we can easily prove a volume estimate not much worse than the one in Theorem \ref{thm:dominant_volume_bound} while changing our stopping criterion to $\chebnorm{AA(I,:)^{-1}} \le 1 + \delta$, which is looser and may significantly decrease the number of iterations without much change in performance.
+	We recall that the choice of 1 in $\chebnorm{AA(I,:)^{-1}} \le 1$, the dominance criterion for $A(I,:)$, was somewhat arbitrary. Indeed, if we increased this by, say, $\delta > 0$, then we can easily prove a volume estimate not much worse than the one in Theorem \ref{thm:dominant_volume_bound} while changing our stopping criterion to $\chebnorm{AA(I,:)^{-1}} \le 1 + \delta$, which is looser and may significantly decrease the number of iterations without much change in performance. Adding this small buffer will also help the algorithm be more robust against floating-point round-off error.
 	
 	To this end, we generalize the definition of dominance as follows.
 	
@@ -1159,7 +1160,7 @@ else:
 	\begin{equation}
 		Z^{(0)} = B^{(0)}\left(J^{(0)}, :\right) = A\left(J^{(0)}, :\right)\left(\matstep{0}\right)^{-1}.
 	\end{equation}
-	The most stable and efficient way to do this is by using a linear system solver (rather than computing the inverse of $\matstep{0}$ explicitly). This can be done fairly easily with \texttt{np.linalg.solve}. The main wrinkle is that we are multiplying by an inverse matrix on the \textit{right}, and this command computes the product with an inverse matrix on the \textit{left}. We can deal with this by transposing the inputs and transposing the output of \texttt{np.linalg.solve}. 
+	The most stable and efficient way to do this is by using a linear system solver (rather than computing the inverse of $\matstep{0}$ explicitly). This can be done fairly easily with \texttt{np.linalg.solve}. The onl wrinkle is that we are multiplying by an inverse matrix on the \textit{right}, and this command computes the product with an inverse matrix on the \textit{left}. We can deal with this by transposing the inputs and transposing the output of \texttt{np.linalg.solve}. 
 	
 	Noting that $A\left(J^{(0)}, :\right)$ can be obtained by taking the rows of \va{} stored in \texttt{other\_rows}, and $\matstep{0}$ can be obtained by taking the rows of \va{} stored in \texttt{submat\_rows}, the initialization of $Z^{(0)}$, which we store in the variable \vz{}, is given in Listing \ref{lst:z_initial}.
 	\begin{lstlisting}[caption={$Z^{(0)}$ initialization}, label=lst:z_initial]
@@ -1169,7 +1170,7 @@ z = np.linalg.solve(a[submat_rows].T, a[other_rows].T).T
 	
 	\minorheading{Loop setup}
 	
-	Python doesn't have a \texttt{do}-\texttt{while}/\texttt{repeat}-\texttt{until} loop construct; since we want to terminate after \vmaxiter{} iterations in any case, we can use a \texttt{for} loop and \texttt{if}-\texttt{break} to simulate the repeat-until in Algorithm \ref{alg:maxvol}. Furthermore, the \texttt{if} statement in Algorithm \ref{alg:maxvol} is the same as the loop stopping condition, so we can use the \texttt{if}-\texttt{break} simultaneously to exit the loop and to do the \texttt{if} statement on line 5. Thus, the beginning of our loop computes the maximum modulus element of $Z^{(k)}$ (that is, the Chebyshev norm) and exits if its modulus is less than $1 + \delta$. If we need to exit the loop, then we also need to return \texttt{submat\_rows} immediately, so we can do the exit and return all at once. See Listing \ref{lst:loop}.
+	Python doesn't have a \texttt{do}-\texttt{while}/\texttt{repeat}-\texttt{until} loop construct; since we want to terminate after \vmaxiter{} iterations in any case, we can use a \texttt{for} loop and \texttt{if}-\texttt{break} to simulate the \texttt{repeat}-\texttt{until} in Algorithm \ref{alg:maxvol}. Furthermore, the \texttt{if} statement in Algorithm \ref{alg:maxvol} is the same as the loop stopping condition, so we can use the \texttt{if}-\texttt{break} simultaneously to exit the loop and to do the \texttt{if} statement on line 5. Thus, the beginning of our loop computes the maximum modulus element of $Z^{(k)}$ (that is, the Chebyshev norm) and exits if its modulus is less than $1 + \delta$. If we need to exit the loop, then we also need to return \texttt{submat\_rows} immediately, so we can do the exit and return all at once. See Listing \ref{lst:loop}.
 	\begin{lstlisting}[caption={loop setup}, label=lst:loop]
 # use dummy index _, as we don't need the iteration index
 for _ in range(max_iter):
@@ -1181,36 +1182,40 @@ for _ in range(max_iter):
     
     if np.abs(max_mod_el) < 1 + delta:
         return submat_rows
+    # loop continues...
 	\end{lstlisting}
 	
 	\minorheading{Updating $Z$}
 	
 	For the $Z$ update, we recall the update rule (\ref{eq:z_update_full}). Since most of the content of $D$ is the same as $Z^{(k)}$, we can store the $i'$ row of $Z^{(k)}$, then replace the $j$ row of $Z^{(k)}$ with $e_j^T$, so that $Z^{(k)}$ becomes $D$. This requires $2r$ and $r$ units of extra memory instead of $n-r$ copy operations and $(n-r)r$ units of extra memory. Thus, the update of \vz{} is given in Listing \ref{lst:z_update}.
 	\begin{lstlisting}[caption={$Z$ update}, label=lst:z_update]
-# Save i' row of z and subtract e_j^T.
-right = z[i_rel].copy()
-right[j] -= 1.
+    # ...still inside loop
+    # Save i' row of z and subtract e_j^T.
+    right = z[i_rel].copy()
+    right[j] -= 1.
 
-# Store e_j^T in the i' row of z.
-z[i_rel, :] = 0.
-z[i_rel, j] = 1.
+    # Store e_j^T in the i' row of z.
+    z[i_rel, :] = 0.
+    z[i_rel, j] = 1.
 
-# In-place update of z. Divide by max_mod_el before matrix multiply.
-z -= z[:, j : j+1] @ (right[None] / max_mod_el)
+    # In-place update of z. Divide by max_mod_el before matrix multiply.
+    z -= z[:, j : j+1] @ (right[None] / max_mod_el)
+    # loop continues...
 	\end{lstlisting}
 	
 	\minorheading{Updating row indices}
 	
 	The last thing to do is to update the row index sequence of the current submatrix and the row indices of the current $Z$ matrix. Following the update rules for $I^{(k)}$ and $J^{(k)}$, we see that this amounts to swapping the values \texttt{submat\_rows[j]} and \texttt{other\_rows[i\_rel]}, as in Listing \ref{lst:row_update}.
 	\begin{lstlisting}[caption={row index update}, label=lst:row_update]
-temp = submat_rows[j]
-submat_rows[j] = other_rows[i_rel]
-other_rows[i_rel] = temp
+    # ...still inside loop
+    temp = submat_rows[j]
+    submat_rows[j] = other_rows[i_rel]
+    other_rows[i_rel] = temp
 	\end{lstlisting}
 	
 	\minorheading{Return value}
 	
-	If the loop does not exit as a result of having found a $\delta$-dominant submatrix, that is, if the loop completes \vmaxiter{} iterations, then we want to return \texttt{None} to indicate the failure to converge. By default, if no \texttt{return} statement is encountered in a Python function, then the function returns \texttt{None}, so we simply leave the rest of the function after the loop blank.
+	If the loop does not exit as a result of having found a $\delta$-dominant submatrix, that is, if the loop completes \vmaxiter{} iterations, then we want to return \texttt{None} to indicate the failure to converge. By default, if no \texttt{return} statement is encountered in a Python function, then the function returns \texttt{None}, so we simply leave the rest of the function blank after the loop.
 	
 	\subsection{Complete code}
 	Bringing all the snippets above together, we obtain the full code for the \maxvol{} algorithm (Listing \ref{lst:maxvol}).
@@ -1218,7 +1223,7 @@ other_rows[i_rel] = temp
 	
 	\section{Experiments}
 	
-	In this section, we explore the capabilities of \maxvol{} through several numerical experiments. All experiments can be replicated by running the \texttt{test.ipynb} notebook.
+	In this section, we explore the capabilities of \maxvol{} through several numerical experiments. All experiments can be replicated by running the \texttt{test.ipynb} notebook\footnote{You can also view the output on GitHub easily \href{https://github.com/jacobhauck/MST-Coursework/blob/main/Math\%205601/Independent\%20Study\%20Project/test.ipynb}{here}. In case the PDF link doesn't work: \texttt{https://github.com/jacobhauck/MST-Coursework/blob/main/Math\%205601/Independent\%20Study\%20Project/test.ipynb}}.
 	
 	\minorheading{Validation}
 	
@@ -1302,11 +1307,11 @@ other_rows[i_rel] = temp
 			\toprule
 			Trial \# & True max & True mean & True std. & Approximate max\\
 			\midrule
-			1 & 0.003963 & 0.000538 & 0.000413 & 0.002113\\
-			2 & 0.002888 & 0.000430 & 0.000328 & 0.001758\\
-			3 & 0.003794 & 0.000559 & 0.000422 & 0.002211\\
-			4 & 0.003387 & 0.000437 & 0.000338 & 0.002123\\
-			5 & 0.003824 & 0.000568 & 0.000433 & 0.002476\\
+			1 & 0.003309 & 0.000451 & 0.000413 & 0.001745\\
+			2 & 0.003262 & 0.000468 & 0.000360 & 0.002201\\
+			3 & 0.003578 & 0.000514 & 0.000395 & 0.001665\\
+			4 & 0.003420 & 0.000454 & 0.000350 & 0.002207\\
+			5 & 0.003175 & 0.000480 & 0.000365 & 0.002400\\
 			\bottomrule
 		\end{tabular}
 		\caption{Approximate maxima found using pseudo-skeleton decomposition}

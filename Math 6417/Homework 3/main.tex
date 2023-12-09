@@ -96,7 +96,7 @@
 		\begin{proof}
 			Suppose that $x \in R(A)^\perp$, that is, $(x, w) = 0$ for all $w \in R(A)$. This implies that $(x, Ay) = 0$ for all $y \in H$, which is equivalent to saying that $B(x, y) = 0$ for all $y \in H$. In particular, if we choose $y = x$, then $\lVert x\rVert^2 \le \frac{1}{\alpha}B(x, x) = 0$. Therefore, $x = 0$. This shows that $R(A)^\perp = \{0\}$ because $x$ was arbitrary. 
 			
-			Let $y \in H$. Since $R(A)$ is a closed subspace of $H$ by (1.4), there exists a best approximation $w \in R(A)$ of $y$, which satisfies the property $(y - w, x) = 0$ for all $x \in R(A)$ (Theorem 3.7 and Corollary 3.8 in Arbogast and Bona). That is, $y-w \in R(A)^\perp$. Since $R(A)^\perp =\{0\}$ by the above, it follows that $y-w = 0$, and $y=w \in R(A)$. Since $y$ was arbitrary and $R(A) \subseteq H$, it follows that $R(A) = H$, that is, $A$  is onto.
+			Let $y \in H$. Since $R(A)$ is a closed subspace of $H$ by 1.4), there exists a best approximation $w \in R(A)$ of $y$, which satisfies the property $(y - w, x) = 0$ for all $x \in R(A)$ (Theorem 3.7 and Corollary 3.8 in Arbogast and Bona). That is, $y-w \in R(A)^\perp$. Since $R(A)^\perp =\{0\}$ by the above, it follows that $y-w = 0$, and $y=w \in R(A)$. Since $y$ was arbitrary and $R(A) \subseteq H$, it follows that $R(A) = H$, that is, $A$  is onto.
 		\end{proof}
 		
 		\questionpart
@@ -195,7 +195,7 @@
 			
 			\textbf{Step 3: $H$ and $S_H$ are real vector spaces}
 			
-			$H$ is a nonempty subset (it contains 0) of the real vector space $\ltwo$, and $S_H$ is a nonempty subset (it contains 0) of the real vector space $\ell^2(\Z \setminus \{0\})$. Thus, it suffices to show that $H$ and $S_H$ are subspaces of these two vector spaces. 
+			$H$ is a nonempty subset (it contains 0) of the real vector space $\ltwo$, and $S_H$ is a nonempty subset (it contains 0) of the space of sequences of complex numbers, viewed as a real vector space. Thus, it suffices to show that $H$ and $S_H$ are subspaces of these two vector spaces. 
 			
 			Let $\{f_j\}, \{g_j\} \in S_H$, and let $\alpha,\beta\in\R$. Then $\{h_j\} = \alpha\{f_j\} + \beta\{g_j\} \in S_H$ because $\bar{h}_{-j} = \alpha\bar{f}_{-j} + \beta\bar{g}_{-j} = \alpha f_j + \beta g_j = h_j$, and
 			\begin{align}
@@ -360,7 +360,7 @@
 		Then $B$ satisfies the hypotheses of the Lax-Milgram theorem.
 		
 		\begin{proof}
-			As with the inner products, the isomorphism $\varphi$ ensures that $B(f,g)$ is well-defined in terms of $\{f_j\} = \varphi(f)$ and $\{g_j\} = \varphi(g)$. We need to show that the series for $B$ converges and that $B$ is actually bilinear over $\R$. Then, we need to show that $B$ satisfies the hypotheses of the Lax-Milgram theorem, that is, that $B$ is continuous and coercive.
+			As with the inner products, the isomorphism $\varphi$ ensures that $B(f,g)$ is well-defined in terms of $\{f_j\} = \varphi(f)$ and $\{g_j\} = \varphi(g)$. We need to show that the series for $B$ converges and that $B$ is actually bilinear over $\R$. Then we need to show that $B$ satisfies the hypotheses of the Lax-Milgram theorem, that is, that $B$ is continuous and coercive.
 			
 			\textbf{Step 1: $B$ is well-defined and bilinear}
 			
@@ -395,7 +395,7 @@
 			\begin{equation}
 				B(f,f) = \sum_{j\ne0}(ij+j^2)|f_j|^2 = \sum_{j\ne0}j^2|f_j|^2 = \lVert f \rVert_H^2
 			\end{equation}
-			because $f_{-j} = \bar{f}_j$. Thus, $B$ is coercive.
+			because $f_{-j} = \bar{f}_j$ implies that $|f_j|^2 = |f_{-j}|^2$. Thus, $B$ is coercive.
 		\end{proof}
 		
 		\questionpart
@@ -448,7 +448,7 @@
 		\end{equation}
 		
 		\begin{proof}
-			After all the work on the previous parts, this is a simple application of the Lax-Milgram theorem. Since $B$ satisfies the assumptions of the theorem by 2.2, it follows by the Lax-Milgram theorem that for all $f \in H^*$, there exists $u \in H$ such that (\ref{eq:weak_form}) is true. Since $\hm \subseteq H^*$ by 2.3, given $f \in \hm$, we have $f \in H^*$, so we can find $u\in H$ such that (\ref{eq:weak_form}) holds.
+			After all the work on the previous parts, this is a simple application of the Lax-Milgram theorem. Since $B$ satisfies the assumptions of the Lax-Milgram theorem by 2.2, it follows by the Lax-Milgram theorem that for all $f \in H^*$, there exists $u \in H$ such that (\ref{eq:weak_form}) is true. Since $\hm \subseteq H^*$ by 2.3, given $f \in \hm$, we have $f \in H^*$, so we can find $u\in H$ such that (\ref{eq:weak_form}) holds.
 		\end{proof}
 		
 		\questionpart
@@ -487,25 +487,24 @@
 			Together, (\ref{eq:pos}) and (\ref{eq:neg}) imply that $f_j = -(u'_j + u''_j)$ for all $j\ne0$. This implies that $f = -(u' + u'')$ by the linearity of $\psi$.
 		
 			\end{proof}	
-			
-			This can be made into a classical ODE solution by adding assumptions. For example, if $u \in C^2[-\pi,\pi]$, and $u$ is periodic, then the Fourier series of $u$ and $u'$ are continuous, and $u'$ and $u''$ are piecewise smooth, meaning that the Fourier series of $u$ and $u'$ may be differentiated term-by-term.
+		
 		\questionpart
 		Any bounded set in $H$ is pre-compact in $\ltwo$.
 		
 		\begin{proof}
 			Let $A$ be a bounded set in $H$; that is, there is some $M > 0$ such that $\lVert g \rVert_H^2\le M$ for all $g \in A$.
 			
-			We recall that $\{e_j\}$ is an orthonormal basis in $\ltwo$. Hence, for any $f \in \ltwo$ (see Arbogast and Bona, Theorem 3.18 part (iii)),
+			We recall that $\{e_j\}$ is an orthonormal basis in $\ltwo$. Hence, for any $f \in \ltwo$, there exists $\{f_j\}\in\ell^2(\Z)$ such that
 			\begin{equation}
-				\lVert f\rVert_\ltwo^2 = \sum_{j} |f_j|^2, \qquad f_j = (f,e_j).
+				f = \sum_{j\ne 0}f_je_j,\qquad  \lVert f\rVert_\ltwo^2 = \sum_{j} |f_j|^2, \qquad f_j = (f,e_j).
 			\end{equation}
-			If $f \in H$ as well, then $\{f_j\} = \varphi(f)$, so
+			If $f \in H$ as well, then $\{f_j\}_{j\ne0} = \varphi(f)$, and $f_0 = 0$, so
 			\begin{equation}
 				\lVert f\rVert_\ltwo^2 = \sum_{j}|f_j|^2 \le \sum_{j\ne 0}j^2|f_j|^2 = \lVert f\rVert_H^2.
 			\end{equation}
-			This implies that $A$ is bounded in $\ltwo$ in addition to $H$. Then $\overline{A}$ is also bounded in $\ltwo$, because the closure of a bounded set is bounded. We need to show that $\overline{A}$ is also compact.
+			This implies that $A$ is bounded in $\ltwo$ in addition to $H$. We need to show that $A$ is pre-compact in $\ltwo$; that is, for any sequence in $A$, there exists a subsequence that converges in $\ltwo$.
 			
-			To this end, let $\{f^n\}$ be a sequence in $\overline{A}$. Since $\overline{A}$ is bounded in $\ltwo$, and $\ltwo$ is a Hilbert space, there exists a weakly convergent subsequence $\{f^{n_k}\}$ of $\{f^n\}$. That is, there exists $f \in \ltwo$ such that $f^{n_k}_j \to f_j$ for all $j$, where $f^{n_k}_j = (f^{n_k},e_j)$, and $f_j = (f,e_j)$. If we can show that $f^{n_k}\to f$ strongly as well, then we are done.
+			To this end, let $\{f^n\}$ be a sequence in $A$. Since $A$ is bounded in $\ltwo$, and $\ltwo$ is a Hilbert space, there exists a weakly convergent subsequence $\{f^{n_k}\}$ of $\{f^n\}$. That is, there exists $f \in \ltwo$ such that $f^{n_k}_j \to f_j$ for all $j$, where $f^{n_k}_j = (f^{n_k},e_j)$, and $f_j = (f,e_j)$. If we can show that $f^{n_k}\to f$ strongly as well, then we are done.
 			
 			Before that, however, we need the following fact: for all $g \in A$ and all $J > 0$,
 			\begin{equation}
@@ -521,23 +520,21 @@
 			
 			Let $\varepsilon > 0$ be given. Then we can choose $J > 0$ such that for all $g \in A$,
 			\begin{equation}
+				\label{eq:tail_estimate}
 				\sum_{|j| > J}|g_j|^2 < \varepsilon, \qquad \{g_j\} = \varphi(g).
 			\end{equation}
 			Since $\{f^{n_k}_j\}_{k=1}^\infty$ is convergent for all $j$, it is also Cauchy for all $j$. Thus, we can choose $K$ large enough that $k,\ell > K$ implies that $|f^{n_k}_j - f^{n_\ell}_j|^2 < \frac{\varepsilon}{2J+1}$ for all $0 \le |j| \le J$. Then
 			\begin{equation}
 				\lVert f^{n_k} - f^{n_\ell}\rVert_\ltwo^2 = \sum_{|j| \le J}|f^{n_k}_j - f^{n_\ell}_j|^2 + \sum_{|j|>J}|f^{n_k}_j - f^{n_\ell}_j|^2 \le \varepsilon + \sum_{|j|>J}|f^{n_k}_j - f^{n_\ell}_j|^2
 			\end{equation}
-			if $k,\ell > K$. Since $f^{n_k} \in \overline{A}$, for all $k$, we can choose $g^k \in A$ such that $\lVert f^{n_k} - g^k\rVert_\ltwo^2 < \varepsilon$. Hence, if ${g^k_j} = \varphi(g^k)$, then
+			if $k,\ell > K$. Since $f^{n_k} \in A$, by (\ref{eq:tail_estimate}),
 			\begin{align}
-				\lVert f^{n_k} - f^{n_\ell}\rVert_\ltwo^2 &\le \varepsilon + \sum_{|j|>J} |(f^{n_k}_j - g^k_j) + (g^k_j - g^\ell_j) + (g^\ell_j - f^{n_\ell}_j)|^2\\
-				&\le \varepsilon + 3\sum_{|j|>J}|f^{n_k}_j - g^k_j|^2 + 3\sum_{|j|>J}|f^{n_\ell}-g^\ell_j|^2 + 3\sum_{|j|>J}|g^k_j-g^\ell_j|^2\\
-				&\le \varepsilon + 3\lVert f^{n_k} - g^k\rVert_\ltwo^2 + 3\lVert f^{n_\ell}-g^\ell\rVert_\ltwo^2 \\
-				&\qquad{}+ 6\sum_{|j|>J}|g^k_j|^2 + 6\sum_{|j|>J}|g^\ell_j|^2\\
-				&\le 19\varepsilon
+				\lVert f^{n_k} - f^{n_\ell}\rVert_\ltwo^2 &\le \varepsilon + 2\sum_{|j|> J}|f^{n_k}|^2 + 2\sum_{|j|>J}|f^{n_\ell}|^2\\
+				&\le 5\varepsilon
 			\end{align}
-			if $k,\ell > K$. This implies that $\{f^{n_k}\}$ is Cauchy in $\lVert\cdot\rVert_\ltwo$. Therefore, $\{f^{n_k}\}$ converges in $\ltwo$.
+			if $k,\ell > K$. This implies that $\{f^{n_k}\}$ is Cauchy in $\lVert\cdot\rVert_\ltwo$. Therefore, $\{f^{n_k}\}$ converges in $\ltwo$ by the completeness of $\ltwo$.
 			
-			Thus, any sequence in $\overline{A}$ has a convergent subsequence. This implies that $\overline{A}$ is compact, and $A$ is pre-compact.
+			Thus, any sequence in $A$ has a convergent subsequence. This implies that $A$ is pre-compact.
 		\end{proof}
 	\end{arabicparts}
 \end{document}
