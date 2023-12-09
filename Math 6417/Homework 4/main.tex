@@ -251,21 +251,21 @@
 			Thus, every sequence in the bounded set $T(A)$ has a convergent subsequence, so $T(A)$ is pre-compact in $H$. This implies that $T$ is compact by definition.
 		\end{proof}
 		
-		\questionpart The operator $T$ is self-adjoint.
+		\questionpart The operator $T$ is self-adjoint as an operator on $\dot{L}^2(-\pi,\pi)$.
 		\begin{proof}
-			Let $f,g \in H$, and define $u = Tf$, and $v = Tg$. Then, by the same reasoning as in 2.1), if $\{u_j\} = \varphi(u)$, $\{v_j\} = \varphi(v)$, $\{f_j\} = \varphi(f)$, and $\{g_j\} = \varphi(g)$, then
+			Let $f,g \in \dot{L}^2(-\pi,\pi)$, and define $u = Tf$, and $v = Tg$. Then, by the same reasoning as in 2.1), if $\{u_j\} = \psi(u)$, $\{v_j\} = \psi(v)$, $\{f_j\} = \psi(f)$, and $\{g_j\} = \psi(g)$, then
 			\begin{equation}
 				u_j = \frac{f_j}{j^2}, \qquad v_j = \frac{g_j}{j^2}.
 			\end{equation}
 			Thus,
 			\begin{equation}
-				(Tf, g)_H = (u, g)_H = \sum_{j\ne0}j^2u_j\bar{g}_j = \sum_{j\ne0}j^2f_j\bar{v}_j = (f,v)_H = (f,Tg)_H,
+				(Tf, g) = (u, g) = \sum_{j\ne0}u_j\bar{g}_j = \sum_{j\ne0}f_j\bar{v}_j = (f,v) = (f,Tg),
 			\end{equation}
 			so $T$ is self-adjoint.
 		\end{proof}
 		
 		\questionpart
-		Suppose that $Tf = \lambda f$ for $f \in H$, with $f\ne0$. Note that since $T$ is self-adjoint, we must have $\lambda \in \R$. By the reasoning in 2.1), we must have $j^{-2}f_j = \lambda f_j$ for all $j\ne0$, where $\{f_j\} = \varphi(f)$. Then either $f_j = 0$ or $\lambda = j^{-2}$ for all $j \ne 0$. We cannot have $f_j = 0$ for all $j$, because then $f = 0$ by the linearity of $\varphi^{-1}$.
+		Suppose that $Tf = \lambda f$ for $f \in H$, with $f\ne0$. Note that since $T$ is self-adjoint, we must have $\lambda \in \R$. By the reasoning in 2.1) giving the formula for $T$ in terms of Fourier coefficients, we must have $j^{-2}f_j = \lambda f_j$ for all $j\ne0$, where $\{f_j\} = \psi(f)$. Then either $f_j = 0$ or $\lambda = j^{-2}$ for all $j \ne 0$. We cannot have $f_j = 0$ for all $j$, because then $f = 0$ by the linearity of $\psi^{-1}$.
 		
 		Thus, there exists some $k > 0$ such that $f_{k} \ne0$, which implies that $\lambda = k^{-2}$. The equation $\lambda f_j = j^{-2}f_j$ for all $j$ implies that $f_j = 0$ for all $j \ne \pm k$. Since $f_{-k} = \bar{f}_{k}$, it follows that $f = f_{k}e_{k} + \bar{f}_ke_{-k}$. Supposing that $f_j = a + ib$, we must have
 		\begin{align}
@@ -274,14 +274,16 @@
 			&\quad{}+ a\cos(kx) -b\sin(kx) - ib\cos(kx) -ia\sin(kx)\big) \\
 			&= \frac{1}{\sqrt{2\pi}}\left(2a\cos(kx) - 2b\sin(kx)\right).
 		\end{align}
-		Thus, if $\lambda$ is an eigenvalue of $T$, then $\lambda = k^{-2}$ for some integer $k\ne0$, and the corresponding eigenvectors must be linear combinations of $\cos(kx)$ and $\sin(kx)$; that is, the corresponding eigenspace is $\mathrm{span}\{\cos(kx), \sin(kx)\}$. 
+		Thus, if $\lambda$ is an eigenvalue of $T$, then $\lambda = k^{-2}$ for some integer $k >0$, and the corresponding eigenvectors must be linear combinations of $\cos(kx)$ and $\sin(kx)$; that is, the corresponding eigenspace is $\mathrm{span}\{\cos(kx), \sin(kx)\}$. We note that $\cos(kx)$ and $\sin(kx)$ are indeed in $\dot{L}^2(-\pi,\pi)$ because they have mean zero on $(-\pi, \pi)$.
 		
-		It is not hard to see by reversing the above logic that the converse is true, namely, that $k^{-2}$ is an eigenvalue of $T$ for all integers $k \ne0$, and its corresponding eigenspace is $\mathrm{span}\{\cos(kx),\sin(kx)\}$.
+		It is not hard to see by reversing the above logic that the converse is true, namely, that $k^{-2}$ is an eigenvalue of $T$ for all integers $k \ne0$, and its corresponding eigenspace is $\mathrm{span}\{\cos(kx),\sin(kx)\}$. 
+		
+		Thus, the eigenvalues of $T$ are $\{\lambda_k = k^{-2}\}_{k>0}$, with corresponding eigenspaces $\{\mathrm{span}\{\cos(kx),\sin(kx)\}\}_{k>0}$.
 		
 		\questionpart
-		Let $c \in \C$ be given. Then for any $j > 0$, there exists $a,b \in R$ such that $ce_j + \bar{c}e_{-j} = a\cos(jx) + b\sin(jx)$; indeed, by the calculation in 2.4), we just need to choose $a = \sqrt{\frac{2}{\pi}}\Re(c)$, and $b = -\sqrt{\frac{2}{\pi}}\Im(c)$. Therefore, given $u \in H$, the partial sum of the Fourier series for $u$ can be written as a linear combination of elements of the set $\mathcal{B} = \{\cos(jx),\sin(jx)\}_{j>0}$. Since $H$ is a Hilbert space, the Fourier series of $u$ converges to $u$, so $u$ is the limit of a sequence of elements of $\mathrm{span}(\mathcal{B})$.
+		Let $c \in \C$ be given. Then for any $j > 0$, there exists $a,b \in R$ such that $ce_j + \bar{c}e_{-j} = a\cos(jx) + b\sin(jx)$; indeed, by the calculation in 2.4), we just need to choose $a = \sqrt{\frac{2}{\pi}}\Re(c)$, and $b = -\sqrt{\frac{2}{\pi}}\Im(c)$. Therefore, given $u \in \dot{L}^2(-\pi,\pi)$, the partial sum of the Fourier series for $u$ can be written as a linear combination of elements of the set $\mathcal{B} = \{\cos(jx),\sin(jx)\}_{j>0} \subseteq \dot{L}^2(-\pi,\pi)$. Since $L^2(-\pi,\pi)$ is a Hilbert space, the Fourier series of $u$ converges to $u$, so $u$ is the limit of a sequence of elements of $\mathrm{span}(\mathcal{B})$.
 		
-		In other words, $\mathcal{B}$ is a basis for $H$. In fact, it is an orthogonal basis, as we show now. Let $\{c^k_j\}_j = \varphi(\cos(kx))$, and let $\{s^k_j\}_j = \varphi(\sin(kx))$. Then, by the Euler formula relating $e^{ijx}$ to $\sin(x)$ and $\cos(x)$,
+		In other words, $\mathcal{B}$ is a basis for $\dot{L}^2(-\pi,\pi)$. In fact, it is an orthogonal basis, as we show now. Let $\{c^k_j\}_j = \psi(\cos(kx))$, and let $\{s^k_j\}_j = \psi(\sin(kx))$. Then, by the Euler formula relating $e^{ijx}$ to $\sin(x)$ and $\cos(x)$,
 		\begin{equation}
 			\label{eq:euler}
 			c^k_j = \begin{cases}
@@ -295,25 +297,36 @@
 		\end{equation}
 		where $\mathrm{sgn}(j)$ is the sign of $j$. Hence, for $k, \ell > 0$,
 		\begin{align}
-			(\cos(kx), \cos(\ell x))_H &= \sum_{j\ne0}j^2c^k_j\overline{c^\ell_j} = \begin{cases}
+			(\cos(kx), \cos(\ell x)) &= \sum_{j\ne0}c^k_j\overline{c^\ell_j} = \begin{cases}
 				0 & k \ne \ell \\
-				\frac{\pi}{2}k^2 & k = \ell,
+				\frac{\pi}{2} & k = \ell,
 			\end{cases}\\
-			(\cos(kx), \sin(\ell x))_H &= \sum_{j\ne0}j^2c^k_j\overline{s^\ell_j} = \begin{cases}
+			(\cos(kx), \sin(\ell x)) &= \sum_{j\ne0}c^k_j\overline{s^\ell_j} = \begin{cases}
 				0 & k\ne \ell \\
-				\frac{\pi}{2}\left(-i + i\right)k^2 = 0 & k = \ell
+				\frac{\pi}{2}\left(-i + i\right) = 0 & k = \ell
 			\end{cases} = 0,\\
-			(\sin(kx), \sin(\ell x))_H &= \sum_{j\ne0}j^2s^k_j\overline{s^\ell_j} = \begin{cases}
+			(\sin(kx), \sin(\ell x)) &= \sum_{j\ne0}s^k_j\overline{s^\ell_j} = \begin{cases}
 				0 & k\ne \ell \\
-				\frac{\pi}{2}k^2 & k = \ell.
+				\frac{\pi}{2} & k = \ell.
 			\end{cases}
 		\end{align}
-		Therefore, $\mathcal{B}$ is orthogonal in $H$. Moreover, we can clearly modify the elements of $\mathcal{B}$ so that they are orthonormal; if we set $\mathcal{B}' = \left\{\sqrt{\frac{2}{\pi}}j^{-1}\cos(jx), \sqrt{\frac{2}{\pi}}j^{-1}\sin(jx)\right\}$, then $\mathcal{B}'$ is an orthonormal basis for $H$.
+		Therefore, $\mathcal{B}$ is orthogonal in $H$. Moreover, we can clearly modify the elements of $\mathcal{B}$ so that they are orthonormal; if we set $\mathcal{B}' = \left\{\sqrt{\frac{2}{\pi}}\cos(jx), \sqrt{\frac{2}{\pi}}\sin(jx)\right\}$, then $\mathcal{B}'$ is an orthonormal basis for $\dot{L}^2(-\pi,\pi)$.
 		
-		Finally, we note that $\mathcal{B}'$ is the orthonormal basis that diagonalizes $T$ in the sense of the spectral theorem for self-adjoint, compact operators. Let $c^k = \cos(kx)$, and let $s^k = \sin(kx)$. Define $u^k = T(c^k)$, and $v^k = T(s^k)$, and define $\{u^k_j\} = \varphi(u^k)$, and $\{v^k_j\} = \varphi(v^k)$. By the reasoning in 2.1), and by (\ref{eq:euler}),
+		Finally, we note that $\mathcal{B}'$ is the orthonormal basis that diagonalizes $T$ in the sense of the spectral theorem for self-adjoint, compact operators. Let $c^k = \sqrt{\frac{2}{\pi}}\cos(kx)$, and let $s^k = \sqrt{\frac{2}{\pi}}\sin(kx)$. Define $u^k = T(c^k)$, and $v^k = T(s^k)$, and define $\{u^k_j\} = \psi(u^k)$, and $\{v^k_j\} = \psi(v^k)$. By our formula for $T$ in terms of Fourier coefficients and by (\ref{eq:euler}),
 		\begin{equation}
-			u^k_j = k^{-2}c^k_j \implies u^k = k^{-2}c^k, \qquad v^k_j = k^{-2}s^k_j \implies v^k = k^{-2}s^k;
+			v^k_{\pm k} = k^{-2}s^k_{\pm k} \implies T(s^k) = \lambda_ks^k, \qquad u^k_{\pm k} = k^{-2}c^k_{\pm k} \implies T(c^k) = \lambda_kc^k.
 		\end{equation}
-		Recall from 2.4) that the eigenvalues of $T$ are $k^{-2}$, where $k$ is a positive integer, with corresponding eigenfunctions $s^k$ and $c^k$. Thus, we have shown that the set of eigenfunctions $\mathcal{B}'$ is an orthonormal basis for $H$, and for any eigenfunction $f \in \mathcal{B}'$, we have $Tf = \lambda f$, where $\lambda$ is the eigenvalue corresponding to $f$.
+		Furthermore, given $f \in \dot{L}^2(-\pi,\pi)$, if $u = Tf$, $\{f_j\} = \psi(f)$, and $\{u_j\} = \varphi(u)$, then, on the one hand,
+		\begin{align}
+			f(x) &= \sum_{j\ne0}f_je_j(x) = \sum{j>0}f_je_j(x) + \bar{f}_{j}e_{-j}(x) = \sum_{j>0} \Re(f_j)\sqrt{\frac{2}{\pi}}\cos(jx) -\Im(f_j)\sqrt{\frac{2}{\pi}}\sin(jx) \\
+			&= \sum_{j>0}\Re(f_j)c^j(x) - \Im(f_j)s^j(x),
+		\end{align}
+		so that $\left(f, c^j\right) = \Re(f_j)$, and $(f, s^j) = -\Im(f_j)$ by the orthonormality of $\mathcal{B}'$. On the other hand,
+		\begin{align}
+			Tf(x) &= \sum_{j\ne0}\frac{f_j}{j^2}e_j(x) = \sum_{j>0}j^{-2}(f_je_j(x) +\bar{f}_je_{-j}(x)) \\
+			&= \sum_{j>0}\Re(f_j)j^{-2}\sqrt{\frac{2}{\pi}}\cos(jx) -\Im(f_j)j^{-2}\sqrt{\frac{2}{\pi}}\sin(jx) \\
+			&= \sum_{j>0}\lambda_j(f,c^j)c^j(x) + \lambda_j(f,s^j)s^j(x),
+		\end{align}
+		which matches the diagonalization formula guaranteed by the spectral theorem for self-adjoint, compact operators.
 	\end{arabicparts}
 \end{document}
