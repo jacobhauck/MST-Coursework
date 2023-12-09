@@ -1279,7 +1279,7 @@ for _ in range(max_iter):
 	The singular values of this matrix decay very rapidly, as shown in Figure \ref{fig:singular_values}, which means that it can be well-approximated by a low-rank matrix by Theorem \ref{thm:svd}.
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=0.5\linewidth]{singular_values.png}
+		\includegraphics[width=0.6\linewidth, trim={0, 0.2cm, 0, 1.5cm}, clip]{singular_values.eps}
 		\caption{Singular values of a 2D Gaussian random field}
 		\label{fig:singular_values}
 	\end{figure}
@@ -1289,7 +1289,7 @@ for _ in range(max_iter):
 	Pictured in Figure \ref{fig:reconstructions} are visualizations of the original Gaussian random field alongside the SVD and pseudo-skeleton approximations.
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=\linewidth]{reconstructions.png}
+		\includegraphics[width=\linewidth, trim={0, 3.25cm, 0, 4cm}, clip]{reconstructions.eps}
 		\caption{Rank-20 approximations of a 2D Gaussian random field.}
 		\label{fig:reconstructions}
 	\end{figure}
@@ -1320,6 +1320,15 @@ for _ in range(max_iter):
 	
 	\section{Conclusion}
 	
+	Performing linear algebraic operations on matrices is a ubiquitous task, and, in many cases, the matrices involved are enormous. Reducing the size of a matrix by low-rank approximation is an effective way to make very slow or even infeasible computations much more accessible.
+	
+	Unfortunately, the theoretically optimal way to reduce the matrix size, truncated singular value decomposition (Theorem \ref{thm:svd}), may be as computationally expensive to perform as the task for which the matrix needs to be reduced in the first place. Therefore, it is desirable to have an algorithm that can find a reduced approximation of a matrix with complexity on the order of the size of the \textit{reduced} matrix, rather than the \textit{original} matrix. This essentially boils down to finding a good submatrix of the original matrix.
+	
+	We have shown that a good enough submatrix can yield an approximation that is nearly as good as truncated singular value decomposition. In the process of understanding this theory, we were led to the idea of maximum volume as the criterion for a good submatrix, and from there to the idea of the \maxvol{} algorithm. We showed that this algorithm is capable of finding a nearly maximal volume submatrix with a total number of computations on the order of the size of the submatrix, not the original matrix.
+	
+	Based on our experiments, we observed that \maxvol{} can provide a speedup of several orders of magnitude in the construction of low-rank approximations, and these approximations are of fairly high quality.
+	
+	As a final remark, we mention that the maximum volume idea can be extended readily to the more general area of \textbf{tensor decomposition}, which is the process of factorizing a tensor into the tensor product of other tensors. Much like how we used matrix decomposition to construct an efficient, low-rank representation of a matrix, tensor decomposition can be used to construct efficient, low-rank representations of tensors. Because the complexity of \maxvol{} depends primarily on the rank of the approximation, it can be used to overcome the curse of dimensionality by efficiently constructing low-rank approximations of high-dimensional tensors. The computational cost of operating on such an approximation scales linearly in the dimension (as opposed to the exponential scaling incurred by working on a dense, full-rank tensor).
 	\bibliographystyle{plain}
 	\bibliography{references.bib}
 \end{document}
