@@ -28,10 +28,19 @@ class SimpleDataset(torch.utils.data.Dataset):
 
     @staticmethod
     def tokens():
+        """
+        :return: Token set for simple datasets
+        """
         return tuple(ascii_lowercase[:6])
 
     def __len__(self):
+        """
+        :return: number of input-output pairs
+        """
         return len(self.questions)
     
     def __getitem__(self, index):
+        """
+        :return: (input_string, output_string) and given index in dataset
+        """
         return self.questions[index], self.answers[index]

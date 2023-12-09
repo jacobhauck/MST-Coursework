@@ -1,3 +1,6 @@
+Arguments to transformer.Transformer constructor for various
+trained models.
+
 model1 arguments:
     TokenEmbedding(arithmetic_easy_tokens, 256),
     30, 5, 5, 8, 1024, p_dropout=.05
