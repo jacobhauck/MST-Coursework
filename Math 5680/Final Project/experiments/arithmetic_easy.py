@@ -2,6 +2,16 @@
 The experiment on the easy arithmetic dataset.
 """
 
+import os
+
+import numpy as np
+import torch.utils.data
+
+from math_dataset import MathDataset
+from training import QATransformerTrainer, SavePeriodicallyCallback, \
+    WarmupLRScheduleCallback, make_loss_fn
+from transformer import Transformer, TokenEmbedding
+
 
 class ArithmeticEasyExperiment:
     """
@@ -13,14 +23,6 @@ class ArithmeticEasyExperiment:
         :param db_path: Path relative to models folder in which to save data
         related to the experiment.
         """
-        # defer imports to speed up CLI script
-        import torch.utils.data
-
-        from math_dataset import MathDataset
-        from training import QATransformerTrainer, SavePeriodicallyCallback, \
-            make_loss_fn
-        from transformer import Transformer, TokenEmbedding
-
         # Load token set
         with open('tokens.txt', 'r') as f:
             arithmetic_easy_tokens = f.read().splitlines()
@@ -67,6 +69,10 @@ class ArithmeticEasyExperiment:
             label_smoothing=.05  # Use label smoothing following Vaswani et al.
         )
 
+        self.lr_schedule_callback = WarmupLRScheduleCallback(
+            12000, self.model.token_embedding.d, self.optim
+        )
+
         self.loss_fn = make_loss_fn(
             cel,
             self.model.token_embedding.pad_index
@@ -87,33 +93,59 @@ class ArithmeticEasyExperiment:
             self.trainer, 900
         )
 
-    def run(self, verbosity=1):
+    def run_training(self, verbosity=1):
         """
-        Run the experiment.
+        Run the training portion of the experiment.
 
         :param verbosity: The training update message verbosity
         """
-        # defer import to speed up CLI script
-        import numpy as np
-
-        import os
-
         # run training
         losses, accuracies = self.trainer.train(
-            epochs=300,
-            batch_callbacks=[self.save_callback],
+            epochs=20,
+            batch_callbacks=[self.save_callback, self.lr_schedule_callback],
             verbosity=verbosity
         )
 
         # save last model weights
         self.trainer.save()
 
+        # add latest data to previous saved training data
+        p_loss = os.path.join(self.trainer.folder, 'losses.npy')
+        p_acc = os.path.join(self.trainer.folder, 'accuracies.npy')
+
+        old_losses = np.load(p_loss)
+        old_acc = np.load(p_acc)
+
         # save loss and training accuracy trajectories
-        np.save(
-            os.path.join(self.trainer.folder, 'losses.npy'),
-            np.array(losses)
-        )
-        np.save(
-            os.path.join(self.trainer.folder, 'accuracies.npy'),
-            np.array(accuracies)
-        )
+        np.save(p_loss, np.concatenate([old_losses, np.array(losses)]))
+        np.save(p_acc, np.concatenate([old_acc, np.array(accuracies)]))
+
+    def run_evaluation(self, weights):
+        """
+        Run the evaluation portion of the experiment.
+
+        :param weights: The saved model weight checkpoint to load for evaluation.
+        """
+        # load model
+        self.trainer.load(weights)
+
+        n_total = 0
+        n_correct = 0
+        n_first_correct = 0
+
+        def evaluate(model_answer, actual_answer):
+            nonlocal n_total, n_correct, n_first_correct
+
+            n_total += 1
+
+            if model_answer == actual_answer:
+                n_correct += 1
+
+            first = min(len(model_answer), len(actual_answer))
+            if model_answer[:first] == actual_answer[:first]:
+                n_first_correct += 1
+
+        self.trainer.evaluate(self.test_dl, evaluate)
+
+        print(f'Test accuracy: {n_correct / n_total * 100:.02f}%')
+        print(f'Test accuracy (first): {n_first_correct / n_total * 100:.02f}%')

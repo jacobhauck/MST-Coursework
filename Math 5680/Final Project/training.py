@@ -92,15 +92,13 @@ class QATransformerTrainer:
 
     def load(self, index: int):
         """
-        Loads the model saved at the given index. Saves the current model
-        before overwriting it.
+        Loads the model saved at the given index. This will overwrite the current weights.
 
         :param index: save index to load
         """
         path = self.index_path(index)
         assert os.path.exists(path)
 
-        self.save()
         self.model.load_state_dict(torch.load(path))
 
     def train(
@@ -192,7 +190,7 @@ class QATransformerTrainer:
                 # noinspection PyUnresolvedReferences
                 matched = (prob.argmax(dim=1) == actual).float() * not_pads
                 acc = (matched.sum(dim=1) / n_tokens).mean()
-                batch_accuracies.append(acc)
+                batch_accuracies.append(acc.item())
 
                 # print progress messages and run callbacks
                 if updater is not None:
@@ -203,18 +201,15 @@ class QATransformerTrainer:
 
         return batch_losses, batch_accuracies
 
-    def evaluate(self, test_dl, verbosity: int = 1):
+    def evaluate(self, test_dl, callback, verbosity: int = 1):
         """
         :param test_dl: data loader for the test dataset
+        :param callback: a function to call on each predicted and actual answer
         :param verbosity: 0 for no messages, 1 for progress bars
         """
 
         # put model in evaluation mode (turn off dropout)
         self.model.eval()
-
-        # counters
-        n_correct = 0
-        n_total = 0
 
         # turn off gradient computations to speed up inference
         with torch.no_grad():
@@ -223,18 +218,11 @@ class QATransformerTrainer:
 
             for batch in test_dl:
                 qas = zip(*batch)
-                if verbosity == 1:
-                    qas = tqdm.notebook.tqdm(qas, unit='questions', position=1)
 
                 for question, answer in qas:
                     model_answer = self.model(question)
 
-                    if model_answer.lower() == answer.lower():
-                        n_correct += 1
-
-                    n_total += 1
-
-        return n_correct / n_total
+                    callback(model_answer.lower(), answer.lower())
 
 
 class ProgressBarUpdater:
