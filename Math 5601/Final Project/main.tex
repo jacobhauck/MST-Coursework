@@ -366,7 +366,7 @@
 		The main implementation of the finite element method for our second-order BVP is found in \verb*|fem_dirichlet_1d.m|, and copied below. In order to avoid code duplication, this function takes the various data determining the equation as parameters, namely, $a$, $b$, $g_a$, $g_b$, $f$, and $c$, as well as the number of points in the mesh $N$. Most importantly, the method used for numerical integration and the solving of a linear system are passed as parameters as well.	
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{fem_dirichlet_1d.m}
 		
-		To apply 4-point Gaussian quadrature, we reuse \verb*|quad.m| from Homework 6 (renamed to \verb*|myquad.m|). Note that the Guass-Legendre quadrature nodes and weights on $[-1,1]$ are given by
+		To apply 4-point Gaussian quadrature, we reuse \verb*|quad.m| from Homework 6 (renamed to \verb*|myquad.m|). Note that the Gauss-Legendre quadrature nodes and weights on $[-1,1]$ are given by
 		\begin{gather}
 			x_1 = \sqrt{\frac{3}{7} - \frac{2}{7}\sqrt{\frac{6}{5}}}, \quad x_2 = -x_1,\quad  x_3 = \sqrt{\frac{3}{7} + \frac{2}{7}\sqrt{\frac{6}{5}}}, \quad x_4 = -x_3, \\
 			w_1 = \frac{18 + \sqrt{30}}{36}, \quad w_2 = w_1, \quad w_3 = \frac{18 - \sqrt{30}}{36}, \quad w_4 = w_3.
@@ -402,11 +402,18 @@
 	
 	\question
 	To use our Jacobi and Gauss-Seidel code from Homework 9, we have to wrap the methods in solver functions that can be passed to the last argument of \verb*|fem_dirichlet_1d|. These wrappers are found in \verb*|jacobi_solver.m|, \verb*|gauss_seidel_solver.m|. The code for Gaussian elimination is found in \verb*|gauss_elim.m|, reproduced below. 
-	The plots of the approximate solutions for each method and each $h$ value can be found in Figure \ref{fig:plots}. See \verb*|p9_output.txt| for the command window commands used to generate the plots.
+	The plots of the approximate solutions for each method and each $h$ value can be found in Figure \ref{fig:plots} or in \verb*|plots.eps|. See \verb*|p9_output.txt| for the command window commands used to generate the plots.
 	
 	\begin{minipage}{\linewidth}
 		\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{gauss_elim.m}
 	\end{minipage}
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=.75, trim={1cm, 2cm, 1cm, 1cm}, clip]{plots.eps}
+		\caption{Finite element approximations using different step sizes $h$ and different matrix equation solvers}
+		\label{fig:plots}
+	\end{figure}
 	
 	\question
 	The maximum absolute errors on the nodes of the finite element approximations computed in Problem 9 are reported in Table \ref{table:p10}. See \verb*|p10_output.txt| for the commands entered in the command window to generate this data.
