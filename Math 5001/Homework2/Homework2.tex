@@ -1,0 +1,46 @@
+\documentclass{homework}
+
+\input{medical5001.tex}
+\newcommand{\hwnum}{2}
+
+\begin{document}
+	\maketitle
+	
+	\question Let \(f: \mathbb{R} \to \mathbb{R}\) be continuous. Then \(f\) has an antiderivative \(F\). The Mean Value Theorem applied to \(F\) implies that for \(x_0, \varepsilon \in \mathbb{R}\), \(\varepsilon \ne 0\),
+	\begin{equation*}
+		\frac{1}{2\varepsilon}\int_{x_0-\varepsilon}^{x_0+\varepsilon}f(y)\;\der y = \frac{F(x_0 + \varepsilon) - F(x_0 - \varepsilon)}{(x_0 + \varepsilon) - (x_0 - \varepsilon)} = f(x_\varepsilon)
+	\end{equation*}
+	for some \(x_\varepsilon \in (x_0 - |\varepsilon|, x_0 + |\varepsilon|)\). 
+	
+	Let \(e>0\); since \(f\) is continuous, there exists some \(d>0\) such that \(|x - x_0| < d \implies |f(x) - f(x_0)| < e\).
+	If \(|\varepsilon| < d\), then \(|x_\varepsilon - x_0| < d\), which implies that \(|f(x_\varepsilon) - f(x_0)| < e\). Therefore
+	\begin{equation*}
+		\lim_{\varepsilon \to 0} \frac{1}{2\varepsilon}\int_{x_0-\varepsilon}^{x_0+\varepsilon}f(y)\;\der y = f(x_0).
+	\end{equation*}
+
+	\question Let \(f \in L^1\) be differentiable, and let \(f^\prime \in L^1\). Let \(u = e^{-ix\xi}\) and \(v^\prime = f^\prime\). Then \(u^\prime = -i\xi e^{-ix\xi}\), and \(v = f\). Using integration by parts,
+	\begin{align*}
+		\int_{\mathbb{R}}f^\prime(x)e^{-ix\xi}\;\der x &= \left.uv\right|_{-\infty}^{\infty} - \int_{\mathbb{R}} u^\prime v\;\der x \\
+		&= \left.e^{-ix\xi}f(x)\right|_{-\infty}^{\infty} + i\xi\int_{\mathbb{R}}e^{-ix\xi}f(x)\;\der x\\
+		&= i\xi\int_{\mathbb{R}}e^{-ix\xi}f(x)\;\der x.
+	\end{align*}
+	The last equation follows because \(f(x) \to 0\) as \(x \to \pm \infty\) (since \(f \in L^1\)), and \(\left|e^{-ix\xi}\right| = 1\). Thus, as \(x \to \pm\infty\), we have \(\left|e^{-ix\xi}f(x)\right|\to 0\), which means that \(e^{-ix\xi}f(x) \to 0\).
+	
+	\question Let \(a>0\) and \(I = \int_\mathbb{R} e^{-ax^2}\;\der x\). Then (by Fubini's Theorem)
+	\begin{equation*}
+		I^2 = \int_\mathbb{R}e^{-ax^2}\;\der x \int_\mathbb{R}e^{-ay^2}\;\der y =\int_{\mathbb{R}^2} e^{-a(x^2 + y^2)}\;\der x \;\der y.
+	\end{equation*}
+	Convert to polar coordinates, and get
+	\begin{align*}
+		I^2 &= \int_{\mathbb{R}^2} e^{-ar^2}r\;\der r \;\der \theta \\
+		&= \int_0^{2\pi}\int_{0}^{\infty} e^{-ar^2}r\;\der r\;\der \theta \\
+		&= 2\pi \int_{0}^{\infty}e^{-ar^2}r\;\der r.
+	\end{align*}
+	Using the substitution \(u = ar^2\), the limits of integration are the same, and we find
+	\begin{equation*}
+		\begin{split}
+			&I^2 = 2 \pi \frac{1}{2a}\int_{0}^{\infty}e^{-u}\;\der u = \frac{\pi}{a}\left[-e^{-u}\right]_0^{\infty} = \frac{\pi}{a}\\
+			\implies &I = \sqrt{\frac{\pi}{a}}.
+		\end{split}
+	\end{equation*}
+\end{document}

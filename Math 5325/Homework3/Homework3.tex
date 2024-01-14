@@ -1,0 +1,91 @@
+\documentclass{homework}
+
+\input{pde5325.tex}
+\newcommand{\hwnum}{3}
+
+\begin{document}
+\maketitle
+
+\question*{2.}
+\textit{A flexible chain of length \(l\) is hanging from one end \(x=0\) but oscillates horizontally. Let the \(x\)-axis point downward and the \(u\)-axis point to the right. Assume that the force of gravity at each point of the chain equals the weight of the part of the chain below the point and is directed tangentially along the chain. Assume that the oscillations are small. Find the partial differential equation satisfied by the chain.}
+
+\newcommand{\pos}{\mathbf{r}}
+I will follow the derivation of the wave equation for a string given in class, making modifications as necessary to fit this problem. I repeat much of the argument in my own words for exercise. Although this question is easier to answer using the method of Strauss, I agree with Dr. Grow that this approach is based on more plausible physical assumptions.
+
+\textbf{1. Describing the chain.}
+Imagine the chain hanging straight and taut, and call this configuration \(C\). Then the points of space occupied by the chain in configuration \(C\) form the set \(\{\pos_0(s) \mid s\in[0,l]\}\), where \(\pos_0(s) = s\mathbf{x}\), and \(\mathbf{x}\) is the unit vector in the \(x\) direction. 
+
+Associate the element \(e = e(s)\) of the chain with the value \(s\) such that the position of \(e\) in configuration \(C\) is \(\pos_0(s)\); it is obvious that there is exactly one such element for \(0 \le s \le l\), so \(e(s)\) is well-defined. 
+
+The state of the chain is fully described by the position vector function \(\pos(s, t)\), which gives the position of \(e(s)\) at time \(t\ge0\) for \(0 \le s \le l\). Assume that the first and second order partial derivatives of \(\pos(s, t)\) exist and are continuous for \(t>0\) and \(0<s<l\).
+
+\newcommand{\sect}[2]{{S\left({#1}, {#2}\right)}}
+
+\textbf{2. Weight and momentum of chain sections.} 
+For \(0 \le a<b \le l\), let \(\sect{a}{b}\) denote the section of the chain from \(s=a\) to \(s=b\) (that is, \(e([a, b])\)). Let \(\rho(s)\) be the (continuous) density per unit length of the chain in configuration \(C\). Then the weight \(w(a, b)\) of any section \(\sect{a}{b}\) is 
+\begin{equation*}
+	w(a, b) = \int_a^b \rho(s)g\der s,
+\end{equation*}
+where \(g\) is the gravitational acceleration. Note that \(\frac{\der}{\der s} w(a, s) = \rho(s)g\), and \(\frac{\der}{\der s} w(s, a) = -\rho(s)g\) by the fundamental theorem of calculus and the assumed continuity of \(\rho(s)\).
+
+\newcommand{\momentum}{\mathbf{p}}
+The total momentum \(\momentum\) of \(\sect{a}{b}\) is simply the integral of the momentum per unit length, \(\rho(s)\pos_t(s, t)\), from \(s=a\) to \(s=b\):
+\begin{equation*}
+	\momentum = \int_a^b\rho(s)\pos_t(s, t)\der s. \tag{P}
+\end{equation*}
+The expression for momentum per unit length follows from the fact that \(\pos_t(s, t)\) is the velocity vector of the piece of chain associated with \(s\) at time \(t\). 
+
+\textbf{3. Calculating the unit tangent vector to the chain.}
+Assume that small oscillations imply that the chain stays nearly taut during its motion; then, because chains do not stretch, for any \(0\le s_1 < s_2\le l\), the length of \(\sect{s_1}{s_2}\) should be nearly the same no matter what configuration the chain is in; assume for simplicity that it is exactly the same. Then the length of \(\sect{s_1}{s_2}\) should be the same in the configuration \(C\) and in the actual configuration at time \(t\). Using the definition of arc length,
+\begin{equation*}
+	\text{arc length in } C = \int_{s_1}^{s_2}\left|\pos_0^\prime(s)\right|\der s = \int_{s_1}^{s_2}\left|\pos_s(s, t)\right|\der s = \text{arc length at time } t.
+\end{equation*}
+Because of the assumed continuity of the partial derivative \(\pos_s(s, t)\) and the continuity of \(\pos_0^\prime(s) = \mathbf{x}\), as well as the arbitrariness of \(s_1\), \(s_2\), we can conclude using the second vanishing theorem from Strauss (in one dimension instead of three) that \(\left|\pos_s(s, t)\right| = \left|\pos_0^\prime(s)\right| = 1\) for all \(0 < s < l\) and \(t > 0\). Thus, \(\pos_s(s, t)\) is the unit tangent vector to the chain.
+
+\newcommand{\force}{\mathbf{F}}
+\newcommand{\forceabove}{\force_{\text{above}}}
+\newcommand{\forcebelow}{\force_{\text{below}}}
+\newcommand{\forcegravity}{\mathbf{w}}
+
+\textbf{4. Interpretation of forces in the chain.}
+The assumption that ``the force of gravity at each point of the chain equals the weight of the part of the chain below the point and is directed tangentially along the chain'' is interpreted as follows: for any \(s\), \(s_1\), \(s_2\) such that \(0 < s_1 < s < s_2 < l\), the force by \(\sect{s}{s_2}\) on \(\sect{s_1}{s}\) is the weight of \(\sect{s}{l}\) directed along the tangent to the chain at \(s\), that is, along \(\pos_s(s, t)\). By Newton's third law, then, the force by \(\sect{s_1}{s}\) on \(\sect{s}{s_2}\) is the weight of \(\sect{s}{l}\) directed along \(-\pos_s(s, t)\).
+
+Applying this interpretation, we can deduce that 
+\begin{alignat*}{3}
+	\forceabove &= \text { force by } \sect{0}{a} \text{ on } \sect{a}{b} &&=-w(a, l)\pos_s(a, t) \\
+	\forcebelow &= \text { force by } \sect{b}{l} \text { on } \sect{a}{b} &&= w(b, l)\pos_s(b, t).
+\end{alignat*}
+
+\textbf{5. Deriving equations of motion from Newton's second law.}
+There are three forces acting on \(\sect{a}{b}\): the force \(\forceabove\) from \(\sect{0}{a}\), the force \(\forcebelow\) from \(\sect{b}{l}\), and the weight \(\forcegravity\) of \(\sect{a}{b}\). By Newton's second law, then,
+\begin{equation}
+	\forceabove + \forcebelow + \forcegravity = \frac{\der \momentum}{\der t},
+\end{equation}
+where \(\momentum\) is the total momentum of \(\sect{a}{b}\). Clearly, the weight of \(\sect{a}{b}\) is directed downward, along the \(x\) direction, so \(\forcegravity = w(a, b)\mathbf{x}\).
+
+Using the continuity of \(\pos_t(s, t)\) and \(\rho(s)\), we can move the time derivative across the integral in equation (P) to get
+\begin{equation*}
+	\frac{\der \momentum}{\der t} = \int_a^b \rho(s)\pos_{tt}(s, t)
+\end{equation*}
+Taking the derivative of equation (1) with respect to \(b\), using the continuity of the integrands, and replacing \(b\) with \(s\) gives
+\begin{equation}
+	-\rho(s)g\pos_s(s, t) + w(s, l)\pos_{ss}(s, t) + \rho(s)g\mathbf{x} = \rho(s)\pos_{tt}(s, t)
+\end{equation}
+Let \(\mathbf{u}\) be the unit vector in the \(u\) direction. Then, because the motion is assumed to be horizontal, for some functions \(v(s, t)\) and \(u(s, t)\) we have
+\(\pos(s, t) = v(s, t)\mathbf{x} + u(s, t)\mathbf{u}\). Analyzing equation (2) by components, we see that
+\begin{alignat}{3}
+	&-\rho(s)gu_s + w(s, l)u_{ss} &&= \rho(s)u_{tt} \\
+	&-\rho(s)gv_s + w(s, l)v_{ss}  + \rho(s)g &&= \rho(s)v_{tt}.
+\end{alignat}
+If the motion is purely transverse, then \(v(s, t) = s\), equation (3) remains the same, and equation (4) becomes
+\begin{equation*}
+	\tag{4?}
+	0 = 0.
+\end{equation*}
+If the density is constant \(\rho(s) = \rho_0\), then the weight \(w(a, b) = \rho_0g(b-a)\), and equations (3) and (4) become, upon dividing by \(\rho_0\),
+\begin{alignat*}{3}
+	&-gu_s + g(l - s)u_{ss} &&= u_{tt} \tag{\(3'\)} \\ 
+	&-gv_s + g(l - s)v_{ss} + g &&= v_{tt} \tag{\(4'\)}.
+\end{alignat*}
+
+\end{document}
