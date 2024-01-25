@@ -1,0 +1,105 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\newcommand{\hwnum}{1}
+
+
+\begin{document}
+	\maketitle
+	
+	\question*{1.3 (iv)}
+	Let $\ts = \{\sqrt{n} \mid n \in \N_0\}$. Then for $t = \sqrt{n} \in \ts$,
+	\begin{itemize}
+		\item the next point to the right of $\sqrt{n}$ is $\sqrt{n+1}$, so $\sigma(t) = \sigma(\sqrt{n}) = \sqrt{n+1} = \sqrt{t^2 + 1}$,
+		\item the next point to the left of $\sqrt{n}$ is $\sqrt{n-1}$ if $n > 0$. If $n = 0$, then there is no point in $\ts$ to the left of $t=0$, so
+		\begin{align*}
+			\rho(t) &= \rho(\sqrt{n}) = \begin{cases}
+				\sqrt{n-1} & n > 0 \\
+				0 & n = 0
+			\end{cases}\\
+			&= \begin{cases}
+				\sqrt{t^2-1} & t > 0 \\
+				0 & t = 0.
+			\end{cases}
+		\end{align*}
+		\item $\mu(t) = \sigma(t) - t = \sqrt{t^2 + 1} - t$.
+	\end{itemize}
+	Every point in $\ts$ is right-scattered because $\sigma(t) = \sqrt{t^2 + 1} > t$. If $t > 0$, then $t$ is left-scattered because $\rho(t) = \sqrt{t^2-1} < t$. The point $0 \in \ts$ is not left-scattered because $\rho(0) =0$, and it is not left-dense either because $0 = \inf \ts$.
+	
+	\question*{1.4 (ii)}
+	Let $\ts = \{0\} \cup [1,2]$. Then $\ts$ is a time-scale, and $1 \in \ts$ does not satisfy $\rho(\sigma(1)) = 1$. Indeed, $\sigma(1) = 1$, and $\rho(1) = 0$, so $\rho(\sigma(1)) = 0 \ne 1$.
+	
+	Given any time-scale $\ts$ and $t \in \ts$, then $\rho(\sigma(t)) = t$ if and only if $t$ is not left-scattered or $t$ is right-scattered.
+	
+	\begin{proof}
+		Suppose that $t$ is left-scattered and not right-scattered. Then $\sigma(t) = t$, so $\rho(\sigma(t)) = \rho(t) \ne t$. Hence, $\rho(\sigma(t))$ implies that $t$ is not left-scattered or $t$ is right-scattered.
+		
+		Conversely, if $t$ is right-scattered, then $\sigma(t) \in \ts$ is left-scattered with $\rho(\sigma(t)) = t$. If $t$ is not right-scattered and not left-scattered, then $\rho(t) = t$ and $\sigma(t) = t$, so $\rho(\sigma(t)) = t$.
+	\end{proof}
+	
+	\question*{1.14 (i)}
+	
+	Define $f : \ts \to \R$ by $f(t) = t^2$. Then $f^\Delta(t) = t + \sigma(t)$.
+	
+	\begin{proof}
+		Let $t \in \ts$, and let $\varepsilon > 0$ be given. Set $\delta = \varepsilon$. Then for all $s \in (t-\delta, t+\delta) \cap \ts$,
+		\begin{align*}
+			|f(\sigma(t)) - f(s) - (t+\sigma(t))(\sigma(t) - s)| &= |\sigma(t)^2 - s^2 - (t+\sigma(t))(\sigma(t)-s)| \\
+			&= |ts + \sigma(t)s - s^2-t\sigma(t)| \\
+			&= |(s-t)(\sigma(t) - s)| \\
+			&\le \varepsilon|\sigma(t)-s|,
+		\end{align*}
+		so $f^\Delta(t) = t + \sigma(t)$ by definition.
+	\end{proof}
+	
+	\question*{1.19 (ii)}
+	Let $\ts = \{\sqrt{n} \mid n \in \N_0\}$, and define $f : \ts \to \R$ by $f(t) = t^2$. Recall from 1.3 (iv) that $\sigma(t) = \sqrt{t^2+1}$, and every point in $\ts$ is right-scattered. Note that every point $t \in \ts$ is (topologically) isolated, so $f$ is continuous on $\ts$. Therefore, by Theorem 1.16, $f$ is differentiable everywhere on $\ts$, and for $t \in \ts$,
+	\begin{equation*}
+		f^\Delta(t) = \frac{f(\sigma(t)) - f(t)}{\sigma(t) - t} = \frac{\big(\sqrt{t^2+1}\big)^2 - t^2}{\sqrt{t^2+1} - t} = \sqrt{t^2+1} + t.
+	\end{equation*}
+	
+	\question*{1.19 (iii)}
+	Let $\ts = \left\{\frac{n}{2} \mid n \in \N_0\right\}$, and define $f:\ts \to\R$ by $f(t) = t^2$. Then for $t = \frac{n}{2} \in \ts$, the next point to the right of $t$ is $\frac{n+1}{2} = t + \frac{1}{2}$. Hence, $\sigma(t) = t + \frac{1}{2}$. Moreover, every point in $\ts$ is right-scattered, and every point in $\ts$ is (topologically) isolated, so $f$ is continuous on $\ts$. By Theorem 1.16, for $t \in \ts$,
+	\begin{equation*}
+		f^\Delta(t) = \frac{f(\sigma(t)) - f(t)}{\sigma(t) - t} = \frac{\left(t+\frac{1}{2}\right)^2 - t^2}{t+\frac{1}{2} - t} = 2\left(t+\frac{1}{4}\right) = 2t + \frac{1}{2}.
+	\end{equation*}
+	
+	\question*{1.22}
+	Suppose that $f : \ts \to \R$ is differentiable at $t \in \ts$, and $f(t)f(\sigma(t)) \ne 0$. Then $\frac{1}{f}$ is differentiable at $t$, and
+	\begin{equation*}
+		\left(\frac{1}{f}\right)^\Delta(t) = -\frac{f^\Delta(t)}{f(t)f(\sigma(t))}.
+	\end{equation*}
+	\begin{proof}
+		We know from Theorem 1.16 that $f$ is continuous at $t$. Since $f(t) \ne 0$ by assumption, it follows that $f$ is bounded away from 0 in a neighborhood of $t$. That is, there exists $C > 0$ and $\delta_0 > 0$ such that for all $s \in (t-\delta_0, t+\delta_0)\cap \ts$, we have $|f(s)| \ge C$.
+		
+		Let $\varepsilon > 0$ be given, and set 
+		\begin{equation*}
+			\varepsilon^*= \varepsilon\left(\frac{1}{C|f(\sigma(t))|} + \frac{\left|f^\Delta(t)\right|}{C\big|f(t)f(\sigma(t))\big|}\right)^{-1}.
+		\end{equation*}
+		Since $f$ is continuous and delta-differentiable at $t$, we can choose $\delta  \in (0, \delta_0]$ such that for all $s \in (t-\delta, t+\delta) \cap \ts$,
+		\begin{enumerate}
+			\item $|f(\sigma(t)) - f(s) - f^\Delta(t)(\sigma(t) - s)| \le \varepsilon^* |\sigma(t) - s|$,
+			\item $|f(t) - f(s)| \le \varepsilon^*$.
+		\end{enumerate}
+		Note also that $|f(s)| \ge C$ for all $s \in (t-\delta, t+\delta)\cap\ts$ because $\delta < \delta_0$.
+		
+		Then
+		\begin{align*}
+			&\left|\frac{1}{f(\sigma(t))} - \frac{1}{f(s)} - \left(-\frac{f^\Delta(t)}{f(t)f(\sigma(t))}\right)(\sigma(t) - s)\right|\\[0.5em]
+			&\qquad\qquad\qquad\qquad= \left|\frac{f(t)f(s) - f(t)f(\sigma(t)) + f(s)f^\Delta(t)(\sigma(t)-s)}{f(t)f(\sigma(t))f(s)}\right| \\[0.5em]
+			&\qquad\qquad\qquad\qquad= \left|\frac{f(t)\big[f(s) - f(\sigma(t)) + f^\Delta(t)(\sigma(t)-s)\big] + (f(s) - f(t))f^\Delta(t)(\sigma(t) - s)}{f(t)f(\sigma(t))f(s)}\right| \\[0.5em]
+			&\qquad\qquad\qquad\qquad \le \frac{\varepsilon^*|\sigma(t)-s|}{\big|f(\sigma(t))f(s)|} + \frac{\varepsilon^*\left|f^\Delta(t)\right|\cdot|\sigma(t)-s|}{\big|f(t)f(\sigma(t))f(s)\big|} \\[0.5em]
+			&\qquad\qquad\qquad\qquad \le \left(\frac{1}{C|f(\sigma(t))|} + \frac{\left|f^\Delta(t)\right|}{C\big|f(t)f(\sigma(t))\big|}\right)\varepsilon^*|\sigma(t)-s| \\[0.5em]
+			&\qquad\qquad\qquad\qquad = \varepsilon|\sigma(t)-s|,
+		\end{align*}
+		so
+		\begin{equation*}
+			\left(\frac{1}{f}\right)^\Delta(t) = -\frac{f^\Delta(t)}{f(t)f(\sigma(t))}
+		\end{equation*}
+		by definition.
+	\end{proof}
+	
+	\question*{1.26}
+	
+\end{document}
