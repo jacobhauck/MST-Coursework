@@ -82,7 +82,7 @@
 	
 	In the ideal scenario, we would like too have not only a compressed representation of a square $n\times n$ matrix $A$, we would also like to \textit{construct} that compressed representation efficiently. If the construction of the compressed representation is too slow, whatever process we want to do with our matrix may still be impossible. How, though, could we possibly do better than $\bigoh(n^2)$ time complexity in constructing an approximate representation of a square $n\times n$ matrix, considering that even storing such a matrix already requires $\bigoh(n^2)$ operations?
 	
-	Enter: submatrices. A submatrix is a smaller matrix formed from the elements of a larger matrix. A submatrix of a matrix $A$ can be used to form a low-rank approximation of the larger matrix through the so-called \textbf{psuedo-skeleton decomposition} \cite{goreinov_1997}. Although the pseudo-skeleton decomposition is, by Theorem \ref{thm:svd}, not the optimal low-rank approximation, we will see that it can still be pretty good.
+	Enter: submatrices. A submatrix is a smaller matrix formed from the elements of a larger matrix. A submatrix of a matrix $A$ can be used to form a low-rank approximation of the larger matrix through the so-called \textbf{pseudo-skeleton decomposition} \cite{goreinov_1997}. Although the pseudo-skeleton decomposition is, by Theorem \ref{thm:svd}, not the optimal low-rank approximation, we will see that it can still be pretty good.
 	
 	The main advantage that pseudo-skeleton decomposition enjoys over SVD is that it can be computed very quickly. Indeed, using the algorithm described in this paper, we will see that a rank-$r$ psuedo-skeleton decomposition can be computed in $\bigoh(nr^2)$ operations, which is significantly faster than SVD if $r$ is much smaller than $n$, and it is nearly as low as the $\bigoh(nr)$ cost of the resulting compressed representation.
 	
@@ -90,7 +90,7 @@
 	
 	In SVD, by contrast, every element of the $U$ and $V$ matrices depends on every element of the original matrix, so computing the SVD almost unavoidably involves looking at every entry of the original matrix. We also remark that the pseudo-skeleton decomposition is based on a submatrix, whose elements are just elements of the original matrix, which is easier to interpret than the more opaque $U$ and $V$ matrices in the SVD.
 	
-	In this project, we will investigate an algorithm known as \maxvol{} \cite{goreinov_2010}, whose purpose is to find a submatrix that is ``good enough'' for the corresponding psuedo-skeleton decomposition to approximate the original matrix well without incurring a computational cost of much greater complexity than is required to store the psuedo-skeleton decomposition (unlike truncated SVD). We will discuss the theory and motivation for the algorithm, provide a \texttt{NumPy} implementation, and perform some numerical experiments to demonstrate the power of the algorithm.
+	In this project, we will investigate an algorithm known as \maxvol{} \cite{goreinov_2010}, whose purpose is to find a submatrix that is ``good enough'' for the corresponding pseudo-skeleton decomposition to approximate the original matrix well without incurring a computational cost of much greater complexity than is required to store the pseudo-skeleton decomposition (unlike truncated SVD). We will discuss the theory and motivation for the algorithm, provide a \texttt{NumPy} implementation\footnote{Full project code at \href{https://github.com/jacobhauck/MST-Coursework/blob/main/Math\%205601/Independent\%20Study\%20Project}{https://github.com/jacobhauck/MST-Coursework/blob/main/Math\%205601/Independent\%20Study\%20Project}}, and perform some numerical experiments to demonstrate the power of the algorithm.
 	
 	Before we move on, we remark that the theory and implementation in this project are woven together from various works, especially those of Goreinov, Oseledets, Tyrtyshnikov and others \cite{goreinov_1997, goreinov_2010, oseledets_2010a, olshevsky_2001, oseledets_2009, hamm_2022}. We provide one general citation here at the beginning, as many of the proofs and sections below draw on ideas from multiple sources and mix them with my own work to fill in their missing details and connect related results and concepts, making the citation of every specific idea overly complicated. Nevertheless, I have done my best to refer major results to the sources that seem most appropriate.
 	
@@ -120,7 +120,7 @@
 		Be aware that we will reuse the symbol $e_j$ for different values of $n$, sometimes in the same context.
 	\end{dfn}
 	
-	Next, we give a formal definition of a submatrix. We will frequently need to use both the submatrix itself in matrix formulas and its corresponding row and column indices, so we define a compact indexing notation relating a matrix and the submatrix along given rows anad columns.
+	Next, we give a formal definition of a submatrix. We will frequently need to use both the submatrix itself in matrix formulas and its corresponding row and column indices, so we define a compact indexing notation relating a matrix and the submatrix along given rows and columns.
 	
 	\begin{dfn} \textnormal{\bf(Submatrix)}
 		\label{def:submatrix}
@@ -219,7 +219,7 @@
 	
 	To give a more fanciful interpretation of the green rows and columns in (\ref{eq:cross_approximation_demo}), we can think about them as the ``bones'' of the matrix $A$, in the sense that they contain most of the essential ``structure'' of the matrix. 
 	
-	Indeed, if $A$ has the same rank as the submatrix $S$, then $S$ and $A$ are in fact identical, meaning that essentially all the information in $A$ is contained in the submatrix, which provides a highly compressed representation of the original matrix. In this cse, the representation $S$ is known as the \textbf{skeleton decomposition} of the matrix, after the bone analogy above.
+	Indeed, if $A$ has the same rank as the submatrix $S$, then $S$ and $A$ are in fact identical, meaning that essentially all the information in $A$ is contained in the submatrix, which provides a highly compressed representation of the original matrix. In this case, the representation $S$ is known as the \textbf{skeleton decomposition} of the matrix, after the bone analogy above.
 	
 	\begin{thm}
 		\label{thm:skeleton_decomposition} \textnormal{\bf(Skeleton decomposition)}
@@ -270,7 +270,7 @@
 	\end{proof}
 	
 	
-	\minorheading{Psuedo-skeleton decomposition}
+	\minorheading{Pseudo-skeleton decomposition}
 	
 	The skeleton decomposition gives us a way to represent a rank-$r$ matrix that only requires us to know that entries of the matrix in the rows $I$ and columns $J$, which means $2nr$ entries, if the matrix is $n\times n$. This is that all-important property that we were looking for: avoiding the necessity to use all the entries of the matrix.
 	
@@ -278,7 +278,7 @@
 	
 	Even so, by Theorem \ref{thm:skeleton_submatrix_exact}, a rank-$r$ submatrix may still be used to represent the original matrix on the cross of the submatrix, even if the original matrix has higher than $r$. This leads to the natural question (and the title of our main reference \cite{goreinov_2010}): can we choose a ``good enough'' submatrix so that the matrix $S$ in Theorem \ref{thm:skeleton_submatrix_exact} not only agrees with $A$ on the cross, but also approximates $A$ \textit{off} of the cross?
 	
-	To facilitate the discussion of this question, we need to introduce the formal concept of pseudo-skeleton decomposition, which is a generalization of the skeleton decomposition\footnote{We remark that the psuedo-skeleton decomposition is not really a decomposition in the sense that it provides an exact factorization of the matrix; rather, it is a factorized \textit{approximation} of the matrix. For this reason, some authors instead call it a ``pseudo-skeleton approximation'' or ``pseudo-skeleton component'' of the matrix \cite{goreinov_1997, oseledets_2010a}.}.
+	To facilitate the discussion of this question, we need to introduce the formal concept of pseudo-skeleton decomposition, which is a generalization of the skeleton decomposition\footnote{We remark that the pseudo-skeleton decomposition is not really a decomposition in the sense that it provides an exact factorization of the matrix; rather, it is a factorized \textit{approximation} of the matrix. For this reason, some authors instead call it a ``pseudo-skeleton approximation'' or ``pseudo-skeleton component'' of the matrix \cite{goreinov_1997, oseledets_2010a}.}.
 	
 	\begin{dfn} \textnormal{\bf(Pseudo-skeleton decomposition)}
 		Let $A \in \R^{m\times n}$ be a matrix, and let $I$ and $J$ be sequences of row indices of $A$ of length $r$. If $G \in \R^{r\times r}$, then
@@ -294,7 +294,7 @@
 	
 	The first step in our analysis is to show that a pseudo-skeleton decomposition can be a good low-rank approximation. This analysis will lead naturally to the next step, which in turn will lead to the construction of the pseudo-skeleton decomposition algorithm.
 	
-	The proof of the existence of a good psuedo-skeleton decomposition with our choice of $G = A(I,J)^{-1}$ is fairly technical, but I will try to give some motivation for the key ideas nonetheless. 
+	The proof of the existence of a good pseudo-skeleton decomposition with our choice of $G = A(I,J)^{-1}$ is fairly technical, but I will try to give some motivation for the key ideas nonetheless. 
 	
 	\minorheading{Motivation}
 	
@@ -398,7 +398,7 @@
 			\end{matrix}\right] \\
 			&= \det(-I_{n\times n}\lambda)\det(-I_{n\times n}\lambda + \lambda^{-1}A^TA)
 		\end{align}
-		by Lemma \ref{lem:submatrix_determinant}. The lattermost expression is 0 if and only if $\det(A^TA - \lambda^2I_{n\times n}) = 0$, that is, if and only if $\lambda$ is a singular value of $A$. Thus, the nonzero singular values of $A$ and the nonzero eigenvalues of $M$ are the same.
+		by Lemma \ref{lem:submatrix_determinant}. The latter-most expression is 0 if and only if $\det(A^TA - \lambda^2I_{n\times n}) = 0$, that is, if and only if $\lambda$ is a singular value of $A$. Thus, the nonzero singular values of $A$ and the nonzero eigenvalues of $M$ are the same.
 		
 		Define
 		\begin{equation}
@@ -439,7 +439,7 @@
 	\end{equation}
 	but by applying Lemma \ref{lem:chebyshev_estimate} to the left side of (\ref{eq:theory_goal}) we expect to find something like
 	\begin{equation}
-		\rho_{1} \lesssim \text{chebyshev norm}.
+		\rho_{1} \lesssim \text{Chebyshev norm}.
 	\end{equation}
 	
 	Obviously, we can't chain these inequalities as we would like to. Moreover, we only get the largest singular value $\sigma_1$, when what we want is $\sigma_{r+1}$. Thus, we use a simple trick. Taking the inverse on both sides of the last singular value interlacing inequality, we have
@@ -492,7 +492,7 @@
 	\begin{equation}
 		\det(A(I,J))\det\left(\widehat{A}^{-1}\right) = \gamma^{-1}.
 	\end{equation}
-	The left side of this equation is very close to the right side of Cramer's ruler for $\widehat{A}^{-1}_{ij}$. At this point, there isn't much more we can do, but this similarity does give us some inspiriation as to what properties $A(I,J)$ needs to have to be good enough for us to reach our target inequality.
+	The left side of this equation is very close to the right side of Cramer's ruler for $\widehat{A}^{-1}_{ij}$. At this point, there isn't much more we can do, but this similarity does give us some inspiration as to what properties $A(I,J)$ needs to have to be good enough for us to reach our target inequality.
 	
 	Indeed, by some stroke of fate, it turns out that $\gamma$ is none other than the element of the error matrix at the intersection of the row and column that we added to $A(I,J)$. In other words, $\gamma$ is an arbitrary nonzero element of the error matrix, precisely what we needed to control. The fact that $\gamma$ is an element of the error matrix comes from the fact that $\widehat{A}$ is a block matrix, and there is an explicit inversion formula for block matrices, which is related to the determinant formula in Lemma \ref{lem:submatrix_determinant}.
 	
@@ -548,9 +548,9 @@
 	\end{equation}
 	which implies our target inequality (\ref{eq:theory_goal}).
 	
-	We recall that $|\det(M)|$ is the absolute value of the determinant of some $r\times r$ submtrix of $A$. Thus, the most straightforward way to ensure that $|\det(M)|\lesssim |\det(A(I,J))|$ is to choose $A(I,J)$ so that the absolute value of its determinant is maximal among all $r\times r$ submatrices of $A$.  We note that this has the added perk of ensuring that $A(I,J)$ is nonsinguluar if the rank of $A$ is at least\footnote{If the rank of $A$ is less than $r$, then there is still a way to apply the algorithm anyway using QR decomposition \cite{goreinov_2010}.} $r$.
+	We recall that $|\det(M)|$ is the absolute value of the determinant of some $r\times r$ submatrix of $A$. Thus, the most straightforward way to ensure that $|\det(M)|\lesssim |\det(A(I,J))|$ is to choose $A(I,J)$ so that the absolute value of its determinant is maximal among all $r\times r$ submatrices of $A$.  We note that this has the added perk of ensuring that $A(I,J)$ is nonsingular if the rank of $A$ is at least\footnote{If the rank of $A$ is less than $r$, then there is still a way to apply the algorithm anyway using QR decomposition \cite{goreinov_2010}.} $r$.
 	
-	The absolute value of the determinant of a matrix has a special geometric interpretation: it is the volume of the parallelipiped bounded by the column vectors of the matrix. Inspired by this, we define the \textbf{volume} of a square matrix to be the absolute value of its determinant.
+	The absolute value of the determinant of a matrix has a special geometric interpretation: it is the volume of the parallelepiped bounded by the column vectors of the matrix. Inspired by this, we define the \textbf{volume} of a square matrix to be the absolute value of its determinant.
 	
 	\begin{dfn} \textnormal{\bf(Volume)}
 		\label{def:volume}
@@ -713,7 +713,7 @@
 	
 	To this end, we simplify our problem. Instead of looking for an $r\times r$ submatrix of maximal volume in an $m\times n$ matrix, let us first consider the case of an $m \times r$ submatrix. If we had an efficient way to do this, then we could apply it to a random set of $r$ columns of an $m\times n$ matrix, obtaining a corresponding set of rows so that the submatrix on those rows and columns has high volume. Then we could apply the method to the transpose of the $r$ selected rows, obtaining a corresponding set of columns so that the submatrix on those columns has high volume. Then we might hope that iterating this process a few times would lead to the identification of a high-volume submatrix.
 	
-	As we know from Theorem \ref{thm:quasi-maximum_volume_pseudo-skeleton}, we only need to find a submatrix of quasi-maximum volume. To this end, we need a bound on the determinant of a matrix in order to prove that our algorithm achieves quasi-maximum volume. The easiest such bound is Hadamard's inequality, which states that the volume of a matrix, that is, the volume of the parallleipiped bounded by the column vectors of the matrix, is no greater than the volume of the rectangular prism bounded by vectors of the same lengths.
+	As we know from Theorem \ref{thm:quasi-maximum_volume_pseudo-skeleton}, we only need to find a submatrix of quasi-maximum volume. To this end, we need a bound on the determinant of a matrix in order to prove that our algorithm achieves quasi-maximum volume. The easiest such bound is Hadamard's inequality, which states that the volume of a matrix, that is, the volume of the parallelepiped bounded by the column vectors of the matrix, is no greater than the volume of the rectangular prism bounded by vectors of the same lengths.
 	
 	\begin{lem} \textnormal{\bf(Hadamard's Inequality)}
 		\label{lem:hadamard_inequality}
@@ -846,7 +846,7 @@
 	
 	\minorheading{\maxvol{} preview}
 	
-	The method of proof-by-contradiction employed in Theorem \ref{thm:maxvol_implies_dominant} shows us that if a submatrix $A(I,:)$ of a tall matrix $A$ is \textit{not} dominant in $A$, then we can construct a submatrix of $A$ that has greater volume than $A(I,:)$ by simplying swapping one row. Moreover, we see that the row we need to swap is any one corresponding to an element $B_{kj}$ of $B = AA(I,:)^{-1}$ such that $|B_{kj}| > 1$. Even better, we see that the greatest possible increase in volume that can be achieved by changing one row of $A(I,:)$ is to swap with the row corresponding to the maximal element of $B$.
+	The method of proof-by-contradiction employed in Theorem \ref{thm:maxvol_implies_dominant} shows us that if a submatrix $A(I,:)$ of a tall matrix $A$ is \textit{not} dominant in $A$, then we can construct a submatrix of $A$ that has greater volume than $A(I,:)$ by simply swapping one row. Moreover, we see that the row we need to swap is any one corresponding to an element $B_{kj}$ of $B = AA(I,:)^{-1}$ such that $|B_{kj}| > 1$. Even better, we see that the greatest possible increase in volume that can be achieved by changing one row of $A(I,:)$ is to swap with the row corresponding to the maximal element of $B$.
 	
 	This method for strictly increasing the volume of a submatrix leads naturally to an iterative algorithm for finding a dominant submatrix. Simply swap one row of the current submatrix $A(I,:)$ with the row corresponding to the maximal element of $B = AA(I,:)^{-1}$, update $B$, and repeat until the elements of $B$ are all no greater than 1. If $\chebnorm{B} \le 1$, then $A(I,:)$ is dominant, and we are done.
 	
@@ -1021,7 +1021,7 @@
 			\label{eq:b_update}
 			&=B^{(k)} - \frac{1}{B^{(k)}_{ij}}B^{(k)}(:,j)\left(B^{(k)}(i,:) - e_j^T\right).
 		\end{align}
-		The update rule for $B^{(k)}$ given in (\ref{eq:b_update}) involves a $n\times 1$ by $1\times r$ matrix multiplication, scalar and $n\times r$ matrix multplication, and $n\times r$ matrix subtraction. Hence, it requires $\bigoh(nr)$ operations to complete. The update rule for $\matstep{k}$ is $\bigoh(1)$ because we only need to keep track of which rows of $A$ are in $\matstep{k}$, and on each step only one row changes. 
+		The update rule for $B^{(k)}$ given in (\ref{eq:b_update}) involves a $n\times 1$ by $1\times r$ matrix multiplication, scalar and $n\times r$ matrix multiplication, and $n\times r$ matrix subtraction. Hence, it requires $\bigoh(nr)$ operations to complete. The update rule for $\matstep{k}$ is $\bigoh(1)$ because we only need to keep track of which rows of $A$ are in $\matstep{k}$, and on each step only one row changes. 
 		
 	\end{proof}
 	
@@ -1131,7 +1131,7 @@ if n == r:
 	
 	\minorheading{Initialization of $\matstep{0}$}
 	
-	Next, we move on to the issue of initializing the nonsingular starting submatrix $\matstep{0}$. If \vinitialrows{} is supplied, then we will assume that the user has ensured that \vinitialrows{}  determines a nonsingular submatrix. If \vinitialrows{} is not supplied, then it is up to us to determine a nonsingular submatrix. This can be done easily by applying Gaussian elimination with partial pivoting (that is, with row pivotoing). We note that Gaussian elimination on the $n\times r$ matrix $A$ requires $r$ elimination steps, each of which requires $\bigoh(nr)$ computations, giving the entire process a computational complexity of $\bigoh(nr^2)$, which is acceptable (we are mainly concerned with achieving linear complexity in $n$).
+	Next, we move on to the issue of initializing the nonsingular starting submatrix $\matstep{0}$. If \vinitialrows{} is supplied, then we will assume that the user has ensured that \vinitialrows{}  determines a nonsingular submatrix. If \vinitialrows{} is not supplied, then it is up to us to determine a nonsingular submatrix. This can be done easily by applying Gaussian elimination with partial pivoting (that is, with row pivoting). We note that Gaussian elimination on the $n\times r$ matrix $A$ requires $r$ elimination steps, each of which requires $\bigoh(nr)$ computations, giving the entire process a computational complexity of $\bigoh(nr^2)$, which is acceptable (we are mainly concerned with achieving linear complexity in $n$).
 	
 	If \vinitialrows{} is given, then we need to compute the indices of the rows of $A$ not in the initial submatrix as well, as we need them to work with $Z^{(k)}$. We can do Gaussian elimination using the \texttt{scipy.linalg.lu} function, which will return the permutation of the rows obtained by partial pivoting. This is given as an array of row indices; the first $r$ elements of the permutation determine a nonsingular submatrix, and the remaining elements give us the rows of $A$ not in the submatrix. We store the current submatrix row indices in the variable \texttt{submat\_rows}, and the current remaining row indices in \texttt{other\_rows}. Thus, the initialization is given in Listing \ref{lst:a0_initial}.
 	\begin{lstlisting}[caption={$\matstep{0}$ initialization}, label=lst:a0_initial]
@@ -1279,7 +1279,7 @@ for _ in range(max_iter):
 	The singular values of this matrix decay very rapidly, as shown in Figure \ref{fig:singular_values}, which means that it can be well-approximated by a low-rank matrix by Theorem \ref{thm:svd}.
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=0.5\linewidth]{singular_values.png}
+		\includegraphics[width=0.6\linewidth, trim={0, 0.2cm, 0, 1.5cm}, clip]{singular_values.eps}
 		\caption{Singular values of a 2D Gaussian random field}
 		\label{fig:singular_values}
 	\end{figure}
@@ -1289,7 +1289,7 @@ for _ in range(max_iter):
 	Pictured in Figure \ref{fig:reconstructions} are visualizations of the original Gaussian random field alongside the SVD and pseudo-skeleton approximations.
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=\linewidth]{reconstructions.png}
+		\includegraphics[width=\linewidth, trim={0, 3.25cm, 0, 4cm}, clip]{reconstructions.eps}
 		\caption{Rank-20 approximations of a 2D Gaussian random field.}
 		\label{fig:reconstructions}
 	\end{figure}
@@ -1320,6 +1320,15 @@ for _ in range(max_iter):
 	
 	\section{Conclusion}
 	
+	Performing linear algebraic operations on matrices is a ubiquitous task, and, in many cases, the matrices involved are enormous. Reducing the size of a matrix by low-rank approximation is an effective way to make very slow or even infeasible computations much more accessible.
+	
+	Unfortunately, the theoretically optimal way to reduce the matrix size, truncated singular value decomposition (Theorem \ref{thm:svd}), may be as computationally expensive to perform as the task for which the matrix needs to be reduced in the first place. Therefore, it is desirable to have an algorithm that can find a reduced approximation of a matrix with complexity on the order of the size of the \textit{reduced} matrix, rather than the \textit{original} matrix. This essentially boils down to finding a good submatrix of the original matrix.
+	
+	We have shown that a good enough submatrix can yield an approximation that is nearly as good as truncated singular value decomposition. In the process of understanding this theory, we were led to the idea of maximum volume as the criterion for a good submatrix, and from there to the idea of the \maxvol{} algorithm. We showed that this algorithm is capable of finding a nearly maximal volume submatrix with a total number of computations on the order of the size of the submatrix, not the original matrix.
+	
+	Based on our experiments, we observed that \maxvol{} can provide a speedup of several orders of magnitude in the construction of low-rank approximations, and these approximations are of fairly high quality.
+	
+	As a final remark, we mention that the maximum volume idea can be extended readily to the more general area of \textbf{tensor decomposition}, which is the process of factorizing a tensor into the tensor product of other tensors. Much like how we used matrix decomposition to construct an efficient, low-rank representation of a matrix, tensor decomposition can be used to construct efficient, low-rank representations of tensors. Because the complexity of \maxvol{} depends primarily on the rank of the approximation, it can be used to overcome the curse of dimensionality by efficiently constructing low-rank approximations of high-dimensional tensors. The computational cost of operating on such an approximation scales linearly in the dimension (as opposed to the exponential scaling incurred by working on a dense, full-rank tensor).
 	\bibliographystyle{plain}
 	\bibliography{references.bib}
 \end{document}

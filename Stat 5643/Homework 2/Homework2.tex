@@ -1,0 +1,175 @@
+\documentclass[11pt, newpage]{homework}
+
+\input{stat5643.tex}
+\newcommand{\hwnum}{2}
+
+\begin{document}
+\maketitle
+
+\question*{1.22}
+Let \(R_1\) be the event that the track star wins the first race, \(R_2\), the event that he wins the second. Then \(\prob{R_1} = 0.7\), \(\prob{R_2} = 0.6\), and \(\prob{R_1 \cap R_2} = 0.5\).
+
+\begin{alphaparts}
+	\questionpart % (a)
+	The event that he wins at least one race is the same as the event that he wins \textit{either} the first \textit{or} the second, or \(R_1 \cup R_2\).
+	\begin{align*}
+		\prob{R_1 \cup R_2} &= \prob{R_1} + \prob{R_2} - \prob{R_1 \cap R_2} && \text{by Theorem 1.4.3} \\
+		&=0.7 + 0.6 - 0.5 = 0.8.\\
+	\end{align*}
+
+	\questionpart % (b)
+	\newcommand{\onlyfirst}{R_1 \cap \comp{R_2}}
+	\newcommand{\onlysecond}{\comp{R_1} \cap R_2}
+	\newcommand{\atleastone}{\left(\onlyfirst\right)\cup \left(\onlysecond\right)}
+	The event that he wins exactly one race is the same as the event that he wins race one and not race two \textit{or} wins race two and not race one, or \(\atleastone\). Notice that the events \(\onlyfirst\) and \(\onlysecond\) are mutually exclusive:
+	\begin{align*}
+		\left(\onlyfirst\right) \cap \left(\onlysecond\right) = R_1 \cap \comp{R_1} \cap R_2 \cap \comp{R_2} = \emptyset \cap \emptyset = \emptyset
+	\end{align*}
+	because the intersection of any event with its complement is empty. Therefore we can apply the third axiom of probability to conclude that
+	\begin{align*}
+		\prob{\atleastone} &= \prob{\onlyfirst} + \prob{\onlysecond} \\
+		&= \prob{R_1} - \prob{R_1 \cap R_2} + \prob{R_2} - \prob{R_1 \cap R_2} && \text{by 1.18(a)} \\
+		&= 0.7 - 0.5 + 0.6 - 0.5 = 0.3.\\
+	\end{align*}
+	
+	\questionpart % (c)
+	The event that he wins neither race is the same as the event that he doesn't win the first race \textit{and} he doesn't win the second race, or \(\comp{R_1} \cap \comp{R_2}\).
+	\begin{align*}
+		\prob{\comp{R_1} \cap \comp{R_2}} &= \prob{\comp{\left(R_1 \cup R_2\right)}} && \text{by De Morgan's laws} \\
+		&= 1 - \prob{R_1 \cup R_2} = 1 - 0.8 = 0.2.\\
+	\end{align*}
+\end{alphaparts}
+
+\question*{1.35}
+Let \(M_1\), \(M_2\), and \(M_3\) be the events that the randomly selected bolt was produced by machines 1, 2, and 3. Let \(D\) be the event that the randomly selected bolt is defective. Then, assuming each bolt is equally likely to be selected, \(\prob{M_1} = 0.2\), \(\prob{M_2} = 0.3\), and \(\prob{M_3} = 0.5\). Furthermore, \(\cprob{D}{M_1} = 0.05\), \(\cprob{D}{M_2} = 0.03\), and \(\cprob{D}{M_3} = 0.02\).
+
+\begin{alphaparts}
+	\questionpart % (a)
+	A bolt is presumably produced by exactly one of machines 1, 2, and 3. This means, firstly, that \(M_1\), \(M_2\), and \(M_3\) are mutually exclusive and, secondly, that every outcome belongs to one of \(M_1\), \(M_2\), or \(M_3\): that is, \(S \subseteq M_1 \cup M_2 \cup M_3\). On the other hand, \(M_1 \cup M_2 \cup M_3 \subseteq S\). Therefore, \(M_1 \cup M_2 \cup M_3 = S\), and
+	\begin{align}
+		D &= D \cap S \nonumber \\
+		&= D \cap \left(M_1 \cup M_2 \cup M_3\right) \nonumber \\
+		&= \left(D\cap M_1\right) \cup \left(D \cap M_2\right) \cup \left(D \cap M_3\right). \label{eqn:splitup}
+	\end{align}
+	Since the events \(M_1\), \(M_2\), and \(M_3\) are mutually exclusive, so, too, are the events \(D \cap M_1\), \(D \cap M_2\), and \(D \cap M_3\). Applying the third axiom of probability to (\ref{eqn:splitup}), then, we get
+	\begin{align*}
+		\prob{D} &= \prob{\left(D\cap M_1\right) \cup \left(D \cap M_2\right) \cup \left(D \cap M_3\right)}\\
+		&= \prob{D\cap M_1} + \prob{D\cap M_2} + \prob{D \cap M_3} \\
+		&= \cprob{D}{M_1} \prob{M_1} + \cprob{D}{M_2} \prob{M_2} + \cprob{D}{M_3} \prob{M_3} & \parbox[t]{3cm}{by definition of conditional probability} \\
+		&= 0.05\cdot0.2 + 0.03\cdot0.3 + 0.02\cdot0.2=0.023.
+	\end{align*}
+
+	\questionpart % (b)
+	The probability being asked for here is the conditional probability \(\cprob{M_1}{D}\). By Bayes' law
+	\begin{align*}
+		\cprob{M_1}{D} = \frac{\cprob{D}{M_1}\prob{M_1}}{\prob{D}}.
+	\end{align*}
+	Substituting \(\prob{D}\) from part (a), we get
+	\begin{align*}
+		\cprob{M_1}{D} = \frac{0.05\cdot0.2}{0.023} \approx 0.435.
+	\end{align*}
+\end{alphaparts}
+
+
+\question*{1.37}
+Let \(\prob{A} = 0.4\) and \(\prob{A \cup B} = 0.6\).
+
+\begin{alphaparts}
+	\questionpart % (a)
+	If \(A\) and \(B\) are mutually exclusive, then by definition \(\prob{A \cap B} = 0\), and we can find \(\prob{B}\) by Theorem 1.4.3:
+	\begin{align*}
+		\prob{A \cup B} &= \prob{A} + \prob{B} - \prob{A \cap B} \\
+		0.6 &= 0.4 + \prob{B} - 0 \\
+		\prob{B} &= 0.2.\\
+	\end{align*}
+
+	\questionpart % (b)
+	If \(A\) and \(B\) are independent, then by definition \(\prob{A \cap B} = \prob{A}\prob{B}\), and we can find \(\prob{B}\) by Theorem 1.4.3:
+	\begin{align*}
+		\prob{A \cup B} &= \prob{A} + \prob{B} - \prob{A \cap B} \\
+		0.6 &= 0.4 + \prob{B} - 0.4\prob{B}\\
+		0.2 &= \prob{B}(1-0.4)\\
+		\prob{B} &= \frac{1}{3}.\\
+	\end{align*}
+	
+\end{alphaparts}
+
+\question*{1.41}
+Let \(L_1\) and \(L_2\) be the events that the parallel components in the left side of the diagram, from top to bottom, fail, and let \(R_1\), \(R_2\), and \(R_3\) be the events that the parallel components in the right side of the diagram, from top to bottom, fail. Then \(\prob{L_1} = 0.1\), \(\prob{L_2} = 0.2\), \(\prob{R_1} = 0.1\), \(\prob{R_2} = 0.2\), and \(\prob{R_3} = 0.3\). Reading the diagram, the event that the system malfunctions, \(M\), is given by
+\begin{align*}
+	M = L \cup R, \qquad L = L_1 \cap L_2 \text{ and } R = R_1 \cap R_2 \cap R_3.
+\end{align*}
+Since all malfunctions occur independently, we can easily compute \(\prob{L}\), \(\prob{R}\), and \(\prob{L \cap R}\)
+\begin{align*}
+	\prob{L} &= \prob{L_1 \cap L_2} = \prob{L_1}\prob{L_2} = 0.1\cdot0.2 = 0.02 \\
+	\\
+	\prob{R} &= \prob{R_1 \cap R_2 \cap R_3} = \prob{R_1}\prob{R_2}\prob{R_3}\\
+	&= 0.1\cdot0.2\cdot0.3 = 0.006\\
+	\\
+	\prob{L \cap R} &= \prob{L_1 \cap L_2 \cap R_1 \cap R_2 \cap R_3}\\
+	&= \prob{L_1}\prob{L_2}\prob{R_1}\prob{R_2}\prob{R_3}\\
+	&= 0.1\cdot0.2\cdot0.1\cdot0.2\cdot0.3 = 0.00012.
+\end{align*}
+By Theorem 1.4.3, we can compute
+\begin{align*}
+	\prob{M} &= \prob{L\cup R} = \prob{L} + \prob{R} - \prob{L\cap R}\\
+	&= 0.02 + 0.006 - 0.00012 = 0.02588.
+\end{align*}
+Therefore, the probability that the system does not malfunction is
+\begin{align*}
+	\prob{\comp{M}} = 1 - \prob{M} = 1 - 0.02588 = 0.97412.
+\end{align*}
+
+\question*{1.54}
+A club consists of 17 men and 13 women, and a committee of five members must be chosen.
+
+\begin{alphaparts}
+	\questionpart % (a)
+	There are 30 = 17 + 13 choices of members. Assuming that a committee is uniquely determined by its members, we want to choose 5 from among the 30 \textit{without} repitition, and order \textit{does not} matter. Thus, we see that combinations are the correct way to count the number of committees
+	\begin{align*}
+		\text{Number of committees } &= \binom{30}{5} = \frac{30!}{25!\cdot5!}\\
+		&= \frac{30\cdot29\cdot28\cdot27\cdot26}{5\cdot4\cdot3\cdot2} = 142,506.
+	\end{align*}
+
+	\questionpart % (b)
+	There are two separate tasks: choosing the 3 men, and choosing the 2 women. By the product rule, the total number of committees will be equal to the product of the number of sets of 3 men, \(M\), and the number of sets of 2 women, \(W\). Selecting a set of 3 men or of 2 women means choosing \textit{without} repitition, and order \textit{does not} matter, so, again, combinations is the correct way to count \(M\) and \(W\). For \(M\) we want to choose 3 out of 17, and for \(W\) we want to choose 2 out of 13. Therefore,
+	\begin{align*}
+		\text{Number of committees } &= MW = \binom{17}{3}\binom{13}{2}\\
+		&= \frac{17!}{14!\cdot3!}\cdot \frac{13!}{11!\cdot2!} = \frac{17\cdot16\cdot15\cdot13\cdot12}{3\cdot2\cdot2}\\
+		&= 53,040.
+	\end{align*}
+
+	\questionpart % (c)
+	The above reasoning applies to this case as well, except that if one man must be included, the number of ways to choose the 3 men, \(M\), will be equal to the number of ways to choose 2 men out of the 16 men other than the one that must be included, instead of the number of ways to choose 3 out of 17. Again, this choice is \textit{without} repitition, and order \textit{does not} matter, so combinations are still appropriate. Therefore,
+	\begin{align*}
+		\text{Number of committees } &= MW = \binom{16}{2}\binom{13}{2}\\
+		&= \frac{16!}{14!\cdot2!}\cdot\frac{13!}{11!\cdot2!} = \frac{16 \cdot15\cdot13\cdot12}{2 \cdot2}\\
+		&= 9,360.
+	\end{align*}
+\end{alphaparts}
+
+\question*{1.69}
+Note that the order in which slips are drawn \textit{does not} matter here because the digits will always be reordered to go from lowest to highest.
+
+\begin{alphaparts}
+	\questionpart % (a)
+	The task of creating a lottery ticket number is equivalent to choosing 4 items from a set of 9 \textit{without} replacement, where order \textit{does not} matter (as noted above). Therefore, combinations are the appropriate way to count the number of lottery ticket numbers.
+	\begin{align*}
+		\text{Number of lottery ticket numbers } = \binom{9}{4} = \frac{9!}{5!\cdot4!} = \frac{9\cdot8\cdot7\cdot6}{4\cdot3\cdot2} = 126.
+	\end{align*}
+
+	\questionpart % (b)
+	Let \(O\) be the number of ways to choose a lottery ticket number with only odd digits, and let \(\mathcal{O}\) be the event that a lottery ticket number with only odd digits is chosen. If each lottery ticket number is equally likely to be chosen, then \(\prob{\mathcal{O}} = \frac{O}{126}\). The number of ways to choose a lottery ticket number with only odd digits is equal to the number of ways to choose the 4 ticket number digits out of the 5 potential odd digits \textit{without repitition}, where order \textit{does not} matter, so combinations are the correct way to count \(O\). Specifically,
+	\begin{align*}
+		O = \binom{5}{4} = \frac{5!}{4!\cdot1!} = \frac{5}{1} = 5.
+	\end{align*}
+	Therefore, \(\prob{\mathcal{O}} = \frac{O}{126} = \frac{5}{126}.\)
+	
+	\questionpart % (c)
+	If order \textit{does} matter, then we need to use permutations to count the total number of ticket numbers instead of combinations. In other words, we want to count the number of permutations of 4 elements taken from 9, or
+	\begin{align*}
+		\text{Number of lottery ticket numbers } = {}_9P_4 = \frac{9!}{5!} = 9\cdot8\cdot7\cdot6 = 3,024.
+	\end{align*}
+\end{alphaparts}
+
+\end{document}
