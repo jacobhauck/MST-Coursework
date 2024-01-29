@@ -1,0 +1,61 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{1}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question 
+	
+	Consider the IVP
+	\begin{equation}
+		y' = 3 + e^{-t} - y, \quad t > 0; \qquad y(0) = 1.
+	\end{equation}
+	
+	\begin{arabicparts}
+		\questionpart Multiplying both sides by the integrating factor $e^t$ gives
+		\begin{equation}
+			y'e^t + ye^t = 3e^t + 1.
+		\end{equation}
+		The left-hand side is $(ye^t)'$, so integrating on both sides gives
+		\begin{equation}
+			ye^t = 3e^t + t + C,
+		\end{equation}
+		for some constant $C$, so $y(t) = 3 + (t + C)e^{-t}$. The initial condition $y(0) = 1$ implies that $C = -2$, so
+		\begin{equation}
+			y(t) = 3 + (t-2)e^{-t}.
+		\end{equation}
+		
+		\questionpart 
+	\end{arabicparts}
+	
+	\question
+	
+	Consider the IVP
+	\begin{equation}
+		y' = \frac{3t^2+10t+1}{2(y+1)}, \quad t > 0; \qquad y(0) = -2.
+	\end{equation}
+	
+	\begin{arabicparts}
+		\questionpart Multiplying both sides by $2(y+1)$ gives
+		\begin{equation}
+			2(y+1)(y+1)' = 3t^2+10t+1.
+		\end{equation}
+		The left-hand side is $\left((y+1)^2\right)'$, so integrating on both sides gives
+		\begin{equation}
+			(y+1)^2 = t^3+5t^2+t+C
+		\end{equation}
+		for some constant $C$. The initial condition $y(0) = -2$ implies that $C = 1$. Therefore,
+		\begin{equation}
+			y(t) = -1 \pm \sqrt{t^3+5t^2+t+1}.
+		\end{equation}
+		The initial condition forces us to choose a negative sign after taking the square root; thus,
+		\begin{equation}
+			y(t) = -1 - \sqrt{t^3+5t^2+t+1}.
+		\end{equation}
+		
+	\end{arabicparts}
+\end{document}
