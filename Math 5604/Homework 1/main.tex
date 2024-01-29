@@ -35,21 +35,21 @@
 			\begin{equation}
 				t_i = \begin{cases}
 					0 & i = 0 \\
-					t_{i-1} + k & i \ge 1,
+					t_{i-1} + k, & i \ge 1,
 				\end{cases}, \qquad i = 0,1,\dots,n.
 			\end{equation}
 			The value $k$ is the step size and is chosen so that $t_n = 2$; that is, $k = \frac{2}{n}$. We will attempt to find an approximation $\{y_i\}_{i=0}^n$ of the values $\{y(t_i)\}_{i=0}^n$. To find $\{y_i\}$, we create and solve a system of equations from the ODE by approximating $y'(t_i)$ by the forward difference $y'(t_i) \approx \frac{y(t_{i+1}) - y(t_i)}{k}$, where $i < n$. Since we know that $y(0) = 1$ from the initial condition, we are led to the scheme
 			\begin{equation}
 				\begin{cases}
 					y_0 = 1 &\\
-					\frac{y_{i+1} - y_i}{k} = 3 + e^{-t_i} - y_i & 0\le i < n,
+					\frac{y_{i+1} - y_i}{k} = 3 + e^{-t_i} - y_i, & 0\le i < n,
 				\end{cases}
 			\end{equation}
 			which allows to write an explicit recursive formula for $y_i$:
 			\begin{equation}
 				\begin{cases}
 					y_0 = 1 &\\
-					y_{i+1} = y_i + k(3 + e^{-t_i} - y_i) & 0\le i < n.
+					y_{i+1} = y_i + k(3 + e^{-t_i} - y_i), & 0\le i < n.
 				\end{cases}
 			\end{equation}
 			
@@ -63,21 +63,21 @@
 			\begin{equation}
 				t_i = \begin{cases}
 					0 & i = 0 \\
-					t_{i-1} + k & i \ge 1,
+					t_{i-1} + k, & i \ge 1,
 				\end{cases}, \qquad i = 0,1,\dots,n.
 			\end{equation}
 			The value $k$ is the step size and is chosen so that $t_n = 2$; that is, $k = \frac{2}{n}$. We will attempt to find an approximation $\{y_i\}_{i=0}^n$ of the values $\{y(t_i)\}_{i=0}^n$. To find $\{y_i\}$, we create and solve a system of equations from the ODE by approximating $y'(t_i)$ by the backward difference $y'(t_i) \approx \frac{y(t_i) - y(t_{i-1})}{k}$, where $i > 0$. Since we know that $y(0) = 1$ from the initial condition, we are led to the scheme
 			\begin{equation}
 				\begin{cases}
 					y_0 = 1 &\\
-					\frac{y_i - y_{i-1}}{k} = 3 + e^{-t_i} - y_i & 0 < i \le n,
+					\frac{y_i - y_{i-1}}{k} = 3 + e^{-t_i} - y_i, & 0 < i \le n,
 				\end{cases}
 			\end{equation}
 			which allows to write an explicit recursive formula for $y_i$:
 			\begin{equation}
 				\begin{cases}
 					y_0 = 1 &\\
-					y_i = \frac{y_{i-1} + k(3 + e^{-t_i})}{1+k} & 0 < i \le n.
+					y_i = \frac{y_{i-1} + k(3 + e^{-t_i})}{1+k}, & 0 < i \le n.
 				\end{cases}
 			\end{equation}
 			
@@ -113,5 +113,31 @@
 			y(t) = -1 - \sqrt{t^3+5t^2+t+1}.
 		\end{equation}
 		
+		\questionpart To discretize the IVP on $[0,1]$ using the backward Euler method, we need to have an evenly-spaced set of time samples $\{t_i\}_{i=0}^n$ defined by
+		\begin{equation}
+			t_i = \begin{cases}
+				0 & i = 0 \\
+				t_{i-1} + k, & i \ge 1,
+			\end{cases}, \qquad i = 0,1,\dots,n.
+		\end{equation}
+		The value $k$ is the step size and is chosen so that $t_n = 1$; that is, $k = \frac{1}{n}$. We will attempt to find an approximation $\{y_i\}_{i=0}^n$ of the values $\{y(t_i)\}_{i=0}^n$. To find $\{y_i\}$, we create and solve a system of equations from the ODE by approximating $y'(t_i)$ by the backward difference $y'(t_i) \approx \frac{y(t_i) - y(t_{i-1})}{k}$, where $i > 0$. Since we know that $y(0) = 1$ from the initial condition, we are led to the scheme
+		\begin{equation}
+			\begin{cases}
+				y_0 = 1 &\\
+				\frac{y_i - y_{i-1}}{k} = \frac{3t_i^2+10t_i + 1}{2(y_i + 1)}, & 0 < i \le n,
+			\end{cases}
+		\end{equation}
+		which allows to write an implicit recursive formula for $y_i$:
+		\begin{equation}
+			\begin{cases}
+				y_0 = 1 &\\
+				2(y_i+1)(y_i-y_{i-1}) - k(3t_i^2+10t_i+1) = 0, & 0 < i \le n.
+			\end{cases}
+		\end{equation}
+		We can solve the implicit equation for $y_i$ numerically using Newton's method. Indeed, if we set
+		\begin{equation}
+			f_i(y) = 2(y+1)(y-y_{i-1}) - k(3t_i^2+10t_i+1), \qquad 0 < i\le n,
+		\end{equation}
+		then finding $y_i$ is equivalent to finding the root of $f_i$. Newton's method is easy to apply once we note that $f_i'(y) = 2(y-y_{i-1}) + 2(y+1)$.
 	\end{arabicparts}
 \end{document}
