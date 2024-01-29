@@ -33,8 +33,9 @@ plot( ...
     t_fe16, y_fe16, "red", ...
     t_fe64, y_fe64, "blue" ...
 );
-fprintf("Saving plot to p1.2c.png\n");
-saveas(fig, "p1.2c.png");
+legend("Exact", "k = 1/16", "k = 1/64");
+fprintf("Saving plot to p1.2c.eps\n");
+saveas(fig, "p1.2c.eps");
 fprintf("\n");
 
 % === 1.3 (a) ===
@@ -68,8 +69,9 @@ plot( ...
     t_be16, y_be16, "red", ...
     t_be64, y_be64, "blue" ...
 );
-fprintf("Saving plot to p1.3c.png\n");
-saveas(fig, "p1.3c.png");
+legend("Exact", "k = 1/16", "k = 1/64");
+fprintf("Saving plot to p1.3c.eps\n");
+saveas(fig, "p1.3c.eps");
 fprintf("\n");
 
 % === 1.4 ===
