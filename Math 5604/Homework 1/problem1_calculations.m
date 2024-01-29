@@ -35,7 +35,7 @@ plot( ...
 );
 legend("Exact", "k = 1/16", "k = 1/64");
 fprintf("Saving plot to p1.2c.eps\n");
-saveas(fig, "p1.2c.eps");
+saveas(fig, "p1.2c.eps", "epsc");
 fprintf("\n");
 
 % === 1.3 (a) ===
@@ -71,7 +71,7 @@ plot( ...
 );
 legend("Exact", "k = 1/16", "k = 1/64");
 fprintf("Saving plot to p1.3c.eps\n");
-saveas(fig, "p1.3c.eps");
+saveas(fig, "p1.3c.eps", "epsc");
 fprintf("\n");
 
 % === 1.4 ===
