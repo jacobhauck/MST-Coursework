@@ -9,6 +9,8 @@
 \DeclareOption{newpage}{\renewcommand\@opnewpage{1}}
 \newcommand\@oplargemargins{0}
 \DeclareOption{largemargins}{\renewcommand\@oplargemargins{1}}
+\newcommand\@opnonumber{0}
+\DeclareOption{nonumber}{\renewcommand\@opnonumber{1}}
 \ProcessOptions
 
 % ----- Packages --------------------------------------------------------------
@@ -71,12 +73,12 @@
     \stepcounter{questionCounter}%
       \vspace{.2in}%
       \ifx\writtensection\undefined{}
-        \noindent{\bf \questiontype\ \arabic{questionCounter}.}%
+        \noindent{\bf \questiontype\ \ifthenelse{\equal{\@opnonumber}{1}}{}{\arabic{questionCounter}.}}%
         \else
           \ifnum\writtensection=0
-          \noindent{\bf \questiontype\ \arabic{questionCounter}.}%
+          \noindent{\bf \questiontype\ \ifthenelse{\equal{\@opnonumber}{1}}{}{\arabic{questionCounter}.}}%
           \else
-          \noindent{\bf \questiontype\ \writtensection.\arabic{questionCounter}}%
+          \noindent{\bf \questiontype\ \writtensection.\ifthenelse{\equal{\@opnonumber}{1}}{}{\arabic{questionCounter}.}}%
         \fi
       \vspace{0.3em} \hrule \vspace{.1in}%
   \end{minipage}
@@ -94,7 +96,7 @@
     \addtocounter{questionCounter}{1}%
     \setcounter{partCounter}{0}%
     \vspace{.2in}%
-    \noindent{\bf \arabic{questionCounter}. #1}%
+    \noindent{\bf \ifthenelse{\equal{\@opnonumber}{1}}{}{\arabic{questionCounter}.} #1}%
     \vspace{0.3em} \hrule \vspace{.1in}%
   \end{minipage}
 }
