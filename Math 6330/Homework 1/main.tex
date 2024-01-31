@@ -1,4 +1,4 @@
-\documentclass{homework}
+\documentclass[nonumber]{homework}
 \input{../homework_shared.tex}
 \input{../../standardcmd.tex}
 
@@ -65,7 +65,7 @@
 		f^\Delta(t) = \frac{f(\sigma(t)) - f(t)}{\sigma(t) - t} = \frac{\left(t+\frac{1}{2}\right)^2 - t^2}{t+\frac{1}{2} - t} = 2\left(t+\frac{1}{4}\right) = 2t + \frac{1}{2}.
 	\end{equation*}
 	
-	\question*{1.22}
+	\question*{1.21 (iv)}
 	Suppose that $f : \ts \to \R$ is differentiable at $t \in \ts$, and $f(t)f(\sigma(t)) \ne 0$. Then $\frac{1}{f}$ is differentiable at $t$, and
 	\begin{equation*}
 		\left(\frac{1}{f}\right)^\Delta(t) = -\frac{f^\Delta(t)}{f(t)f(\sigma(t))}.
@@ -100,6 +100,61 @@
 		by definition.
 	\end{proof}
 	
+	\question*{1.22}
+	Let $x$, $y$ and $z$ be delta-differentiable at $t$. Then $xyz$ is delta-differentiable at $t$, and
+	\begin{equation*}
+		(xyz)^\Delta = x^\Delta yz + xy^\Delta z + xyz^\Delta \quad \text{at }t.
+	\end{equation*}
+	
+	\begin{proof}
+		By the product rule, $yz$ is delta-differentiable at $t$. By the product rule again, $xyz = x(yz)$ is also delta-differentiable at $t$. Furthermore, at $t$, the product rule gives (putting $\sigma$ always on the second term)
+		\begin{equation*}
+			(xyz)^\Delta = (x(yz))^\Delta = x^\Delta yz + x^\sigma (yz)^\Delta = x^\Delta yz + x^\sigma y^\Delta z + x^\sigma y^\sigma z^\Delta,
+		\end{equation*}
+		as desired.
+	\end{proof}
+	
 	\question*{1.26}
+	
+	\begin{enumerate}[label={\bf (\roman*)}]
+		\item Let $\ts = \left\{\frac{1}{n} \mid n \in \N\right\}\cup\{0\}$, and let $f(t) = \sigma(t)$. Recall from class that
+		\begin{equation*}
+			\sigma(t) = \begin{cases}
+				\frac{t}{1-t} & \text{if } 0 \le t < 1, \\
+				1 & \text{if } t = 1.
+			\end{cases}
+		\end{equation*}
+		Since we $1 \not \in \ts^\kappa$, we can get $f^\Delta = \sigma^\Delta$ by taking $f(t) = \frac{t}{1-t}$. We can apply the product rule easily once we know $\left(\frac{1}{1-t}\right)^\Delta$. By Theorem 1.24,
+		\begin{equation*}
+			\left(\frac{1}{1-t}\right)^\Delta = \frac{1}{(\sigma(t) -1)(t-1)}.
+		\end{equation*}
+		Hence,
+		\begin{equation*}
+			f^\Delta(t) = \frac{\sigma(t)}{(\sigma(t) - 1)(t-1)} + \frac{1}{1-t} = \frac{1}{(\sigma(t) -1)(t-1)}, \quad t \in \ts^\kappa.
+		\end{equation*}
+		
+		\item Let $\ts = \{\sqrt{n}\mid n \in \N_0\}$, and let $f(t) = t^2$. Recall from 1.3 (iv) that $\sigma(t) = \sqrt{t^2+1}$. Then, by Theorem 1.24,
+		\begin{equation*}
+			f^\Delta(t) = \sigma(t)t^0 + (\sigma(t))^0t = t + \sigma(t) = t + \sqrt{t^2+1},
+		\end{equation*}
+		which agrees with the calculation in 1.19 (ii).
+		
+		\item Let $\ts = \left\{\frac{n}{2} \mid n \in \N_0\right\}$, and let $f(t) = t^2$. Recall from 1.19 (iii) that $\sigma(t) = t + \frac{1}{2}$. Then, by Theorem 1.24,
+		\begin{equation*}
+			f^\Delta(t) = t + \sigma(t) = 2t + \frac{1}{2},
+		\end{equation*}
+		which agrees with the calculation in 1.19 (iii).
+		
+		\item Let $\ts = \{\sqrt[3]{n} \mid n \in \N_0\}$, and let $f(t) = t^3$. If $t = \sqrt[3]{n} \in \ts$, then
+		\begin{equation*}
+			\sigma(t) = \sigma(\sqrt[3]{n}) = \sqrt[3]{n+1} = \sqrt[3]{t^3+1}.
+		\end{equation*}
+		By Theorem 1.24, we have
+		\begin{align*}
+			f^\Delta(t) &= \sum_{\nu=0}^2 (\sigma(t))^\nu t^{2-\nu} = t^2 + \sigma(t)t + (\sigma(t))^2 \\
+			&= t^2 + (t^3+1)^\frac{1}{3}t + (t^3+1)^\frac{2}{3}.
+		\end{align*}
+		
+	\end{enumerate}
 	
 \end{document}
