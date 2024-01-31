@@ -33,7 +33,7 @@
 	Given any time-scale $\ts$ and $t \in \ts$, then $\rho(\sigma(t)) = t$ if and only if $t$ is not left-scattered or $t$ is right-scattered.
 	
 	\begin{proof}
-		Suppose that $t$ is left-scattered and not right-scattered. Then $\sigma(t) = t$, so $\rho(\sigma(t)) = \rho(t) \ne t$. Hence, $\rho(\sigma(t))$ implies that $t$ is not left-scattered or $t$ is right-scattered.
+		Suppose that $t$ is left-scattered and not right-scattered. Then $\sigma(t) = t$, so $\rho(\sigma(t)) = \rho(t) \ne t$. Hence, $\rho(\sigma(t))=t$ implies that $t$ is not left-scattered or $t$ is right-scattered.
 		
 		Conversely, if $t$ is right-scattered, then $\sigma(t) \in \ts$ is left-scattered with $\rho(\sigma(t)) = t$. If $t$ is not right-scattered and not left-scattered, then $\rho(t) = t$ and $\sigma(t) = t$, so $\rho(\sigma(t)) = t$.
 	\end{proof}
@@ -52,6 +52,14 @@
 		\end{align*}
 		so $f^\Delta(t) = t + \sigma(t)$ by definition.
 	\end{proof}
+	
+	\question*{1.19 (i) (derivative at 0 only)}
+	
+	Let $\ts = \left\{\frac{1}{n} \mid n \in \N\right\} \cup \{0\}$, and define $f : \ts \to \R$ by $f(t) = \sigma(t)$. Recalling from class that $\sigma(t) = \frac{t}{1-t}$ when $t \ne 1$, we see that $\sigma(0) = 0$, so $0$ is right-dense, and
+	\begin{equation*}
+		\lim_{s\to 0} \frac{f(0) - f(s)}{0-s} = \lim_{s\to 0} \frac{0 - \frac{s}{1-s}}{0-s} = \lim_{s\to 0}\frac{1}{1-s} = 1.
+	\end{equation*}
+	Therefore, by Theorem 1.16, $f^\Delta(0) = 1$.
 	
 	\question*{1.19 (ii)}
 	Let $\ts = \{\sqrt{n} \mid n \in \N_0\}$, and define $f : \ts \to \R$ by $f(t) = t^2$. Recall from 1.3 (iv) that $\sigma(t) = \sqrt{t^2+1}$, and every point in $\ts$ is right-scattered. Note that every point $t \in \ts$ is (topologically) isolated, so $f$ is continuous on $\ts$. Therefore, by Theorem 1.16, $f$ is differentiable everywhere on $\ts$, and for $t \in \ts$,
@@ -82,7 +90,7 @@
 			\item $|f(\sigma(t)) - f(s) - f^\Delta(t)(\sigma(t) - s)| \le \varepsilon^* |\sigma(t) - s|$,
 			\item $|f(t) - f(s)| \le \varepsilon^*$.
 		\end{enumerate}
-		Note also that $|f(s)| \ge C$ for all $s \in (t-\delta, t+\delta)\cap\ts$ because $\delta < \delta_0$.
+		Note also that $|f(s)| \ge C$ for all $s \in (t-\delta, t+\delta)\cap\ts$ because $\delta \le \delta_0$.
 		
 		Then
 		\begin{align*}
@@ -130,7 +138,7 @@
 		\end{equation*}
 		Hence,
 		\begin{equation*}
-			f^\Delta(t) = \frac{\sigma(t)}{(\sigma(t) - 1)(t-1)} + \frac{1}{1-t} = \frac{1}{(\sigma(t) -1)(t-1)}, \quad t \in \ts^\kappa.
+			f^\Delta(t) = \frac{\sigma(t)}{(\sigma(t) - 1)(t-1)} + \frac{1}{1-t} = \frac{1}{(\sigma(t) -1)(t-1)} = \frac{1}{-t - (t-1)} = \frac{1}{1-2t} , \quad t \in \ts^\kappa.
 		\end{equation*}
 		
 		\item Let $\ts = \{\sqrt{n}\mid n \in \N_0\}$, and let $f(t) = t^2$. Recall from 1.3 (iv) that $\sigma(t) = \sqrt{t^2+1}$. Then, by Theorem 1.24,
@@ -157,4 +165,43 @@
 		
 	\end{enumerate}
 	
+	\question*{1.28}
+	\begin{enumerate}[label={\bf(\roman*)}]
+		\item Let $\ts = \left\{\frac{1}{n} \mid n \in \N\right\}\cup\{0\}$, and let $f(t) = \sigma(t)$. Recall from 1.26 (i) that $\sigma(t) = \frac{t}{1-t}$, and $f^\Delta(t) = \frac{1}{1-2t}$ for $t \in \ts^\kappa$. By the quotient rule,
+		\begin{equation*}
+			f^{\Delta\Delta}(t) = \left(\frac{1}{1-2t}\right)^\Delta = -\frac{-2}{(1-2t)(1-2\sigma(t))} = \frac{2}{(1-2t)\left(1-\frac{2t}{1-t}\right)} = \frac{2(1-t)}{(1-2t)(1-3t)}, \qquad t \in \ts^{\kappa^2}.
+		\end{equation*}
+		
+		\item Let $\ts = \{\sqrt{n}\mid n \in \N_0\}$, and let $f(t) = t^2$. Recall from 1.26 (ii) that $\sigma(t) = \sqrt{t^2+1}$, and $f^\Delta(t) = t + \sqrt{t^2+1}$. Since every point $t\in\ts$ is right-scattered, and $f^\Delta$ is continuous (because every point $t\in\ts$ is also topologically isolated), we can use Theorem 1.16 to find that
+		\begin{align*}
+			f^{\Delta\Delta}(t) &= \left(t + \sqrt{t^2+1}\right)^\Delta = 1 + \frac{\sqrt{\sigma(t)^2+1} - \sqrt{t^2+1}}{\sqrt{t^2+1}-t} = 1 + \left(\sqrt{t^2+1}+1\right)\left(\sqrt{t^2+2} - \sqrt{t^2+1}\right)\\
+			&= \sqrt{(t^2+1)(t^2+2)} + \sqrt{t^2+2} - t^2 - \sqrt{t^2+1}.
+		\end{align*}
+		
+		\item Let $\ts = \left\{\frac{n}{2} \mid n \in \N_0\right\}$, and let $f(t) = t^2$. Recall from 1.26 (iii) that $f^\Delta(t) = 2t+\frac{1}{2}$. Then by linearity and Theorem 1.24,
+		\begin{equation*}
+			f^{\Delta\Delta}(t) = 2.
+		\end{equation*}
+		
+		\item Let $\ts = \{\sqrt[3]{n} \mid n \in \N_0\}$, and let $f(t) = t^3$. Recall from 1.26 (iv) that $\sigma(t) = \sqrt[3]{t^3+1}$, and $f^\Delta(t) = t^2 + (t^3+1)^\frac{1}{3}t + (t^3+1)^\frac{2}{3}$. Since every point of $\ts$ is right-scattered and $f^\Delta$ is continuous on $\ts$ (because every point of $\ts$ is topologically isolated), we can use Theorem 1.16 to find that
+		\begin{align*}
+			f^{\Delta\Delta}(t) &= \frac{f^\Delta(\sigma(t)) - f^\Delta(t)}{\sigma(t)-t} \\
+			&= \frac{(t^3+1)^\frac{2}{3} + (t^3+2)^\frac{1}{3}(t^3+1)^\frac{1}{3} + (t^3+2)^\frac{2}{3} - t^2 - (t^3+1)^\frac{1}{3}t - (t^3+1)^\frac{2}{3}}{\sqrt[3]{t^3+1} - t} \\
+			&= \frac{(t^3+2)^\frac{1}{3}(t^3+1)^\frac{1}{3} + (t^3+2)^\frac{2}{3} - t^2 - (t^3+1)^\frac{1}{3}t}{\sqrt[3]{t^3+1} - t}
+		\end{align*} 
+	\end{enumerate}
+	
+	\question*{1.36 (i)}
+	Suppose the $\mu$ is differentiable, and $f^{\Delta^\sigma}$ and $f^{\sigma^\Delta}$ both exist. If $f$ is twice differentiable, then
+	\begin{equation*}
+		(f^\sigma)^\Delta = (f + \mu f^\Delta)^\Delta = f^\Delta + \mu^\Delta (f^\Delta)^\sigma + \mu f^{\Delta\Delta},
+	\end{equation*}
+	and
+	\begin{equation*}
+		f^{\Delta^\sigma} = f^\Delta + \mu f^{\Delta\Delta}.
+	\end{equation*}
+	Substituting the second equation into the first gives
+	\begin{equation*}
+		f^{\sigma^\Delta} = f^{\Delta^\sigma} + \mu^\Delta f^{\Delta^\sigma} = (1+\mu^\Delta)f^{\Delta^\sigma}.
+	\end{equation*}
 \end{document}
