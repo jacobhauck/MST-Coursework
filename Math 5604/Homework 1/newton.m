@@ -7,8 +7,8 @@ function x = newton(f, f_prime, x0, max_iter, tol, tol_f, tol_f_prime)
 %   f_prime: derivative of f (anonymous MATLAB function)
 %   x0: initial guess for root of f(x) = 0
 %   max_iter: maximum number of Newton iterations
-%   tol: Cauchy stopping tolerance (stop if |x_{n+1} - x_n| < tol)
-%   tol_f: Function stopping tolerance (stop if |f(x_n)| < tol_f)
+%   tol: Cauchy stopping tolerance (stop if |x_{n+1} - x_n| < tol, return x_{n+1})
+%   tol_f: Function stopping tolerance (stop if |f(x_n)| < tol_f, return x_n)
 %   tol_f_prime: Derivative singularity tolerance 
 %                (fail if |f_prime(x_n)| < tol_f_prime)
 %
