@@ -100,7 +100,11 @@
 			\end{figure}
 		\end{enumerate}
 		
-		\questionpart Below (Table \ref{table:p1}) are numerical errors at $t=1$ for the forward and backward Euler methods at different step sizes.
+		\questionpart Below (Table \ref{table:p1}) are numerical errors at $t=1$ for the forward and backward Euler methods at different step sizes. I make the following observations about the errors.
+		\begin{itemize}
+			\item The error is roughly proportional to $h$; every time $h$ decreases by a factor 2, the error decreases roughly by a factor of 2 as well.
+			\item The error for both the forward and backward Euler methods is roughly the same.
+		\end{itemize}
 		
 		\begin{table}[htb]
 			\centering
@@ -182,7 +186,12 @@
 		
 		\questionpart When $k=\frac{1}{16}$ and the numerical tolerance for Newton's method is $\varepsilon = 10^{-8}$, the numerical value of $y(1)$ is $-3.772976$, according to \lstinline{problem2_output.txt}.
 		
-		\questionpart Below (Table \ref{table:p2}) are the numerical errors at $t=2$ for different step sizes and Newton's method tolerances.
+		\questionpart Below (Table \ref{table:p2}) are the numerical errors at $t=2$ for different step sizes and Newton's method tolerances. I make the following observations about the errors.
+		\begin{itemize}
+			\item In every case, the error is roughly proportional to $h$; every time $h$ decreases by a factor of 2, the error also decreases by roughly a factor of 2. 
+			\item The error is not very sensitive to the value of $\varepsilon$. It changes by almost nothing between $\varepsilon = 10^{-3}$ and $\varepsilon = 10^{-8}$.
+			\item The error with $\varepsilon=0.1$ is very slightly less. In the backward Euler method, there are two sources of error: the error between the discrete scheme and the true solution, and the error between the numerical solution of the discrete scheme and the true solution of the discrete scheme. As $h \to 0$, the error between the numerical scheme and the true solution should approach 0, and as $\varepsilon \to 0$ the error between the Newton's method approximation and the true discrete scheme should approach 0, but the two errors are not strictly additive. In this case, by chance, the error in Newton's method is actually in our favor, but this should not be expected in general.
+		\end{itemize}
 		\begin{table}[htb]
 			\centering
 			\begin{tabular}{@{}llll@{}}
