@@ -24,7 +24,8 @@ y(1) = -2;
 
 % backward Euler iteration
 for i = 1:n
-    f_i = @(y_i) 2*(y_i + 1)*(y_i - y(i)) - k*(3*t(i)^2 + 10*t(i) + 1);
+	% make sure to use t(i + 1)!
+    f_i = @(y_i) 2*(y_i + 1)*(y_i - y(i)) - k*(3*t(i + 1)^2 + 10*t(i + 1) + 1);
     f_i_prime = @(y_i) 2*(y_i - y(i)) + 2*(y_i + 1);
 
     y(i + 1) = newton(f_i, f_i_prime, y(i), 100, eps, 0, 0);
