@@ -1,0 +1,88 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\renewcommand{\questiontype}{}
+
+\newcommand{\hwnum}{1}
+
+\begin{document}
+	\maketitle
+	
+	Define
+	\begin{equation}
+		k_\varepsilon(x) = \frac{1}{\varepsilon}\chi_{\left[-\frac{\varepsilon}{2}, \frac{\varepsilon}{2}\right]}(x).
+	\end{equation}
+	
+	\question For $u \in \dist'(\R)$, define $u * k_\varepsilon \in \dist'(\R)$ by
+	\begin{equation}
+		\label{eq:convolution_defn}
+		\langle u * k_\varepsilon, \varphi \rangle = \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2}(u * R\varphi)(y)\dee y, \qquad \varphi \in \dist(\R).
+	\end{equation}
+	Note that the integral is defined because $u * R\varphi$ is continuous. Furthermore, $u*k_\varepsilon$ is a distribution because it is linear and continuous. 
+	
+	\textbf{Linearity} 
+	
+	We can verify linearity easily using the linearity of convolution with a test function, the linearity of integration, and the linearity of reflection. If $\alpha, \beta \in \R$ and $\varphi, \psi \in \dist(\R)$, then
+	\begin{align}
+		\langle u * k_\varepsilon, \alpha \varphi + \beta \psi \rangle &= \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2} (u * R(\alpha\varphi + \beta\psi))(y)\dee y \\
+		&= \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2} (u * (\alpha R\varphi + \beta R\psi))(y)\dee y \\
+		&= \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2}\big[ \alpha (u * R\varphi)(y) + \beta (u * R\psi)(y)\big] \dee y \\
+		&= \alpha \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2} (u * R\varphi)(y)\dee y + \beta \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2}(u*R\psi)(y)\dee y \\
+		&= \alpha\langle u * k_\varepsilon, \varphi\rangle + \beta\langle u*k_\varepsilon, \psi\rangle,
+	\end{align}
+	so $u * k_\varepsilon$ is linear.
+	
+	\textbf{Continuity}
+	
+	Let $\varphi_n \to \varphi$ in $\dist(\R)$. Then clearly $R\varphi_n \to R\varphi$ in $\dist(\R)$. Recalling that convolution of a test function with a distribution is continuous on $\dist(\R)$, it follows that $u * R\varphi_n \to u * R\varphi$ in $\dist(\R)$. Then $u*R\varphi_n$ also converges to $u *R\varphi$ uniformly on $\left[-\frac{\varepsilon}{2}, \frac{\varepsilon}{2}\right]$, so
+	\begin{equation}
+		\frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2}(u*R\varphi_n)(y)\dee y \to 
+		\frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2}(u*R\varphi)(y)\dee y;
+	\end{equation}
+	that is, $\langle u * k_\varepsilon, \varphi_n\rangle \to \langle u*k_\varepsilon, \varphi\rangle$. Thus, $u*k_\varepsilon$ is continuous.
+	
+	\textbf{Extension}
+	
+	Definition (\ref{eq:convolution_defn}) is a good definition of convolution at least in the sense that it reduces to convolution with $k_\varepsilon$ for regular distributions. Indeed, suppose that $f \in L^1_\text{loc}(\R)$. Then for any $\varphi \in \dist(\R)$,
+	\begin{align}
+		\langle f * k_\varepsilon, \varphi\rangle &= \int_{-\infty}^\infty (f * k_\varepsilon)(x) \varphi(x) \dee x \\
+		&= \int_{-\infty}^\infty \int_{-\infty}^\infty f(y) k_\varepsilon(x-y) \varphi(x)\dee y \dee x \\
+		&= \frac{1}{\varepsilon}\int_{-\infty}^\infty \int_{x-\frac{\varepsilon}{2}}^{x+\frac{\varepsilon}{2}} f(y)\varphi(x)\dee y \dee x.
+	\end{align}
+	Using the change of variables $y' = y - x$, we get
+	\begin{align}
+			\langle f * k_\varepsilon, \varphi\rangle &= \frac{1}{\varepsilon}\int_{-\infty}^\infty \int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2} f(y' + x) \varphi(x) \dee y' \dee x \\
+			&= \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2} \int_{-\infty}^\infty f(y' + x) \varphi(x) \dee x \dee y'.
+	\end{align}
+	Using the change of variables $x' = y' + x$, we get
+	\begin{align}
+		\langle f * k_\varepsilon, \varphi\rangle &= \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2} \int_{-\infty}^\infty f(x') \varphi(x'-y') \dee x' \dee y' \\
+		&= \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2} (f * R\varphi)(y')\dee y',
+	\end{align}
+	which agrees with our definition of $f * k_\varepsilon$ in (\ref{eq:convolution_defn}) if we view $f$ as a distribution.
+	
+	\question Consider $\delta_0 * k_\varepsilon$ using our definition of convolution from (\ref{eq:convolution_defn}). Since $\delta_0$ is supposed to be the identity for the convolution operator, we expect that $\delta_0 * k_\varepsilon = k_\varepsilon$ (viewing $k_\varepsilon$ as a distribution).
+	
+	This turns out to be the case. According to the definition in (\ref{eq:convolution_defn}), for any $\varphi \in \dist(\R)$,
+	\begin{align}
+		\langle\delta_0 * k_\varepsilon, \varphi\rangle &= \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2} (\delta_0 * R\varphi)(y)\dee y &&\\
+		&= \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2} R\varphi(y)\dee y  && \text{because $\delta_0$ is identity for convolution}\\
+		&= \frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2}  \varphi(y)\dee y && \text{using change of variables $y\mapsto -y$}\\
+		&= \langle k_\varepsilon, \varphi \rangle.
+	\end{align}
+	Thus, $\delta_0 * k_\varepsilon = k_\varepsilon$, viewing $k_\varepsilon$ as a distribution.
+	
+	\question Since $\int k_\varepsilon = 1$ all $\varepsilon$, and $k_\varepsilon(x) \to 0$ as $\varepsilon \to 0$ if $x \ne 0$, it would seem that $k_\varepsilon$ behaves like $\delta_0$ as $\varepsilon \to 0$. Thus, it would make sense that $u * k_\varepsilon \text{``} \to u * \delta_0 = u\text{''}$. That is, it would make sense that $u * k_\varepsilon \to u$ as $\varepsilon \to 0$ in the topology of $\dist'(\R)$.
+	
+	In fact, this turns out to be the case. Let $\varphi \in \dist(\R)$. Since $u*R\varphi$ is a test function and therefore continuous, it has an antiderivative $\psi$. Then
+	\begin{align}
+		\lim_{\varepsilon \to 0} \langle u * k_\varepsilon, \varphi\rangle &= \lim_{\varepsilon\to 0}\frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2} (u * R\varphi)(y)\dee y \\
+		&= \lim_{\varepsilon \to 0} \frac{\psi\left(\frac{\varepsilon}{2}\right) - \psi\left(-\frac{\varepsilon}{2}\right)}{\varepsilon} = \psi'(0) \\
+		&= (u * R\varphi)(0) = \langle u, \tau_0RR\varphi\rangle \\
+		&= \langle u, \varphi \rangle.
+	\end{align}
+	Hence, $u * k_\varepsilon \to u$ in $\dist'(\R)$ as $\varepsilon \to 0$.
+	
+	\question
+\end{document}

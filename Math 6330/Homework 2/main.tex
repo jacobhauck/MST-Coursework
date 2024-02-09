@@ -1,0 +1,46 @@
+\documentclass[nonumber, anonymous]{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\newcommand{\hwnum}{2}
+
+
+\begin{document}
+	\question*{1.59(ii)}
+	
+	$\sigma$ and $\mu$ are always rd-continuous, and $\rho$ is not necessarily rd-continuous.
+	
+	\begin{enumerate}
+		\item Suppose that $t \in \ts$ is right-dense. Given $\varepsilon>0$, we can find $s_1,s_2 \in \ts$ such that $t < s_1 < s_2 < t + \varepsilon$. Set $\delta = s_1 -t$. If $s > t$, then $s -t < \delta$ implies that $\sigma(s) - t \le \sigma(s_1) - t \le s_2 - t < \varepsilon$. Therefore, $\lim\limits_{s\to t^+}\sigma(s) = t$.
+		
+		\item Now suppose that $t \in \ts$ is left-dense. Given $\varepsilon > 0$, if $s < t$ and $t -s < \varepsilon$, then $0 \le t - \sigma(s) \le t - s < \varepsilon$. Therefore, $\lim\limits_{s\to t^-}\sigma(s) = t$.
+	\end{enumerate}
+	
+	If $t$ is left-dense, then by 2., $\lim\limits_{s\to t^-}\sigma(s) = t$, which is finite. 
+	
+	If $t$ is right-dense, then $\sigma(t) = t$, so $\sigma$ is right-continuous by 1. If, in addition, $t$ is left-scattered or $t = \inf\ts$, then $\sigma$ is trivially left-continuous at $t$; otherwise, $t$ is left-dense, in which case $\sigma$ must be left-continuous at $t$ by 2. Thus, $\sigma$ is continuous at $t$.
+	
+	The rd-continuity of $\mu$ follows from that of $\sigma$, as $\mu(t) = \sigma(t) - t$; the identity function $t \mapsto t$ is rd-continuous, and rd-continuity is preserved under linear combination.
+	
+	To see that $\rho$ may not be rd-continuous, consider the time-scale $\ts = \{0\}\cup[1,2]$. In this case, we have
+	\begin{equation*}
+		\rho(t) = \begin{cases}
+			0 & \text{if } t \in \{0, 1\}, \\
+			t & \text{if } t \in (1,2].
+		\end{cases}
+	\end{equation*}
+	Then the point $1 \in \ts$ is right-dense, but clearly $\rho$ is not continuous at $1$, as $\rho(1) = 0$, but $\lim\limits_{s\to t^+}\rho(s) = 1$.
+	
+	
+	\question*{1.59(iii)}
+	
+	rd-continuous implies regulated, so $\sigma$ and $\mu$ are always regulated. We can show that $\rho$ is also always regulated by virtually the same argument from above.
+	
+	\begin{enumerate}
+		\item Suppose that $t \in \ts$ is right-dense. Given $\varepsilon > 0$, if $s > t$ and $s - t < \varepsilon$, then $0 \le \rho(s) - t \le s - t < \varepsilon$. Therefore, $\lim\limits_{s\to t^+}\rho(s) = t$.
+		
+		\item Now suppose that $t \in \ts$ is left-dense. Given $\varepsilon>0$, we can find $s_1,s_2 \in \ts$ such that $t-\varepsilon < s_1 < s_2 < t$. Set $\delta = t-s_2$. If $s > t$, then $s -t < \delta$ implies that $t-\rho(s) \le t-\rho(s_2) \le t-s_1 < \varepsilon$. Therefore, $\lim\limits_{s\to t^-}\rho(s) = t$.
+	\end{enumerate}
+	
+	Together, 1. and 2. imply that $\rho$ is regulated.
+\end{document}
