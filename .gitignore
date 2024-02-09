@@ -10,4 +10,5 @@
 *.blg
 *.jpg
 *.jpeg
+*.zip
 __pycache__
