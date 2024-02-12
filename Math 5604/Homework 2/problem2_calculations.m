@@ -15,7 +15,9 @@ theta = 1;
 % Create plot
 fig = figure();
 plot(t, y);
-saveas(fig, "p2_plot.eps", "epsc");
+xlabel("t");
+ylabel("y");
+saveas(fig, "p2_1_plot.eps", "epsc");
 
 fprintf("Numerical value of y(2) = %f\n", y(end));
 fprintf("\n");
@@ -81,6 +83,13 @@ theta = 1/2;
 
 % Use k = 1/2048 for consistency with the reference solution used later
 [t, y] = problem2(1/2048, theta);
+
+% Create plot
+fig = figure();
+plot(t, y);
+xlabel("t");
+ylabel("y");
+saveas(fig, "p2_2_plot.eps", "epsc");
 
 fprintf("Numerical value of y(2) = %f\n", y(end));
 fprintf("\n");
