@@ -131,9 +131,72 @@
 	
 	Consider the IVP
 	\begin{equation}
+		\label{eq:p2_ivp}
 		y'(t) = \frac{1}{1+t^2} - 2y^2, \quad t >0; \qquad y(0) = 0.
 	\end{equation}
-	We will discretize this problem by using scheme 3 from Problem 1. The code for running the scheme with given values of the parameters $k$ and $\theta$ is given in \lstinline{problem2.m}.
+	We will discretize this problem by using scheme 3 from Problem 1 on the interval $[0,2]$. Note that this scheme is implicit, so the implementation of it is a straightforward generalization of the implementation of the backward Euler method. The main difference is the construction of the implicit function $f_n$ such that $f_n\left(y^{n+1}\right)=0$. 
 	
-	\lstinputlisting{problem2.m}
+	In the case of IVP (\ref{eq:p2_ivp}), we have
+	\begin{equation*}
+		f(t,y) = \frac{1}{1+t^2} - 2y^2, \qquad a = 0.
+	\end{equation*}
+	Rewriting the equation for $y^{n+1}$ in the definition of the scheme, we get
+	\begin{equation*}
+		y^{n+1} - y^n - kf\left(t_n + (1-\theta)k, \theta y^n + (1-\theta)y^{n+1}\right) = 0, \quad n = 0, 1, \dots,
+	\end{equation*}
+	so we can find $y^{n+1}$ by finding a root of
+	\begin{equation*}
+		f_n(x) = x - y^n - k\left[\frac{1}{1+(t_n + (1-\theta)k)^2} - 2(\theta y^n + (1-\theta)x)^2\right].
+	\end{equation*}
+	We find this root numerically using Newton's method, which means we need to calculate $f_n'$:
+	\begin{equation*}
+		f_n'(x) = 1 + 4k(1-\theta)(\theta y^n + (1-\theta)x).
+	\end{equation*}
+	If $\{x_j\}$ is the sequence of Newton's method approximations of the root, then we use the stopping criterion $|x_j - x_{j-1}| < 10^{-8}$, where $x_j$ is the returned approximation.
+	
+	The code for running the scheme with given values of the parameters $k$ and $\theta$ is given in \lstinline{problem2.m}. Note that this refers to \lstinline{newton.m}, which is the same implementation of Newton's method from the previous homework.
+	
+	\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={\lstinline{problem2.m}, which solves IVP (\ref{eq:p2_ivp}) using scheme 3}, label={lst:problem2}]{problem2.m}
+	
+	\begin{enumerate}
+		\item Consider the case $\theta = 1$.
+		\begin{enumerate}[label={(\alph*)}]
+			\item To create a plot of the numerical solution on the interval $[0,2]$, we need to choose a small enough $k$ value. We choose $k = \frac{1}{2048}$ for consistency with the value used in the reference solution in subsequent parts. The resulting plot is given in Figure \ref{fig:p2_part1}. Additionally, the numerical value of $y(2)$ is given in \lstinline{problem2_output.txt} as 0.400024. These results can be obtained by running the following excerpt from \lstinline{problem2_calculations.m}.
+			
+			\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Problem 2.1 (a)}, label={lst:p2:1:a}, firstline=5, lastline=20]{problem2_calculations.m}
+			
+			\begin{figure}[h]
+				\centering
+				\includegraphics{p2_plot.eps}
+				\caption{The numerical solution of (\ref{eq:p2_ivp}) on $[0,2]$ with $k = \frac{1}{2048}$ and $\theta = 1$}
+				\label{fig:p2_part1}
+			\end{figure}
+			
+			\item The following excerpt (Listing \ref{lst:p2:1:b}) from \lstinline{problem2_calculations.m} computes a reference solution with $k = \frac{1}{2048}$ then calculates the errors at $t=2$ between the numerical solutions with various step sizes and the reference solution.
+			
+			The table of values that is printed is given in \lstinline{p2_output.txt} and copied here for convenience.
+			
+			\begin{table}[h]
+				\centering
+				\begin{tabular}{@{}ll@{}}
+					\toprule
+					$k$ & Error at $t=2$ \\
+					\midrule
+					1/16 & \\
+					1/32 & \\
+					1/64 & \\
+					1/128 & \\
+					1/256 & \\
+					1/512 & \\
+					\bottomrule
+				\end{tabular}
+				\caption{Numerical errors at $t=2$ when $\theta = 1$}
+				\label{tab:p2:1:b}
+			\end{table}
+			
+			\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Problem 2.1 (b)}, label={lst:p2:1:b}, firstline=23, lastline=50]{problem2_calculations.m}
+		\end{enumerate}
+		
+		\item
+	\end{enumerate}
 \end{document}
