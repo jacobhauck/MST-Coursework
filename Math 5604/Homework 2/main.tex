@@ -20,74 +20,120 @@
 	\begin{enumerate}
 		\item Consider the scheme
 		\begin{equation}
-			y^{n+1} = y^n + k f\big(t_{n+1}, y^{n+1}\big).
+			y^{n+1} = y^n + k f\big(t_{n+1}, y^{n+1}\big), \quad n = 0, 1, 2, \dots, \qquad y^0 = a.
 		\end{equation}
-		Suppose that $y(t_n) = y^n$. Using the Taylor expansion of $y$ about $t_n$,
+		Suppose that $y(t_n) = y^n$. Using the Taylor expansion of $y$ about $t_{n+1}$,
 		\begin{equation*}
-			y(t_{n+1}) = y(t_n) + ky'(t_n) + R_1(k),
+			y(t_n) = y(t_{n+1}) - ky'(t_{n+1}) + \tau(k),
 		\end{equation*}
-		where the remainder $R_1(k) = \bigoh(k^2)$ as $k\to 0$.
-		Further expanding $y'$ about $t_{n+1}$ and using the ODE gives
-		\begin{align*}
-			y(t_{n+1}) &= y(t_n) + k\left[y'(t_{n+1}) + R_2(k)\right] + R_1(k) \\
-			&= y(t_n) + ky'(t_{n+1}) + kR_2(k) + R_1(k) \\
-			&= y(t_n) + kf(t_{n+1}, y(t_{n+1})) + kR_2(k) + R_1(k),
-		\end{align*}
-		where the remainder $R_2(k) = \bigoh(k)$ as $k \to 0$.
+		where the remainder $\tau(k) = \bigoh(k^2)$ as $k\to 0$.
 		Using the assumption that $y(t_n) = y^n$ and the definition of the scheme, we have
 		\begin{align*}
-			y(t_{n+1}) &= y^n + kf\big(t_{n+1}, y^{n+1}\big) + k\left[f(t_{n+1},y(t_{n+1})) - f\big(t_{n+1},y^{n+1}\big)\right] + kR_2(k) + R_1(k) \\
-			&= y^{n+1} + k\left[f(t_{n+1},y(t_{n+1})) - f\big(t_{n+1},y^{n+1}\big)\right] + kR_2(k) + R_1(k).
+			y(t_{n+1}) &= y(t_n) + ky'(t_{n+1}) + \tau(k) \\
+			&= y^n + kf\big(t_{n+1}, y^{n+1}\big) + k\left[f(t_{n+1},y(t_{n+1})) - f\big(t_{n+1},y^{n+1}\big)\right] + \tau(k) \\
+			&= y^{n+1} + k\left[f(t_{n+1},y(t_{n+1})) - f\big(t_{n+1},y^{n+1}\big)\right] + \tau(k).
 		\end{align*}
 		Thus,
 		\begin{equation*}
-			\text{LTE} = \big|y(t_{n+1}) - y^{n+1}\big| = k\left|f(t_{n+1},y(t_{n+1})) - f\big(t_{n+1},y^{n+1}\big) + kR_2(k) + R_1(k)\right|.
+			\text{LTE} = \big|y(t_{n+1}) - y^{n+1}\big| = \left|k\big[f(t_{n+1},y(t_{n+1})) - f\big(t_{n+1},y^{n+1}\big)\big] + \tau(k)\right|.
 		\end{equation*}
 		We can easily show that $\text{LTE} \to 0$ as $k\to 0$, that is, that the scheme is consistent.
 		
 		By the Lipschitz condition on $f$,
 		\begin{align*}
-			\text{LTE} = \big|y(t_{n+1})-y^{n+1}\big| &\le k\left|f(t_{n+1},y(t_{n+1})) - f\big(t_{n+1},y^{n+1}\big)\right| + |kR_2(k) + R_1(k)|\\
-			&\le kL\big|y(t_{n+1})-y^{n+1}\big| + |kR_2(k) + R_1(k)|.
+			\text{LTE} = \big|y(t_{n+1})-y^{n+1}\big| &\le k\left|f(t_{n+1},y(t_{n+1})) - f\big(t_{n+1},y^{n+1}\big)\right| + |\tau(k)|\\
+			&\le kL\big|y(t_{n+1})-y^{n+1}\big| + |\tau(k)|.
 		\end{align*}
 		For all $k < \frac{1}{L}$, we have $1-kL > 0$, so
 		\begin{equation*}
-			\text{LTE} \le \frac{|kR_2(k) + R_1(k)|}{1-kL}, \qquad k < \frac{1}{L}.
+			\text{LTE} \le \frac{|\tau(k)|}{1-kL}, \qquad k < \frac{1}{L}.
 		\end{equation*}
 		This implies that
 		\begin{equation*}
-			0 \le \lim_{k\to 0}\text{LTE} \le \lim_{k\to0}\frac{|kR_2(k) + R_1(k)|}{1-kL} = 0
+			0 \le \lim_{k\to 0}\text{LTE} \le \lim_{k\to0}\frac{|\tau(k)|}{1-kL} = 0
 		\end{equation*}
-		because $kR_2(k) + R_1(k) \to 0$ as $k \to 0$, and $1-kL \to 1$ as $k\to 0$. That is, $\text{LTE} \to 0$ as $k\to0$, and the scheme is consistent.
+		because $\tau(k) \to 0$ as $k \to 0$, and $1-kL \to 1$ as $k\to 0$. That is, $\text{LTE} \to 0$ as $k\to0$, and the scheme is consistent.
 		
 		\item Consider the scheme
 		\begin{equation}
-			y^{n+1} = y^{n-1} + 2kf(t_n, y_n).
+			y^{n+1} = y^{n-1} + 2kf(t_n, y_n),\quad n = 0, 1, 2, \dots, \qquad y^0 = a.
 		\end{equation}
 		Suppose that $y(t_{n-1}) = y^{n-1}$, and $y(t_n) = y^n$. Using the Taylor expansion of $y$ about $t_n$ to the left and to the right, we have
 		\begin{align*}
-			y(t_{n+1}) &= y(t_n) + ky'(t_n) + R_1(k) \\
-			y(t_{n-1}) &= y(t_n) - ky'(t_n) + R_2(k),
+			y(t_{n+1}) &= y(t_n) + ky'(t_n) + \tau_1(k) \\
+			y(t_{n-1}) &= y(t_n) - ky'(t_n) + \tau_2(k),
 		\end{align*}
-		where the remainders $R_1(k)$ and $R_2(k)$ satisfy $R_1(k) = \bigoh(k^2)$ and $R_2(k) = \bigoh(k^2)$ as $k \to 0$.
+		where the remainders $\tau_1(k)$ and $\tau_2(k)$ satisfy $\tau_1(k) = \bigoh(k^2)$ and $\tau_2(k) = \bigoh(k^2)$ as $k \to 0$.
 		
 		By the ODE and the assumptions that $y(t_{n-1}) = y^{n-1}$ and $y(t_n) = y^n$, this implies that
 		\begin{align*}
 			y(t_{n+1}) - y^{n-1} &= y(t_{n+1}) -y(t_{n-1}) \\
-			&= 2ky'(t_n) +R_1(k) - R_2(k) \\
-			&= 2kf(t_n, y(t_n)) + R_1(k) - R_2(k) \\
-			&= 2kf(t_n, y^n) + R_1(k) - R_2(k).
+			&= 2ky'(t_n) +\tau_1(k) - \tau_2(k) \\
+			&= 2kf(t_n, y(t_n)) + \tau_1(k) - \tau_2(k) \\
+			&= 2kf(t_n, y^n) + \tau_1(k) - \tau_2(k).
 		\end{align*}
 		Therefore, the $\text{LTE}$ is given by
 		\begin{equation*}
-			\text{LTE} = \big|y^{n+1} - y(t_{n+1})\big| = |R_1(k) - R_2(k)|.
+			\text{LTE} = \big|y^{n+1} - y(t_{n+1})\big| = |\tau_1(k) - \tau_2(k)|.
 		\end{equation*}
-		Since both $R_1(k) \to 0$ and $R_2(k) \to 0$ as $k\to 0$, it follows that $\text{LTE}\to 0$ as $k\to0$. That is, the scheme is consistent.
+		Since both $\tau_1(k) \to 0$ and $\tau_2(k) \to 0$ as $k\to 0$, it follows that $\text{LTE}\to 0$ as $k\to0$. That is, the scheme is consistent.
 		
-		\item Consider the scheme
+		\item Let $\theta \in [0,1]$, and consider the scheme
 		\begin{equation}
-			
+			y^{n+1} = y^n + kf\left(t^n + (1-\theta)k, \theta y^n + (1-\theta)y^{n+1}\right),\quad n = 0, 1, 2, \dots, \qquad y^0 = a.
 		\end{equation}
+		
+		Suppose that $y(t_n) = y^n$. Using the Taylor expansion of $y$ about $t_n + (1-\theta)k$, we have
+		\begin{equation}
+			\label{eq:yt_n}
+			y(t_n) = y(t_n + (1-\theta)k) - (1-\theta)ky'(t_n + (1-\theta)k) + \tau_1(k),
+		\end{equation}
+		where $\tau_1(k) = \bigoh(k^2)$ as $k \to 0$ (because $\theta \in [0,1]$). Similarly,
+		\begin{equation}
+			\label{eq:yt_np1}
+			y(t_{n+1}) = y(t_n + (1-\theta)k) + \theta ky'(t_n + (1-\theta)k) + \tau_2(k),
+		\end{equation}
+		where $\tau_2(k) = \bigoh(k^2)$ as $k \to 0$. Therefore,
+		\begin{align*}
+			y(t_{n+1}) &= y(t_n) + (1-\theta)ky'(t_n+(1-\theta)k) -\tau_1(k) + \theta ky'(t_n+(1-\theta)k) + \tau_2(k) \\
+			&= y(t_n) + ky'(t_n + (1-\theta)k) - \tau_1(k) + \tau_2(k) \\
+			&= y^n + kf(t_n + (1-\theta)k, y(t_n+(1-\theta)k)) -\tau_1(k) + \tau_2(k).
+		\end{align*}
+		Then the local truncation error is given by
+		\begin{align*}
+			\text{LTE} &= \left|y(t_{n+1}) - y^{n+1}\right| \\
+			&= \left|k\big[f(t_n+(1-\theta)k, y(t_n+(1-\theta)k)) - f\big(t_n+(1-\theta)k, \theta y^n + (1-\theta)y^{n+1}\big)\big] -\tau_1(k) + \tau_2(k)\right|.
+		\end{align*}
+		By the Lipschitz property of $f$, we have
+		\begin{equation*}
+			\text{LTE} \le kL\left|y(t_n + (1-\theta)k) - \theta y^n - (1-\theta)y^{n+1}\right| + |\tau_2(k) - \tau_1(k)|.
+		\end{equation*}
+		Multiplying (\ref{eq:yt_n}) by $\theta$ and (\ref{eq:yt_np1}) by $1-\theta$ and adding the results, we see that
+		\begin{equation*}
+			y(t_n+(1-\theta)k) = \theta y(t_n) + (1-\theta)y(t_{n+1}) + \theta\tau_1(k) + (1-\theta)\tau_2(k).
+		\end{equation*}
+		Since $y(t_n) = y^n$ by hypothesis, we have
+		\begin{equation*}
+			\text{LTE} \le kL(1-\theta)\left|y(t_{n+1}) - y^{n+1}\right| + \tau(k),
+		\end{equation*}
+		where $\tau(k) = \left|\theta \tau_1(k) + (1-\theta)\tau_2(k)\right| + \left|\tau_2(k) - \tau_1(k)\right|$. If $\theta = 1$, then clearly $\text{LTE} \to 0$ as $k \to 0$. Otherwise, for all $k < \frac{1}{L(1-\theta)}$, we have $1 - kL(1-\theta) > 0$, so
+		\begin{equation*}
+			\text{LTE} \le \frac{\tau(k)}{1-kL(1-\theta)}, \qquad k < \frac{1}{1 - kL(1-\theta)}.
+		\end{equation*}
+		Hence,
+		\begin{equation*}
+			0 \le \lim_{k\to 0}\text{LTE} \le \lim_{k\to 0}\frac{\tau(k)}{1-kL(1-\theta)} = 0
+		\end{equation*}
+		because $\tau(k) \to 0$ and $1-kL(1-\theta) \to 1$ as $k \to 0$. Therefore, $\text{LTE} \to 0$ as $k \to 0$ for any $\theta \in [0,1]$, and the scheme is consistent.
 	\end{enumerate}
 	
+	\question
+	
+	Consider the IVP
+	\begin{equation}
+		y'(t) = \frac{1}{1+t^2} - 2y^2, \quad t >0; \qquad y(0) = 0.
+	\end{equation}
+	We will discretize this problem by using scheme 3 from Problem 1. The code for running the scheme with given values of the parameters $k$ and $\theta$ is given in \lstinline{problem2.m}.
+	
+	\lstinputlisting{problem2.m}
 \end{document}

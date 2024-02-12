@@ -1,0 +1,31 @@
+\documentclass[nonumber]{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\newcommand{\hwnum}{3}
+
+
+\begin{document}
+	\maketitle
+	
+	\question*{1.89} Let $\ts = \Z$, and define $f(t) = g(t) = t^2$ for $t \in \ts$. Viewing $f$ as a function on $\R$, we have $f'(t) = 2t$. As we have calculated before, $g^\Delta(t) = 2t + 1$. Lastly, $(f \circ g)(t) = t^4$, so
+	\begin{equation*}
+		(f\circ g)^\Delta(t) = (t+1)^4 - t^4 = 4t^3 + 6t^2 + 4t + 1.
+	\end{equation*}
+	According to Theorem 1.87, there exists $c \in [2, \sigma(t)] = [2, 3]$ such that
+	\begin{equation*}
+		(f\circ g)^\Delta(2) = f'(g(c))g^\Delta(2).
+	\end{equation*}
+	Using the formulas for $(f\circ g)^\Delta$, $f'$, and $g^\Delta$, this means that
+	\begin{equation*}
+		4\cdot 2^3 + 6\cdot 2^2 + 4\cdot 2 + 1 = 2c^2\cdot (2\cdot 2 + 1)
+	\end{equation*}
+	or
+	\begin{equation*}
+		65 = 10c^2 \implies c = \pm \sqrt{\frac{13}{2}}.
+	\end{equation*}
+	Since $c \in [2,3]$, it follows that $c = \sqrt{\frac{13}{2}}$. Note that $\sqrt{\frac{13}{2}} \in [2,3]$, as promised, because
+	\begin{equation*}
+		8 \le 13 \le 18 \implies 4 \le \frac{13}{2} \le 9 \implies 2 \le \sqrt{\frac{13}{2}} \le 3.
+	\end{equation*}
+\end{document}
