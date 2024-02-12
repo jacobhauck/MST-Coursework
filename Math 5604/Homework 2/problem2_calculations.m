@@ -12,6 +12,11 @@ theta = 1;
 % Use k = 1/2048 for consistency with the reference solution used later
 [t, y] = problem2(1/2048, theta);
 
+% Create plot
+fig = figure();
+plot(t, y);
+saveas(fig, "p2_plot.eps", "epsc");
+
 fprintf("Numerical value of y(2) = %f\n", y(end));
 fprintf("\n");
 
@@ -29,23 +34,39 @@ theta = 1;
 k = (1/2).^(4:9);
 y_at_2 = zeros(1, length(k));
 
-
 for i_k = 1:length(k)
     [t, y] = problem2(k(i_k), theta);
     y_at_2(i_k) = y(end);
 end
 
+% Calculate errors
+errors = abs(y_at_2 - y_ref(end));
+
 % Display table
 fprintf("Time step\tError at t = 2\n");
-fprintf("--------------------------------\n");
+fprintf("--------------------------\n");
 for i_k = 1:length(k)
-    fprintf("1/%d  \t%f\n", round(1/k(i_k)), abs(y_at_2(i_k) - y_ref(end)));
+    fprintf("1/%d    \t%f\n", round(1/k(i_k)), errors(i_k));
 end
 fprintf("\n");
 
 %% 2.1 (c)
 % Find the order of convergence based on the results of (b).
+fprintf("Running problem 2.1 (c)\n");
 
+% Display convergence rate table
+fprintf("Time step\tError at t = 2\tOrder\n");
+fprintf("------------------------------------\n");
+fprintf("1/%d    \t%f    \t-  \n", round(1/k(1)), errors(1));
+for i_k = 2:length(k)
+    fprintf( ...
+        "1/%d    \t%f    \t%f\n", ...
+        round(1/k(i_k)), ...
+        errors(i_k), ...
+        log(errors(i_k) / errors(i_k - 1)) / log(k(i_k)/k(i_k - 1)) ...
+    );
+end
+fprintf("\n");
 
 % === 2.2 ===
 
@@ -78,19 +99,36 @@ theta = 1/2;
 k = (1/2).^(4:9);
 y_at_2 = zeros(1, length(k));
 
-
 for i_k = 1:length(k)
     [t, y] = problem2(k(i_k), theta);
     y_at_2(i_k) = y(end);
 end
 
+% Calculate errors
+errors = abs(y_at_2 - y_ref(end));
+
 % Display table
 fprintf("Time step\tError at t = 2\n");
-fprintf("--------------------------------\n");
+fprintf("--------------------------\n");
 for i_k = 1:length(k)
-    fprintf("1/%d  \t%e\n", round(1/k(i_k)), abs(y_at_2(i_k) - y_ref(end)));
+    fprintf("1/%d    \t%e\n", round(1/k(i_k)), errors(i_k));
 end
 fprintf("\n");
 
 %% 2.2 (c)
 % Find the order of convergence based on the results of (b).
+fprintf("Running problem 2.2 (c)\n");
+
+% Display convergence rate table
+fprintf("Time step\tError at t = 2\tOrder\n");
+fprintf("------------------------------------\n");
+fprintf("1/%d    \t%e  \t-  \n", round(1/k(1)), errors(1));
+for i_k = 2:length(k)
+    fprintf( ...
+        "1/%d    \t%e  \t%f\n", ...
+        round(1/k(i_k)), ...
+        errors(i_k), ...
+        log(errors(i_k) / errors(i_k - 1)) / log(k(i_k)/k(i_k - 1)) ...
+    );
+end
+fprintf("\n");
