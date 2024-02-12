@@ -25,7 +25,8 @@ y(1) = 0;
 % Method 3 iteration, solving each step using Newton's method with eps=1e-8
 eps = 1e-8;
 for i = 1:n
-    f_i = @(x) x - y(i) - k*(1 / (1 + (t(i) + (1-theta)*k)^2) - 2*(theta*y(i) + (1-theta)*x)^2);
+    f_i = @(x) x - y(i) ...
+        - k*(1 / (1 + (t(i) + (1-theta)*k)^2) - 2*(theta*y(i) + (1-theta)*x)^2);
     f_i_prime = @(x) 1 + 4*k*(1-theta)*(theta*y(i) + (1-theta)*x);
 
     y(i + 1) = newton(f_i, f_i_prime, y(i), 100, eps, 0, 0);
