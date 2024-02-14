@@ -6,7 +6,7 @@ for i = 1:max_iter
     dx = -df(x) \ f(x);
     x = x + dx;
 
-    if norm(dx) < eps
+    if max(abs(dx)) < eps
         break;
     end
 end
