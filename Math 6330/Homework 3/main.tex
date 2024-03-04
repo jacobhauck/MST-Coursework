@@ -1,0 +1,151 @@
+\documentclass[nonumber]{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\newcommand{\hwnum}{3}
+
+
+\begin{document}
+	\maketitle
+	
+	\question*{1.89} Let $\ts = \Z$, and define $f(t) = g(t) = t^2$ for $t \in \ts$. Viewing $f$ as a function on $\R$, we have $f'(t) = 2t$. As we have calculated before, $g^\Delta(t) = 2t + 1$. Lastly, $(f \circ g)(t) = t^4$, so
+	\begin{equation*}
+		(f\circ g)^\Delta(t) = (t+1)^4 - t^4 = 4t^3 + 6t^2 + 4t + 1.
+	\end{equation*}
+	According to Theorem 1.87, there exists $c \in [2, \sigma(t)] = [2, 3]$ such that
+	\begin{equation*}
+		(f\circ g)^\Delta(2) = f'(g(c))g^\Delta(2).
+	\end{equation*}
+	Using the formulas for $(f\circ g)^\Delta$, $f'$, and $g^\Delta$, this means that
+	\begin{equation*}
+		4\cdot 2^3 + 6\cdot 2^2 + 4\cdot 2 + 1 = 2c^2\cdot (2\cdot 2 + 1)
+	\end{equation*}
+	or
+	\begin{equation*}
+		65 = 10c^2 \implies c = \pm \sqrt{\frac{13}{2}}.
+	\end{equation*}
+	Since $c \in [2,3]$, it follows that $c = \sqrt{\frac{13}{2}}$. Note that $\sqrt{\frac{13}{2}} \in [2,3]$, as promised, because
+	\begin{equation*}
+		8 \le 13 \le 18 \implies 4 \le \frac{13}{2} \le 9 \implies 2 \le \sqrt{\frac{13}{2}} \le 3.
+	\end{equation*}
+	
+	\newcommand{\tst}{\widetilde{\ts}}
+	\newcommand{\sigmat}{\widetilde{\sigma}}
+	\question*{1.95} Let $\ts = \N_0$, $\nu(t) = t^2$, $\tst = \nu(\ts)$, and $w(t) = 2t^2 + 3$. Note that $\tst = \{n^2 \mid n \in \N_0\}$, so, given $t = n^2 \in \tst$, we must have $\sigmat(t) = (n+1)^2 = (\sqrt{t} + 1)^2$. On the one hand, we have
+	\begin{equation*}
+		(w \circ \nu)^\Delta(t) = (2t^4 + 2)^\Delta = 2(t+1)^4 + 2 - (2t^4  +2) = 2(t+1)^4 - 2t^4.
+	\end{equation*}
+	On the other hand, we have
+	\begin{equation*}
+		\nu^\Delta(t) = (t+1)^2 - t^2 = 2t + 1, \qquad w^{\widetilde{\Delta}}(t) = \frac{w^{\sigmat}(t) - w(t)}{\sigmat(t) - t} = \frac{2(\sqrt{t} + 1)^4 - 2t^2}{(\sqrt{t} + 1)^2 - t}
+	\end{equation*}
+	because every point of $\tst$ is right-scattered. Thus,
+	\begin{equation*}
+		\left(w^{\widetilde{\Delta}}\circ \nu\right)(t)\nu^\Delta(t) = \frac{2(t + 1)^4 - 2t^4}{(t+1)^2 - t}(2t+1) = 2(t+1)^4 - 2t^4 = (w\circ\nu)^\Delta(t),
+	\end{equation*}
+	which agrees with the chain rule.
+	
+	\question*{1.96}
+	
+	Let $\ts = \N$, and define $\nu : \ts \to \R$ by $\nu(t) = -\frac{1}{t}$. Then $\nu$ is strictly increasing on $\ts$, but $\nu(\ts)$ is not a time-scale. Indeed, $0 \in \overline{\nu(\ts)}$, but $0 \notin \nu(\ts)$, so $\nu(\ts)$ is not closed.
+	
+	\question*{1.100}
+	
+	Let $\ts = \left\{\frac{n}{2} \mid n \in \N_0\right\}$, and consider the integral
+	\begin{equation*}
+		\int_0^t 2\tau(2\tau -1)\Delta \tau.	
+	\end{equation*}
+	If we define $\nu(t) = 2t$ and $f(t) = t(2t-1)$, then
+	\begin{equation*}
+		\nu^\Delta(t) = 2, \qquad \nu^{-1}(t) = \frac{t}{2}, \qquad f(t)\nu^\Delta(t) = 2t(2t-1), \qquad \left(f\circ\nu^{-1}\right)(t) = \frac{t}{2}(t-1).
+	\end{equation*}
+	By the substitution rule, we have
+	\begin{equation*}
+		\int_0^t 2\tau(2\tau-1)\Delta \tau = \int_0^t f(\tau)\nu^\Delta(\tau)\Delta \tau = \int_{\nu(0)}^{\nu(t)} \left(f\circ \nu^{-1}\right)(s)\widetilde{\Delta} s = \frac{1}{2}\int_0^{2t}s(s-1)\widetilde{\Delta}s.
+	\end{equation*}
+	Note that on $\tst = \N_0$, an antiderivative of $s(s-1) = s^{(2)}$ is $\frac{1}{3}s^{(3)}$, so
+	\begin{equation*}
+		\int_0^t 2\tau(2\tau-1)\Delta \tau = \frac{1}{2}\int_0^{2t}s(s-1)\widetilde{\Delta}s = \frac{1}{6} s^{(3)}\bigg\vert_0^{2t} = \frac{t(2t-1)(2t-2)}{3}
+	\end{equation*}
+	
+	\question*{1.106}
+	Let $\ts = \overline{q^\Z}$, where $q > 1$, and consider
+	\begin{equation*}
+		\int_0^t s^n \Delta s,
+	\end{equation*}
+	where $n \ge 1$ is an integer. For $k \in \Z$, we have
+	\begin{equation*}
+		\int_0^t s^n\Delta s = \int_0^{q^k} s^n\Delta s + \int_{q^k}^t s^n \Delta s.
+	\end{equation*}
+	Since $|s^n| \le q^{nk}$ on $[0,q^k]$, by Theorem 1.76 (viii),
+	\begin{equation*}
+		\left|\int_0^{q^k}s^n\Delta s\right| \le \int_0^{q^k}q^{nk}\Delta s = q^{(n+1)k}.
+	\end{equation*}
+	As $k \to -\infty$, $q^{(n+1)k} \to 0$ because $n \ge 1$ and $q > 1$. Hence,
+	\begin{equation*}
+		\int_0^t s^n \Delta s = \lim_{k\to-\infty}\int_{q^k}^t s^n\Delta s.
+	\end{equation*}
+	For all $k < \log_q(t)$, we have $q^k < t$. Furthermore, assuming $k < \log_q(t)$, every point in $[q^k, t] \cap \ts$ is isolated, so by Theorem 1.79 (ii) (recall that $\mu(q^j) = (q-1)q^j$),
+	\begin{align*}
+		\int_{q^k}^t s^n \Delta s &= \sum_{j = k}^{\log_q(t) - 1} q^{jn}(q-1)q^j = (q-1)\sum_{j=k}^{\log_q(t) - 1}\left(q^{n+1}\right)^j\\
+		&= (q-1)\frac{\left(q^{n+1}\right)^{\log_q(t)} - \left(q^{n+1}\right)^k}{q^{n+1} - 1} \\
+		&= \frac{t^{n+1} - q^{k(n+1)}}{\sum\limits_{\mu=0}^{n} q^\mu},
+	\end{align*}
+	where the last equality follows from the well-known fact that $x^{n+1} - 1 = (x-1)\sum\limits_{\mu=0}^n x^\mu$ for any $x$ and any integer $n \ge 0$ (we can cancel the $(q-1)$ factor because $q > 1$ by hypothesis).
+	
+	Therefore,
+	\begin{equation*}
+		\int_0^t s^n\Delta s = \lim_{k\to -\infty}\int_{q^k}^ts^n\Delta s = \lim_{k\to-\infty}\frac{t^{n+1} - q^{k(n+1)}}{\sum\limits_{\mu=0}^nq^\mu} = \frac{t^{n+1}}{\sum\limits_{\mu=0}^n q^\mu}
+	\end{equation*}
+	where we have again used the fact that $q^{k(n+1)} \to 0$ as $k \to -\infty$ because $n \ge 1$ and $q > 1$.
+	
+	\question*{1.107}
+	Let $\ts = [0,1] \cup [3,4]$. We can find $h_k(\cdot,0)$ for $k \in \{0,1,2,3\}$ by using the recursive definition:
+	\begin{equation*}
+		h_{k+1}(t,s) = \int_s^t h_k(\tau, s)\Delta \tau, \quad k = 0,1,2,\dots, \qquad h_0(t,s) = 1.
+	\end{equation*}
+	Thus, $h_0(t,0) = 1$. To find $h_1(t,0)$, we compute
+	\begin{equation*}
+		h_1(t,0) = \int_0^t h_0(\tau,0)\Delta \tau = \int_0^t\Delta\tau = t.
+	\end{equation*}
+	To find $h_2(t,0)$, we note that if $t \in [0,1]$, then
+	\begin{equation*}
+		h_2(t,0) = \int_0^t h_1(\tau,0)\Delta\tau = \int_0^t\tau\Delta\tau = \int_0^t \tau\dee\tau = \frac{t^2}{2}.
+	\end{equation*}
+	If $t = 3$, then
+	\begin{equation*}
+		h_2(3,0) = \int_0^3h_1(\tau,0)\Delta\tau = \int_0^1\tau\Delta\tau + \int_1^3\tau\Delta\tau = \frac{1}{2} + \int_1^{\sigma(1)}\tau\Delta\tau = \frac{1}{2} + 1 \cdot\mu(1) = \frac{5}{2}.
+	\end{equation*}
+	If $t \in [3,4]$, then
+	\begin{equation*}
+		h_2(t,0) = \int_0^th_1(\tau,0)\Delta\tau = \int_0^3\tau\Delta \tau + \int_3^t \tau\dee\tau = \frac{5}{2} + \frac{t^2}{2} - \frac{9}{2} = \frac{t^2}{2} - 2.
+	\end{equation*}
+	Thus, 
+	\begin{equation*}
+		h_2(t,0) = \begin{cases}
+			\frac{t^2}{2} & t \in [0,1] \\[0.5em]
+			\frac{t^2}{2} - 2 & t \in [3,4].
+		\end{cases}
+	\end{equation*}
+	To find $h_3(t,0)$, we note that if $t \in [0,1]$, then
+	\begin{equation*}
+		h_3(t,0) = \int_0^t h_2(\tau,0)\Delta\tau = \int_0^t \frac{\tau^2}{2}\dee\tau = \frac{t^3}{6}.
+	\end{equation*}
+	If $t = 3$, then
+	\begin{equation*}
+		h_3(t,0) = \int_0^1 h_2(\tau,0)\Delta\tau + \int_1^3h_2(\tau,0)\Delta\tau = \frac{1}{6} + \int_1^{\sigma(1)} \frac{\tau^2}{2}\Delta\tau = \frac{1}{6} + \frac{1}{2}\cdot\mu(1) = \frac{7}{6}.
+	\end{equation*}
+	If $t \in [3,4]$, then
+	\begin{align*}
+		h_3(t,0) &= \int_0^3 h_2(\tau,0)\Delta\tau + \int_3^th_2(\tau,0)\Delta\tau = \frac{7}{6} + \int_3^t \left(\frac{t^2}{2} - 2\right)\dee \tau \\
+		&= \frac{7}{6} + \left[\frac{\tau^3}{6} - 2\tau\right]_3^t = \frac{t^3}{6} - 2t + \frac{7}{6} - \frac{27}{6} + 6 \\
+		&= \frac{t^3}{6} - 2t +\frac{8}{3}. 
+	\end{align*}
+	Thus,
+	\begin{equation*}
+		h_3(t,0) = \begin{cases}
+			\frac{t^3}{6} & t\in[0,1] \\[0.5em]
+			\frac{t^3}{6} - 2t + \frac{8}{3} & t\in [3,4].	
+		\end{cases}
+	\end{equation*}
+\end{document}

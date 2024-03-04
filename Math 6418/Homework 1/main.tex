@@ -35,13 +35,23 @@
 	
 	\textbf{Continuity}
 	
-	Let $\varphi_n \to \varphi$ in $\dist(\R)$. Then clearly $R\varphi_n \to R\varphi$ in $\dist(\R)$. Recalling that convolution of a test function with a distribution is continuous on $\dist(\R)$, it follows that $u * R\varphi_n \to u * R\varphi$ in $\dist(\R)$. Then $u*R\varphi_n$ also converges to $u *R\varphi$ uniformly on $\left[-\frac{\varepsilon}{2}, \frac{\varepsilon}{2}\right]$, so
+	Let $\varphi_n \to \varphi$ in $\dist(\R)$. Then clearly $R\varphi_n \to R\varphi$ in $\dist(\R)$, and by the continuity of $u$, $u * R\varphi_n \to u * R\varphi$ pointwise. If $\{u*R\varphi_n\}_{n=1}^\infty$ is uniformly bounded on $\left[-\frac{\varepsilon}{2},\frac{\varepsilon}{2}\right]$, then the bounded convergence theorem implies that
 	\begin{equation}
 		\frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2}(u*R\varphi_n)(y)\dee y \to 
 		\frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2}(u*R\varphi)(y)\dee y;
 	\end{equation}
 	that is, $\langle u * k_\varepsilon, \varphi_n\rangle \to \langle u*k_\varepsilon, \varphi\rangle$. Thus, $u*k_\varepsilon$ is continuous.
 	
+	To show that $\{u*R\varphi_n\}$ is uniformly bounded on $\left[-\frac{\varepsilon}{2}, \frac{\varepsilon}{2}\right]$, suppose for the sake of contradiction that it is not. Then for all $m > 0$, there exists $\varphi_{n_m}$ and $x_m \in \left[-\frac{\varepsilon}{2}, \frac{\varepsilon}{2}\right]$ such that
+	\begin{equation*}
+		m \le |(u*\varphi_{n_m})(x_m)| = |\langle u, \tau_{x_m}R\varphi_{n_m}\rangle|.
+	\end{equation*}
+	There is a convergent subsequence $\{x_{m_k}\}_{k=1}^\infty$ such that $x_{m_k} \to x \in \left[-\frac{\varepsilon}{2}, \frac{\varepsilon}{2}\right]$. The convergence of $\{x_{m_k}\}$ and the convergence of $\{\varphi_{n_{m_k}}\}$ in $\dist(\R)$ ensure that $\tau_{x_{m_k}}R\varphi_{n_{m_k}} \to \tau_xR\varphi$ in $\dist(\R)$ as $k \to \infty$. Then, by the continuity of $u$,
+	\begin{equation*}
+		\infty = \lim_{k\to\infty}|\langle u, \tau_{x_{m_k}}R\varphi_{n_{m_k}}\rangle| = |\langle u, \tau_xR\varphi\rangle| < \infty,
+	\end{equation*}
+	which is a contradiction.
+		
 	\textbf{Extension}
 	
 	Definition (\ref{eq:convolution_defn}) is a good definition of convolution at least in the sense that it reduces to convolution with $k_\varepsilon$ for regular distributions. Indeed, suppose that $f \in L^1_\text{loc}(\R)$. Then for any $\varphi \in \dist(\R)$,
@@ -75,7 +85,7 @@
 	
 	\question Since $\int k_\varepsilon = 1$ all $\varepsilon$, and $k_\varepsilon(x) \to 0$ as $\varepsilon \to 0$ if $x \ne 0$, it would seem that $k_\varepsilon$ behaves like $\delta_0$ as $\varepsilon \to 0$. Thus, it would make sense that $u * k_\varepsilon \text{``} \to u * \delta_0 = u\text{''}$. That is, it would make sense that $u * k_\varepsilon \to u$ as $\varepsilon \to 0$ in the topology of $\dist'(\R)$.
 	
-	In fact, this turns out to be the case. Let $\varphi \in \dist(\R)$. Since $u*R\varphi$ is a test function and therefore continuous, it has an antiderivative $\psi$. Then
+	In fact, this turns out to be the case. Let $\varphi \in \dist(\R)$. Since $u*R\varphi$ is $C^\infty$ and therefore continuous, it has an antiderivative $\psi$. Then
 	\begin{align}
 		\lim_{\varepsilon \to 0} \langle u * k_\varepsilon, \varphi\rangle &= \lim_{\varepsilon\to 0}\frac{1}{\varepsilon}\int_{-\frac{\varepsilon}{2}}^\frac{\varepsilon}{2} (u * R\varphi)(y)\dee y \\
 		&= \lim_{\varepsilon \to 0} \frac{\psi\left(\frac{\varepsilon}{2}\right) - \psi\left(-\frac{\varepsilon}{2}\right)}{\varepsilon} = \psi'(0) \\
@@ -84,5 +94,29 @@
 	\end{align}
 	Hence, $u * k_\varepsilon \to u$ in $\dist'(\R)$ as $\varepsilon \to 0$.
 	
-	\question
+	\question For $u, v \in \dist'(\R)$ we are tempted to define $u * v \in \dist'(\R)$ by
+	\begin{equation}
+		\langle u * v, \varphi \rangle = \langle u, Rv * \varphi\rangle, \qquad \varphi \in \dist(\R).
+	\end{equation}
+	Unfortunately, although $Rv * \varphi$ is $C^\infty$, it may not be compactly supported. For example, if $Rv = 1$, then $Rv * \varphi = \int\varphi$, which is not compactly supported as long as $\int \varphi \ne 0$. Thus, it may not make sense to take the action of $u$ on $Rv * \varphi$.
+	
+	Furthermore, this definition would obviously be linear in $\varphi$ by the linearity of convolution and of $u$, but to prove continuity, we would need to prove that $Rv * \varphi_n \to Rv*\varphi$ in $\dist(\R)$ whenever $\varphi_n \to \varphi$ in $\dist(\R)$. So, not only would we need that $Rv*\varphi_n$ is compactly supported, but we would need that each $Rv*\varphi_n$ is supported in the same compact set.
+	
+	If we could provide some restriction on $v$ so that $Rv$ could allay these concerns, then there would be some hope of defining $u * v$ as above. Alternatively, we might be able to restrict $u$ so that it's action could be extended to a function that is not compactly supported. This is essentially what we did in part 1. with $k_\varepsilon$. Using the fact the $Rk_\varepsilon = k_\varepsilon$, a simple change of variables shows that the proposed definition above and the definition given for convolution with $k_\varepsilon$ are one and the same, assuming that the action of $k_\varepsilon$ is defined by integration (in which case we must use the compact support of $k_\varepsilon$ to deal with the fact that $Rv*\varphi$ might not be compactly supported).
+		
+	On the bright side, if $f, g\in L^1(\R)$ are viewed as distributions, then $f*g$ as defined above is the same as the usual convolution of $f$ with $g$, which I will denote $f \star g$ to avoid confusion. Indeed, for any $\varphi \in \dist(\R)$,
+	\begin{align}
+		\langle f * g, \varphi\rangle &= \langle f, Rg * \varphi\rangle \\
+		&= \int_{-\infty}^\infty f(x) (Rg \star \varphi)(x) \dee x \qquad \text{($*$ reduces to $\star$ for $Rg$ and $\varphi$)}\\
+		&= \int_{-\infty}^\infty\int_{-\infty}^\infty f(x) Rg(y)\varphi(x-y)\dee y \dee x \\
+		&= \int_{-\infty}^\infty\int_{-\infty}^\infty f(x)g(-y)\varphi(x-y)\dee y\dee x.
+	\end{align}
+	If we let $y' = x- y$, then we get
+	\begin{align}
+		\langle f * g, \varphi\rangle &= \int_{-\infty}^\infty \int_{-\infty}^\infty f(x)g(y'-x)\varphi(y')\dee y' \dee x \\
+		&= \int_{-\infty}^\infty \int_{-\infty}^\infty f(x)g(y'-x)\varphi(y')\dee x \dee y' \\
+		&= \int_{-\infty}^\infty (f \star g)(y')\varphi(y') \dee y' \\
+		&= \langle f\star g, \varphi\rangle.
+	\end{align}
+	Thus, as distributions, we have $f * g = f\star g$, as claimed.
 \end{document}

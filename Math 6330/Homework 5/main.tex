@@ -1,0 +1,30 @@
+\documentclass[nonumber]{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\newcommand{\hwnum}{5}
+
+
+\begin{document}
+	\maketitle
+	
+	\question*{Bifurcation diagram for $\dot{x} = 1 + dx - x^3$}
+	
+	\question*{2.4}
+	
+	Let $f(x) = kx - cx^2 -hx$, where $k$, $c$, and $h$ are positive. Consider the model $\dot{x} = f(x)$, where $x$ represents the size of a population.
+	
+	Then $f(x) = 0$ gives the equilibrium points as $x_1=0$ and $x_2 = \frac{k-h}{c}$. Thus, if $k < h$, then $x_2 < 0$. Moreover, $f(x) = -(h-k)x - cx^2 < 0$ for all $x > 0$, so solutions starting with $x_0 > 0$ approach $x_1 = 0$. That is, the population will always be exterminated.
+	
+	If $k = h$, then $x_1 = x_2$, and there is only one equilibrium point. In this case, $f(x) < 0$ for all $x > 0$, so the population will still be exterminated. 
+	
+	If $k > h$, then, because $f$ is a downward parabola, we have $f(x) > 0$ for $x < x_2$ and $f(x) < 0$ for $x > x_2$. Therefore, all solutions with $x_0 > 0$ approach the equilibrium $x_2>0$.
+	
+	\question*{2.11}
+	
+	\begin{alphaparts}
+		\questionpart
+		
+		\questionpart
+	\end{alphaparts}
+\end{document}
