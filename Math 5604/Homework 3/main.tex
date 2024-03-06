@@ -142,7 +142,7 @@
 	\end{equation*}
 	Therefore,
 	\begin{equation*}
-		\text{GTE} \le \frac{Ck}{2L}\left[e^{-N\log\left(1-\frac{TL}{N}\right)} - 1\right] \le \frac{Ck}{2L}\left[e^{TL + \frac{(TL)^2}{N}} - 1\right] \le \frac{Ck}{2L}\left[e^{TL + (TL)^2} - 1\right],
+		\text{GTE} \le \frac{Ck}{2L}\left[e^{-N\log\left(1-\frac{TL}{N}\right)} - 1\right] \le \frac{Ck}{2L}\left[e^{TL + \frac{(TL)^2}{N}} - 1\right] \le \frac{Ck}{2L}\left[e^{\frac{3TL}{2}} - 1\right],
 	\end{equation*}
 	which shows that $\text{GTE} = \bigoh(k)$ as $k \to 0$. Thus, the Backward Euler method is convergent, and the convergence order is 1.
 \end{document}
