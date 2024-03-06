@@ -1,0 +1,52 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\usepackage[table]{xcolor}
+
+\newcommand{\hwnum}{4}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question
+	Consider
+	\begin{equation}
+		\label{eq:ode}
+		y' = \left(1-2t^3\right)y^2, \quad t > 0; \qquad y(0) = 1.
+	\end{equation}
+	
+	\begin{alphaparts}
+		\questionpart In order to apply the second-order Taylor series method, we need to use the ODE (\ref{eq:ode}) to find $y''$ in terms of $y$:
+		\begin{equation*}
+			y'' = \dl{}{t}\big[\left(1-2t^3\right)y^2\big] = -6t^2y^2 + 2\left(1-2t^3\right)yy' = -6t^2y^2 + 2\left(1-2t^3\right)^2y^3.
+		\end{equation*}
+		Then the second-order Taylor series method is given by
+		\begin{equation*}
+			\begin{cases}
+				y^{n+1} = y^n + k\left(1-2t_n^3\right)\left(y^n\right)^2 + \frac{k^2}{2}\left[-6t_n^2\left(y^n\right)^2 + 2\left(1-2t_n^3\right)\left(y^n\right)^3\right], & n = 0,1,2\dots \\
+				y^0 = 1.
+			\end{cases}
+		\end{equation*}
+		This method is implemented in \verb*|ts2.m|.
+		
+		\questionpart The recursive rule for the two-step Adams-Bashforth method is given by 
+		\begin{equation*}
+			y^{n+1} = y^n + k\left[\frac{3}{2}f\left(t_n, y^n\right) - \frac{1}{2}f\left(t_{n-1}, y^{n-1}\right)\right], \quad n \ge 0,
+		\end{equation*}
+		where, in our case, $f(t,y) = \left(1-2t^3\right)y^2$. We use the forward Euler method to obtain $y^1$, as the forward Euler method has second-order local truncation error. Thus, our scheme is
+		\begin{equation*}
+			\begin{cases}
+				y^{n+1} = y^n + k\left[\frac{3}{2}\left(1-2t_n^3\right)\left(y^n\right)^2 - \frac{1}{2}\left(1-2t_{n-1}^3\right)\left(y^{n-1}\right)^2\right] & n = 1, 2, 3,\dots \\
+				y^1 = y^0 + k\left(1-2t_0^3\right)\left(y^0\right)^2 \\
+				y^0 = 1.
+			\end{cases}
+		\end{equation*}
+		This method is implemented in \verb*|ab2.m|.
+		\questionpart 
+	\end{alphaparts}
+	
+	\question
+	
+\end{document}
