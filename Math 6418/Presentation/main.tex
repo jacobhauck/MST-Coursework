@@ -1,0 +1,67 @@
+\documentclass[]{beamer}
+\input{../../mybeamer.tex}
+\input{../../standardcmd.tex}
+
+
+\title{The Fréchet Derivative}
+\author{Jacob Hauck}
+\institute{Math 6418}
+\date{}
+
+\begin{document}
+	\frame{\titlepage}
+	
+	\begin{frame}{Motivation}
+		Let $X,Y$ be normed linear spaces. We know a lot about linear maps $A : X \to Y$ -- what can we do about about nonlinear maps?
+		\vfill
+		\pause
+		
+		Approximate a nonlinear map $f : U \to Y$ by something linear:
+		\pause
+		
+		given $x_0 \in U$, find a linear operator $A_{x_0} \in B(X,Y)$ such that
+		\begin{equation*}
+			f(x) - f(x_0) \approx A_{x_0}(x-x_0)
+		\end{equation*}
+		for $x$ close to $x_0$ (point-slope form)
+		\vfill
+		\pause
+	\end{frame}
+	
+	\begin{frame}{Motivation}
+		Say $X = Y = \R$, then $A_{x_0}$ is given by multiplication by a number $a_{x_0} \in \R$, and a natural choice for $a_{x_0}$ is $f'(x_0)$, as
+		\begin{equation*}
+			f(x) - f(x_0) \approx f'(x_0)(x-x_0).
+		\end{equation*}
+		\vfill
+		\pause
+		
+		By definition,
+		\begin{equation*}
+			\frac{f(x_0+h) - f(x_0) - f'(x_0)h}{h} \to 0 \quad\text{as}\quad h\to 0,
+		\end{equation*}
+		\pause
+		so
+		\begin{equation*}
+			f(x_0+h) - f(x_0) = f'(x_0)h + \omega(h)h,
+		\end{equation*}
+		where $\omega(h) \to 0$ as $h \to 0$.
+	\end{frame}
+	
+	\begin{frame}{Definition of the Fréchet Derivative}
+		\begin{block}{Definition (Fréchet Derivative)}
+		A function $f : U \to Y$ is called \textbf{Fréchet differentiable} at $x \in U$ if there exists $A \in B(X,Y)$ such that
+		\begin{equation*}
+			\frac{\lVert f(x+h) - f(x) - Ah \rVert_Y}{\lVert h \rVert_X} \to 0 \quad \text{as} \quad \lVert h\rVert_X\to 0,
+		\end{equation*}
+		in which case $A$ is called the \textbf{Fréchet derivative} of $f$ at $x$, also denoted by
+		\begin{equation*}
+			A = f'(x) = Df(x)
+		\end{equation*}
+		\end{block}
+		\vfill
+		\pause
+		
+		The Fréchet derivative is the same as the usual derivative if $f \in C^1(\R)$.
+	\end{frame}
+\end{document}

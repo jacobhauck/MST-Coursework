@@ -1,0 +1,159 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\usepackage{listings}
+\usepackage{booktabs}
+
+\newcommand{\hwnum}{5 and 6}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question
+	Consider the IVP
+	\begin{gather*}
+		y'' + x^2y = (x^2-4)\sin(2x), \qquad x > 0 \\
+		y(0) = 0, \quad y'(0) = 2.
+	\end{gather*}
+	In order to solve this IVP numerically, we rewrite it as a system of ODEs by defining $z = y'$. Then we can equivalently solve
+	\begin{align*}
+		y' &= z \\
+		z' &= -x^2y + (x^2-4)\sin(2x) \\
+		y(0) &= 0, \qquad z(0) = 2.
+	\end{align*}
+	For all numerical solutions, we approximation $y(x_n)$ and $z(x_n)$ by $y^n$ and $z^n$ at the points $\{x_n\}_{n=0}^N$, which are evenly spaced on $[0,1]$ by $k = \frac{1}{N}$.
+	
+	\begin{alphaparts}
+		\questionpart As the BDF2 method is a two-step method, we need to obtain $y^1$ and $z^1$ before we can start the main iteration. For this we can use the backward Euler method, which has second-order local truncation error to match the second-order global truncation error of the BDF2 method. This leads to the following implicit scheme
+		\begin{align*}
+			y^{n+1} &= \frac{1}{3}\left[4y^n - y^{n-1} + 2kz^{n+1}\right] && n =1,2,\dots, N-1\\
+			z^{n+1} &= \frac{1}{3}\left[4z^n - z^{n-1} +2k(-x_{n+1}^2y^{n+1} + (x_{n+1}^2 - 4)\sin(2x_{n+1}))\right]&& n=1,2,\dots,N-1 \\
+			y^1 &= y^0 + kz^1 \\
+			z^1 &= z^0 + k(-x_1^2y^1 + (x_1^2 -4)\sin(2x_1)) \\
+			y^0 &= 0 \\
+			z^0 &= 2.
+		\end{align*}
+		Since the original equation is linear, we can easily solve the implicit equations above to obtain the following equivalent, explicit scheme
+		\begin{align*}
+			z^{n+1} &= \frac{\frac{1}{3}\left[4z^n - z^{n-1} + 2k\left[-\frac{1}{3}x_{n+1}^2(4y^n - y^{n-1}) + (x_{n+1}^2 - 4)\sin(2x_{n+1})\right]\right]}{1 + \frac{4k^2}{3}x_{n+1}^2} && n = 1,2,\dots,N-1\\
+			y^{n+1} &= \frac{1}{3}\left[4y^n - y^{n-1} + 2kz^{n+1}\right] && n =1,2,\dots, N-1\\
+			z^1 &= \frac{z^0 + k(-x_1^2y^0 + (x_1^2-4))\sin(2x_1)}{1 + k^2x_1^2} \\
+			y^1 &= y^0 + kz^1 \\
+			y^0 &= 0 \\
+			z^0 &= 2.
+		\end{align*}
+		\questionpart
+		
+		\questionpart Since the TR-BDF2 method is a one-step method, we immediately obtain the following implicit scheme
+		\begin{align*}
+			y_*^{n+1} &= y^n + \frac{k}{4}\left[z^n + z_*^{n+1}\right] \\
+			z_*^{n+1} &= z^n + \frac{k}{4}\left[-x_n^2y^n + (x_n^2 - 4)\sin(2x_n) - x_{n+1/2}^2y_*^{n+1} + (x_{n+1/2}^2-4)\sin(2x_{n+1/2})\right] \\
+			y^{n+1} &= \frac{1}{3}\left[4y_*^{n+1} - y^n + kz^{n+1}\right] \\
+			z^{n+1} &= \frac{1}{3}\left[4z_*^{n+1} - z^n + k\left[-x_{n+1}^2y^{n+1} + (x_{n+1}^2 - 4)\sin(2x_{n+1})\right]\right] \\
+			&\text{for $n = 0, 1, \dots, N-1$, and} \\
+			y^0 &= 0 \\
+			z^0 &= 2,
+		\end{align*}
+		where $x_{n+1/2} = x_n + \frac{k}{2}$. As in part (a), we can solve this scheme to obtain an equivalent explicit scheme
+		\begin{align*}
+			z_*^{n+1} &= \frac{z^n + \frac{k}{4}\left[-x_n^2y^n + (x_n^2-4)\sin(2x_n) -x_{n+1/2}^2\left(y^n + \frac{k}{4}z^n\right) + (x_{n+1/2}^2-4)\sin(2x_{n+1/2})\right]}{1 + \frac{k^2}{16}x_{n+1/2}^2} \\
+			y_*^{n+1} &= y^n + \frac{k}{4}\left[z^n + z_*^{n+1}\right] \\
+			z^{n+1} &= \frac{\frac{1}{3}\left[4z_*^{n+1} - z^n + k\left[-\frac{x_{n+1}^2}{3}\left[4y_*^{n+1} - y^n\right] + (x_{n+1}^2 -4)\sin(2x_{n+1})\right]\right]}{1+\frac{k^2}{9}x_{n+1}^2} \\
+			y^{n+1} &= \frac{1}{3}\left[4y_*^{n+1} - y^n + kz^{n+1}\right]\\
+			&\text{for $n = 0,1,\dots,N-1$, and} \\
+			y^0 &= 0 \\
+			z^0 &= 2.
+		\end{align*}
+		
+		\questionpart 
+
+	\end{alphaparts}
+	
+	\question Consider the BVP
+	\begin{gather*}
+		y'' + x^2y = (x^2-4)\sin(2x), \qquad 0 < x < \pi \\
+		y(0) = 0, \qquad y'(\pi) + 2y(\pi) = 2.
+	\end{gather*}
+	For all numerical solutions, we approximation $y(x_n)$ by $y_n$ at the points $\{x_n\}_{n=0}^N$, which are evenly spaced on $[0,1]$ by $h = \frac{1}{N}$.
+	\begin{alphaparts}
+		\questionpart Using the centered difference method to approximate $y''$ on the interior of the domain, we get the following scheme for the interior points $y_1, y_2, \dots y_{N-1}$
+		\begin{equation*}
+			\frac{y_{n+1} - 2y_n + y_{n-1}}{h^2} + x_n^2y_n = (x_n^2- 4)\sin(2x_n), \qquad n = 1, 2, \dots, N-1.
+		\end{equation*}
+		The left boundary condition gives the discrete condition $y_0 = 0$, but the right boundary condition involves the first order derivative $y'$; to approximate this with a centered difference, we would need a point $x_{N+1} = x_N + h$ outside of the domain (assuming that $y'$ can be continuously extended, giving us the approximation $y_{N+1} \approx y(x_{N+1})$). By enforcing the differential equation at the point $x_N$, we can obtain another equation involving the point $x_{N+1}$, which we can combine with the boundary condition to eliminate the need for information at $x_{N+1}$, as follows:
+		\begin{gather*}
+			\frac{y_{N+1}-y_{N-1}}{2h} + 2y_N = 2 \qquad \text{(right boundary condition)}\\
+			\frac{y_{N+1} - 2y_N + y_{N-1}}{h^2} + x_N^2y_N = (x_N^2-4)\sin(2x_N) \qquad \text{(equation at $x_N$)}
+		\end{gather*}
+		Eliminating $y_{N+1}$ gives
+		\begin{equation*}
+			\frac{2y_{N} -y_{N-1} +h^2\left[-x_N^2y_N + (x_N^2 - 4)\sin(2x_N)\right]}{2h} + 2y_N = 2.
+		\end{equation*}
+		Substituting the explicit condition $y_0 = 0$ into the $n =1$ equation and collecting all our equations together, we obtain the scheme
+		\begin{align*}
+			\left(x_1^2 - \frac{2}{h^2}\right)y_1 + \frac{1}{h^2}y_2 &= (x_1^2-4)\sin(2x_1) \\
+			\frac{1}{h^2}y_{n-1} + \left(x_n^2 - \frac{2}{h^2}\right)y_n + \frac{1}{h^2}y_{n+1} &= (x_n^2-4)\sin(2x_n), \qquad n = 2,3,\dots, N-1 \\
+			 -\frac{1}{2h}y_{N-1} + \left(\frac{1}{h} -\frac{hx_N^2}{2} + 2\right)y_N &= 2-\frac{h}{2}(x_N^2-4)\sin(2x_N).
+		\end{align*}
+		We can write this system of equations in matrix-vector form $Ay = b$, where
+		\begin{equation*}
+			A = \left[\begin{matrix}
+				x_1^2-\frac{2}{h^2} & \frac{1}{h^2} &  &  & & \\
+				\frac{1}{h^2} & x_2^2 - \frac{2}{h^2} & \frac{1}{h^2} &  &  & \\
+				 & \frac{1}{h^2} & x_3^3 - \frac{2}{h^2} & \frac{1}{h^2} & &\\
+			     & & \ddots &  & \\
+				 &  & \frac{1}{h^2} & x_{N-1}^2 - \frac{2}{h^2} & \frac{1}{h^2} \\
+				 &  &  & -\frac{1}{2h} & \frac{1}{h} - \frac{hx_N^2}{2} +2
+			\end{matrix}\right],
+		\end{equation*}
+		where empty entries are assumed to be 0, and
+		\begin{equation*}
+			y = \left[\begin{matrix}y_1 \\ y_2 \\ \vdots \\ y_N\end{matrix}\right], \qquad b = \left[\begin{matrix}(x_1^2 - 4)\sin(2x_1) \\[0.3em] (x_2^2-4)\sin(2x_2) \\ \vdots \\ (x_{N-1}^2-4)\sin(2x_{N-1}) \\[0.3em] 2 - \frac{h}{2}(x_N^2 - 4)\sin(2x_N)\end{matrix}\right].
+		\end{equation*}
+		
+		\questionpart
+		
+		\questionpart Using the centered difference method to approximate $y''$ on the interior of the domain, we get the following scheme for the interior points $y_1, y_2, \dots y_{N-1}$
+		\begin{equation*}
+			\frac{y_{n+1} - 2y_n + y_{n-1}}{h^2} + x_n^2y_n = (x_n^2- 4)\sin(2x_n), \qquad n = 1, 2, \dots, N-1.
+		\end{equation*}
+		The left boundary condition gives the discrete condition $y_0 = 0$, but the right boundary condition involves the first order derivative $y'$; to approximate this with a second-order, one-sided method, we recall from class that, for a function $u(t)$,
+		\begin{equation*}
+			u'(t) = \frac{-3u(t) + 4u(t+k) - u(t+2k)}{2k} + \bigoh(k^2).
+		\end{equation*}
+		Taking $u = y$, $k = -h$, and $t=\pi$, this implies that
+		\begin{equation*}
+			y'(\pi) = \frac{3y(\pi) - 4y(\pi - h) + y(\pi - 2h)}{2h} + \bigoh(h^2).
+		\end{equation*}
+		This leads to the second-order, one-sided discretization of the right boundary condition
+		\begin{equation*}
+			\frac{3y_N - 4y_{N-1} + y_{N-2}}{2h} + 2y_N = 2.
+		\end{equation*}
+		Combining the left boundary condition with the first interior equation, we have the scheme
+		\begin{align*}
+			\left(x_1^2 -\frac{2}{h^2}\right)y_1 + \frac{1}{h^2}y_2 &= (x_1^2-4)\sin(2x_1) \\
+			\frac{1}{h^2}y_{n-1} + \left(x_n^2 - \frac{2}{h^2}\right)y_n + \frac{1}{h^2}y_{n+1} &= (x_n^2- 4)\sin(2x_n), \qquad n = 2, 3, \dots, N-1 \\
+			\frac{1}{2h}y_{N-2} - \frac{2}{h}y_{N-1} + \left(2 + \frac{3}{2h}\right)y_N &= 2.
+		\end{align*}
+		This system of equations can be written in matrix-vector form $Ay=b$, where
+		\begin{equation*}
+			A = \left[\begin{matrix}
+				x_1^2 - \frac{2}{h^2} & \frac{1}{h^2} & & \\
+				\frac{1}{h^2} & x_2^2 - \frac{2}{h^2} & \frac{1}{h^2} & \\
+				& \frac{1}{h^2} & x_3^2 - \frac{2}{h^2} & \frac{1}{h^2} & \\
+				& & \ddots & & \\
+				& & \frac{1}{h^2} & x_{N-1}^2 - \frac{2}{h^2} & \frac{1}{h^2} \\[0.3em]
+				& & \frac{1}{2h} & -\frac{2}{h} & 2 + \frac{3}{2h}
+			\end{matrix}\right],
+		\end{equation*}
+		where blank entries are assumed to be 0, and
+		\begin{equation*}
+			y = \left[\begin{matrix}y_1 \\ y_2 \\ \vdots \\ y_N\end{matrix}\right], \qquad b = \left[\begin{matrix}
+				(x_1^2-4)\sin(2x_1) \\ (x_2^2 - 4)\sin(2x_2) \\ \vdots \\ (x_{N-1}^2-4)\sin(2x_{N-1}) \\ 2
+			\end{matrix}\right].
+		\end{equation*}
+	\end{alphaparts}
+	
+\end{document}

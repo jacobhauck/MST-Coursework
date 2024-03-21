@@ -1,0 +1,30 @@
+
+\usepackage{etoolbox}
+\usepackage{xcolor}
+\newtoggle{handout}
+\togglefalse{handout}
+
+\iftoggle{handout}{
+	\usepackage{pgfpages}
+	\pgfpagesuselayout{4 on 1}[border shrink=5mm]
+}{}
+
+\setbeamertemplate{footline}
+{
+	\hbox{\begin{beamercolorbox}[wd=1\paperwidth,ht=2.25ex,dp=1ex,right]{framenumber}%
+			\usebeamerfont{framenumber}\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+	\end{beamercolorbox}}%
+	\vskip0pt%
+}
+
+\definecolor{bgcolor}{HTML}{d4ffdf}
+\definecolor{bulletcolor}{HTML}{004f14}
+
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{frametitle}{fg=black,bg=bgcolor}
+\setbeamercolor{structure}{fg=bulletcolor}
+\setbeamercolor{block title}{bg=blue!30,fg=black}
+\setbeamercolor{block body}{bg=blue!10}
+
+\usefonttheme{serif}

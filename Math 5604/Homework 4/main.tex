@@ -2,6 +2,7 @@
 \input{../../standardcmd.tex}
 \input{../homework_shared.tex}
 
+\usepackage{listings}
 \usepackage{booktabs}
 
 \newcommand{\hwnum}{4}
@@ -98,7 +99,7 @@
 		is the exact solution of the (\ref{eq:ode}).
 		
 		Using the code in \verb*|problem1_calculations.m|, we run the above four methods with various step sizes and compute the error at $t = 2$. The results can be found in \verb*|p1_output.txt| and are summarized in Table \ref{table:errors}.
-		\begin{table}
+		\begin{table}[h]
 			\centering
 			\begin{tabular}{@{}lllllllll@{}}
 				\toprule
@@ -123,14 +124,111 @@
 		\end{table}
 		
 		\questionpart The code to plot the errors in Table \ref{table:errors} on a log-log plot can be found in \verb*|problem1_calculations.m|. The resulting plot is given in Figure \ref{fig:error_plot}.
-		\begin{figure}
+		\begin{figure}[h]
 			\centering
 			\includegraphics{p1f_plot.eps}
 			\caption{Numerical errors at $t = 2$ versus time step}
 			\label{fig:error_plot}
 		\end{figure}
+		
+		\textbf{Observations}
+		\begin{itemize}
+			\item By comparison with the reference line $k^2$, we see that all four methods have second-order error, which agrees with the theoretical predictions we had for these methods.
+			\item For the largest step size, there is a significant deviation in the error trend for the second-order Taylor series (TS2) and two-step Adams-Bashforth (AB2) methods. This may be due to the fact that these methods are explicit and less stable than the implicit midpoint (MP) and trapezoidal (TP) methods.
+		\end{itemize}
 	\end{alphaparts}
 	
 	\question
 	
+	\textbf{Adams-Bashforth}
+	
+	One step of the three-step Adams-Bashforth method is given by
+	\begin{equation*}
+		y^{n+3} = y^{n+2} + k\left(b_2f(t_{n+2}, y^{n+2}) + b_1f(t_{n+1}, y^{n+1}) + b_0f(t_n, y^n)\right),
+	\end{equation*}
+	where $b_0$, $b_1$, and $b_2$ are chosen to minimize the order of the local truncation error. Hence, we can find these values by calculating the local truncation error and minimizing its order. Assume that $y^n = y(t_n)$, $y^{n+1} = y(t_{n+1})$, and $y^{n+2} = y(t_{n+2})$. Then the local truncation error is given by
+	\begin{equation*}
+		y^{n+3} - y(t_{n+3}) = y(t_{n+2}) + k\left(b_2y'(t_{n+2}) + b_1y'(t_{n+1}) + b_0y'(t_n)\right) - y(t_{n+3}).
+	\end{equation*}
+	Using Taylor expansion about $t_n$ gives
+	\begin{alignat*}{2}
+		y^{n+3} - y(t_{n+3}) &={}&  &y(t_n) + 2ky'(t_n) + \frac{4k^2}{2}y''(t_n) + \frac{8k^3}{6}y'''(t_n) + \bigoh(k^4) \\
+		&& & + kb_2y'(t_n) + 2k^2b_2y''(t_n) + \frac{4k^3}{2}b_2y'''(t_n) + \bigoh(k^4) \\
+		&&& + b_1ky'(t_n) + b_1k^2y''(t_n) + \frac{k^3}{2}b_1y'''(t_n) + \bigoh(k^4) \\
+		&&& + b_0ky'(t_n) - y(t_n) - 3ky'(t_n) - \frac{9k^2}{2}y''(t_n) - \frac{27k^3}{6}y'''(t_n) + \bigoh(k^4) \\
+		&={}&& (b_2 + b_1 + b_0 - 1)ky'(t_n) + \left(2b_2 + b_1 - \frac{5}{2}\right)k^2y''(t_n) + \left(2b_2+\frac{1}{2}b_1-\frac{19}{6}\right)k^3y'''(t_n) + \bigoh(k^4).
+	\end{alignat*}
+	Thus, the minimum possible order of the local truncation error is 4, which occurs only if
+	\begin{align*}
+		b_0 + b_1 + b_2 &= 1 \\
+		2b_2 + b_1 &= \frac{5}{2} \\
+		2b_2 + \frac{1}{2}b_1 &= \frac{19}{6}.
+	\end{align*}
+	Solving the last two equations for $b_1$ and $b_2$ gives $b_1 = -\frac{4}{3}$, and $b_2 = \frac{23}{12}$. Substituting into the first equations gives $b_0 = \frac{5}{12}$. Therefore, the three-step Adams-Bashforth method is
+	\begin{equation*}
+		y^{n+3} = y^{n+2} + \frac{k}{12}\left(23f(t_{n+2}, y^{n+2}) - 16f(t_{n+1}, y^{n+1}) + 5f(t_n,y^n)\right).
+	\end{equation*}
+	
+	\textbf{Adams-Moulton}
+	
+	One step of the three-step Adams-Moulton method is given by
+	\begin{equation*}
+		y^{n+3} = y^{n+2} + k\left(b_3f(t_{n+3}, y^{n+3}) + b_2f(t_{n+2}, y^{n+2}) + b_1f(t_{n+1}, y^{n+1}) + b_0f(t_n, y^n)\right),
+	\end{equation*}
+	where $b_0$, $b_1$, $b_2$, and $b_3$ are chosen to minimize the order of the local truncation error.  Hence, we can find these values by calculating the local truncation error and minimizing its order. Assume that $y^n = y(t_n)$, $y^{n+1} = y(t_{n+1})$, and $y^{n+2} = y(t_{n+2})$. Then the local truncation error is given by
+	\begin{equation*}
+		y^{n+3} - y(t_{n+3}) = y(t_{n+2}) + k\left(b_3f(t_{n+3}, y^{n+3}) + b_2y'(t_{n+2}) + b_1y'(t_{n+1}) + b_0y'(t_n)\right) - y(t_{n+3}).
+	\end{equation*}
+	Using Taylor expansion about $t_n$ gives
+	\begin{alignat*}{2}
+		y^{n+3} - y(t_{n+3}) &={}&  &y(t_n) + 2ky'(t_n) + \frac{4k^2}{2}y''(t_n) + \frac{8k^3}{6}y'''(t_n) + \frac{16k^4}{24}y''''(t_n) + \bigoh(k^5) \\
+		&&& + kb_3\left(f(t_{n+3}, y^{n+3}) - f(t_{n+3}, y(t_{n+3}))\right) \\
+		&&& + kb_3y'(t_n) + 3k^2b_3y''(t_n) + \frac{9k^3}{2}b_3y'''(t_n) + \frac{27k^4}{6}b_3y''''(t_n) + \bigoh(k^5) \\
+		&&& + kb_2y'(t_n) + 2k^2b_2y''(t_n) + \frac{4k^3}{2}b_2y'''(t_n) + \frac{8k^4}{6}b_2y''''(t_n) + \bigoh(k^5) \\
+		&&& + b_1ky'(t_n) + b_1k^2y''(t_n) + \frac{k^3}{2}b_1y'''(t_n) + \frac{k^4}{6}b_1y''''(t_n) + \bigoh(k^5) \\
+		&&& + b_0ky'(t_n) - y(t_n) - 3ky'(t_n) - \frac{9k^2}{2}y''(t_n) - \frac{27k^3}{6}y'''(t_n) - \frac{81k^4}{24}y''''(t_n) + \bigoh(k^5) \\
+		&={}&&  kb_3\left(f(t_{n+3}, y^{n+3}) - f(t_{n+3}, y(t_{n+3}))\right) \\
+		&&& + (b_3 + b_2 + b_1 + b_0 - 1)ky'(t_n) \\
+		&&& + \left(3b_3 + 2b_2 + b_1 -\frac{5}{2}\right)k^2y''(t_n) \\
+		&&& + \left(\frac{9}{2}b_3 + \frac{4}{2}b_2 + \frac{1}{2}b_1 -\frac{19}{6}\right)k^3y'''(t_n) \\
+		&&& + \left(\frac{27}{6}b_3 + \frac{8}{6}b_2 + \frac{1}{6}b_1-\frac{65}{24}\right)k^4y''''(t_n) + \bigoh(k^5).
+	\end{alignat*}
+	Taking the absolute value of both sides and assuming that $f$ is $L$-Lipschitz in $y$, we get
+	\begin{alignat*}{2}
+		(1-kL|b_3|)|y^{n+3} - y(t_{n+3})| &\le{}& &\left|(b_3 + b_2 + b_1 + b_0 - 1)ky'(t_n)\right| \\
+		&&& + \left|\left(3b_3 + 2b_2 + b_1 -\frac{5}{2}\right)k^2y''(t_n)\right|\\
+		&&& + \left|\left(\frac{9}{2}b_3 + \frac{4}{2}b_2 + \frac{1}{2}b_1 -\frac{19}{6}\right)k^3y'''(t_n)\right| \\
+		&&& + \left|\left(\frac{27}{6}b_3 + \frac{8}{6}b_2 + \frac{1}{6}b_1-\frac{65}{24}\right)k^4y''''(t_n)\right| + \bigoh(k^5).
+	\end{alignat*}
+	Thus, if $k$ is sufficiently small, we can divide by $1-kL|b_3|$, in which case we see that the minimum possible order of the local truncation error $y^{n+3} - y(t_{n+3})$ is 5, which is achieved only if
+	\begin{align*}
+		b_0 + b_1 + b_2 + b_3 &= 1 \\
+		b_1 + 2b_2 + 3b_3 &= \frac{5}{2} \\
+		\frac{1}{2}b_1 + \frac{4}{2}b_2 + \frac{9}{2}b_3 &= \frac{19}{6} \\
+		\frac{1}{6}b_1 + \frac{8}{6}b_2 + \frac{27}{6}b_3 &= \frac{65}{24}.
+	\end{align*}
+	Solving the last three equations using Gaussian elimination gives $b_1 = -\frac{5}{24}$, $b_2 = \frac{19}{24}$, and $b_3 = \frac{9}{24}$. Then $b_0 = \frac{1}{24}$, and the three-step Adams-Moulton method is given by
+	\begin{equation*}
+		y^{n+3} = y^{n+2} + \frac{k}{24}\left(9f(t_{n+3}, y^{n+3}) + 19f(t_{n+2}, y^{n+2}) -5f(t_{n+1}, y^{n+1}) + f(t_n y^n)\right).
+	\end{equation*}
+	
+	\newpage
+	{\large\bf Appendix}
+	\hrule
+	
+	\begin{minipage}{\linewidth}
+	\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Code for second-order Taylor series method (problem 1 (a))}]{ts2.m}
+	\end{minipage}
+	
+	\begin{minipage}{\linewidth}
+	\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Code for second-order Adams-Bashforth method (problem 1 (b))}]{ab2.m}
+	\end{minipage}
+	
+	\begin{minipage}{\linewidth}
+	\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Code for trapezoidal method (problem 1 (c))}]{tp.m}
+	\end{minipage}
+	
+	\begin{minipage}{\linewidth}
+	\lstinputlisting[language=MATLAB, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false, caption={Code for midpoint method (problem 1 (d))}]{mp.m}
+	\end{minipage}
 \end{document}
