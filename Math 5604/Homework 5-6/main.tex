@@ -154,6 +154,51 @@
 				(x_1^2-4)\sin(2x_1) \\ (x_2^2 - 4)\sin(2x_2) \\ \vdots \\ (x_{N-1}^2-4)\sin(2x_{N-1}) \\ 2
 			\end{matrix}\right].
 		\end{equation*}
+		
+		\questionpart
+		
 	\end{alphaparts}
 	
+	\question Consider the boundary-value problem
+	\begin{align*}
+		&\varepsilon y'' - x^2y' - y = 0, \qquad 0 < x < 1\\
+		&y(0) = 1, \qquad y(1) = 1,
+	\end{align*}
+	where $\varepsilon > 0$.
+	
+	\begin{alphaparts}
+		\questionpart We approximation $y(x_n)$ by $y_n$ at the points $\{x_n\}_{n=0}^N$, which are evenly spaced on $[0,1]$ by $h = \frac{1}{N}$. To handle the boundary conditions, we simply set $y_0 = 1$ and $y_N = 1$. At the interior points, we can use central difference approximations of the derivatives to obtain the equations
+		\begin{equation*}
+			\varepsilon\frac{y_{n+1} - 2y_n + y_{n-1}}{h^2} -x_n^2\frac{y_{n+1} - y_{n-1}}{2h} - y_n = 0, \qquad n = 1, 2, \dots, N-1.
+		\end{equation*}
+		Combining the boundary conditions with the first and last of these equations, we obtain the scheme
+		\begin{align*}
+			\left(\frac{\varepsilon}{h^2} - \frac{x_1^2}{2h}\right)y_{2} - \left(\frac{2\varepsilon}{h^2} + 1\right)y_1 &= -\left(\frac{\varepsilon}{h^2} + \frac{x_1^2}{2h}\right) \qquad \text{(left BC)}\\
+			- \left(\frac{2\varepsilon}{h^2} + 1\right)y_{N-1} + \left(\frac{\varepsilon}{h^2} + \frac{x_{N-1}^2}{2h}\right)y_{N-2} &= -\left(\frac{\varepsilon}{h^2} - \frac{x_{N-1}^2}{2h}\right) \qquad \text{(right BC)}\\
+			\left(\frac{\varepsilon}{h^2} - \frac{x_n^2}{2h}\right)y_{n+1} - \left(\frac{2\varepsilon}{h^2} + 1\right)y_n + \left(\frac{\varepsilon}{h^2} + \frac{x_n^2}{2h}\right)y_{n-1} &= 0, \qquad n = 2, 3, \dots, N-2.
+		\end{align*}
+		We can write these equations in matrix-vector form $Ay = b$, where
+		\begin{equation*}
+			A = \left[\begin{matrix}
+				-\frac{2\varepsilon}{h^2} - 1 & \frac{\varepsilon}{h^2} - \frac{x_1^2}{2h} \\
+				\frac{\varepsilon}{h^2} + \frac{x_2^2}{2h} & -\frac{2\varepsilon}{h^2} - 1 & \frac{\varepsilon}{h^2} - \frac{x_2^2}{2h} \\
+				& \frac{\varepsilon}{h^2} + \frac{x_3^2}{2h} & -\frac{2\varepsilon}{h^2} - 1 & \frac{\varepsilon}{h^2} - \frac{x_3^2}{2h} \\
+				& & \ddots\\
+				& & \frac{\varepsilon}{h^2} + \frac{x_{N-2}^2}{2h} & -\frac{2\varepsilon}{h^2} - 1 & \frac{\varepsilon}{h^2} - \frac{x_{N-2}^2}{2h}\\
+				& & & \frac{\varepsilon}{h^2} + \frac{x_{N-1}^2}{2h} & -\frac{2\varepsilon}{h^2} - 1
+			\end{matrix}\right],
+		\end{equation*}
+		where blank entries are assumed to be 0, and
+		\begin{equation*}
+			y = \left[\begin{matrix}y_1 \\ y_2 \\ \vdots \\ y_{N-1}\end{matrix}\right], \qquad b = \left[\begin{matrix}-\left(\frac{\varepsilon}{h^2} + \frac{x_1^2}{2h}\right) \\ 0 \\ \vdots \\ 0 \\ -\left(\frac{\varepsilon}{h^2} - \frac{x_{N-1}^2}{2h}\right)\end{matrix}\right].
+		\end{equation*}
+		
+		\questionpart
+		
+		\questionpart
+		
+		\questionpart
+		
+		\questionpart
+	\end{alphaparts}
 \end{document}
