@@ -37,7 +37,7 @@
 		\end{align*}
 		Since the original equation is linear, we can easily solve the implicit equations above to obtain the following equivalent, explicit scheme
 		\begin{align*}
-			z^{n+1} &= \frac{\frac{1}{3}\left[4z^n - z^{n-1} + 2k\left[-\frac{1}{3}x_{n+1}^2(4y^n - y^{n-1}) + (x_{n+1}^2 - 4)\sin(2x_{n+1})\right]\right]}{1 + \frac{4k^2}{3}x_{n+1}^2} && n = 1,2,\dots,N-1\\
+			z^{n+1} &= \frac{\frac{1}{3}\left[4z^n - z^{n-1} + 2k\left[-\frac{1}{3}x_{n+1}^2(4y^n - y^{n-1}) + (x_{n+1}^2 - 4)\sin(2x_{n+1})\right]\right]}{1 + \frac{4k^2}{9}x_{n+1}^2} && n = 1,2,\dots,N-1\\
 			y^{n+1} &= \frac{1}{3}\left[4y^n - y^{n-1} + 2kz^{n+1}\right] && n =1,2,\dots, N-1\\
 			z^1 &= \frac{z^0 + k(-x_1^2y^0 + (x_1^2-4))\sin(2x_1)}{1 + k^2x_1^2} \\
 			y^1 &= y^0 + kz^1 \\
@@ -89,13 +89,13 @@
 		\end{gather*}
 		Eliminating $y_{N+1}$ gives
 		\begin{equation*}
-			\frac{2y_{N} -y_{N-1} +h^2\left[-x_N^2y_N + (x_N^2 - 4)\sin(2x_N)\right]}{2h} + 2y_N = 2.
+			\frac{2y_{N} -2y_{N-1} +h^2\left[-x_N^2y_N + (x_N^2 - 4)\sin(2x_N)\right]}{2h} + 2y_N = 2.
 		\end{equation*}
 		Substituting the explicit condition $y_0 = 0$ into the $n =1$ equation and collecting all our equations together, we obtain the scheme
 		\begin{align*}
 			\left(x_1^2 - \frac{2}{h^2}\right)y_1 + \frac{1}{h^2}y_2 &= (x_1^2-4)\sin(2x_1) \\
 			\frac{1}{h^2}y_{n-1} + \left(x_n^2 - \frac{2}{h^2}\right)y_n + \frac{1}{h^2}y_{n+1} &= (x_n^2-4)\sin(2x_n), \qquad n = 2,3,\dots, N-1 \\
-			 -\frac{1}{2h}y_{N-1} + \left(\frac{1}{h} -\frac{hx_N^2}{2} + 2\right)y_N &= 2-\frac{h}{2}(x_N^2-4)\sin(2x_N).
+			 -\frac{1}{h}y_{N-1} + \left(\frac{1}{h} -\frac{hx_N^2}{2} + 2\right)y_N &= 2-\frac{h}{2}(x_N^2-4)\sin(2x_N).
 		\end{align*}
 		We can write this system of equations in matrix-vector form $Ay = b$, where
 		\begin{equation*}
@@ -105,7 +105,7 @@
 				 & \frac{1}{h^2} & x_3^3 - \frac{2}{h^2} & \frac{1}{h^2} & &\\
 			     & & \ddots &  & \\
 				 &  & \frac{1}{h^2} & x_{N-1}^2 - \frac{2}{h^2} & \frac{1}{h^2} \\
-				 &  &  & -\frac{1}{2h} & \frac{1}{h} - \frac{hx_N^2}{2} +2
+				 &  &  & -\frac{1}{h} & \frac{1}{h} - \frac{hx_N^2}{2} +2
 			\end{matrix}\right],
 		\end{equation*}
 		where empty entries are assumed to be 0, and
