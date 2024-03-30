@@ -1,4 +1,4 @@
-function [x, y] = problem1c(k)
+function [x, y] = problem1_trbdf2(k)
 % TR-BDF2 method for the IVP
 %   y'' + x^2y = (x^2 - 4)sin(2x)
 %   y(0) = 0, y'(0) = 2

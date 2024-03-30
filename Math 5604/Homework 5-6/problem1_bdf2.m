@@ -1,4 +1,4 @@
-function [x, y] = problem1a(k)
+function [x, y] = problem1_bdf2(k)
 % BDF2 method for the IVP
 %   y'' + x^2y = (x^2 - 4)sin(2x)
 %   y(0) = 0, y'(0) = 2
@@ -32,7 +32,7 @@ y(2) = y(1) + k*z(2);
 for i = 2:n
     inner_exp = (-1/3 * x(i+1)^2 * (4*y(i) - y(i-1))) + (x(i+1)^2 - 4)*sin(2*x(i+1));
     numerator = 1/3 * (4*z(i) - z(i-1) + 2*k*inner_exp);
-    z(i+1) = numerator / (1 + (4/3 * k^2 * x(i+1)^2));
+    z(i+1) = numerator / (1 + (4/9 * k^2 * x(i+1)^2));
     
     y(i+1) = 1/3 * (4*y(i) - y(i-1) + 2*k*z(i+1));
 end
