@@ -44,9 +44,28 @@
 			y^0 &= 0 \\
 			z^0 &= 2.
 		\end{align*}
-		\questionpart
 		
-		\questionpart Since the TR-BDF2 method is a one-step method, we immediately obtain the following implicit scheme
+		\questionpart In Table \ref{tab:p1b} are the errors and convergences rates of the method from part (a). The table shows that the method empirically has convergence rate of 2, as expected theoretically.
+		
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{@{}lll@{}}
+				\toprule
+				$h$ & Error & Rate \\
+				\midrule
+				1/8 & 8.457332e-02 & - \\
+				1/16 & 2.133647e-02 & 1.986881 \\
+				1/32 & 5.319670e-03 & 2.003913 \\
+				1/64 & 1.325627e-03 & 2.004662 \\
+				1/128 & 3.307156e-04 & 2.003012 \\
+				1/256 & 8.258288e-05 & 2.001677 \\
+				\bottomrule
+			\end{tabular}
+			\caption{Errors at $t=1$ with convergence rates using the BDF2 method in (a)}
+			\label{tab:p1b}
+		\end{table}
+		
+		\questionpart Since the TR-BDF2 method is a one-step method, we can apply the method immediately to obtain the following implicit scheme
 		\begin{align*}
 			y_*^{n+1} &= y^n + \frac{k}{4}\left[z^n + z_*^{n+1}\right] \\
 			z_*^{n+1} &= z^n + \frac{k}{4}\left[-x_n^2y^n + (x_n^2 - 4)\sin(2x_n) - x_{n+1/2}^2y_*^{n+1} + (x_{n+1/2}^2-4)\sin(2x_{n+1/2})\right] \\
@@ -67,7 +86,25 @@
 			z^0 &= 2.
 		\end{align*}
 		
-		\questionpart 
+		\questionpart In Table \ref{tab:p1d} are the errors and convergences rates of the method from part (c). The table shows that the method empirically has convergence rate of 2, as expected theoretically.
+		
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{@{}lll@{}}
+				\toprule
+				$h$ & Error & Rate \\
+				\midrule
+				1/8 & 5.161865e-04 & -\\
+				1/16 & 1.369409e-04 & 1.914339\\
+				1/32 & 3.531733e-05 & 1.955105\\
+				1/64 & 8.970516e-06 & 1.977114\\
+				1/128 & 2.260645e-06 & 1.988456\\
+				1/256 & 5.674363e-07 & 1.994204\\
+				\bottomrule
+			\end{tabular}
+			\caption{Errors at $t=1$ with convergence rates using the TR-BDF2 method in (c)}
+			\label{tab:p1d}
+		\end{table}
 
 	\end{alphaparts}
 	
@@ -113,7 +150,29 @@
 			y = \left[\begin{matrix}y_1 \\ y_2 \\ \vdots \\ y_N\end{matrix}\right], \qquad b = \left[\begin{matrix}(x_1^2 - 4)\sin(2x_1) \\[0.3em] (x_2^2-4)\sin(2x_2) \\ \vdots \\ (x_{N-1}^2-4)\sin(2x_{N-1}) \\[0.3em] 2 - \frac{h}{2}(x_N^2 - 4)\sin(2x_N)\end{matrix}\right].
 		\end{equation*}
 		
-		\questionpart
+		\questionpart In Table \ref{tab:p2b} are the $\ell^2$ and $\ell^\infty$ errors of the scheme in part (a). Based on the table, the $\ell^\infty$ convergence rate is 2, and the $\ell^2$ convergence rate is 1.5, which is not surprising given the equivalence of the $\ell^2$ and $\ell^\infty$ norms:
+		\begin{equation*}
+			\lVert u \rVert_{\ell^\infty} \le \lVert u \rVert_{\ell^2} \le \sqrt{N}\lVert u \rVert_{\ell^\infty} \qquad \text{for all $u \in \R^N$.}
+		\end{equation*}
+		Indeed, let $e \in \R^{N+1}$ be a vector of errors defined by $e_n = |y_n - y(x_n)|$. If $\lVert e\rVert_{\ell^\infty} \approx h^2$, then the right inequality implies that $\lVert e \rVert_{\ell^2} \lesssim \left(\sqrt{N+1}\right)h^2 \approx h^{1.5}$ because $N \approx h^{-1}$.
+		
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{@{}lllll@{}}
+				\toprule
+				$h$ & $\ell^2$ error & $\ell^2$ rate & $\ell^\infty$ error & $\ell^\infty$ rate \\
+				\midrule
+				$\pi$/8 & 2.219190e-01 & - & 1.280149e-01 & -\\
+				$\pi$/16 & 6.790030e-02 & 1.708543 & 2.905806e-02 & 2.139301\\
+				$\pi$/32 & 2.293204e-02 & 1.566053 & 6.987220e-03 & 2.056148\\
+				$\pi$/64 & 7.996325e-03 & 1.519956 & 1.727129e-03 & 2.016342\\
+				$\pi$/128 & 2.815873e-03 & 1.505755 & 4.305031e-04 & 2.004281\\
+				$\pi$/256 & 9.943666e-04 & 1.501732 & 1.075450e-04 & 2.001083\\
+				\bottomrule
+			\end{tabular}
+			\caption{Centered difference -- $\ell^2$ and $\ell^\infty$ errors with convergence rates}
+			\label{tab:p2b}
+		\end{table}
 		
 		\questionpart Using the centered difference method to approximate $y''$ on the interior of the domain, we get the following scheme for the interior points $y_1, y_2, \dots y_{N-1}$
 		\begin{equation*}
@@ -121,7 +180,7 @@
 		\end{equation*}
 		The left boundary condition gives the discrete condition $y_0 = 0$, but the right boundary condition involves the first order derivative $y'$; to approximate this with a second-order, one-sided method, we recall from class that, for a function $u(t)$,
 		\begin{equation*}
-			u'(t) = \frac{-3u(t) + 4u(t+k) - u(t+2k)}{2k} + \bigoh(k^2).
+			u'(t) = \frac{-3u(t) + 4u(t+k) - u(t+2k)}{2k} + \bigoh(h^2).
 		\end{equation*}
 		Taking $u = y$, $k = -h$, and $t=\pi$, this implies that
 		\begin{equation*}
@@ -156,6 +215,25 @@
 		\end{equation*}
 		
 		\questionpart
+		In Table \ref{tab:p2d} are the $\ell^2$ and $\ell^\infty$ errors of the scheme in part (a). Based on the table, it seems that the $\ell^\infty$ convergence rate is 2, and the $\ell^2$ convergence rate is 1.5 (using a few smaller step sizes showed that this is really the case).
+		
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{@{}lllll@{}}
+				\toprule
+				$h$ & $\ell^2$ error & $\ell^2$ rate & $\ell^\infty$ error & $\ell^\infty$ rate \\
+				\midrule
+				$\pi$/8 & 3.827128e+00 & - & 1.973108e+00 & -\\
+				$\pi$/16 & 1.390236e+00 & 1.460932 & 5.126718e-01 & 1.944362\\
+				$\pi$/32 & 6.531083e-01 & 1.089936 & 1.730366e-01 & 1.566958\\
+				$\pi$/64 & 2.674238e-01 & 1.288195 & 5.028926e-02 & 1.782755\\
+				$\pi$/128 & 9.931652e-02 & 1.429022 & 1.322982e-02 & 1.926457\\
+				$\pi$/256 & 3.559417e-02 & 1.480393 & 3.355599e-03 & 1.979151\\
+				\bottomrule
+			\end{tabular}
+			\caption{One-sided difference -- $\ell^2$ and $\ell^\infty$ errors with convergence rates}
+			\label{tab:p2d}
+		\end{table}
 		
 	\end{alphaparts}
 	
@@ -193,12 +271,63 @@
 			y = \left[\begin{matrix}y_1 \\ y_2 \\ \vdots \\ y_{N-1}\end{matrix}\right], \qquad b = \left[\begin{matrix}-\left(\frac{\varepsilon}{h^2} + \frac{x_1^2}{2h}\right) \\ 0 \\ \vdots \\ 0 \\ -\left(\frac{\varepsilon}{h^2} - \frac{x_{N-1}^2}{2h}\right)\end{matrix}\right].
 		\end{equation*}
 		
-		\questionpart
+		\questionpart In Figure \ref{fig:exact} is the ``exact'' solution for $\varepsilon = .05$ and $h = 1/2048$.
 		
-		\questionpart
+		\begin{figure}
+			\centering
+			\includegraphics{p3_exact.eps}
+			\caption{``Exact'' solution when $\varepsilon = 0.05$, computed using step size $h = 1/2048$}
+			\label{fig:exact}
+		\end{figure}
 		
-		\questionpart
+		\questionpart In Table \ref{tab:p3c} are the $\ell^2$ and $\ell^\infty$ errors (computed using the reference solution from (b)) with $\varepsilon = .05$. From the table, it appears that the centered difference method has a convergence rate of 2 in $\ell^\infty$ and 1.5 in $\ell^2$, just as it did on Problem 2.
 		
-		\questionpart
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{@{}lllll@{}}
+				\toprule
+				$h$ & $\ell^2$ error & $\ell^2$ rate & $\ell^\infty$ error & $\ell^\infty$ rate \\
+				\midrule
+				1/8 & 8.952792e-02 & - & 8.748680e-02 & -\\
+				1/16 & 3.516391e-02 & 1.348242 & 2.969501e-02 & 1.558845\\
+				1/32 & 1.217098e-02 & 1.530651 & 6.755169e-03 & 2.136157\\
+				1/64 & 4.237348e-03 & 1.522211 & 1.719463e-03 & 1.974034\\
+				1/128 & 1.486917e-03 & 1.510838 & 4.260417e-04 & 2.012891\\
+				1/256 & 5.188923e-04 & 1.518817 & 1.051005e-04 & 2.019226\\
+				\bottomrule
+			\end{tabular}
+			\caption{Centered difference method with $\varepsilon = .05$ -- $\ell^2$ and $\ell^\infty$ errors with convergence rates}
+			\label{tab:p3c}
+		\end{table}
+		
+		\questionpart In Figure \ref{fig:p3d} is the ``exact'' solution for $\varepsilon = .05$ and $h = 1/2048$.
+		
+		\begin{figure}
+			\centering
+			\includegraphics{p3d.eps}
+			\caption{``Exact'' solution when $\varepsilon = 0.001$, computed using step size $h = 1/2048$}
+			\label{fig:p3d}
+		\end{figure}
+		
+		\questionpart In Table \ref{tab:p3e} are the $\ell^2$ and $\ell^\infty$ errors (computed using the reference solution from (b)) with $\varepsilon = .05$. From the table, it appears that the centered difference method has a convergence rate of 2 in $\ell^\infty$ and 1.5 in $\ell^2$, just as it did for $\varepsilon = 0.05$. The errors, however, are generally greater in this case than they were in the case of $\varepsilon = 0.05$, and the convergence rate doesn't settle down until the step size is already fairly small. This is likely due to the rapid change in the solution near $x =1$ when $\varepsilon$ is small (compare Figures \ref{fig:exact} and \ref{fig:p3d}, which show the $\varepsilon = 0.05$ and $\varepsilon = 0.001$ solutions).
+		
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{@{}lllll@{}}
+				\toprule
+				$h$ & $\ell^2$ error & $\ell^2$ rate & $\ell^\infty$ error & $\ell^\infty$ rate \\
+				\midrule
+				1/8 & 8.839999e-01 & - & 7.051292e-01 & -\\
+				1/16 & 8.168405e-01 & 0.113992 & 6.540523e-01 & 0.108482\\
+				1/32 & 5.408442e-01 & 0.594841 & 4.827786e-01 & 0.438044\\
+				1/64 & 2.517577e-01 & 1.103177 & 2.490745e-01 & 0.954784\\
+				1/128 & 8.763561e-02 & 1.522447 & 8.247853e-02 & 1.594487\\
+				1/256 & 2.856069e-02 & 1.617486 & 1.853421e-02 & 2.153828\\
+				\bottomrule
+			\end{tabular}
+			\caption{Centered difference method with $\varepsilon = 0.005$ -- $\ell^2$ and $\ell^\infty$ errors with convergence rates}
+			\label{tab:p3e}
+		\end{table}
+	
 	\end{alphaparts}
 \end{document}

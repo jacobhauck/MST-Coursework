@@ -1,0 +1,48 @@
+\documentclass{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\input{../../standardcmd.tex}
+
+\title{Math 5604 Project Proposal}
+\author{Jacob Hauck}
+
+
+\begin{document}
+	\maketitle
+	
+	I would like to solve the two-dimensional Allen-Cahn equation \cite{yang_2018} with periodic boundary conditions, which is given by
+	\begin{align}
+		u_t &= \varepsilon^2 \Delta u - F(u),& & (x,y) \in (0,2\pi)^2,\quad t \in (0,T] \\
+		u(x,y, 0) &= u_0(x,y),& & (x,y) \in [0,2\pi]^2 \\
+		u(x, 0,t) &= u(x, 2\pi, t), & & x \in [0,2\pi],\quad t \in [0,T] \\
+		u(0,y,t) &= u(2\pi,y,t), & & y \in [0,2\pi],\quad t \in [0,T]
+	\end{align}
+	where $\varepsilon > 0$ is a parameter, $F(u) = u^3 - u$, and $u_0(x,y) = 0.05\sin(x)\sin(y)$. 
+	
+	This equation is a model of a reaction-diffusion system involving a mixture of two substances with different properties, such as oil and water or metals in certain alloys. It is meant to describe the phenomenon of phase separation, which is the process of the substances separating from a well-mixed initial state into coarser ``cells'' (see \href{https://www.youtube.com/watch?v=t1swj0QJUTw}{here} for a visualization). The function $u$ describes the relative density of one of the substances, with $u = 1$ corresponding to 100\% density of one substance and $u=-1$ corresponding to 100\% density of the other substance.
+	
+	I will approximate $u(x,y,t)$ by the numerical solution $u^n_{i,j}$:
+	\begin{equation}
+		u(x_i,y_j, t_n) \approx u^n_{i,j},
+	\end{equation}
+	where we are using a uniform grid of $(M+1)^2$ spatial sample points $\{(x_i,y_j)\}$ defined by $x_i = hi$ for $i = 0,1,\dots, M$ and $y_j = hj$ for $j =0,1,\dots,M$, where the spatial step size $h = \frac{2\pi}{M}$. We use $N$ evenly-spaced time sample points $\{t_n\}$ defined by $t_n = kn$, where the temporal step size $k = \frac{T}{N}$.
+	
+	I will use the 5-point discretization of the Laplace operator, which is given in this case by
+	\begin{equation}
+		D_5u^n_{i,j} = \frac{u^n_{i+1,j} + u^n_{i-1,j} + u^n_{i,j+1} + u^n_{i,j-1} - 4u^n_{i,j}}{h^2},\qquad i=0,1,2,\dots,M,\;j=0,1,2,\dots, M
+	\end{equation}
+	where we take $u^n_{-1,j} = u^n_{M,j}$, $u^n_{M+1,j} = u^n_{0,j}$, $u^n_{i,-1} = u^n_{i,M}$, and $u^n_{i,M+1} = u^n_{i,0}$ to account for the periodic boundary conditions.
+	
+	For the temporal discretization, I will compare two schemes that Yang, et {al.} \cite{yang_2018} claim are appropriate for this problem. The first is the convex splitting scheme, given for the Allen-Cahn equation by
+	\begin{equation}
+		\frac{u^{n+1}_{i,j} - u^n_{i,j}}{k} = \varepsilon^2D_5u^{n+1}_{i,j} + u^n_{i,j} - \left(u^{n+1}_{i,j}\right)^3.
+	\end{equation}
+	The second is the Crank-Nicolson scheme, which is given by
+	\begin{equation}
+		\frac{u^{n+1}_{i,j} - u^n_{i,j}}{k} = \varepsilon^2\frac{D_5u^{n+1}_{i,j} + D_5u^n_{i,j}}{2} + \frac{u^{n+1}_{i,j} + u^n_{i,j}}{2} - \frac{\left(u^{n+1}_{i,j}\right)^3 + \left(u^n_{i,j}\right)^3}{2}.
+	\end{equation}
+	The differences between these schemes that I will investigate numerically are the order and stability. Theoretically, the convex splitting scheme should be unconditionally stable and have first order accuracy whereas the Crank-Nicolson scheme should be stable only when $k \le \min\left\{\frac{1}{2}, \frac{h^2}{2\varepsilon^2}\right\}$ and have second order accuracy, according to Yang, et al. \cite{yang_2018}
+	
+	\bibliographystyle{plain}
+	\bibliography{references}
+\end{document}
