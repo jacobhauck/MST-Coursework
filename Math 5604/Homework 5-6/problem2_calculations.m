@@ -21,7 +21,8 @@ last_error_inf = 0;
 for i_n = 1:length(n)
     % Calculate current errors
     [x, y] = problem2_center(n(i_n));
-    error_2 = norm(y - y_ex(x));
+    h = pi/n(i_n);
+    error_2 = norm(y - y_ex(x)) * sqrt(h);
     error_inf = max(abs(y - y_ex(x)));
 
     % Print table row
@@ -62,7 +63,8 @@ last_error_inf = 0;
 for i_n = 1:length(n)
     % Calculate current errors
     [x, y] = problem2_one_sided(n(i_n));
-    error_2 = norm(y - y_ex(x));
+    h = pi/n(i_n);
+    error_2 = norm(y - y_ex(x)) * sqrt(h);
     error_inf = max(abs(y - y_ex(x)));
 
     % Print table row
