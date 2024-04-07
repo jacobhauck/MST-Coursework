@@ -45,7 +45,8 @@ for i_n = 1:length(n)
     index_step = round(n_ex / n(i_n));
     y_ex_n = y_ex(1:index_step:end);
     
-    error_2 = norm(y - y_ex_n);
+    h = 1/n(i_n);
+    error_2 = norm(y - y_ex_n) * sqrt(h);
     error_inf = max(abs(y - y_ex_n));
 
     % Print table row
@@ -116,7 +117,8 @@ for i_n = 1:length(n)
     index_step = round(n_ex / n(i_n));
     y_ex_n = y_ex(1:index_step:end);
     
-    error_2 = norm(y - y_ex_n);
+    h = 1/n(i_n);
+    error_2 = norm(y - y_ex_n) * sqrt(h);
     error_inf = max(abs(y - y_ex_n));
 
     % Print table row
