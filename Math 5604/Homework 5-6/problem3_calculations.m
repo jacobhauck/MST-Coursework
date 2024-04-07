@@ -81,7 +81,7 @@ eps = 0.001;
 % Plot the solution
 fig = figure;
 plot(x, y);
-saveas(fig, "p3c.eps", "epsc");
+saveas(fig, "p3d.eps", "epsc");
 fprintf("\n\n");
 
 

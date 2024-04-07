@@ -1,0 +1,44 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\renewcommand{\questiontype}{}
+
+\newcommand{\hwnum}{2}
+
+\begin{document}
+	\maketitle
+	
+	Let
+	\begin{equation}
+		f(x) = \begin{cases}
+			1 & x \in [-1, 1], \\
+			0 & |x| > 1.
+		\end{cases}
+	\end{equation}
+	
+	\question Since $f \in H^s(\R)$ if and only if $g_s \in L^2(\R)$, where $g_s(\xi) = \widehat{f}(\xi)(1+|\xi|^2)^\frac{s}{2}$, we should start by computing $\widehat{f}$:
+	\begin{align*}
+		\widehat{f}(\xi) &= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty e^{-ix\xi}f(x)\dee x \\
+		&= \frac{1}{\sqrt{2\pi}}\int_{-1}^1 e^{-ix\xi}\dee x \\
+		&= \frac{1}{\sqrt{2\pi}}\left[\frac{e^{-ix\xi}}{-i\xi}\right]_{-1}^1 \\
+		&= \frac{e^{i\xi} - e^{-i\xi}}{i\xi\sqrt{2\pi}}\\
+		&= \sqrt{\frac{2}{\pi}}\frac{\sin(\xi)}{\xi}.
+	\end{align*}
+	We note that $\widehat{f}(0) = \sqrt{\frac{2}{\pi}}$, so $\widehat{f}$ is continuous. Thus,
+	\begin{equation*}
+		g_s(\xi) =\sqrt{\frac{2}{\pi}}\frac{\sin(\xi)}{\xi}(1+|\xi|^2)^\frac{s}{2}
+	\end{equation*}
+	is also continuous.
+	
+	Therefore, for $a > 0$,
+	\begin{equation*}
+		\int_{-\infty}^\infty |g_s(\xi)|\dee\xi = \int_{-a}^a |g_s(\xi)|^2\dee\xi + 2\int_{a}^\infty |g_s(\xi)|^2\dee \xi
+	\end{equation*}
+	because $g_s$ is even. The first term is always finite because $g_s$ is continuous, so $g_s \in L^2(\R)$ if and only if the second term is finite.
+	
+	Since $\frac{(1+|\xi|^2)^s}{|\xi|^{2s}} = \left(\frac{1}{|\xi|^2} + 1\right)^s \to 1$ as $\xi \to \infty$, we can choose $a$ large enough that $(1+|\xi|^2)^s \le 2|\xi|^{2s}$ for all $\xi > a$. Then $|g_s(\xi)|^2 \le \frac{4}{\pi}|\xi|^{2(s-1)}$ for all $\xi > a$, meaning that the second term is finite if $2(s-1) < -1$, that is, if $s < \frac{1}{2}$.
+	
+	Similarly, since $\frac{|\xi|^{2s}}{(1+|\xi|^2)^s} \to 1$ as $\xi \to \infty$, we can choose $a$ large enough that $|\xi|^{2s} \le 2(1+|\xi|^2)^s$ for all $\xi > a$. 
+	
+\end{document}
