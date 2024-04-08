@@ -1,0 +1,106 @@
+\documentclass[nonumber]{homework}
+\input{../homework_shared.tex}
+\input{../../standardcmd.tex}
+
+\newcommand{\hwnum}{8}
+
+
+\begin{document}
+	\maketitle
+	
+	\question*{4.9} Suppose that $b(t)$ is 1-periodic, and let $b_0 = \int_0^1b(s)\dee s$. Then
+	\begin{enumerate}
+		\item If $b_0=0$, then all solutions of $\dot{x} = b(t)$ are 1-periodic. 
+		\item If $b_0 \ne0$, then all solutions of $\dot{x} = b(t)$ are unbounded.
+	\end{enumerate}
+	
+	\begin{proof}
+		Note that simply integrating both sides of $\dot{x} = b(t)$ implies that $\varphi(t,0,x_0) = x_0 + \int_0^t b(s)\dee s$. Thus, $\Pi(x_0) = \varphi(1,0,x_0) = x_0 + \int_0^1 b(s)\dee s = x_0 + b_0$.
+		
+		If $b_0 = 0$, then $x_0$ is a fixed point of $\Pi$ for all $x_0$, so all solutions of $\dot{x} = b(t)$ are 1-periodic.
+		
+		If $b_0 \ne 0$, then $\Pi$ has no fixed points, which implies that $\dot{x} = b(t)$ has no 1-periodic solutions; hence, every solution must be unbounded by the contrapositive of Theorem 4.11.
+	\end{proof}
+	
+	\question*{4.10} Consider the 1-periodic differential equation $\dot{x} = f(t,x)$. Suppose that $f(t,0) = 0$, and there exists $r > 0$ such that $|x_0| < r$ implies that $\varphi(t,t_0, x_0) \to 0$ as $t \to \infty$. Then the zero solution $x =0$ is stable.
+	
+	\begin{proof}
+		Let $|x_0| < r$. Recalling that $\Pi^k(x_0) = \varphi(k,0,x_0)$, it follows by the assumption that
+		\begin{equation*}
+			\tag{$*$}
+			\lim_{k\to\infty}\Pi^k(x_0) = 0.
+		\end{equation*}
+		Given $\varepsilon > 0$, choose $\delta < \min\{r, \varepsilon\}$. Then $|x_0| < \delta$ implies that $|\Pi(x_0)| < \varepsilon$ by ($*$) and the monotonicity of $\Pi$. This shows that $x_0=0$ is a stable fixed point of $\Pi$ by definition; hence, $x =0 = \varphi(t,0,0)$ is a stable, 1-periodic solution of $\dot{x} = f(t,x)$.
+	\end{proof}
+	
+	\question*{4.11} Suppose that $a(t)$ and $b(t)$ are 1-periodic and continuous functions. Let
+	\begin{equation*}
+		a_0 = \int_0^1 a(s)\dee s, \qquad c_0 = \int_0^1 e^{\int_s^1 a(u)\dee u}b(s)\dee s.
+	\end{equation*}
+	
+	By the variation of constants formula,
+	\begin{equation*}
+		\varphi(t,0,x_0) = e^{\int_0^ta(s)\dee s}x_0 + \int_0^1e^{\int_s^t a(u)\dee u}b(s)\dee s,
+	\end{equation*}
+	so
+	\begin{equation*}
+		\Pi(x_0) = \varphi(1,0,x_0) = e^{a_0}x_0 + c_0.
+	\end{equation*}
+	
+	\begin{enumerate}
+		\item If $a_0 \ne0$, then $\Pi(x_0) = x_0$ if and only if $x_0 = -\frac{c_0}{e^{a_0}-1}$, which implies that there is exactly one 1-periodic solution of $\dot{x} = a(t)x + b(t)$. If $a_0 < 0$, then $|\Pi'(x_0)| = e^{a_0} < 1$, so the fixed point of $\Pi$ is asymptotically stable, and 1-periodic solution is also asymptotically stable. If $a_0 > 0$, then $|\Pi'(x_0)| = e^{a_0} > 1$, so the fixed point of $\Pi$ is unstable, and the 1-periodic solution is also unstable.
+		
+		\item Suppose that $a_0 = 0$. Then $\Pi(x_0) = x_0 + c_0$. Thus, if $c_0 = 0$, then every point is a fixed point of $\Pi$, and every solution is 1-periodic. Conversely, if every solution is periodic, then every point is a fixed point of $\Pi$, which can clearly only happen if $c_0 = 0$.
+		
+		\item Suppose that $a_0 = 0$ so that $\Pi(x_0) = x_0 + c_0$. If $c_0 \ne 0$, then $\Pi$ has no fixed points, so there are no 1-periodic solutions. Then the contrapositive of Theorem 4.11 implies that all solutions are unbounded.
+		
+		\item One version of Fredholm's Alternative from linear algebra: if $A$ is a matrix and $b$ is a vector, then exactly one of the following is true
+		\begin{itemize}
+			\item $Ax = b$ has a unique solution.
+			\item $A^Ty = 0$ has a nonzero solution.
+		\end{itemize}
+		In our case, we are interested in the fixed points of $\Pi$, which we obtain by solving the linear equation $\Pi(x_0) = e^{a_0}x_0 + c_0 = x_0$, so in Fredholm's Alternative we would set $A = e^{a_0} - 1$, and $b = -c_0$ and obtain cases similar to the three above.
+	\end{enumerate}
+	
+	\question*{4.16} Let $c(t)$ be a continuous, 1-periodic function. Then there is a unique 1-periodic solution of $\dot{x} = -x^5 + c(t)$, and it is asymptotically stable.
+	
+	\begin{proof}
+		Since $c(t)$ is bounded, there exists $M > 0$ such that $-M \le c(t) \le M$ for all $t$. Hence, $\dot{x} < 0$ if $x > \sqrt[5]{M}$, and $\dot{x} > 0$ if $x < -\sqrt[5]{M}$. This implies that every solution is bounded by similar reasoning that was used for $\dot{x} = -x^3 + c(t)$. By Theorem 4.11, it follows that there is a 1-periodic solution $\Phi(t)$.
+		
+		Suppose that $x(t)$ is another solution, and define $y = x - \Phi$. Then $y$ satisfies
+		\begin{equation*}
+			\dot{y} = \dot{x} - \dot{\Phi} = -x^5 + c(t) + \Phi^5 - c(t) = -(y+\Phi)^5 + \Phi^5.
+		\end{equation*}
+		Since
+		\begin{equation*}
+			-(y+\Phi)^5 + \Phi^5 = -yg(y,\Phi),
+		\end{equation*}
+		where
+		\begin{equation*}
+			g(y,\Phi) = y^4 + 5y^3\Phi + 10y^2\Phi^2 + 10y\Phi^3 + 5\Phi^4
+		\end{equation*}
+		is a positive-definite function, it follows that $\dot{y} < 0$ if $y > 0$, and $\dot{y} > 0$ if $y< 0$; therefore, $y(t)\to 0$ as $t\to \infty$, so $x(t) \to \Phi(t)$ as $t \to \infty$. That is, $\Phi$ is asymptotically stable. Moreover, if $x$ is 1-periodic, the only possibility is that $x = \Phi$, so $\Phi$ is unique.
+		
+		To see that $g(y,\Phi)$ is positive-definite, let $a,t \in \R$ and consider that
+		\begin{equation*}
+			g(t,at) = (1 + 5a + 10a^2 + 10a^3 + 5a^4)t^4 = h(a)t^4
+		\end{equation*}
+		where $h(a) = 5a^4 + 10a^3 + 10a^2 + 5a+1$. Note that
+		\begin{equation*}
+			h'(a) = 20a^3 + 30a^2 + 20a + 5 = 5(4a^3 + 6 a^2 + 4a + 1) =5\left((a+1)^4 - a^4\right).
+		\end{equation*}
+		Then $h'(0) = 0$ implies that $(a+1)^4 = a^4$, which implies that $a + 1 = \pm a$. $a + 1 = a$ is impossible, so $a + 1 = -a$, which implies that $a = -\frac{1}{2}$ is the only critical point of $h$. Since $h''(a) = 60a^2 + 60a + 20$, it follows that
+		\begin{equation*}
+			h''\left(-\frac{1}{2}\right) = 15 - 30 + 20 = 5 > 0,
+		\end{equation*}
+		so $-\frac{1}{2}$ is a local minimizer of $h$. In fact, since it is the only critical point of $h$, it must also be a global minimizer. Hence,
+		\begin{equation*}
+			h(a) \ge h\left(-\frac{1}{2}\right) = \frac{5}{16} - \frac{10}{8} + \frac{10}{4} - \frac{5}{2} + 1 = \frac{1}{16}
+		\end{equation*}
+		for all $a$. It follows that
+		\begin{equation*}
+			g(y,\Phi) \ge \frac{y^4}{16} > 0 \quad \text{if}\quad y \ne 0.
+		\end{equation*}
+		If $y = 0$, then $g(y,\Phi) = 5\Phi^4 > 0$ if $\Phi \ne 0$, so $g$ is positive definite, as claimed.
+	\end{proof}
+\end{document}
