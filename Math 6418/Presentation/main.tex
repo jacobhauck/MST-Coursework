@@ -11,268 +11,266 @@
 \begin{document}
 	\frame{\titlepage}
 	
-	\begin{frame}{Motivation}
-		Let $X,Y$ be normed linear spaces. We know a lot about linear maps $A : X \to Y$ -- what can we do about about nonlinear maps?
-		\vfill
-		\pause
-		
-		Approximate a nonlinear map $f : U \to Y$ by something linear:
-		\pause
-		
-		given $x_0 \in U$, find a linear operator $A_{x_0} \in B(X,Y)$ such that
-		\begin{equation*}
-			f(x) - f(x_0) \approx A_{x_0}(x-x_0)
-		\end{equation*}
-		for $x$ close to $x_0$ (point-slope form)
-		\vfill
-		\pause
+	\begin{frame}{Outline and goals}
+		\begin{itemize}
+			\item Introduce Fréchet derivative
+			\begin{itemize}
+				\item Basic properties
+			\end{itemize}
+			\vfill
+			\item Some examples of Fréchet derivatives 
+			\begin{itemize}
+				\item Relationship with finite-dimensional derivatives
+			\end{itemize}
+			\vfill
+			\item Important theorems
+			\begin{itemize}
+				\item Chain rule
+				\item Mean value theorem
+			\end{itemize}
+			\vfill
+			\item Partial Fréchet derivatives
+		\end{itemize}
 	\end{frame}
 	
 	\begin{frame}{Motivation}
-		Say $X = Y = \R$, then $A_{x_0}$ is given by multiplication by a number $a_{x_0} \in \R$, and a natural choice for $a_{x_0}$ is $f'(x_0)$, as
+		Let $X$, $Y$ be normed vector spaces. We know a lot about bounded, linear operators $A \in B(X,Y)$.
+		
+		\vfill
+		What about nonlinear operators $f : X \to Y$?
+		\vfill
+		
+		Linearize:
 		\begin{equation*}
-			f(x) - f(x_0) \approx f'(x_0)(x-x_0).
+			f(x+h) \approx f(x) + Ah, \qquad A \in B(X,Y),\quad h \text{ ``small enough''}
 		\end{equation*}
 		\vfill
-		\pause
 		
-		By definition,
+		From calculus, we know that
 		\begin{equation*}
-			\left|\frac{f(x_0+h) - f(x_0)}{h} - f'(x_0)\right| \to 0 \quad\text{as}\quad h\to 0.
+			\frac{f(x+h) - f(x) - f'(x)h}{h} \to 0 \qquad \text{ as } h \to 0.
 		\end{equation*}
-		\pause
-		How can we generalize to the case that $X,Y \ne \R$? Can't divide by $h$, so rewrite as
-		\begin{equation*}
-			\frac{|f(x_0+h) - f(x_0) - f'(x_0)h|}{|h|} \to 0 \quad \text{as}\quad h\to0.
-		\end{equation*}
+		Generalize to arbitrary $X$, $Y$?
 	\end{frame}
 	
-	\begin{frame}{Definition of the Fréchet Derivative}
-		\begin{block}{Definition (Fréchet Derivative)}
-		A function $f : U \to Y$ is called \textbf{Fréchet differentiable} at $x \in U$ if there exists $A \in B(X,Y)$ such that
-		\begin{equation*}
-			\frac{\lVert f(x+h) - f(x) - Ah \rVert_Y}{\lVert h \rVert_X} \to 0 \quad \text{as} \quad \lVert h\rVert_X\to 0,
-		\end{equation*}
-		in which case $A$ is called the \textbf{Fréchet derivative} of $f$ at $x$, also denoted by
-		\begin{equation*}
-			A = f'(x) = Df(x)
-		\end{equation*}
+	\begin{frame}{Definition of Fréchet derivative}
+		\begin{block}{Definition: Fréchet Derivative}
+			Let $U \subset X$ be open and $f: U \to Y$. Then $f$ is \textbf{Fréchet differentiable at $x\in U$} if there exists $A \in B(X,Y)$ such that
+			\begin{equation*}
+				\frac{\lVert f(x+h) - f(x) - Ah\rVert_Y}{\lVert h \rVert_X} \to 0\quad \text{as}\quad h \to 0 \text{ in $X$}.
+			\end{equation*}
+			In this case, $A$ is called the \textbf{Fréchet derivative of $f$ at $x$}, and is also denoted
+			\begin{equation*}
+				A = A_x = Df(x) = f'(x).
+			\end{equation*}
 		\end{block}
 		\vfill
-		\pause
 		
-		The Fréchet derivative is the same as the usual derivative if $f \in C^1(\R)$.
+		This reduces to the usual derivative if $X = Y = \mathbb{R}$.
 	\end{frame}
 	
 	\begin{frame}{Basic Properties}
+		Let $f$ and $g$ be Fréchet differentiable at $x \in U$, and let $\alpha, \beta \in \mathbb{F}$. Then
+		\vfill
 		\begin{enumerate}
-			\item Uniqueness (justifying the phrase ``\textit{the} Fréchet derivative'')
-			\pause
+			\item $Df$ is unique,
+			\begin{itemize}
+				\item Let $A$, $B$ both be derivatives. Show $A = B$ via $\lVert A - B\rVert = 0$.
+			\end{itemize}
 			\vfill
-			
-			\item Linearity
-			
-			\begin{equation*}
-				D(\alpha f + \beta g)(x) = \alpha Df(x) + \beta Dg(x)
-			\end{equation*}
-			\pause
+			\item $D(\alpha f + \beta g)(x) = \alpha Df(x) + \beta Dg(x)$ (linearity),
 			\vfill
-			
-			\item Fréchet differentiable $\implies$ continuous
-			\pause
+			\item $f$ is continuous at $x$ (with respect to $\lVert \cdot \rVert_Y$ and $\lVert \cdot \rVert_X$),
+			\begin{itemize}
+				\item Add and subtract $Df(x)h$, triangle inequality.
+			\end{itemize}
 			\vfill 
-			
-			\item Fréchet differentiable $\implies$ locally Lipschitz
-			
-			$f : X \to Y$ is \textbf{locally Lipschitz} at $x \in X$ if there exists $\delta > 0$ and $L > 0$ such that
+			\item $f$ is \textbf{locally Lipschitz} at $x$. That is, there is $\delta > 0$ and $L > 0$ such that
 			\begin{equation*}
-				\lVert f(x) - f(y)\rVert_Y \le L\lVert x-y \rVert_X \qquad \text{if} \quad \lVert x - y\rVert < \delta.
+				\lVert h \rVert_X < \delta \implies \lVert f(x+h) -f(x)\rVert_Y \le L\lVert h\rVert_X.
 			\end{equation*}
-			\pause
-			For any $\varepsilon > 0$, can choose $\delta$ small enough so that $L = \lVert Df(x) \rVert_{B(X,Y)} + \varepsilon$ works.
+			Moreover, given $\varepsilon > 0$, we can take $L = \lVert Df(x)\rVert_{B(X,Y)} + \varepsilon$ (maybe need to take $\delta$ smaller)
 		\end{enumerate}
 	\end{frame}
 	
-	\begin{frame}{Examples -- Linear Operators}
-		\textbf{Example 1.} Suppose that $f: X \to Y$ is actually linear: $f(x) = Ax$, where $A \in B(X,Y)$. Then, as expected,
-		\begin{equation*}
-			Df(x) = A \qquad \text{for all } x \in X.
-		\end{equation*}
-		\pause
+	\begin{frame}{Examples -- Linear operators and ``quadratic'' operators}
+		\textbf{Example 1.} Let $f(x) = Ax$, where $A \in B(X,Y)$ ($f$ is linear). Then $Df(x) = A$ for all $x \in X$.
 		\vfill
-		The proof is trivial due to the linearity of $A$:
-		\begin{equation*}
-			\frac{\lVert f(x+h)-f(x) - Ah\rVert_Y}{\lVert h\rVert_X} \pause= \frac{\lVert A(x+h) - Ax - Ah\lVert_Y}{\lVert h\rVert_X} = 0.
-		\end{equation*}
-	\end{frame}
-	
-	\begin{frame}{Examples -- A ``Quadratic'' Operator}
-		\textbf{Example 2.} Suppose that $X = H$ is a Hilbert space over $\R$, and $f(x) = (x, Ax)$, where $A \in B(H, H)$. 
-		\pause
-		Then $f : H \to \R$, and
-		\begin{align*}
-			f(x+h) - f(x) &= (x+h,A(x+h)) - (x, Ax) \\
-			&= (x, Ah) + (h, Ax) + (h, Ah)\\
-			\uncover<+(1)->{
-				&= (A^*x + Ax, h) + (h,Ah).
-			}
-		\end{align*}
-		\pause
-		Then, viewing $(A^* + A)x$ as an element of $H^* = B(H,\R)$,
-		\begin{equation*}
-			Df(x) = (A^* + A)x
-		\end{equation*}
-		\pause
-		because, by the Cauchy-Schwarz inequality,
-		\begin{align*}
-			\frac{|f(x+h) - f(x) - ((A*+A)x,h)|}{\lVert h\rVert_X} &= \frac{|(h,Ah)|}{\lVert h\rVert_X} \\
-			\uncover<+(1)->{
-				&\le \frac{\lVert h\rVert_X\lVert Ah\rVert_X}{\lVert h\rVert_X} = \lVert Ah\rVert_X,
-			}
-		\end{align*}
-		\uncover<+(1)->{and $\lVert Ah \rVert_X \to 0$ as $h \to 0$.}
-	\end{frame}
-	
-	\begin{frame}{Examples -- Gradient}
-		\textbf{Example 3.} Let $f \in C^1(\R^n)$ (first-order partial derivatives exist and are continuous)
-		\pause
-		\vfill
-		Guess: $Df(x) = \nabla f(x)$, viewing $\nabla f(x)$ as a linear operator defined by $[\nabla f(x)](h) = [\nabla f(x)]^Th$, for $h \in \R^n$.
-		\pause
-		\vfill
-		Let $n=2$, and define $\tilde{h} = h_1e_1$. Then
-		{\small
-		\begin{alignat*}{2}
-			|f(x+h) - f(x) - \nabla f(x)^Th| &= |&&f(x+h) - f(x) - \partial_1f(x)h_1 - \partial_2f(x)h_2| \\
-			\only<4>{&= &&f(x+h) - f(x+\tilde{h}) - \partial_2f(x+\tilde{h})h_2\\ 
-			&&& + f(x+\tilde{h}) - f(x) - \partial_1f(x)h_1\\
-			&&& + (\partial_2f(x+\tilde{h}) - \partial_2f(x))h_2}
-			\only<5-6>{&\le &&|f(x+h) - f(x+\tilde{h}) - \partial_2f(x+\tilde{h})h_2|\\ 
-			&&& + |f(x+\tilde{h}) - f(x) - \partial_1f(x)h_1|\\
-			&&& + |\partial_2f(x+\tilde{h}) - \partial_2f(x)|\cdot|h_2|}
-		\end{alignat*}
-		}%
-		\pause\pause\pause
-		Dividing both sides by $\lVert h\rVert$ and applying definition of partial derivative and continuity...
-	\end{frame}
-	
-	\begin{frame}{Examples -- Gradient}
-		First term:
-		{\small
-		\begin{equation*}
-			\frac{|f(x+h) - f(x+\tilde{h}) - \partial_2f(x+\tilde{h})h_2|}{\lVert h \rVert} \pause= \underbrace{\frac{h_2}{\lVert h\rVert}}_{|\cdot|\le 1}\cdot\underbrace{\frac{|\cdots|}{h_2}}_{\to 0\text{ by definition of }\partial_2} \to 0
-		\end{equation*}
-		}%
-		as $h\to 0$.
-		\pause
-		\vfill
-		Second term:
-		{\small
-		\begin{equation*}
-			\frac{|f(x+\tilde{h}) - f(x) - \partial_1f(x)h_1|}{\lVert h \rVert} = \frac{h_1}{\lVert h\rVert}\cdot \frac{|\cdots|}{h_1} \to 0\quad \text{as}\quad h\to 0.
-		\end{equation*}
-		}%
-		\pause
-		\vfill
-		Third term:
-		{\small
-		\begin{equation*}
-			|\partial_2f(x+\tilde{h}) - \partial_2f(x)|\cdot\frac{|h_2|}{\lVert h\rVert} \to 0 \quad\text{as}\quad h\to 0
-		\end{equation*}	
-		}%
-		by the continuity of $\partial_2f$.
-	\end{frame}
-	
-	\begin{frame}{Examples -- Jacobian}
-		\textbf{Example 4.} Let $f : \R^n \to \R^m$ be $C^1$.
-		\vfill
-		\pause
-		Then, if $J(x) \in \R^{m\times n}$ is the Jacobian matrix of $f$,
-		\begin{equation*}
-			f(x) = \left[\begin{matrix}f_1(x) \\ \vdots \\f_m(x)\end{matrix}\right] \implies J(x) = \left[\begin{matrix}\nabla f_1(x)^T \\ \vdots \\ \nabla f_m(x)^T\end{matrix}\right],
-		\end{equation*}
-		\pause
-		and
-		{\small
-		\begin{equation*}
-			\frac{\left\lVert f(x+h) - f(x) - J(x)h\right\rVert}{\lVert h\rVert} = \frac{\left\lVert \left[\begin{matrix}f_1(x+h) - f_1(x) - \nabla f_1(x)^Th \\ \vdots \\ f_m(x+h) - f_m(x) - \nabla f_m(x)^Th\end{matrix}\right]\right\rVert}{\lVert h \rVert}.
-		\end{equation*}
-		}%
-		\pause
-		Each component $\to 0$ as $h\to 0$ because $\nabla f_1$ is the Fréchet derivative of $f_1$; therefore $Df(x) = J(x)$, interpreting the matrix as an operator.
-	\end{frame}
-	
-	\begin{frame}{Examples -- Integral of a Power}
-		\textbf{Example 5.} Let $p > 1$ be an integer, and let $f : L^p(\R) \to \R$ be defined by
-		\begin{equation*}
-			f(\varphi) = \int \varphi^p.
-		\end{equation*}
-		\vfill
-		\pause
 		
-		Let $h \in L^p(\R)$; then
-		\begin{align*}
-			f(\varphi + h) - f(\varphi) &= \int [(\varphi+h)^p - \varphi^p] \\
-			&= \int \left[p\varphi^{p-1}h + \binom{p}{2}\varphi^{p-2}h^2 + \dots + h^p\right]
-		\end{align*}
-		\vfill
-		\pause
+		\textbf{Example 2.} Let $X = H$, a Hilbert space over $\mathbb{R}$. Suppose that $f(x) = (x, Ax)$, where $A \in B(X,X)$. Then $Df(x) = (A^* + A)x$ for all $x \in X$.
 		
-		Note that $\varphi^{p-k}h^k$ is integrable for $k = 0,1,\dots, p$:
-		\begin{equation*}
-			\int |\varphi|^{p-k}|h|^k \le \left(\int|\varphi|^p\right)^\frac{1}{u}\left(\int|h|^p\right)^\frac{1}{v} = \lVert \varphi \rVert_{L^p(\R)}^{p-k}\lVert h \rVert_{L^p(\R)}^k
-		\end{equation*}
-		if $u = \frac{p}{p-k}$ and $v = \frac{p}{k}$.
+		\begin{itemize}
+			\item Rearrange inner products
+			\item Cauchy-Schwarz inequality
+			\item Boundedness of $A$
+		\end{itemize}
 	\end{frame}
 	
-	\begin{frame}{Examples -- Integral of a Power}
-		Therefore,
-		{\small
-		\begin{align*}
-			\frac{1}{\lVert h\rVert_{L^p(\R)}}\Big|f(\varphi + h) - &f(\varphi) - \int p\varphi^{p-1}h\Big| \\
-			&= \frac{1}{\lVert h\rVert}\left|\int\left[\binom{p}{2}\varphi^{p-2}h^2 + \dots + h^p\right]\right| \\[0.5em]
-			\only<2-5>{
-				&\le \binom{p}{2}\int|\varphi|^{p-2}|h^2| + \dots + \int |h|^p \\[0.5em]
-			}
-			\only<3-5>{
-				&\le \frac{1}{\lVert h\rVert}\left[\binom{p}{2}\lVert \varphi\rVert_{L^p(\R)}^{p-2}\lVert h\rVert_{L^p(\R)}^2 + \dots + \lVert h\rVert_{L^p(\R)}^p\right] \\[0.5em]
-			}
-			\only<4-5>{
-				&\le C(\varphi,p) \left(\lVert h\rVert + \lVert h\rVert^2 + \dots +\lVert h\rVert^{p-2}\right) \\[0.5em]
-			}
-		\end{align*}
-		}%
-		\pause\pause\pause
-		which $\to 0$ as $\lVert h \rVert \to 0$. 
-		
+	\begin{frame}{Examples -- $C^1$, finite-dimensional maps}
+		\textbf{Example 3.} Let $f : \mathbb{R}^n \to \mathbb{R}$, where $f \in C^1$ (so $\partial_i f$ continuous).
+		\begin{itemize}
+			\item Guess: $Df(x) = \nabla f(x)^T h$
+			\item $n = 2$ case one coordinate at a time
+			\item Use continuity of $\partial_i f$
+		\end{itemize}
 		\vfill
-		\pause
 		
-		Hence,
-		\begin{equation*}
-			Df(\varphi)h = \int p\varphi^{p-1}h
-		\end{equation*}
-	\end{frame}
-	
-	\begin{frame}{Directional Derivatives}
-		We can also define a directional derivative of an operator $f : X \to Y$.
-		
-		\begin{block}{Gateaux Derivative}
-			Let $h \in X$ be a unit vector. Then $A \in B(X,Y)$ is called the \textbf{Gateaux derivative} of $f$ at $x \in X$ \textbf{in the direction} $h$ if
+		\textbf{Example 4.} Let $f: \mathbb{R}^n \to \mathbb{R}^m$, where $f \in C^1$ (so $\partial_i f_j$ is continuous). 
+		\begin{itemize}
+			\item $f$ is a set of $m$ functions from Example 3:
 			\begin{equation*}
-				\frac{\lVert f(x+th) - f(x) - tAh\rVert_Y}{|t|} \to 0 \quad\text{as}\quad t\to 0,
+				f(x) = \left[\begin{matrix}
+					f_1(x) \\ \vdots \\ f_m(x)
+				\end{matrix}\right]
 			\end{equation*}
-			which is also denoted by
+			\item Only finitely many components
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Examples -- Function space}
+		\textbf{Example 5.} Let $p > 1$ be an integer, and let $f : L^p(\mathbb{R}) \to \mathbb{R}$ be defined by
+		\begin{equation*}
+			f(\varphi) = \int_\mathbb{R} \varphi^p, \qquad \varphi \in L^p(\mathbb{R})
+		\end{equation*}
+		\begin{itemize}
+			\item Binomial theorem on $(\varphi + h)^p$
+			\item Hölder's inequality on higher order terms (magic happens)
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Chain rule}
+		In calculus, the chain rule involves the product of derivatives. Fréchet derivatives are operators -- product of operators?
+		\vfill
+		\begin{block}{Theorem: Chain Rule for Fréchet Derivatives}
+			Let $X,Y,Z$ be normed vector spaces, $U \subset X$ and $V \subset Y$ open. Suppose that $f : U \to Y$, $g : V \to Z$.
+			\vspace{.7em}
+			
+			If $f$ is Fréchet differentiable at $x \in U$ and $g$ is Fréchet differentiable at $f(x) \in V$, then $g\circ f$ is Fréchet differentiable at $x$, with
 			\begin{equation*}
-				A = D_hf(x).
+				D(g\circ f)(x) = Dg(f(x)) \circ Df(x)
 			\end{equation*}
 		\end{block}
-		\pause
 		\vfill
-		Question: if $f$ is Gateaux differentiable (G.d. in every direction), is $f$ also Fréchet differentiable? Conversely?
+		{\small
+		\begin{itemize}
+			\item Add/subtract $Dg(f(x))[f(x+h) - f(x)]$ -- linear approximation of $g(f(x+h)) - g(f(x))$
+			
+			\item Add/subtract $Df(x)h$ to introduced $f(x+h) - f(x)$ -- linear approximation of $f(x+h)-f(x)$
+			
+			\item Differentiability of $f$ and boundedness of $Dg(f(x))$
+			
+			\item Multiply and divide by $\lVert f(x+h) - f(x)\rVert_Y$, differentiability of $g$
+		\end{itemize}
+		}
 	\end{frame}
 	
-	\begin{frame}{Directional Derivatives}
-		Fréchet differentiable implies Gateaux differentiable, but not the other way around
+	\begin{frame}{Mean value theorem}
+		Recall: if $f$ is differentiable on $(a,b)$ \textbf{and continuous on $[a,b]$}, then there exists $c \in (a,b)$ such that
+		\begin{equation*}
+			\frac{f(b) - f(a)}{b-a} = f'(c)
+		\end{equation*}
+		\vfill
+		
+		Again, we can't divide by a vector... MVT often used to bound $|f(b) - f(a)|$ in terms of derivative:
+		\begin{equation*}
+			|f(b) - f(a)| \le |f'(c)|(b-a)
+		\end{equation*}
+		Generalizing this, we can say
+		\begin{block}{Theorem: Mean Value Theorem for Fréchet Derivatives}
+			Let $f$ be Fréchet differentiable on $U$. 
+			\vspace{0.5em}
+			
+			If $\ell = \{tx_2 + (1-t)x_1 \mid 0 \le t \le 1\}\subset U$ then
+			\begin{equation*}
+				\lVert f(x_2) - f(x_1)\rVert_Y \le \sup_{x\in \ell} \lVert Df(x)\rVert \cdot \lVert x_2 - x_1\rVert_X.
+			\end{equation*}
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Proof of mean value theorem}
+		\begin{itemize}
+			\item Focus on case $X = \mathbb{R}$, and $[x_1, x_2] = [0, 1]$
+			\begin{itemize}
+				\item Let $\varphi : [0,1] \to Y$ be Fréchet differentiable on $(0,1)$ and continuous on $[0,1]$. Then
+				\begin{equation*}
+					|\varphi(1) - \varphi(0)| \le \sup_{0\le t\le1} \lVert D\varphi(t)\rVert.
+				\end{equation*}
+				\vfill
+				\item Local Lipschitz property and compactness of $[0,1]$ to construct a partition of a subinterval where change in function is almost controlled by derivative between partition points
+				\vfill
+				\item Expand difference between endpoints in telescoping sum
+				\vfill
+				\item Use continuity to take limit as subinterval endpoints approach full interval
+			\end{itemize}
+			\vfill
+			\item Chain rule to extend to the general case
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Partial Fréchet derivatives}
+		The partial derivative we know involves restricting a function to one coordinate direction -- what to do about the abstract input space $X$?
+		\begin{itemize}
+			\item Use directional derivative (\textbf{Gateaux derivative})
+			\item Partition $X$ into finitely many subspaces
+		\end{itemize}
+		\vfill
+		Let $X_1, X_2, \dots, X_n$ be normed vector spaces, and let
+		\begin{equation*}
+			X = X_1 \oplus X_2 \oplus \dots \oplus X_n.
+		\end{equation*}
+		Note that there are two equivalent ways to think about this direct sum:
+		{\tiny
+		\begin{equation*}
+			\begin{split}
+				&X_k \subseteq X, \quad X_j \cap X_k = \{0\} \text{ if } j \ne k, \\
+				&\mathrm{span}\{X_1, X_2, \dots, X_n\} = X, \\
+				&\lVert \cdot \rVert_{X_k} = \lVert \cdot \rVert_X \big\vert_{X_k}
+			\end{split}
+			\quad \iff \quad
+			\begin{split}
+				&X = X_1 \times X_2 \dots \times X_n \\
+				&\lVert x \rVert_X = \lVert (\lVert x_1\rVert_{X_1}, \lVert x_2\rVert_{X_2}, \dots, \lVert x_n\rVert_{X_n})\rVert\\
+				&\text{where $\lVert\cdot\rVert$ is any norm on $\mathbb{R}^n$}.
+			\end{split}
+		\end{equation*}
+		}%
+		The latter will be useful for developing the partial Fréchet derivative.
+	\end{frame}
+	
+	\begin{frame}{Definition of partial Fréchet derivatives}
+		\begin{block}{Definition: Partial Fréchet Derivatives}
+			For $x = (x_1, x_2, \dots, x_n) \in U$, define
+			\begin{equation*}
+				f_{k,x}(z) = f(x_1, \dots, x_{k-1}, z, x_{k+1},\dots, x_n)
+			\end{equation*}
+			on $U_k = \{z \in X_k \mid (x_1, \dots, z, \dots, x_n) \in U\}$, which is open in $X_k$. 
+			\vspace{1em}
+			
+			If $f_{k,x}$ is Fréchet differentiable at $x_k$, then $f$ is \textbf{partially Fréchet differentiable along $X_k$ at $x$} with \textbf{partial Fréchet derivative} $D_kf : X \to B(X_k,Y)$ given by
+			\begin{equation*}
+				D_kf(x) = Df_{k,x}(x_k).
+			\end{equation*}
+		\end{block}
+		\vfill
+		Differentiable at $x$ implies partially differentiable at $x$
+		\begin{itemize}
+			\item Lifting from $X_k$ to $X$ is differentiable. Apply chain rule.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Having all partial derivatives $\implies$ differentiable}
+		\begin{block}{Theorem: Fréchet ``Gradient''}
+			Suppose that $D_kf(x)$ exists for all $x \in U$, and $D_kf$ is continuous at $x_0 \in U$. Then $f$ is Fréchet differentiable at $x_0$, and
+			\begin{equation*}
+				Df(x_0)h = \sum_{k=1}^n D_kf(x_0)h_k, \qquad h = (h_1, \dots, h_n) \in X.
+			\end{equation*}
+		\end{block}
+		\vfill
+		\begin{itemize}
+			\item Show that proposed derivative is bounded and linear
+			\item One ``coordinate axis'' at a time
+			\item Mean value theorem on each coordinate + continuity of partial derivatives
+			\item Equivalence of $\lVert \cdot \rVert_X$ and $\ell^1$ norm of $X_k$ norms
+		\end{itemize}
 	\end{frame}
 \end{document}

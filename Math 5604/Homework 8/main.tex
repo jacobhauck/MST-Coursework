@@ -1,0 +1,263 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\usepackage{listings}
+\usepackage{booktabs}
+
+\newcommand{\hwnum}{8}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question Consider the BVP
+	\begin{alignat*}{2}
+		\Delta u &= -2\pi^2\sin(\pi(x+y)) = f(x,y), &\qquad &0<x<1, \quad 0<y<1 \\
+		u(0,y) &= \sin(\pi y) = g_\ell(y), \quad u(1, y) = \sin(\pi(1+y)) = g_r(y), & \qquad &0 \le y \le 1\\
+		u(x,0) &= \sin(\pi x) = g_b(x), \quad u(x, 1) = \sin(\pi(1+x)) = g_t(y), & \qquad &0 \le x \le 1. 
+	\end{alignat*}
+	The exact solution of this equation is given by $u(x,y) = \sin(\pi(x+y))$.
+	
+	\begin{alphaparts}
+		\questionpart Consider a grid of sample points $\{(x_i, y_j)\}$ on the domain $[0,1]^2$, where $i = 0,1,\dots, M$, and $j = 0,1,\dots, N$. If the points are evenly spaced horizontally by $h_x = \frac{1}{M}$ and vertically by $h_y = \frac{1}{N}$, then $x_i = ih_x$, and $y_j = jh_y$.
+		
+		We approximate $u(x_i,y_j)$ by $u_{i,j}$. Using a centered-difference scheme to approximate $\Delta u$ on the interior and applying the boundary conditions on the boundary points, we are led to the numerical scheme
+		\begin{equation*}
+			\tag{$i,j$}
+			\begin{split}
+				\frac{u_{i-1,j} - 2u_{i,j} + u_{i+1,j}}{h_x^2} + \frac{u_{i,j-1} -2 u_{i,j} + u_{i,j+1}}{h_y^2} = g(x_i, y_i),\\  i=1,2,\dots, M-1,\; j=1,2,\dots N-1,
+			\end{split}
+		\end{equation*}
+		and
+		\begin{alignat*}{3}
+			u_{0,j} &= g_\ell(y_j),& \qquad u_{M,j} &= g_r(y_j),& \qquad j&=0,1,\dots,N,\\
+			u_{i,0} &= g_b(x_i), & \qquad u_{i,N} &= g_t(x_i),& \qquad i&=0,1,\dots M.
+		\end{alignat*}
+		
+		
+		
+		In order to solve this linear system, we need to reshape the matrix of unknowns $\{u_{i,j}\}_{i=1,j=1}^{M-1,N-1}$ into a vector $U$ and rewrite the corresponding equations $(i,j)$ as a matrix-vector system, substituting the known boundary values where applicable.
+		
+		We use row-wise ordering to reshape the matrix of unknowns; that is, we define the block vector of rows of the unknown matrix
+		\begin{equation*}
+			U = \left[\begin{matrix}U^{(1)} \\ U^{(2)} \\ \vdots \\ U^{(N-1)}\end{matrix}\right], \qquad U^{(j)} = \left[\begin{matrix}u_{1,j} \\ u_{2,j} \\ \vdots \\ u_{M-1,j}\end{matrix}\right], \quad j =1,2,\dots, N-1.
+		\end{equation*}
+		We can rewrite the equations $(i,j)$ into a matrix-vector system, expressing the matrix $A$ and vector $b$ in block form corresponding to the blocks of $U$:
+		\begin{equation*}
+			A = \left[\begin{matrix}A^{(1,1)} &\hdots& A^{(1,N-1)} \\\vdots &\ddots & \vdots \\ A^{(N-1,1)} & \hdots & A^{(N-1,N-1)}\end{matrix}\right], \qquad b = \left[\begin{matrix}b^{(1)} \\ b^{(2)} \\ \vdots \\ b^{(N-1)}\end{matrix}\right].
+		\end{equation*}
+		We remark that the block $A^{(j,j')}$ expresses the dependence of equations $(1,j), (2,j), \dots, (M-1,j)$ on the unknowns in row $j'$ of the unknown matrix $\{u_{i,j}\}$. 
+		
+		We construct $A$ and $b$ one block row at a time. Consider the blocks $A^{(1,j')}$ for $j'=1,2,\dots, N-1$, the first row of blocks of $A$. As mentioned, these blocks correspond to equations $(1,1),(2,1), \dots, (M-1,1)$. Substituting in boundary conditions, we see that
+		\begin{align*}
+			(1,1) &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{1,1} + \frac{1}{h_x^2}u_{2,1} + \frac{1}{h_y^2}u_{1,2} = f(x_1,y_1) - \frac{g_\ell(y_1)}{h_x^2} - \frac{g_b(x_1)}{h_y^2} \\
+			\substack{(i,1) \\ i=2,\dots,M-2} &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{i,1} + \frac{1}{h_x^2}u_{i-1,1} + \frac{1}{h_x^2}u_{i+1,1} + \frac{1}{h_y^2}u_{i,2} = f(x_i,y_1) - \frac{g_b(x_i)}{h_y^2} \\
+			(M-1,1) &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{M-1,1} + \frac{1}{h_x^2}u_{M-2,1} + \frac{1}{h_y^2}u_{M-1,2} = f(x_{M-1}, y_1) - \frac{g_r(y_1)}{h_x^2} - \frac{g_b(x_{M-1})}{h_y^2}.
+		\end{align*}
+		Thus, each equation depends only on rows 1 and 2 of the matrix $\{u_{i,j}\}$, so only blocks $A^{(1,1)}$ and $A^{(1,2)}$ are nonzero. Examining these dependencies, we get
+		\begin{equation*}
+			A^{(1,1)} = \left[\begin{matrix}
+				-\frac{2}{h_x^2}-\frac{2}{h_y^2} & \frac{1}{h_x^2} \\
+				\frac{1}{h_x^2} & -\frac{2}{h_x^2}-\frac{2}{h_y^2} & \frac{1}{h_x^2} \\
+				& & \ddots \\
+				& & \frac{1}{h_x^2} & -\frac{2}{h_x^2}-\frac{2}{h_y^2}  & \frac{1}{h_x^2}
+			\end{matrix}\right], \qquad
+			A^{(1,2)} = \left[\begin{matrix}\frac{1}{h_y^2} \\ & \ddots \\ & & \frac{1}{h_y^2} \end{matrix}\right],
+		\end{equation*}
+		where blanks indicate zero entries. The block $b^{(1)}$ corresponding to the right hand sides of equations $(1,1),(2,1), \dots, (M-1,1)$ we can read off easily:
+		\begin{equation*}
+			b^{(1)} = \left[\begin{matrix}
+				f(x_1,y_1) - \frac{g_\ell(y_1)}{h_x^2} - \frac{g_b(x_1)}{h_y^2} \\
+				f(x_2,y_1) - \frac{g_b(x_2)}{h_y^2} \\
+				f(x_3,y_1) - \frac{g_b(x_3)}{h_y^2} \\
+				\vdots \\
+				f(x_{M-2}, y_1) - \frac{g_b(x_{M-2})}{h_y^2} \\
+				f(x_{M-1}, y_1) - \frac{g_r(y_1)}{h_x^2} - \frac{g_b(x_{M-1})}{h_y^2}
+			\end{matrix}\right].
+		\end{equation*}
+		Now consider the blocks $A^{(j,j')}$ for $j = 2,3,\dots, N-2$, and $j' = 1,2,\dots, N-1$. These correspond to equations $(1,j),(2,j),\dots,(M-1,j)$. Substituting boundary conditions, we have
+		\begin{align*}
+			(1,j) &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{1,j} + \frac{1}{h_x^2}u_{2,j} + \frac{1}{h_y^2}u_{1,j-1} + \frac{1}{h_y^2}u_{1,j+1} = f(x_1,y_j) - \frac{g_\ell(y_j)}{h_x^2} \\
+			\substack{(i,j) \\ i=2,\dots,M-2} &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{i,j} + \frac{1}{h_x^2}u_{i-1,j} + \frac{1}{h_x^2}u_{i+1,j} + \frac{1}{h_y^2}u_{i,j-1} + \frac{1}{h_y^2}u_{i,j+1} = f(x_i,y_j) \\
+			(M-1,j) &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{M-1,j} + \frac{1}{h_x^2}u_{M-2,j} + \frac{1}{h_y^2}u_{M-1,j-1} + \frac{1}{h_y^2}u_{M-1,j+1} = f(x_{M-1}, y_j) - \frac{g_r(y_j)}{h_x^2}.
+		\end{align*}
+		Thus, each equation depends only on rows $j-1$, $j$, and $j+1$ of the matrix $\{u_{i,j}\}$, so only blocks $A^{(j,j-1)}$, $A^{(j,j)}$, and $A^{(j,j+1)}$ are nonzero. Examining these dependencies gives
+		\begin{equation*}
+			A^{(j,j)} = \left[\begin{matrix}
+				-\frac{2}{h_x^2}- \frac{2}{h_y^2} & \frac{1}{h_x^2} \\
+				\frac{1}{h_x^2} & -\frac{2}{h_x^2} - \frac{2}{h_y}^2 & \frac{1}{h_x^2} \\
+				& & \ddots \\
+				& & \frac{1}{h_x^2} & -\frac{2}{h_x^2} -\frac{2}{h_y^2}
+			\end{matrix}\right],
+			\qquad A^{(j,j-1)} = A^{(j,j+1)} = \left[\begin{matrix}\frac{1}{h_y^2} \\ & \ddots \\ &&\frac{1}{h_y^2}\end{matrix}\right].
+		\end{equation*}
+		The block $b^{(j)}$ can be read off from the right hand sides easily:
+		\begin{equation*}
+			b^{(j)} = \left[\begin{matrix}
+				f(x_1,y_j) - \frac{g_\ell(y_j)}{h_x^2} \\
+				f(x_2,y_j) \\
+				f(x_3,y_j) \\
+				\vdots \\
+				f(x_{M-2},y_j) \\
+				f(x_{M-1,y_j}) - \frac{g_r(y_j)}{h_x^2}
+			\end{matrix}\right].
+		\end{equation*}
+		Finally, consider the blocks $A^{(N-1, j')}$, $j' = 1,2,\dots,N-1$. These correspond to equations $(1,N-1),(2,N-1),\dots,(M-1,N-1)$. Substituting boundary conditions, we have
+		\begin{align*}
+			(1,N-1) &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{1,N-1} + \frac{1}{h_x^2}u_{2,N-1} + \frac{1}{h_y^2}u_{1,N-2} = f(x_1,y_{N-1}) - \frac{g_\ell(y_{N-1})}{h_x^2} - \frac{g_t(x_1)}{h_y^2} \\
+			\substack{(i,N-1) \\ i=2,\dots,M-2} &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{i,N-1} + \frac{1}{h_x^2}u_{i-1,N-1} + \frac{1}{h_x^2}u_{i+1,N-1} + \frac{1}{h_y^2}u_{i,2} = f(x_i,y_{N-1}) - \frac{g_t(x_i)}{h_y^2} \\
+			\begin{split}				
+				(M-1,N-1) \implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{M-1,N-1} + \frac{1}{h_x^2}u_{M-2,N-1} + \frac{1}{h_y^2}u_{M-1,N-2} \\= f(x_{M-1}, y_{N-1}) - \frac{g_r(y_{N-1})}{h_x^2} - \frac{g_t(x_{M-1})}{h_y^2}.
+			\end{split}
+		\end{align*}
+		Thus, each equation depends only on rows $N-2$ and $N-1$ of the matrix $\{u_{i,j}\}$, so only blocks $A^{(N-1,N-2)}$ and $A^{(N-1,N-1)}$ are nonzero. Examining these dependencies gives
+		\begin{equation*}
+			A^{(N-1,N-1)} = \left[\begin{matrix}
+				-\frac{2}{h_x^2}- \frac{2}{h_y^2} & \frac{1}{h_x^2} \\
+				\frac{1}{h_x^2} & -\frac{2}{h_x^2} - \frac{2}{h_y}^2 & \frac{1}{h_x^2} \\
+				& & \ddots \\
+				& & \frac{1}{h_x^2} & -\frac{2}{h_x^2} -\frac{2}{h_y^2}
+			\end{matrix}\right], \qquad
+			A^{(N-1,N-2)} = \left[\begin{matrix}\frac{1}{h_y^2} \\ & \ddots \\ &&\frac{1}{h_y^2}\end{matrix}\right].
+		\end{equation*}
+		The block $b^{(N-1)}$ can be read off from the right hand sides of the equations easily:
+		\begin{equation*}
+			b^{(N-1)} = \left[\begin{matrix}
+				f(x_1,y_{N-1}) - \frac{g_\ell(y_{N-1})}{h_x^2} - \frac{g_t(x_1)}{h_y^2} \\
+				f(x_2,y_{N-1}) - \frac{g_t(x_2)}{h_y^2} \\
+				f(x_3,y_{N-1}) - \frac{g_t(x_3)}{h_y^2} \\
+				\vdots \\
+				f(x_{M-2},y_{N-1}) - \frac{g_t(x_{M-2})}{h_y^2}\\
+				f(x_{M-1},y_{N-1}) - \frac{g_r(y_{N-1})}{h_x^2} - \frac{g_t(x_{M-1})}{h_y^2}
+			\end{matrix}\right].
+		\end{equation*}
+		Therefore, the entire system of equations $(i,j)$ is equivalent to the matrix-vector equation $AU = b$.
+	\end{alphaparts}
+	
+	\question
+	Consider the BVP
+	\begin{alignat*}{2}
+		\Delta u &= -2\pi^2\sin(\pi x)\sin(\pi y) = f(x,y), &\qquad &0<x<1, \quad 0<y<2 \\
+		u(0,y) &= 2 = g_\ell(y), \quad u(1, y) = 2 = g_r(y), & \qquad &0 \le y \le 2\\
+		u(x,0) &= 2 = g_b(x), \quad u(x, 1) = 2 = g_t(y), & \qquad &0 \le x \le 1. 
+	\end{alignat*}
+	The exact solution of this equation is given by $u(x,y) = 2 +\sin(\pi x)\sin(\pi y)$.
+	
+	\begin{alphaparts}
+		\questionpart Consider a grid of sample points $\{(x_i, y_j)\}$ on the domain $[0,1]\times[0,2]$, where $i = 0,1,\dots, M$, and $j = 0,1,\dots, N$. If the points are evenly spaced horizontally by $h_x = \frac{1}{M}$ and vertically by $h_y = \frac{2}{N}$, then $x_i = ih_x$, and $y_j = jh_y$.
+		
+		We approximate $u(x_i,y_j)$ by $u_{i,j}$. Using a centered-difference scheme to approximate $\Delta u$ on the interior and applying the boundary conditions on the boundary points, we are led to the numerical scheme
+		\begin{equation*}
+			\tag{$i,j$}
+			\begin{split}
+				\frac{u_{i-1,j} - 2u_{i,j} + u_{i+1,j}}{h_x^2} + \frac{u_{i,j-1} -2 u_{i,j} + u_{i,j+1}}{h_y^2} = g(x_i, y_i),\\  i=1,2,\dots, M-1,\; j=1,2,\dots N-1,
+			\end{split}
+		\end{equation*}
+		and
+		\begin{alignat*}{3}
+			u_{0,j} &= g_\ell(y_j),& \qquad u_{M,j} &= g_r(y_j),& \qquad j&=0,1,\dots,N,\\
+			u_{i,0} &= g_b(x_i), & \qquad u_{i,N} &= g_t(x_i),& \qquad i&=0,1,\dots M.
+		\end{alignat*}
+		
+		
+		
+		In order to solve this linear system, we need to reshape the matrix of unknowns $\{u_{i,j}\}_{i=1,j=1}^{M-1,N-1}$ into a vector $U$ and rewrite the corresponding equations $(i,j)$ as a matrix-vector system, substituting the known boundary values where applicable.
+		
+		We use column-wise ordering to reshape the matrix of unknowns; that is, we define the block vector of columns of the unknown matrix
+		\begin{equation*}
+			U = \left[\begin{matrix}U^{(1)} \\ U^{(2)} \\ \vdots \\ U^{(M-1)}\end{matrix}\right], \qquad U^{(i)} = \left[\begin{matrix}u_{i,1} \\ u_{i,2} \\ \vdots \\ u_{i, N-1}\end{matrix}\right], \quad i =1,2,\dots, M-1.
+		\end{equation*}
+		We can rewrite the equations $(i,j)$ into a matrix-vector system, expressing the matrix $A$ and vector $b$ in block form corresponding to the blocks of $U$:
+		\begin{equation*}
+			A = \left[\begin{matrix}A^{(1,1)} &\hdots& A^{(1,M-1)} \\\vdots &\ddots & \vdots \\ A^{(M-1,1)} & \hdots & A^{(M-1,M-1)}\end{matrix}\right], \qquad b = \left[\begin{matrix}b^{(1)} \\ b^{(2)} \\ \vdots \\ b^{(M-1)}\end{matrix}\right].
+		\end{equation*}
+		We remark that the block $A^{(i,i')}$ expresses the dependence of equations $(i,1), (i,2), \dots, (i, N-1)$ on the unknowns in column $i'$ of the unknown matrix $\{u_{i,j}\}$. 
+		
+		We construct $A$ and $b$ one block row at a time. Consider the blocks $A^{(1,i')}$ for $i'=1,2,\dots, M-1$, the first row of blocks of $A$. As mentioned, these blocks correspond to equations $(1,1),(1,2), \dots, (1,N-1)$. Substituting in boundary conditions, we see that
+		\begin{align*}
+			(1,1) &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{1,1} + \frac{1}{h_x^2}u_{2,1} + \frac{1}{h_y^2}u_{1,2} = f(x_1,y_1) - \frac{g_\ell(y_1)}{h_x^2} - \frac{g_b(x_1)}{h_y^2} \\
+			\substack{(1,j) \\ j=2,\dots,N-2} &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{1,j} + \frac{1}{h_x^2}u_{2,j} + \frac{1}{h_y^2}u_{1,j-1} + \frac{1}{h_y^2}u_{1,j+1} = f(x_1,y_j) - \frac{g_\ell(y_j)}{h_x^2}\\
+			(1,N-1) &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{1,N-1} + \frac{1}{h_x^2}u_{2,N-1} + \frac{1}{h_y^2}u_{1,N-2} = f(x_1, y_{N-1}) - \frac{g_\ell(y_{N-1})}{h_x^2} - \frac{g_t(x_1)}{h_y^2}.
+		\end{align*}
+		Thus, each equation depends only on columns 1 and 2 of the matrix $\{u_{i,j}\}$, so only blocks $A^{(1,1)}$ and $A^{(1,2)}$ are nonzero. Examining these dependencies, we get
+		\begin{equation*}
+			A^{(1,1)} = \left[\begin{matrix}
+				-\frac{2}{h_x^2}-\frac{2}{h_y^2} & \frac{1}{h_y^2} \\
+				\frac{1}{h_y^2} & -\frac{2}{h_x^2}-\frac{2}{h_y^2} & \frac{1}{h_y^2} \\
+				& & \ddots \\
+				& & \frac{1}{h_y^2} & -\frac{2}{h_x^2}-\frac{2}{h_y^2}  & \frac{1}{h_y^2}
+			\end{matrix}\right], \qquad
+			A^{(1,2)} = \left[\begin{matrix}\frac{1}{h_x^2} \\ & \ddots \\ & & \frac{1}{h_x^2} \end{matrix}\right],
+		\end{equation*}
+		where blanks indicate zero entries. The block $b^{(1)}$ corresponding to the right hand sides of equations $(1,1),(1,2), \dots, (1,N-1)$ we can read off easily:
+		\begin{equation*}
+			b^{(1)} = \left[\begin{matrix}
+				f(x_1,y_1) - \frac{g_\ell(y_1)}{h_x^2} - \frac{g_b(x_1)}{h_y^2} \\
+				f(x_1,y_2) - \frac{g_\ell(y_2)}{h_x^2} \\
+				f(x_1,y_3) - \frac{g_\ell(y_3)}{h_x^2} \\
+				\vdots \\
+				f(x_1, y_{N-2}) - \frac{g_\ell(y_{N-2})}{h_x^2} \\
+				f(x_1, y_{N-1}) - \frac{g_\ell(y_{N-1})}{h_x^2} - \frac{g_t(x_1)}{h_y^2}
+			\end{matrix}\right].
+		\end{equation*}
+		Now consider the blocks $A^{(i,i')}$ for $i = 2,3,\dots, N-2$, and $i' = 1,2,\dots, N-1$. These correspond to equations $(i,1),(i,2),\dots,(i,N-1)$. Substituting boundary conditions, we have
+		\begin{align*}
+			(i,1) &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{i,1} + \frac{1}{h_x^2}u_{i-1,1} + \frac{1}{h_x^2}u_{i+1,1} + \frac{1}{h_y^2}u_{i,2} = f(x_i,y_1) - \frac{g_b(x_i)}{h_y^2} \\
+			\substack{(i,j) \\ j=2,\dots,N-2} &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{i,j} + \frac{1}{h_x^2}u_{i-1,j} + \frac{1}{h_x^2}u_{i+1,j} + \frac{1}{h_y^2}u_{i,j-1} + \frac{1}{h_y^2}u_{i,j+1} = f(x_i,y_j) \\
+			(i,N-1) &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{i,N-1} + \frac{1}{h_x^2}u_{i-1,N-1} + \frac{1}{h_x^2}u_{i+1,N-1} + \frac{1}{h_y^2}u_{i,N-2} = f(x_i, y_{N-1}) - \frac{g_t(x_i)}{h_y^2}.
+		\end{align*}
+		Thus, each equation depends only on columns $i-1$, $i$, and $i+1$ of the matrix $\{u_{i,j}\}$, so only blocks $A^{(i,i-1)}$, $A^{(i,i)}$, and $A^{(i,i+1)}$ are nonzero. Examining these dependencies gives
+		\begin{equation*}
+			A^{(i,i)} = \left[\begin{matrix}
+				-\frac{2}{h_x^2}- \frac{2}{h_y^2} & \frac{1}{h_y^2} \\
+				\frac{1}{h_y^2} & -\frac{2}{h_x^2} - \frac{2}{h_y}^2 & \frac{1}{h_y^2} \\
+				& & \ddots \\
+				& & \frac{1}{h_y^2} & -\frac{2}{h_x^2} -\frac{2}{h_y^2}
+			\end{matrix}\right],
+			\qquad A^{(i,i-1)} = A^{(i,i+1)} = \left[\begin{matrix}\frac{1}{h_x^2} \\ & \ddots \\ &&\frac{1}{h_x^2}\end{matrix}\right].
+		\end{equation*}
+		The block $b^{(i)}$ can be read off from the right hand sides easily:
+		\begin{equation*}
+			b^{(i)} = \left[\begin{matrix}
+				f(x_i,y_1) - \frac{g_b(x_i)}{h_y^2} \\
+				f(x_i,y_2) \\
+				f(x_i,y_3) \\
+				\vdots \\
+				f(x_i,y_{N-2}) \\
+				f(x_i,y_{N-1}) - \frac{g_t(x_i)}{h_y^2}
+			\end{matrix}\right].
+		\end{equation*}
+		Finally, consider the blocks $A^{(M-1, i')}$, $i' = 1,2,\dots,M-1$. These correspond to equations $(M-1,1),(M-1,2),\dots,(M-1,N-1)$. Substituting boundary conditions, we have
+		\begin{align*}
+			(M-1,1) &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{M-1,1} + \frac{1}{h_x^2}u_{M-2,1} + \frac{1}{h_y^2}u_{M-1,2} = f(x_1,y_{N-1}) - \frac{g_r(y_1)}{h_x^2} - \frac{g_b(x_{M-1})}{h_y^2} \\
+			\substack{(M-1,j) \\ j=2,\dots,N-2} &\implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{M-1,j} + \frac{1}{h_x^2}u_{M-2,j} + \frac{1}{h_y^2}u_{M-1,j-1} + \frac{1}{h_y^2}u_{M-1,j+1} = f(x_{M-1},y_j) - \frac{g_r(y_j)}{h_x^2} \\
+			\begin{split}				
+				(M-1,N-1) \implies \left(-\frac{2}{h_x^2}-\frac{2}{h_y^2}\right)u_{M-1,N-1} + \frac{1}{h_x^2}u_{M-2,N-1} + \frac{1}{h_y^2}u_{M-1,N-2} \\= f(x_{M-1}, y_{N-1}) - \frac{g_r(y_{N-1})}{h_x^2} - \frac{g_t(x_{M-1})}{h_y^2}.
+			\end{split}
+		\end{align*}
+		Thus, each equation depends only on columns $M-2$ and $M-1$ of the matrix $\{u_{i,j}\}$, so only blocks $A^{(M-1,M-2)}$ and $A^{(M-1,M-1)}$ are nonzero. Examining these dependencies gives
+		\begin{equation*}
+			A^{(N-1,N-1)} = \left[\begin{matrix}
+				-\frac{2}{h_x^2}- \frac{2}{h_y^2} & \frac{1}{h_y^2} \\
+				\frac{1}{h_y^2} & -\frac{2}{h_x^2} - \frac{2}{h_y}^2 & \frac{1}{h_y^2} \\
+				& & \ddots \\
+				& & \frac{1}{h_y^2} & -\frac{2}{h_x^2} -\frac{2}{h_y^2}
+			\end{matrix}\right], \qquad
+			A^{(N-1,N-2)} = \left[\begin{matrix}\frac{1}{h_x^2} \\ & \ddots \\ &&\frac{1}{h_x^2}\end{matrix}\right].
+		\end{equation*}
+		The block $b^{(M-1)}$ can be read off from the right hand sides of the equations easily:
+		\begin{equation*}
+			b^{(M-1)} = \left[\begin{matrix}
+				f(x_{M-1},y_1) - \frac{g_r(y_1)}{h_x^2} - \frac{g_b(x_{M-1})}{h_y^2} \\
+				f(x_{M-1},y_2) - \frac{g_r(y_2)}{h_x^2} \\
+				f(x_{M-1},y_3) - \frac{g_r(y_3)}{h_x^2} \\
+				\vdots \\
+				f(x_{M-1},y_{N-2}) - \frac{g_r(y_{N-2})}{h_x^2}\\
+				f(x_{M-1},y_{N-1}) - \frac{g_r(y_{N-1})}{h_x^2} - \frac{g_t(x_{M-1})}{h_y^2}
+			\end{matrix}\right].
+		\end{equation*}
+		Therefore, the entire system of equations $(i,j)$ is equivalent to the matrix-vector equation $AU = b$.
+	\end{alphaparts}
+	
+\end{document}

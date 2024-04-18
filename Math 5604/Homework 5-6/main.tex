@@ -150,27 +150,23 @@
 			y = \left[\begin{matrix}y_1 \\ y_2 \\ \vdots \\ y_N\end{matrix}\right], \qquad b = \left[\begin{matrix}(x_1^2 - 4)\sin(2x_1) \\[0.3em] (x_2^2-4)\sin(2x_2) \\ \vdots \\ (x_{N-1}^2-4)\sin(2x_{N-1}) \\[0.3em] 2 - \frac{h}{2}(x_N^2 - 4)\sin(2x_N)\end{matrix}\right].
 		\end{equation*}
 		
-		\questionpart In Table \ref{tab:p2b} are the $\ell^2$ and $\ell^\infty$ errors of the scheme in part (a). Based on the table, the $\ell^\infty$ convergence rate is 2, and the $\ell^2$ convergence rate is 1.5, which is not surprising given the equivalence of the $\ell^2$ and $\ell^\infty$ norms:
-		\begin{equation*}
-			\lVert u \rVert_{\ell^\infty} \le \lVert u \rVert_{\ell^2} \le \sqrt{N}\lVert u \rVert_{\ell^\infty} \qquad \text{for all $u \in \R^N$.}
-		\end{equation*}
-		Indeed, let $e \in \R^{N+1}$ be a vector of errors defined by $e_n = |y_n - y(x_n)|$. If $\lVert e\rVert_{\ell^\infty} \approx h^2$, then the right inequality implies that $\lVert e \rVert_{\ell^2} \lesssim \left(\sqrt{N+1}\right)h^2 \approx h^{1.5}$ because $N \approx h^{-1}$.
+		\questionpart In Table \ref{tab:p2b} are the $L^2$ and $L^\infty$ errors of the scheme in part (a). Based on the table, the $L^\infty$ convergence rate is 2, and the $L^2$ convergence rate is 2, which is not surprising, considering that the $L^2$ norm is controlled by the $L^\infty$ norm.
 		
 		\begin{table}[h]
 			\centering
 			\begin{tabular}{@{}lllll@{}}
 				\toprule
-				$h$ & $\ell^2$ error & $\ell^2$ rate & $\ell^\infty$ error & $\ell^\infty$ rate \\
+				$h$ & $L^2$ error & $L^2$ rate & $L^\infty$ error & $L^\infty$ rate \\
 				\midrule
-				$\pi$/8 & 2.219190e-01 & - & 1.280149e-01 & -\\
-				$\pi$/16 & 6.790030e-02 & 1.708543 & 2.905806e-02 & 2.139301\\
-				$\pi$/32 & 2.293204e-02 & 1.566053 & 6.987220e-03 & 2.056148\\
-				$\pi$/64 & 7.996325e-03 & 1.519956 & 1.727129e-03 & 2.016342\\
-				$\pi$/128 & 2.815873e-03 & 1.505755 & 4.305031e-04 & 2.004281\\
-				$\pi$/256 & 9.943666e-04 & 1.501732 & 1.075450e-04 & 2.001083\\
+				$\pi$/8 & 1.390671e-01 & - & 1.280149e-01 & -\\
+				$\pi$/16 & 3.008754e-02 & 2.208543 & 2.905806e-02 & 2.139301\\
+				$\pi$/32 & 7.185263e-03 & 2.066053 & 6.987220e-03 & 2.056148\\
+				$\pi$/64 & 1.771640e-03 & 2.019956 & 1.727129e-03 & 2.016342\\
+				$\pi$/128 & 4.411467e-04 & 2.005755 & 4.305031e-04 & 2.004281\\
+				$\pi$/256 & 1.101543e-04 & 2.001732 & 1.075450e-04 & 2.001083\\
 				\bottomrule
 			\end{tabular}
-			\caption{Centered difference -- $\ell^2$ and $\ell^\infty$ errors with convergence rates}
+			\caption{Centered difference -- $L^2$ and $L^\infty$ errors with convergence rates}
 			\label{tab:p2b}
 		\end{table}
 		
@@ -215,23 +211,23 @@
 		\end{equation*}
 		
 		\questionpart
-		In Table \ref{tab:p2d} are the $\ell^2$ and $\ell^\infty$ errors of the scheme in part (a). Based on the table, it seems that the $\ell^\infty$ convergence rate is 2, and the $\ell^2$ convergence rate is 1.5 (using a few smaller step sizes showed that this is really the case).
+		In Table \ref{tab:p2d} are the $L^2$ and $L^\infty$ errors of the scheme in part (a). Based on the table, it seems that the $L^\infty$ convergence rate is 2, and the $L^2$ convergence rate is 2 (using a few smaller step sizes showed that this is really the case).
 		
 		\begin{table}[h]
 			\centering
 			\begin{tabular}{@{}lllll@{}}
 				\toprule
-				$h$ & $\ell^2$ error & $\ell^2$ rate & $\ell^\infty$ error & $\ell^\infty$ rate \\
+				$h$ & $L^2$ error & $L^2$ rate & $L^\infty$ error & $L^\infty$ rate \\
 				\midrule
-				$\pi$/8 & 3.827128e+00 & - & 1.973108e+00 & -\\
-				$\pi$/16 & 1.390236e+00 & 1.460932 & 5.126718e-01 & 1.944362\\
-				$\pi$/32 & 6.531083e-01 & 1.089936 & 1.730366e-01 & 1.566958\\
-				$\pi$/64 & 2.674238e-01 & 1.288195 & 5.028926e-02 & 1.782755\\
-				$\pi$/128 & 9.931652e-02 & 1.429022 & 1.322982e-02 & 1.926457\\
-				$\pi$/256 & 3.559417e-02 & 1.480393 & 3.355599e-03 & 1.979151\\
+				$\pi$/8 & 2.398297e+00 & - & 1.973108e+00 & -\\
+				$\pi$/16 & 6.160323e-01 & 1.960932 & 5.126718e-01 & 1.944362\\
+				$\pi$/32 & 2.046375e-01 & 1.589936 & 1.730366e-01 & 1.566958\\
+				$\pi$/64 & 5.924954e-02 & 1.788195 & 5.028926e-02 & 1.782755\\
+				$\pi$/128 & 1.555935e-02 & 1.929022 & 1.322982e-02 & 1.926457\\
+				$\pi$/256 & 3.943064e-03 & 1.980393 & 3.355599e-03 & 1.979151\\
 				\bottomrule
 			\end{tabular}
-			\caption{One-sided difference -- $\ell^2$ and $\ell^\infty$ errors with convergence rates}
+			\caption{One-sided difference -- $L^2$ and $L^\infty$ errors with convergence rates}
 			\label{tab:p2d}
 		\end{table}
 		
@@ -280,23 +276,23 @@
 			\label{fig:exact}
 		\end{figure}
 		
-		\questionpart In Table \ref{tab:p3c} are the $\ell^2$ and $\ell^\infty$ errors (computed using the reference solution from (b)) with $\varepsilon = .05$. From the table, it appears that the centered difference method has a convergence rate of 2 in $\ell^\infty$ and 1.5 in $\ell^2$, just as it did on Problem 2.
+		\questionpart In Table \ref{tab:p3c} are the $L^2$ and $L^\infty$ errors (computed using the reference solution from (b)) with $\varepsilon = .05$. From the table, it appears that the centered difference method has a convergence rate of 2 in $L^\infty$ and 2 in $L^2$, just as it did on Problem 2.
 		
 		\begin{table}[h]
 			\centering
 			\begin{tabular}{@{}lllll@{}}
 				\toprule
-				$h$ & $\ell^2$ error & $\ell^2$ rate & $\ell^\infty$ error & $\ell^\infty$ rate \\
+				$h$ & $L^2$ error & $L^2$ rate & $L^\infty$ error & $L^\infty$ rate \\
 				\midrule
-				1/8 & 8.952792e-02 & - & 8.748680e-02 & -\\
-				1/16 & 3.516391e-02 & 1.348242 & 2.969501e-02 & 1.558845\\
-				1/32 & 1.217098e-02 & 1.530651 & 6.755169e-03 & 2.136157\\
-				1/64 & 4.237348e-03 & 1.522211 & 1.719463e-03 & 1.974034\\
-				1/128 & 1.486917e-03 & 1.510838 & 4.260417e-04 & 2.012891\\
-				1/256 & 5.188923e-04 & 1.518817 & 1.051005e-04 & 2.019226\\
+				1/8 & 3.165290e-02 & - & 8.748680e-02 & -\\
+				1/16 & 8.790978e-03 & 1.848242 & 2.969501e-02 & 1.558845\\
+				1/32 & 2.151545e-03 & 2.030651 & 6.755169e-03 & 2.136157\\
+				1/64 & 5.296685e-04 & 2.022211 & 1.719463e-03 & 1.974034\\
+				1/128 & 1.314261e-04 & 2.010838 & 4.260417e-04 & 2.012891\\
+				1/256 & 3.243077e-05 & 2.018817 & 1.051005e-04 & 2.019226\\
 				\bottomrule
 			\end{tabular}
-			\caption{Centered difference method with $\varepsilon = .05$ -- $\ell^2$ and $\ell^\infty$ errors with convergence rates}
+			\caption{Centered difference method with $\varepsilon = .05$ -- $L^2$ and $L^\infty$ errors with convergence rates}
 			\label{tab:p3c}
 		\end{table}
 		
@@ -309,23 +305,23 @@
 			\label{fig:p3d}
 		\end{figure}
 		
-		\questionpart In Table \ref{tab:p3e} are the $\ell^2$ and $\ell^\infty$ errors (computed using the reference solution from (b)) with $\varepsilon = .05$. From the table, it appears that the centered difference method has a convergence rate of 2 in $\ell^\infty$ and 1.5 in $\ell^2$, just as it did for $\varepsilon = 0.05$. The errors, however, are generally greater in this case than they were in the case of $\varepsilon = 0.05$, and the convergence rate doesn't settle down until the step size is already fairly small. This is likely due to the rapid change in the solution near $x =1$ when $\varepsilon$ is small (compare Figures \ref{fig:exact} and \ref{fig:p3d}, which show the $\varepsilon = 0.05$ and $\varepsilon = 0.001$ solutions).
+		\questionpart In Table \ref{tab:p3e} are the $L^2$ and $L^\infty$ errors (computed using the reference solution from (b)) with $\varepsilon = .05$. From the table, it appears that the centered difference method has a convergence rate of 2 in $L^\infty$ and 2 in $L^2$, just as it did for $\varepsilon = 0.05$. The errors, however, are generally greater in this case than they were in the case of $\varepsilon = 0.05$, and the convergence rate doesn't settle down until the step size is already fairly small. This is likely due to the rapid change in the solution near $x =1$ when $\varepsilon$ is small (compare Figures \ref{fig:exact} and \ref{fig:p3d}, which show the $\varepsilon = 0.05$ and $\varepsilon = 0.001$ solutions).
 		
 		\begin{table}[h]
 			\centering
 			\begin{tabular}{@{}lllll@{}}
 				\toprule
-				$h$ & $\ell^2$ error & $\ell^2$ rate & $\ell^\infty$ error & $\ell^\infty$ rate \\
+				$h$ & $L^2$ error & $L^2$ rate & $L^\infty$ error & $L^\infty$ rate \\
 				\midrule
-				1/8 & 8.839999e-01 & - & 7.051292e-01 & -\\
-				1/16 & 8.168405e-01 & 0.113992 & 6.540523e-01 & 0.108482\\
-				1/32 & 5.408442e-01 & 0.594841 & 4.827786e-01 & 0.438044\\
-				1/64 & 2.517577e-01 & 1.103177 & 2.490745e-01 & 0.954784\\
-				1/128 & 8.763561e-02 & 1.522447 & 8.247853e-02 & 1.594487\\
-				1/256 & 2.856069e-02 & 1.617486 & 1.853421e-02 & 2.153828\\
+				1/8 & 3.125412e-01 & - & 7.051292e-01 & -\\
+				1/16 & 2.042101e-01 & 0.613992 & 6.540523e-01 & 0.108482\\
+				1/32 & 9.560864e-02 & 1.094841 & 4.827786e-01 & 0.438044\\
+				1/64 & 3.146971e-02 & 1.603177 & 2.490745e-01 & 0.954784\\
+				1/128 & 7.745967e-03 & 2.022447 & 8.247853e-02 & 1.594487\\
+				1/256 & 1.785043e-03 & 2.117486 & 1.853421e-02 & 2.153828\\
 				\bottomrule
 			\end{tabular}
-			\caption{Centered difference method with $\varepsilon = 0.005$ -- $\ell^2$ and $\ell^\infty$ errors with convergence rates}
+			\caption{Centered difference method with $\varepsilon = 0.005$ -- $L^2$ and $L^\infty$ errors with convergence rates}
 			\label{tab:p3e}
 		\end{table}
 	

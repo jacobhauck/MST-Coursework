@@ -37,8 +37,32 @@
 	\end{equation*}
 	because $g_s$ is even. The first term is always finite because $g_s$ is continuous, so $g_s \in L^2(\R)$ if and only if the second term is finite.
 	
-	Since $\frac{(1+|\xi|^2)^s}{|\xi|^{2s}} = \left(\frac{1}{|\xi|^2} + 1\right)^s \to 1$ as $\xi \to \infty$, we can choose $a$ large enough that $(1+|\xi|^2)^s \le 2|\xi|^{2s}$ for all $\xi > a$. Then $|g_s(\xi)|^2 \le \frac{4}{\pi}|\xi|^{2(s-1)}$ for all $\xi > a$, meaning that the second term is finite if $2(s-1) < -1$, that is, if $s < \frac{1}{2}$.
+	Since $\frac{(1+|\xi|^2)^s}{|\xi|^{2s}} = \left(\frac{1}{|\xi|^2} + 1\right)^s \to 1$ as $\xi \to \infty$, we can choose $a$ large enough that $(1+|\xi|^2)^s \le 2|\xi|^{2s}$ for all $\xi > a$. Then $|g_s(\xi)|^2 \le \frac{4}{\pi}|\xi|^{2(s-1)}$ for all $\xi > a$, meaning that the second term is finite if $2(s-1) < -1$, that is, if $s < \frac{1}{2}$. Hence, if $s < \frac{1}{2}$, then $f \in H^s$.
 	
-	Similarly, since $\frac{|\xi|^{2s}}{(1+|\xi|^2)^s} \to 1$ as $\xi \to \infty$, we can choose $a$ large enough that $|\xi|^{2s} \le 2(1+|\xi|^2)^s$ for all $\xi > a$. 
+	Conversely, suppose that $s \ge \frac{1}{2}$. Since $(1+|\xi|^2)^s \ge |\xi|^{2s}$, it follows that
+	\begin{equation*}
+		\int_\frac{\pi}{4}^\infty |g_s(\xi)|^2 \dee\xi \ge \frac{2}{\pi}\int_\frac{\pi}{4}^\infty \sin^2(\xi)|\xi|^{2s-2}\dee \xi.
+	\end{equation*}
+	If $|\xi|^{2s-2}$ is increasing, then it is clear that the integral on the right hand side is infinite, which implies that $f \notin H^s$. Suppose that $|\xi|^{2s-2}$ is decreasing, and set $I_1 = \left[\frac{\pi}{4}, \frac{3\pi}{4}\right] \cup \left[\frac{5\pi}{4}, \frac{7\pi}{4}\right] \cup \dots$ and set $I_2 = \left[\frac{\pi}{4}, \infty\right) \setminus I_1$. The sets $I_1$ and $I_2$ consist of consecutive, interleaved intervals of length $\frac{\pi}{2}$; since $|\xi|^{2s-2}$ is decreasing and each interval of $I_1$ precedes an interval of $I_2$, it follows that
+	\begin{equation*}
+		\int_{I_1} |\xi|^{2s-2}\dee\xi \ge \int_{I_2}|\xi|^{2s-2}\dee\xi,
+	\end{equation*}
+	so
+	\begin{equation*}
+		\int_\frac{\pi}{4}^\infty |\xi|^{2s-2} = \int_{I_1}|\xi|^{2s-2}\dee\xi + \int_{I_2}|\xi|^{2s-2}\dee\xi \le 2\int_{I_1} |\xi|^{2s-2}\dee\xi,
+	\end{equation*}
+	which implies that
+	\begin{equation*}
+		\int_{I_1}|\xi|^{2s-2}\dee\xi \ge \frac{1}{2}\int_{\frac{\pi}{4}} |\xi|^{2s-2}\dee\xi = \infty
+	\end{equation*}
+	because $s \ge \frac{1}{2}$. Therefore,
+	\begin{equation*}
+		\int_\frac{\pi}{4}^\infty \sin^2(\xi)|\xi|^{2s-2} \dee\xi \ge \int_{I_1}\sin^2(\xi)|\xi|^{2s-2}\dee\xi \ge \frac{1}{2}\int_{I_1}|\xi|^{2s-2}\dee\xi = \infty
+	\end{equation*}
+	because $\sin^2(\xi) \ge \frac{1}{2}$ for $\xi \in I_1$. This implies that $f \notin H^s$.
+	
+	Thus, $f\in H^s$ if and only if $s < \frac{1}{2}$.
+		
+	
 	
 \end{document}
