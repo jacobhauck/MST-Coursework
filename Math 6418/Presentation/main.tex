@@ -37,7 +37,7 @@
 		Let $X$, $Y$ be normed vector spaces. We know a lot about bounded, linear operators $A \in B(X,Y)$.
 		
 		\vfill
-		What about nonlinear operators?
+		What about nonlinear operators $f : X \to Y$?
 		\vfill
 		
 		Linearize:
@@ -190,12 +190,18 @@
 	\begin{frame}{Proof of mean value theorem}
 		\begin{itemize}
 			\item Focus on case $X = \mathbb{R}$, and $[x_1, x_2] = [0, 1]$
-			\vfill
-			\item Local Lipschitz property and compactness of $[0,1]$ to construct a partition of a subinterval where change in function is almost controlled by derivative between partition points
-			\vfill
-			\item Expand difference between endpoints in telescoping sum
-			\vfill
-			\item Use continuity to take limit as subinterval endpoints approach full interval
+			\begin{itemize}
+				\item Let $\varphi : [0,1] \to Y$ be Fréchet differentiable on $(0,1)$ and continuous on $[0,1]$. Then
+				\begin{equation*}
+					|\varphi(1) - \varphi(0)| \le \sup_{0\le t\le1} \lVert D\varphi(t)\rVert.
+				\end{equation*}
+				\vfill
+				\item Local Lipschitz property and compactness of $[0,1]$ to construct a partition of a subinterval where change in function is almost controlled by derivative between partition points
+				\vfill
+				\item Expand difference between endpoints in telescoping sum
+				\vfill
+				\item Use continuity to take limit as subinterval endpoints approach full interval
+			\end{itemize}
 			\vfill
 			\item Chain rule to extend to the general case
 		\end{itemize}
