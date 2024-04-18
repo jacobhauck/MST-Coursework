@@ -135,6 +135,7 @@
 		\begin{itemize}
 			\item Binomial theorem on $(\varphi + h)^p$
 			\item Hölder's inequality on higher order terms (magic happens)
+			\item Check that derivative is bounded and linear
 		\end{itemize}
 	\end{frame}
 	
@@ -193,7 +194,7 @@
 			\begin{itemize}
 				\item Let $\varphi : [0,1] \to Y$ be Fréchet differentiable on $(0,1)$ and continuous on $[0,1]$. Then
 				\begin{equation*}
-					|\varphi(1) - \varphi(0)| \le \sup_{0\le t\le1} \lVert D\varphi(t)\rVert.
+					\lVert\varphi(1) - \varphi(0)\rVert_Y \le \sup_{0 < t <1} \lVert D\varphi(t)\rVert.
 				\end{equation*}
 				\vfill
 				\item Local Lipschitz property and compactness of $[0,1]$ to construct a partition of a subinterval where change in function is almost controlled by derivative between partition points

@@ -34,6 +34,65 @@
 	\end{frame}
 	
 	\begin{frame}{Model Description}
+		\begin{align*}
+			x_p(n+1) &= x_p(n)\left[1 + r\left(1 - \frac{x_p(n)}{k}\right) - ay_p(n)\right] \\[0.3em]
+			y_p(n+1) &= y_p(n)\left[1 - b + \frac{cx_p(n)}{y_p(n)}\right]
+		\end{align*}
+		\begin{itemize}
+			\item $n \in \mathbb{Z}$: discrete time step
+			\item $x_p(n)$: number of prey; $y_p(n)$: number of predators
+			\item $r > 0$: intrinsic growth rate of prey
+			\item $k > 0$: carrying capacity of prey
+			\item $a > 0$: predation rate
+			\item $b > 0$: death rate of predators
+			\item $c > 0$: conversion rate (of prey into predators)
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Fixed Points}
+		$(0,0)$ is a fixed point, but not an interesting one.
+		\vfill
+		
+		Ecologically, the important fixed points occur when $x_p > 0$, and $y_p > 0$, when predator and prey are in equilibrium.
+		\vfill
+		
+		There is one such fixed point:
+		\begin{equation*}
+			\mathcal{P}_* = \left(\frac{rkb}{ack+br}, \frac{crk}{ack+br}\right).
+		\end{equation*} 
+	\end{frame}
+	
+	\begin{frame}{Period-doubling Bifurcations}
+		On the time scale $\mathbb{Z}$, fixed points are also 1-periodic solutions. In general, if $x(n)$ is a solution of
+		\begin{equation*}
+			x(n+1) = f(x(n))
+		\end{equation*}
+		such that $x(n+p) = x(n)$, where $p$ is the smallest integer that makes this true, then $x_0 = x(0)$ is called a \textbf{periodic point of minimal period $p$}.
+		\vfill
+		
+		A \textbf{period-doubling bifurcation} occurs when the stability of a fixed point changes and a pair of periodic points of minimal period 2 emerge.
+		\vfill
+		
+		See Section 3.4 of \textit{Dynamics and Bifurcations}.
+	\end{frame}
+	
+	\begin{frame}{Period-doubling Bifurcation in the Predator-Prey Model}
+		
+	\end{frame}
+	
+	\begin{frame}{Neimarck-Sacker Bifurcations}
+		
+	\end{frame}
+	
+	\begin{frame}{Neimarck-Sacker Bifurcation in the Predator-Prey Model}
+		
+	\end{frame}
+	
+	\begin{frame}{Period-Doubling Bifurcation Diagram}
+		
+	\end{frame}
+	
+	\begin{frame}{Phase Portraits Near the Neimarck-Sacker Bifurcation}
 		
 	\end{frame}
 \end{document}
