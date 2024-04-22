@@ -1,4 +1,15 @@
 function [x, y, u] = problem1(M, N)
+% Centered difference method for
+%   u_xx + u_yy = -2pi^2 sin(pi(x + y)),  0 < x < 1, 0 < y < 1,
+%   u(0, y) = sin(pi y),  u(1, y) = sin(pi(1 + y)),  0 < y < 1,
+%   u(x, 0) = sin(pi x),  u(x, 1) = sin(pi(1 + x)),  0 < x < 1.
+% Uses row-wise ordering of unknowns.
+% Note that the exact solution is u(x, y) = sin(pi(x + y)).
+%
+% Parameters
+% ----------
+%   M: Number of sample intervals in the x direction
+%   N: Number of sample intervals in the y direction
 
 % === Initialization ===
 h_x = 1/M;
