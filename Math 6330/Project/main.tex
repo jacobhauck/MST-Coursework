@@ -16,9 +16,11 @@
 		\begin{itemize}
 			\item Description and interpretation of a discrete-time predator-prey model
 			\vfill
+			\pause
 			
 			\item Determination of fixed points
 			\vfill
+			\pause
 			
 			\item Bifurcation analysis
 			\begin{itemize}
@@ -26,6 +28,7 @@
 				\item Neimark-Sacker bifurcation
 			\end{itemize}
 			\vfill
+			\pause
 			
 			\item Numerical investigations
 			\begin{itemize}
@@ -42,11 +45,17 @@
 		\end{align*}
 		\begin{itemize}
 			\item $n \in \mathbb{Z}$: discrete time step
+			\pause
 			\item $x_p(n)$: number of prey; $y_p(n)$: number of predators
+			\pause
 			\item $r > 0$: intrinsic growth rate of prey
+			\pause
 			\item $k > 0$: carrying capacity of prey
+			\pause
 			\item $a > 0$: predation rate
+			\pause
 			\item $b > 0$: death rate of predators
+			\pause
 			\item $c > 0$: conversion rate (of prey into predators)
 		\end{itemize}
 	\end{frame}
@@ -54,9 +63,11 @@
 	\begin{frame}{Fixed Points}
 		$(0,0)$ is a fixed point (total extinction), and so is $(k,0)$ (predator extinction), but these are not the focus of the analysis.
 		\vfill
+		\pause
 		
 		Ecologically, an important fixed points occur when $x_p > 0$, and $y_p > 0$, when predator and prey are in equilibrium.
 		\vfill
+		\pause
 		
 		There is one such fixed point:
 		\begin{equation*}
@@ -71,9 +82,11 @@
 		\end{equation*}
 		such that $x(n+p) = x(n)$, where $p$ is the smallest integer that makes this true, then $x_0 = x(0)$ is called a \textbf{periodic point of minimal period $p$}.
 		\vfill
+		\pause
 		
 		A \textbf{period-doubling bifurcation} occurs when the stability of a fixed point changes and a pair of periodic points of minimal period 2 emerge.
 		\vfill
+		\pause
 		
 		See Section 3.4 of \textit{Dynamics and Bifurcations}.
 	\end{frame}
@@ -124,7 +137,7 @@
 	
 	\begin{frame}{Neimark-Sacker Bifurcations}
 		In a \textbf{Neimark-Sacker bifurcation} the fixed point changes stability type and a closed invariant curve containing the fixed point emerges with opposite stability.
-		\vfill
+		                                                                                      \vfill
 		
 		\begin{figure}
 			\centering
@@ -165,11 +178,11 @@
 		What is $\widehat{\sigma^{pp}_{\text{NS}}}$? This is a value that depends on the parameters and is related to the following result...
 	\end{frame}
 	
-	\begin{frame}{Neimark-Sacker Bifurcation -- Proof}
+	\begin{frame}{Neimark-Sacker Bifurcation -- Method}
 		From \textit{Elements of Applied Bifurcation Theory} by Y.A. Kuznetsov:
 		\vfill
 		\begin{block}{}
-			In the two-dimensional discrete system $x_{n+1} = f(\alpha, x_n)$, let $\mu_{\pm}(\alpha) = r(\alpha)e^{\pm i\theta(\alpha)}$ be the eigenvalues of the Jacobian near $\alpha = 0$. If
+			In the two-dimensional discrete system $x_{n+1} = f(\lambda, x_n)$, let $\mu_{\pm}(\lambda) = r(\lambda)e^{\pm i\theta(\lambda)}$ be the eigenvalues of the Jacobian near $\lambda = 0$. If
 			\begin{equation*}
 				r(0) = 1, \quad r'(0) \ne 0, \quad e^{ik\theta(0)} \ne 1 \text{ for } k =1,2,3,4,
 			\end{equation*}
@@ -177,7 +190,7 @@
 		\end{block}
 		\vfill
 		
-		Here, $c_1(0)$ is a complicated function of the first, second, and third derivatives of $f$ at $\alpha = 0$ and at the critical point.
+		Here, $c_1(0)$ is a complicated function of the first, second, and third derivatives of $f$ at $\lambda = 0$ and at the critical point.
 	\end{frame}
 	
 	\begin{frame}{Phase Portraits Near the Neimark-Sacker Bifurcation}
@@ -189,8 +202,10 @@
 		\end{figure}
 	\end{frame}
 	
+	\iftoggle{handout}{}{
 	\begin{frame}{}
 		\centering
 		Thank You!
 	\end{frame}
+	}
 \end{document}
