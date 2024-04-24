@@ -22,7 +22,7 @@ fprintf("\n\n");
 
 %% === (d) ===
 % Calculate 2 and infinity norm errors for various values of h.
-fprintf("Begin problem 2 (d)\n");
+fprintf("Begin problem 3 (d)\n");
 
 h = (1/2).^(3:8);
 
