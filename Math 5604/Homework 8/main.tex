@@ -133,6 +133,10 @@
 			\end{matrix}\right].
 		\end{equation*}
 		Therefore, the entire system of equations $(i,j)$ is equivalent to the matrix-vector equation $AU = b$.
+		
+		\questionpart See \texttt{problem1.m} for the implementation of the scheme in (a).
+		
+		\questionpart 
 	\end{alphaparts}
 	
 	\question
@@ -159,8 +163,6 @@
 			u_{0,j} &= g_\ell(y_j),& \qquad u_{M,j} &= g_r(y_j),& \qquad j&=0,1,\dots,N,\\
 			u_{i,0} &= g_b(x_i), & \qquad u_{i,N} &= g_t(x_i),& \qquad i&=0,1,\dots M.
 		\end{alignat*}
-		
-		
 		
 		In order to solve this linear system, we need to reshape the matrix of unknowns $\{u_{i,j}\}_{i=1,j=1}^{M-1,N-1}$ into a vector $U$ and rewrite the corresponding equations $(i,j)$ as a matrix-vector system, substituting the known boundary values where applicable.
 		
@@ -258,6 +260,8 @@
 			\end{matrix}\right].
 		\end{equation*}
 		Therefore, the entire system of equations $(i,j)$ is equivalent to the matrix-vector equation $AU = b$.
+		
+		\questionpart See \texttt{problem2.m} for the implementation of the scheme in (a).
 	\end{alphaparts}
 	
 	\question Consider the BVP
@@ -384,6 +388,7 @@
 		\end{equation*}
 		Therefore, the entire system of equations $(i,j)$ is equivalent to the matrix-vector equation $AU = b$.
 		
+		\questionpart See \texttt{problem3.m} for the implementation of the scheme in (a).
 	\end{alphaparts}
 		
 \end{document}
