@@ -4,6 +4,7 @@
 
 \usepackage{listings}
 \usepackage{booktabs}
+\usepackage{subcaption}
 
 \newcommand{\hwnum}{8}
 \renewcommand{\questiontype}{Problem}
@@ -34,8 +35,6 @@
 			u_{0,j} &= g_\ell(y_j),& \qquad u_{M,j} &= g_r(y_j),& \qquad j&=0,1,\dots,N,\\
 			u_{i,0} &= g_b(x_i), & \qquad u_{i,N} &= g_t(x_i),& \qquad i&=0,1,\dots M.
 		\end{alignat*}
-		
-		
 		
 		In order to solve this linear system, we need to reshape the matrix of unknowns $\{u_{i,j}\}_{i=1,j=1}^{M-1,N-1}$ into a vector $U$ and rewrite the corresponding equations $(i,j)$ as a matrix-vector system, substituting the known boundary values where applicable.
 		
@@ -136,7 +135,36 @@
 		
 		\questionpart See \texttt{problem1.m} for the implementation of the scheme in (a).
 		
+		\questionpart See Figure \ref{fig:p1c} for the mesh plots of the numerical solution and the error function.
+		
+		\begin{figure}[h]
+			\begin{subfigure}{.45\textwidth}
+				\centering
+				\includegraphics[width=\textwidth]{p1c_u.eps}
+				\caption{Numerical solution}
+			\end{subfigure}
+			\hfill
+			\begin{subfigure}{.45\textwidth}
+				\centering
+				\includegraphics[width=\textwidth]{p1c_error.eps}
+				\caption{Numerical error function}
+			\end{subfigure}
+			\caption{Numerical solution and error function mesh plots with $h_x = h_y=\frac{1}{128}$}
+			\label{fig:p1c}
+		\end{figure}
+		
 		\questionpart 
+		
+		\begin{table}
+			\centering
+			\begin{tabular}{@{}lllll@{}}
+				\toprule
+				$h$ & $\infty$ error & $\infty$ rate & 2 error & 2 rate \\
+				\midrule
+				
+				\bottomrule
+			\end{tabular}
+		\end{table}
 	\end{alphaparts}
 	
 	\question
