@@ -7,7 +7,7 @@ for i = 1:max_iter
     prev = x;
     f_prime_prev = f_prime(prev);
 
-    if norm(f_prime_prev) < tol_f_prime
+    if max(max(abs(f_prime_prev))) < tol_f_prime
         fprintf("Newton iteration failed.");
         break;
     end

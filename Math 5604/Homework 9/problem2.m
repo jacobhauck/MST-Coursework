@@ -1,4 +1,4 @@
-function [t, x, u] = experiment14(m, n, T)
+function [t, x, u] = problem2(m, n, T)
 % Central difference + Crank-Nicolson method for the IV-BVP
 %   u_t = 1/2u_xx + (pi^2/2-1)e^(-t)sin(pi(x+1/2))  0 < x < 1, t > 0;
 %   u(0,t) = e^(-t), u(1,t) = -e^(-t),  t >= 0,

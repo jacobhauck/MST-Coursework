@@ -30,41 +30,35 @@ function [t, x, y, u] = ac_convex_splitting(u0, eps, N, T, M)
     y = linspace(0, 2*pi, M+1);
     h = 2*pi/M;
     
-    xx, yy = meshgrid(x, y);
+    [xx, yy] = meshgrid(x, y);
     u = zeros(N+1, M+1, M+1);
+    u(1, :, :) = u0(xx, yy);
 
+    for i = 1:N
+        vui = v(u(i, :, :), M);
+        f_i = @(z) newton_f(z, M, h, k, eps, vui);
+        df_i = @(z) newton_f_prime(z, M, h, k, eps);
+        u(i+1, :, :) = v_inv(newton(f_i, df_i, vui, 100, 1e-8, 0, 0), M);
+    end
 end
 
-function result = vd5(z, M, h)
-    % z(m(i-1,j))
-    left = zeros((M+1)^2, 1);
-    left(1+(M+1) : end) = z(1 : end-(M+1));
-    left(1 : M+1) = z(end-(M+1) : end);
-    
-    % z(m(i+1,j))
-    right = zeros((M+1)^2, 1);
-    right(1 : end-(M+1)) = z(1+(M+1) : end);
-    right(end-(M+1) : end) = z(1 : M+1);
-    
-    % z(m(i,j-1))
-    % This is a bit trickier -- if m = 1 mod (M+1), then we need down(m) =
-    % z((m-1) + (M+1)), otherwise we need down(m) = z(m-1).
-    down = zeros((M+1)^2, 1);
-    % Shift *all* indices by 1
-    down(2:end) = z(1:end-1);
-    % Now correct indices m where m = 1 mod (M+1)
-    down(1 : (M+1) : end) = z(M : (M+1) : end);
+function f = newton_f(z, M, h, k, eps, vun)
+    f = z - (k*eps^2)*vd5(z, M, h) + k*z.^3 - (1+k)*vun;
+end
 
-    % z(m(i,j+1))
-    % Now if m = (M+1) mod (M+1), we need up(m) = z((m+1) - (M+1)),
-    % otherwise up(m) = z(m+1)
-    up = zeros((M+1)^2, 1);
-    % Shift *all* indices by 1
-    up(1:end-1) = z(2:end);
-    % Now correct indices m where m = (M+1) mod (M+1)
-    up(M+1 : M+1 : end) = z(1 : (M+1) : end);
+function df = newton_f_prime(z, M, h, k, eps)
+    diag_part = sparse(1:(M+1)^2, 1:(M+1)^2, ones((M+1)^2,1) + 3*k*z.^2);
+    df = diag_part - (k*eps^2)*dvd5(M, h);
+end
 
-    % Add everything up
-    result = (left + right + up + down - 4*z) / h^2;
+function result = v(a, M)
+    % Implementation of V function. MATLAB reshape function is all that's
+    % needed
+    result = reshape(a, (M+1)^2, 1);
+end
+
+function result = v_inv(b, M)
+    % Implementation of V^{-1}. Again, just use reshape
+    result = reshape(b, M+1, M+1);
 end
 
