@@ -1,4 +1,4 @@
-j\documentclass{homework}
+\documentclass{homework}
 \input{../../standardcmd.tex}
 \input{../homework_shared.tex}
 
@@ -53,7 +53,7 @@ j\documentclass{homework}
 	\end{equation*}
 	which implies that
 	\begin{equation*}
-		\int_{I_1}|\xi|^{2s-2}\dee\xi \ge \frac{1}{2}\int_{\frac{\pi}{4}} |\xi|^{2s-2}\dee\xi = \infty
+		\int_{I_1}|\xi|^{2s-2}\dee\xi \ge \frac{1}{2}\int_{\frac{\pi}{4}}^\infty |\xi|^{2s-2}\dee\xi = \infty
 	\end{equation*}
 	because $s \ge \frac{1}{2}$. Therefore,
 	\begin{equation*}
@@ -62,7 +62,56 @@ j\documentclass{homework}
 	because $\sin^2(\xi) \ge \frac{1}{2}$ for $\xi \in I_1$. This implies that $f \notin H^s$.
 	
 	Thus, $f\in H^s$ if and only if $s < \frac{1}{2}$.
-		
 	
+	\question
 	
+	Let $g \in L^1(\R)$ be a positive function such that $g(1+|\cdot|^2)^\frac{1}{s} \in L^2(\R)$ for all $s < 1$. For example, $g(x) = e^{-x^2}$ works. Define 
+	\begin{equation*}
+		v(\xi, \eta) = \frac{1}{\lVert g\rVert_{L^1}}\frac{2\sin(\xi)}{\xi\sqrt{1+\xi^2}}\cdot g\left(\frac{\eta}{\sqrt{1+\xi^2}}\right).
+	\end{equation*}
+	Then
+	\begin{equation*}
+		\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty v(\xi, \eta)\dee\eta = \frac{1}{\lVert g\rVert_{L^1}}\sqrt{\frac{2}{\pi}}\frac{\sin(\xi)}{\xi\sqrt{1+\xi^2}}\int_{-\infty}^\infty
+		 g\left(\frac{\eta}{\sqrt{1+\xi^2}}\right)\dee \eta = \sqrt{\frac{2}{\pi}}\frac{\sin(\xi)}{\xi} = \widehat{f}(\xi),
+	\end{equation*}
+	upon making the substitution $w = \frac{\eta}{\sqrt{1+\xi^2}}$. Furthermore, for $s \in \R$,
+	\begin{equation*}
+		\lVert v (1 + |\cdot|^2)^\frac{s}{2}\rVert_{L^2}^2 = \frac{4}{\lVert g\rVert_{L^1}^2}\int_{-\infty}^\infty\int_{-\infty}^\infty\frac{\sin^2(\xi)}{\xi^2(1+\xi^2)}g^2\left(\frac{\eta}{\sqrt{1+\xi^2}}\right)(1+\xi^2+\eta^2)^s\dee\eta\dee\xi.
+	\end{equation*}
+	Substituting $w = \frac{\eta}{\sqrt{1+\xi^2}}$ in the inner integral over $\eta$, we have
+	\begin{align*}
+		\lVert v (1 + |\cdot|^2)^\frac{s}{2}\rVert_{L^2}^2 &= \frac{4}{\lVert g\rVert_{L^1}^2}\int_{-\infty}^\infty\int_{-\infty}^\infty\frac{\sin^2(\xi)(1+\xi^2)^s}{\xi^2\sqrt{1+\xi^2}}g^2(w)(1+w^2)^s\dee w\dee\xi \\
+		&= \frac{4\lVert g(1 + (\cdot)^2)^\frac{s}{2}\rVert_{L^2}^2}{\lVert g\rVert_{L^1}^2}\int_{-\infty}^\infty \frac{\sin^2(\xi)(1+\xi^2)^{s-\frac{1}{2}}}{\xi^2}\dee \xi.
+	\end{align*}
+	The remaining integral is finite if $2s-1-2 < -1$, that is, if $s < 1$. Choosing $s = 0$, we see that $v \in L^2(\R^2)$, so there exists $u \in L^2(\R^2)$ such that $\widehat{u} = v$ by Fourier inversion; therefore, $u \in H^s(\R^2)$ for all $s < 1$. Restricting to the upper half plane, we can also say that $u \in H^s(\R_+^2)$ for all $s < 1$.
+	
+	Finally, $u(x,0) = f(x)$ because
+	\begin{equation*}
+		u(x,0) = \frac{1}{2\pi}\int_{-\infty}^\infty\int_{-\infty}^\infty e^{i\xi x} \widehat{u}(\xi,\eta)\dee\eta\dee\xi = \mathcal{F}^{-1}\left(\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty v(\xi,\eta)\dee\eta\right)(x) = \mathcal{F}^{-1}(\hat{f})(x) = f(x).
+	\end{equation*}
+	
+	\question
+	
+	We note that the same $u$ in part 2 works for all $s < 1$.
+	
+	\question
+	
+	If we choose $g(x) = e^{-x^2}$, then $u$ from part 2 is $C^\infty$ on $\R_+^2$. Indeed, for $y>0$, we have
+	\begin{equation*}
+		u(x,y) = \frac{1}{\pi\sqrt{2\pi}}\int_{-\infty}^\infty\int_{-\infty}^\infty e^{i\xi x}e^{i\eta y}\frac{\sin(\xi)}{\xi\sqrt{1+\xi^2}}e^{-\left(\frac{\eta}{\sqrt{1+\xi^2}}\right)^2}\dee\eta\dee\xi.
+	\end{equation*}
+	Doing the $\eta$ integral first, we have
+	\begin{align*}
+		u(x,y) &= \frac{1}{\pi}\int_{-\infty}^\infty e^{ix\xi}\frac{\sin(\xi)}{\xi\sqrt{1+\xi^2}} \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{i\eta y}e^{-\left(\frac{\eta}{\sqrt{1+\xi^2}}\right)}\dee\eta\dee\xi \\
+		&= \frac{1}{\pi}\int_{-\infty}^\infty e^{ix\xi}\frac{\sin(\xi)}{\xi\sqrt{1+\xi^2}}\fourier^{-1}\left[e^{-\frac{(\cdot)^2}{1+\xi^2}}\right](y)\dee\xi.
+	\end{align*}
+	Consulting a table of Fourier transforms, we find that
+	\begin{equation*}
+		u(x,y) = \frac{1}{\pi\sqrt{2}}\int_{-\infty}^\infty e^{ix\xi}\frac{\sin(\xi)}{\xi}e^{-\frac{y^2(1+\xi^2)}{4}}\dee \xi.
+	\end{equation*}
+	Let $\alpha$ be a multi-index. Then, formally,
+	\begin{equation*}
+		D^{\alpha}u(x,y) = \frac{1}{\pi\sqrt{2}}\int_{-\infty}^\infty e^{ix\xi}\frac{\sin(\xi)}{\xi}P_\alpha(x,y,\xi)e^{-\frac{y^2(1+\xi^2)}{4}}\dee \xi,
+	\end{equation*}
+	where $P_\alpha(x,y,\xi)$ is a polynomial function in $x,y,\xi$. Taking the partial derivatives inside the integral is valid, in fact, because the integrand is $C^\infty$ and has exponential decay in $\xi$, \textit{provided that $y > 0$}, which we are assuming. Since this is true of the integrand no matter how many partial derivatives are taken, it follows that $D^\alpha u$ exists and is continuous for all $\alpha$, if $y > 0$. That is, $u \in C^\infty(\R_+^2)$.
 \end{document}
