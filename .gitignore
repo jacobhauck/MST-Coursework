@@ -11,4 +11,5 @@
 *.jpg
 *.jpeg
 *.zip
+*.mat
 __pycache__
