@@ -33,6 +33,6 @@ for i = 1:(nrows*ncols)
     mesh(x, y, reshape(u(n, :, :), M+1, M+1));
     zlim([-1 1]);
     f = gcf;
-    exportgraphics(f, sprintf("qualitative_%f.pdf", t));
+    exportgraphics(f, sprintf("qualitative/%f.pdf", t));
 end
 
