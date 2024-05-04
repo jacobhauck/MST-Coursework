@@ -1,7 +1,12 @@
 \documentclass{article}
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{hyperref}
+\usepackage{pgffor}
+\usepackage{subcaption}
+\usepackage{graphicx}
 \input{../../standardcmd.tex}
+
+\usepackage{booktabs}
 
 \title{Math 5604 Final Project}
 \author{Jacob Hauck}
@@ -22,6 +27,8 @@
 	
 	This equation is a model of a reaction-diffusion system involving a mixture of two substances with different properties, such as oil and water or metals in certain alloys. It is meant to describe the phenomenon of phase separation, which is the process of the substances separating from a well-mixed initial state into coarser ``cells'' (see \href{https://www.youtube.com/watch?v=t1swj0QJUTw}{here} for a visualization). The function $u$ describes the relative density of one of the substances, with $u = 1$ corresponding to 100\% density of one substance and $u=-1$ corresponding to 100\% density of the other substance.
 	
+	We test two temporal discretizations of the Allen-Cahn equation by comparing their accuracy and their ability to preserve the properties of solutions of the Allen-Cahn equation.
+	
 	\section{Discretization}
 	We approximate $u(x,y,t)$ by the numerical solution $u^n_{i,j}$:
 	\begin{equation}
@@ -30,10 +37,12 @@
 	where we are using a uniform grid of $(M+1)^2$ spatial sample points $\{(x_i,y_j)\}$ defined by $x_i = hi$ for $i = 0,1,\dots, M$ and $y_j = hj$ for $j =0,1,\dots,M$, where the spatial step size $h = \frac{2\pi}{M}$. We use $N$ evenly-spaced time sample points $\{t_n\}$ defined by $t_n = kn$, where the temporal step size $k = \frac{T}{N}$.
 	
 	We use the 5-point discretization of the Laplace operator, which is given in this case by
-	\begin{equation}
-		D_5u^n_{i,j} = \frac{u^n_{i+1,j} + u^n_{i-1,j} + u^n_{i,j+1} + u^n_{i,j-1} - 4u^n_{i,j}}{h^2},\qquad i=0,1,2,\dots,M,\;j=0,1,2,\dots, M
-	\end{equation}
-	where we take $u^n_{-1,j} = u^n_{M,j}$, $u^n_{M+1,j} = u^n_{0,j}$, $u^n_{i,-1} = u^n_{i,M}$, and $u^n_{i,M+1} = u^n_{i,0}$ to account for the periodic boundary conditions.
+	\begin{align}
+		D_5u^n_{i,j} &= \frac{u^n_{i+1,j} + u^n_{i-1,j} + u^n_{i,j+1} + u^n_{i,j-1} - 4u^n_{i,j}}{h^2},\qquad i, j = 0,1,\dots, M-1, \\
+		u^n_{-1,j} &= u^n_{M-1,j},\quad u^n_{0,j} = u^n_{M,j}, \qquad j = 0,1,\dots, M-1\\
+		u^n_{i,-1} &= u^n_{i,M-1}, \quad u^n_{i,0} = u^n_{i,M}, \qquad i= 0,1,\dots, M-1,
+	\end{align}
+	where the last four equations account for the periodic boundary conditions.
 	
 	For the temporal discretization, we compare two different schemes. The first is the convex splitting scheme, given for the Allen-Cahn equation by
 	\begin{equation}
@@ -45,61 +54,158 @@
 	\end{equation}
 	
 	\section{Implementation}
-	Let $\{a_{i,j}\}$ be a matrix with indices $i,j=1,2,\dots, M+1$. We pack this matrix into a vector $\{Va_m\}$, where $m = 1,2,\dots, (M+1)^2$ by setting
+	Let $\{a_{i,j}\}$ be a matrix with indices $i,j=1,2,\dots, M$. We pack this matrix into a vector $\{Va_m\}$, where $m = 1,2,\dots, M^2$ by setting
 	\begin{equation}
 		\label{eq:V}
-		Va_{m(i,j)} = a_{i,j}, \qquad  m(i,j) = (i-1)(M+1)+j.
+		Va_{m(i,j)} = a_{i,j}, \qquad  m(i,j) = (i-1)M+j.
 	\end{equation}
-	Note that this is well-defined because of the restricting $i,j=1,2,\dots, M+1$. It is easy to see that $V$ is invertible with inverse
+	Note that this is well-defined (that is, $m(i,j)$ is uniquely determined by the pair $(i,j)$) for $i,j=1,2,\dots, M$. In this case, it is easy to see that $V$ is invertible with inverse
 	\begin{equation}
 		\label{eq:V_inv}
-		V^{-1}b_{i,j} = b_{m(i,j)}, \qquad b \in \R^{(M+1)^2}, \; i,j=1,2,\dots, M+1.
+		V^{-1}b_{i,j} = b_{m(i,j)}, \qquad b \in \R^{M^2}, \; i,j=1,2,\dots, M.
 	\end{equation}
-	Defining the matrix of unknowns $U^n_{i,j} = u^n_{i-1,j-1}$, we can rewrite our two schemes in vector form by applying $V$ to both sides. In order to do put everything in terms of $VU^n$, we must translate the action of $D_5$ into vector terms. Define $D_5'$ so that $D_5'U^n_{i,j} = D_5u^n_{i-1,j-1}$ by setting
+	Defining the matrix of unknowns $U^n_{i,j} = u^n_{i-1,j-1}$ for $i,j = 1,2,\dots, M$, we can rewrite our two schemes in vector form by applying $V$ to both sides. In order to put everything in terms of $VU^n$, we must translate the action of $D_5$ into vector terms. Define $D_5'$ so that $D_5'U^n_{i,j} = D_5u^n_{i-1,j-1}$ by setting
 	\begin{equation}
-		D_5'U^n_{i,j} = \frac{U^n_{i+1,j} + U^n_{i-1,j} + U^n_{i,j+1} + U^n_{i,j-1} - 4U^n_{i,j}}{h^2}, \qquad i,j =1,2,\dots, M+1,
+		D_5'U^n_{i,j} = \frac{U^n_{i+1,j} + U^n_{i-1,j} + U^n_{i,j+1} + U^n_{i,j-1} - 4U^n_{i,j}}{h^2}, \qquad i,j =1,2,\dots, M,
 	\end{equation}
-	where we take $U^n_{0,j} = U^n_{M+1,j}$, $U^n_{M+2,j} = U^n_{1,j}$, $U^n_{i,0} = U^n_{i,M+1}$, and $U^n_{i,M+2} = U^n_{i,1}$ to match the periodic boundary conditions in $D_5$. Furthermore, if we define $VD_5' = V\circ D_5' \circ V^{-1}$, then the convex-splitting scheme becomes
-	\begin{equation*}
+	where we take $U^n_{0,j} = U^n_{M,j}$, $U^n_{M+1,j} = U^n_{1,j}$, $U^n_{i,0} = U^n_{i,M}$, and $U^n_{i,M+1} = U^n_{i,1}$ to match the periodic boundary conditions in $D_5$. Furthermore, if we define $VD_5' = V\circ D_5' \circ V^{-1}$, then the convex-splitting scheme becomes
+	\begin{equation}
 		VU^{n+1} - VU^n = k\varepsilon^2VD_5'VU^{n+1} + kVU^n - k(VU^{n+1})^3,
-	\end{equation*}
-	and the Crank-Nicolson scheme becomes
-	\begin{equation*}
-		VU^{n+1} - VU^n = \frac{k\varepsilon^2}{2}\left(VD_5'VU^{n+1} + VD_5'VU^n\right) + \frac{k}{2}\left(VU^{n+1} + VU^n\right) - \frac{k}{2}\left((VU^{n+1})^3 + (VU^n)^3\right).
-	\end{equation*}
+	\end{equation}
+	where $n = 0,1,\dots, N-1$, and the Crank-Nicolson scheme becomes
+	\begin{equation}
+		VU^{n+1} - VU^n = \frac{k\varepsilon^2}{2}\left(VD_5'VU^{n+1} + VD_5'VU^n\right) + \frac{k}{2}\left(VU^{n+1} + VU^n\right) - \frac{k}{2}\left((VU^{n+1})^3 + (VU^n)^3\right),
+	\end{equation}
+	where $n = 0,1,\dots, N-1$.
+	
 	In order to solve these two nonlinear systems for $VU^{n+1}$, we apply Newton's method using $VU^n$ as the initial guess. For this, we need to define a function $f_n$ whose root is $VU^{n+1}$ and calculate its Jacobian. We can define these functions as follows:
-	\begin{equation*}
-		f^\text{CS}_n(z) = z - k\varepsilon^2VD_5'z + kz^3 - (1+k)VU^n,  \qquad z \in \R^{(M+1)^2},
-	\end{equation*}
+	\begin{equation}
+		f^\text{CS}_n(z) = z - k\varepsilon^2VD_5'z + kz^3 - (1+k)VU^n,  \qquad z \in \R^{M^2},
+	\end{equation}
 	and
-	\begin{equation*}
-		f^\text{CN}_n(z) = \left(1-\frac{k}{2}\right)z - \frac{k\varepsilon^2}{2}VD_5'z + \frac{k}{2}z^3 - \frac{k\varepsilon^2}{2}VD_5'VU^n -\left(1+\frac{k}{2}\right)VU^n + \frac{k}{2}(VU^n)^3, \qquad z \in \R^{(M+1)^2}.
-	\end{equation*}
+	\begin{equation}
+		f^\text{CN}_n(z) = \left(1-\frac{k}{2}\right)z - \frac{k\varepsilon^2}{2}VD_5'z + \frac{k}{2}z^3 - \frac{k\varepsilon^2}{2}VD_5'VU^n -\left(1+\frac{k}{2}\right)VU^n + \frac{k}{2}(VU^n)^3, \qquad z \in \R^{M^2}.
+	\end{equation}
 	Calculating the Jacobians of these functions is straightforward except for the $VD_5'z$ terms:
-	\begin{equation*}
+	\begin{equation}
 		Df^\text{CS}_n(z) = I - k\varepsilon^2D(VD_5'z) + \mathrm{diag}(3kz^2),
-	\end{equation*}
+	\end{equation}
 	and
-	\begin{equation*}
+	\begin{equation}
 		Df^\text{CN}_n(z) = \left(1-\frac{k}{2}\right)I - \frac{k\varepsilon^2}{2}D(VD_5'z) + \mathrm{diag}\left(\frac{3k\varepsilon^2}{2}z^2\right).
-	\end{equation*}
+	\end{equation}
 	To evaluate $VD_5'z$, we make use of \eqref{eq:V_inv} and the definition of $VD_5'$:
-	\begin{align*}
+	\begin{align}
 		VD_5'z_{m(i,j)} &= V(D_5'V^{-1}(z))_{m(i,j)} = (D_5'V^{-1}(z))_{i,j} \\
 		&= \frac{V^{-1}z_{i+1,j} + V^{-1}z_{i-1,j} + V^{-1}z_{i,j+1} +V^{-1}z_{i,j-1} - 4V^{-1}z_{i,j}}{h^2} \\
 		&= \frac{z_{m(i+1,j)} + z_{m(i-1,j)} + z_{m(i,j+1)} + z_{m(i,j-1)} - 4z_{m(i,j)}}{h^2}
-	\end{align*}
-	for $i = 1,2,\dots, M+1$, where we account for the periodic boundary conditions by setting $m(0,j) = m(M+1,j)$, $m(M+2,j) = m(1,j)$, $m(i,0) = m(i,M+1)$, and $m(i,M+2) = m(i,1)$.
+	\end{align}
+	for $i = 1,2,\dots, M$, where we account for the periodic boundary conditions by setting $m(0,j) = m(M,j)$, $m(M+1,j) = m(1,j)$, $m(i,0) = m(i,M)$, and $m(i,M+1) = m(i,1)$.
 	
-	Now we can compute the Jacobian of $z \mapsto VD_5'z$:
+	Now we can compute the Jacobian of $z \mapsto VD_5'z$, which is a constant matrix:
 	\begin{equation*}
-		D(VD_5'z)_{m(i,j), m(i',j')} = \begin{cases}
+		D(VD_5')_{m(i,j), m(i',j')} = \begin{cases}
 			\frac{1}{h^2} & i = i' \text{ and } \big(j = j' + 1 \text{ or } j = j'-1 \text{ or BC}\big) \\
 			\frac{1}{h^2} & j = j' \text{ and } \big(i = i' + 1 \text{ or } i = i'-1 \text{ or BC}\big) \\
 			-\frac{4}{h^2} & i = i' \text{ and } j = j'
 		\end{cases}
 	\end{equation*}
-	for $i,j,i',j' = 1,2,\dots M + 1$.
+	for $i,j,i',j' = 1,2,\dots M$. Since $VD_5'$ is linear, it follows that $VD_5'z = D(VD_5')z$, so in our implementation we only need to construct the constant (sparse) matrix $D(VD_5')$, and then we can use sparse matrix-vector multiplication to compute $VD_5'z$. See the comments and code in \verb*|dvd5.m| for details on the construction of the matrix $D(VD_5')$. The rest of the code for both the convex splitting scheme and the Crank-Nicolson scheme can be implemented straightforwardly by calling a Newton's method subroutine at each time step; we define this subroutine in \verb*|newton.m|. The time-stepping code is defined in wrapping functions in \verb*|ac_convex_splitting.m| and \verb*|ac_crank_nicolson.m|. Note the dependence on \verb*|v.m| and \verb*|v_inv.m|, which wrap the \texttt{reshape} function in MATLAB for consistency with the notation used above.
+	
+	\section{Numerical Experiments}
+	
+	\subsection{Qualitative evaluation}
+	
+	Qualitatively, solutions of the Allen-Cahn equation tend to approach either $-1$ or $1$ as $t \to \infty$ depending on whether the initial value was negative or positive, with a smooth transition, whose typical scale is $\varepsilon$, between negative and positive regions. This behavior can be observed clearly in Figure \ref{fig:qualitative}, in which the solution starts nearly 0 everywhere, with some regions slightly positive (yellow) and some regions slightly negative (blue). As time passes, the positive parts approach 1 and the negative parts approach $-1$, with a thin but smooth transition between regions.
+	
+	\begin{figure}
+		\centering
+		\foreach \t in {0.000000, 0.428571, 0.857143, 1.285714, 1.714286, 2.142857, 2.571429, 3.000000, 3.428571, 3.857143, 4.285714, 4.714286, 5.142857, 5.571429, 6.000000}{%
+			\begin{subfigure}{.25\textwidth}
+				\includegraphics[width=\textwidth]{qualitative/\t.pdf}
+				\caption{$t=\t$}
+			\end{subfigure}
+		}
+		\caption{A typical solution of the Allen-Cahn equation.}
+		\label{fig:qualitative}
+	\end{figure}
+	
+	\subsection{Accuracy}
+	
+	The convex splitting scheme theoretically has first-order accuracy in time, and the Crank-Nicolson scheme theoretically has second-order accuracy in time. We verify these theoretical facts numerically by fixing a small spatial step size $h$ and evaluating the error at time $t = 1$ of the two schemes for different temporal step sizes $k$. 
+	
+	To compute the error we generate a numerical reference solution (using the Crank-Nicolson scheme) using an even smaller spatial step size and a temporal step size much smaller than the smallest step size used in the experiment. As we see in Table \ref{table:first_order}, the convex splitting scheme empirically has first-order accuracy in time, which agrees with the theoretical result. As we see in Table \ref{table:second_order}, the Crank-Nicolson scheme empirically has second-order accuracy in time, which agrees with the theoretical result.
+	
+	The tables were produced by running \verb*|test_accuracy.m|, and the raw outputs can be found in \verb*|outputs4.2.txt|.
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{@{}lllll@{}}
+			\toprule
+			$k$ & $L^\infty$ error & $L^\infty$ rate & $L^2$ error & $L^2$ rate \\
+			\midrule
+			1/8	&7.602018e-03&	- &        	2.391305e-02&	- \\        
+			1/16	&4.005657e-03&	0.924343&	1.260021e-02&	0.924351\\
+			1/32	&2.058425e-03&	0.960498&	6.474971e-03&	0.960502\\
+			1/64	&1.043727e-03&	0.979797&	3.283138e-03&	0.979798\\
+			1/128	&5.255761e-04&	0.989773&	1.653247e-03&	0.989773\\
+			\bottomrule
+		\end{tabular}
+		\caption{First-order convergence in time of the convex splitting scheme. Note that $h = \frac{2\pi}{64}$, and $\varepsilon = 0.01$; additionally, $k = \frac{1}{1024}$ for the reference solution generated using the Crank-Nicolson method.}
+		\label{table:first_order}
+	\end{table}
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{@{}lllll@{}}
+			\toprule
+			$k$ & $L^\infty$ error & $L^\infty$ rate & $L^2$ error & $L^2$ rate \\
+			\midrule
+			1/8&	1.564656e-04&	-       &	5.200769e-04&	-       \\
+			1/16&	3.903657e-05&	2.002948&	1.297311e-04&	2.003201\\
+			1/32&	9.747477e-06&	2.001725&	3.239257e-05&	2.001790\\
+			1/64&	2.429460e-06&	2.004393&	8.073391e-06&	2.004416\\
+			1/128&	6.002199e-07&	2.017073&	1.994561e-06&	2.017104\\
+			\bottomrule
+		\end{tabular}
+		\caption{Second-order convergence in time of the Crank-Nicolson scheme. Note that $h = \frac{2\pi}{64}$, and $\varepsilon = 0.01$; additionally, $k = \frac{1}{1024}$ for the reference solution generated using the Crank-Nicolson method.}
+		\label{table:second_order}
+	\end{table}
+	
+	\subsection{Numerical maximum principle}
+	
+	Based on the physical interpretation of $u$ as a relative density, it makes sense to consider initial data $u_0(x,y)$ such that $|u_0(x,y)| \le 1$ for all $x,y$. In fact, it can be shown that if $u_0$ satisfies this condition, then the solution $u(x,y,t)$ satisfies $|u(x,y,t)| \le 1$ for all $t \ge0$ and all $x,y$. Thus, a good numerical scheme should be able to preserve this maximum/minimum principle of the Allen-Cahn equation.
+	
+	According to Yang et al. \cite{yang_2018} both the convex splitting and Crank-Nicolson schemes are capable of preserving this principle numerically in the sense that $|u^n_{i,j}| \le 1$ for all $i,j,n$. The Crank-Nicolson scheme, however, only satisfies this property conditionally, with a sufficient condition being that $k \le \min\{\frac{1}{2}, \frac{h^2}{2\varepsilon^2}\}$. In practice this requirement is not a huge issue; since $\varepsilon$ can be interpreted as the typical length of the interface between the two materials, it makes sense to take $h \approx \varepsilon$, in which case the requirement on the Crank-Nicolson scheme effectively reduces to $k \le \frac{1}{2}$.
+	
+	Nevertheless, we can still observe the difference between the convex splitting scheme and the Crank-Nicolson scheme numerically by taking the time step very large. In Table \ref{table:max}, we see that the Crank-Nicolson scheme fails to satisfy the maximum condition numerically as the time step increases, but the convex splitting scheme always satisfies the maximum condition. We also see that the sufficient condition $k < \min\left\{\frac{1}{2}, \frac{h^2}{2\varepsilon^2}\right\}$ for the Crank-Nicolson scheme to preserve the maximum condition is not necessary, as the failure occurs when $k$ is quite a bit larger than the sufficient value (note that we use different time intervals to ensure a fixed number of steps (100), so it may also be that the maximum condition would be violated after more time steps).
+	
+	The table was produced by running \verb*|test_maximum.m|, and the raw outputs can be found in \verb*|outputs4.3.txt|.
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{@{}lll@{}}
+			\toprule
+			& \multicolumn{2}{c}{$\sup\limits_{n,i,j} |u^n_{i,j}|$}\\
+			\cmidrule{2-3}
+			$k$ & Convex Splitting & Crank-Nicolson \\
+			\midrule
+			1/4&	0.998772&	0.998772\\
+			1/2	&0.998772&	0.998772 \\
+			1	&0.998772&	0.998772\\
+			2	&0.998773&	\bf1.057909\\
+			4	&0.999466&	\bf1.049927\\
+			8	&0.999508&	\bf1.062186\\
+			\bottomrule
+		\end{tabular}
+		\caption{The Crank-Nicolson method fails to satisfy the numerical maximum condition for large time steps, but the convex splitting method does not. Note that $h=\frac{2\pi}{64}$, and $\varepsilon = \frac{1}{4}$, which puts the sufficient condition value around 0.077.}
+		\label{table:max}
+	\end{table}
+	
+	\section{Conclusion}
+	
+	\section{Fun}
+	
 	
 	\bibliographystyle{plain}
 	\bibliography{references}

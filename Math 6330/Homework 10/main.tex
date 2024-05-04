@@ -14,12 +14,12 @@
 	\begin{equation*}
 		\dot{x}_1 = x_1^2, \qquad \dot{x}_2 = -x_2.
 	\end{equation*}
-	Solving each equation, we have $x_2 = x_2(0)e^{-t}$, and $x_1 = \frac{x_1(0)}{x_1(0) - t}$ if $x_1(0)\ne0$, and $x_1 = 0$ if $x_1(0) = 0$. Therefore, the maximal interval of existence is 
+	Solving each equation, we have $x_2 = x_2(0)e^{-t}$, and $x_1 = \frac{x_1(0)}{1-x_1(0) t}$ if $x_1(0)\ne0$, and $x_1 = 0$ if $x_1(0) = 0$. Therefore, the maximal interval of existence is 
 	\begin{equation*}
 		I = \begin{cases}
-			(-\infty, x_1(0))& x_1(0) > 0,\\
+			(-\infty, 1/x_1(0))& x_1(0) > 0,\\
 			 (-\infty, \infty) & x_1(0) = 0, \\
-			 (x_1(0), \infty) & x_1(0) < 0.
+			 (1/x_1(0), \infty) & x_1(0) < 0.
 			\end{cases}
 	\end{equation*}
 	From the solution formulas we have
@@ -36,13 +36,13 @@
 	\end{equation*}
 	We also have
 	\begin{align*}
-		\lim_{t\to x_1(0)^-} x_1 &= \infty \qquad \text{ if } x_1(0) > 0,\\
+		\lim_{t\to 1/x_1(0)^-} x_1 &= \infty \qquad \text{ if } x_1(0) > 0,\\
 		\lim_{t\to\infty} x_1 &= 0 \qquad \text{ if } x_1(0) < 0,
 	\end{align*}
 	and
 	\begin{align*}
 		\lim_{t\to -\infty} x_1 &= 0 \qquad \text{ if } x_1(0) > 0,\\
-		\lim_{t\to x_1(0)^+} x_1 &= -\infty \qquad \text{ if } x_1(0) < 0.
+		\lim_{t\to 1/x_1(0)^+} x_1 &= -\infty \qquad \text{ if } x_1(0) < 0.
 	\end{align*}
 	
 	If $x_2 \ne0$ and $x_1\ne0$, then we have
@@ -55,7 +55,7 @@
 	\end{equation*}
 	for some constant $A \ne0$.
 	
-	If $x_1(0) < 0$, then $x_1 \to 0$ from the left as $t \to \infty$, so $x_2 \to 0$, and $(x_1,x_2) \to (0,0)$. If $x_1(0) > 0$, then $x_1 \to \infty$ as $t\to x_1(0)$, so $x_2 \to x_2(0)e^{-x_1(0)}$ as $t\to x_1(0)$. Additionally, if $x_1(0) <0$, then $x_1 \to  -\infty$ as $t \to x_1(0)$, and if $x_1(0) > 0$, then $x_1 \to 0$ from the right as $t\to- \infty$, so $x_2 \to \infty$ as $t \to -\infty$.
+	If $x_1(0) < 0$, then $x_1 \to 0$ from the left as $t \to \infty$, so $x_2 \to 0$, and $(x_1,x_2) \to (0,0)$. If $x_1(0) > 0$, then $x_1 \to \infty$ as $t\to 1/x_1(0)$, so $x_2 \to x_2(0)e^{-1/x_1(0)}$ as $t\to 1/x_1(0)$. Additionally, if $x_1(0) <0$, then $x_1 \to  -\infty$ as $t \to 1/x_1(0)$, and if $x_1(0) > 0$, then $x_1 \to 0$ from the right as $t\to- \infty$, so $x_2 \to \infty$ as $t \to -\infty$.
 	
 	These considerations result in the phase plane diagram in Figure \ref{fig:78b}.
 	\begin{figure}[h]
