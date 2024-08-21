@@ -1,0 +1,14 @@
+>> test_maximum
+Demonstration of numerical maximum principle
+
+Sufficiency condition value: 0.077106
+
+k	L^inf CS	L^inf CN
+------------------------
+1/4	0.998772	0.998772
+1/2	0.998772	0.998772
+1	0.998772	0.998772
+2	0.998773	1.057909
+4	0.999466	1.049927
+8	0.999508	1.062186
+

@@ -27,7 +27,12 @@
 \setbeamertemplate{navigation symbols}{}
 \setbeamercolor{frametitle}{fg=forest}
 \setbeamercolor{structure}{fg=forest}
-\setbeamercolor{block title}{bg=forest,fg=kiwi}
-\setbeamercolor{block body}{bg=lima}
+\iftoggle{handout}{
+	\setbeamercolor{block title}{bg=black!15!white,fg=black}
+	\setbeamercolor{block body}{bg=black!10!white}
+}{
+	\setbeamercolor{block title}{bg=forest,fg=kiwi}
+	\setbeamercolor{block body}{bg=lima}
+}
 
 \usefonttheme{serif}

@@ -14,15 +14,15 @@ for i_h = 1:length(h)
     % Update table
     error_table(i_h, 1) = {sprintf("1/%d", round(1/h(i_h)))};
     error_table(i_h, 2) = {sqrt(h(i_h)) * norm(y_ex(x_i) - y_i)};
-    fprintf("1/%d\t%e\n", round(1/h(i_h)), max(abs(y_ex(x_i) - y_i)));
     if i_h > 1
         error_table(i_h, 3) = {log(error_table{i_h, 2}/error_table{i_h-1, 2}) / log(h(i_h)/h(i_h-1))};
     end
 end
 
-plot(x, y_ex(x));
+% Plot last numerical solution and exact solution
+plot(x_i, y_ex(x_i));
 hold on;
-plot(x, y);
+plot(x_i, y_i);
 hold off;
 
 function [x, y] = solve_bvp_center(h)
