@@ -1,0 +1,90 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{1}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question If $\vec{u}$ and $\vec{v}$ are orthogonal, unit vectors, then $\vec{u} + \vec{v}$ and $\vec{u} - \vec{v}$ are orthogonal.
+	
+	\begin{proof}
+		Since
+		\begin{align*}
+			(\vec{u}+\vec{v}, \vec{u} - \vec{v}) &= (\vec{u},\vec{u}) - (\vec{u}, \vec{v}) + (\vec{v},\vec{u}) - (\vec{v},\vec{v})\\
+			&= \lVert \vec{u}\rVert^2 - (\vec{u}, \vec{v}) + (\vec{u}, \vec{v}) - \lVert \vec{v}\rVert^2 = 1-1 =0,
+		\end{align*}
+		it follows that $\vec{u} + \vec{v}$ and $\vec{u} - \vec{v}$ are orthogonal.
+	\end{proof}
+	
+	\question 
+	
+	\question Let $U$ and $V$ be $n\times n$ unitary matrices. Then $UV$ is an $n \times n$ unitary matrix.
+	
+	\begin{proof}
+		It suffices to show that $(UV)^*(UV) = I$. This is the case because
+		\begin{equation*}
+			(UV)^*(UV) =V^*U^*UV = V^*IV = V^*V = I
+		\end{equation*}
+		by the unitarity of $U$ and $V$.
+	\end{proof}
+	
+	\question Let $A = \{a_{ij}\}$ and $B = \{b_{ij}\}$ be $n \times n$ matrices. Suppose that $AB = \{c_{ij}\}$, and $BA = \{d_{ij}\}$. Then, by definition,
+	\begin{equation*}
+		c_{ij} = \sum_{k=1}^n a_{ik}b_{kj}, \qquad d_{ij} = \sum_{k=1}^n b_{ik}a_{kj}.
+	\end{equation*} 
+	Hence, by the definition of trace,
+	\begin{equation*}
+		\tr(AB) = \sum_{i=1}^n c_{ii} = \sum_{i=1}^n\sum_{k=1}^n a_{ik}b_{ki}= \sum_{k=1}^n\sum_{i=1}^nb_{ki}a_{ik} = \sum_{k=1}^nd_{kk} = \tr(BA).
+	\end{equation*}
+	
+	\question Let $A \in \C^{n\times n}$ be a matrix whose columns $\{\vec{a}_i\}_{i=1}^n$ form an orthogonal set.
+	
+	\begin{enumerate}
+		\item $A^*A$ is a diagonal matrix.
+		\begin{proof}
+			Since
+			\begin{equation*}
+				A^*A = \left[\begin{matrix}
+					\vec{a}_1^* \\ \vec{a}_2^* \\ \vdots \\ \vec{a}_n^*
+				\end{matrix}\right]
+				\left[\begin{matrix}
+					\vec{a}_1 & \vec{a}_2 & \cdots & \vec{a}_n
+				\end{matrix}\right],
+			\end{equation*}
+			if $b_{ij}$ is the entry of $A^*A$ in the $i$th row and $j$th column, then $b_{ij} = \vec{a}_i^*\vec{a}_j = (\vec{a}_i, \vec{a}_j) = 0$ if $i \ne j$. Thus, $A^*A$ is diagonal.
+		\end{proof}
+		
+		\item $AA^*$ is not necessarily diagonal.
+		\begin{proof}
+			Suppose that
+			\begin{equation*}
+				A = \left[\begin{matrix}
+					1 & 2 \\
+					-1 & 2
+				\end{matrix}\right].
+			\end{equation*}
+			Then $(\vec{a}_1, \vec{a}_2) = 1\cdot 2 - 1\cdot2 = 0$, so the columns of $A$ form an orthogonal set, but
+			\begin{equation*}
+				AA^* = \left[\begin{matrix}
+					1 & 2 \\
+					-1 & 2
+				\end{matrix}\right]
+				\left[\begin{matrix}
+					1 & - 1\\
+					2 & 2
+				\end{matrix}\right] 
+				= \left[\begin{matrix}
+					5 & 3 \\
+					3 & 5
+				\end{matrix}\right],
+			\end{equation*}
+			which is clearly not diagonal.
+		\end{proof}
+	\end{enumerate}
+	
+	\question 
+	
+	\question
+\end{document}
