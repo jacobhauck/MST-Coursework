@@ -8,7 +8,16 @@
 \begin{document}
 	\maketitle
 	
-	\question
+	\question If $\vec{u}$ and $\vec{v}$ are orthogonal, unit vectors, then $\vec{u} + \vec{v}$ and $\vec{u} - \vec{v}$ are orthogonal.
+	
+	\begin{proof}
+		Since
+		\begin{align*}
+			(\vec{u}+\vec{v}, \vec{u} - \vec{v}) &= (\vec{u},\vec{u}) - (\vec{u}, \vec{v}) + (\vec{v},\vec{u}) - (\vec{v},\vec{v})\\
+			&= \lVert \vec{u}\rVert^2 - (\vec{u}, \vec{v}) + (\vec{u}, \vec{v}) - \lVert \vec{v}\rVert^2 = 1-1 =0,
+		\end{align*}
+		it follows that $\vec{u} + \vec{v}$ and $\vec{u} - \vec{v}$ are orthogonal.
+	\end{proof}
 	
 	\question If $P \in \R^{n\times n}$ is a projection, then $I-P$ is projection.
 	\begin{proof}
@@ -19,11 +28,69 @@
 		so $I-P$ is also a projection.
 	\end{proof}
 	
-	\question
+	\question Let $U$ and $V$ be $n\times n$ unitary matrices. Then $UV$ is an $n \times n$ unitary matrix.
 	
-	\question
+	\begin{proof}
+		It suffices to show that $(UV)^*(UV) = I$. This is the case because
+		\begin{equation*}
+			(UV)^*(UV) =V^*U^*UV = V^*IV = V^*V = I
+		\end{equation*}
+		by the unitarity of $U$ and $V$.
+	\end{proof}
 	
-	\question
+	\question Let $A = \{a_{ij}\}$ and $B = \{b_{ij}\}$ be $n \times n$ matrices. Suppose that $AB = \{c_{ij}\}$, and $BA = \{d_{ij}\}$. Then, by definition,
+	\begin{equation*}
+		c_{ij} = \sum_{k=1}^n a_{ik}b_{kj}, \qquad d_{ij} = \sum_{k=1}^n b_{ik}a_{kj}.
+	\end{equation*} 
+	Hence, by the definition of trace,
+	\begin{equation*}
+		\tr(AB) = \sum_{i=1}^n c_{ii} = \sum_{i=1}^n\sum_{k=1}^n a_{ik}b_{ki}= \sum_{k=1}^n\sum_{i=1}^nb_{ki}a_{ik} = \sum_{k=1}^nd_{kk} = \tr(BA).
+	\end{equation*}
+	
+	\question Let $A \in \C^{n\times n}$ be a matrix whose columns $\{\vec{a}_i\}_{i=1}^n$ form an orthogonal set.
+	
+	\begin{enumerate}
+		\item $A^*A$ is a diagonal matrix.
+		\begin{proof}
+			Since
+			\begin{equation*}
+				A^*A = \left[\begin{matrix}
+					\vec{a}_1^* \\ \vec{a}_2^* \\ \vdots \\ \vec{a}_n^*
+				\end{matrix}\right]
+				\left[\begin{matrix}
+					\vec{a}_1 & \vec{a}_2 & \cdots & \vec{a}_n
+				\end{matrix}\right],
+			\end{equation*}
+			if $b_{ij}$ is the entry of $A^*A$ in the $i$th row and $j$th column, then $b_{ij} = \vec{a}_i^*\vec{a}_j = (\vec{a}_i, \vec{a}_j) = 0$ if $i \ne j$. Thus, $A^*A$ is diagonal.
+		\end{proof}
+		
+		\item $AA^*$ is not necessarily diagonal.
+		\begin{proof}
+			Suppose that
+			\begin{equation*}
+				A = \left[\begin{matrix}
+					1 & 2 \\
+					-1 & 2
+				\end{matrix}\right].
+			\end{equation*}
+			Then $(\vec{a}_1, \vec{a}_2) = 1\cdot 2 - 1\cdot2 = 0$, so the columns of $A$ form an orthogonal set, but
+			\begin{equation*}
+				AA^* = \left[\begin{matrix}
+					1 & 2 \\
+					-1 & 2
+				\end{matrix}\right]
+				\left[\begin{matrix}
+					1 & - 1\\
+					2 & 2
+				\end{matrix}\right] 
+				= \left[\begin{matrix}
+					5 & 3 \\
+					3 & 5
+				\end{matrix}\right],
+			\end{equation*}
+			which is clearly not diagonal.
+		\end{proof}
+	\end{enumerate}
 	
 	\question If a matrix $A \in \R^{n\times n}$ (or $\C^{n\times n}$) has the form
 	\begin{equation*}
@@ -35,14 +102,25 @@
 		},
 	\end{equation*}
 	where $x_1,x_2,\dots,x_n \in \R$ (or $\C$) then $A$ is called a Vandermonde matrix. The determinant of $A$ is given by
-	\begin{equation*}
+	\begin{equation}
+		\label{eq:vandermonde_det}
 		\det(A) = \prod_{1\le i < j \le n} (x_j - x_i).
-	\end{equation*}
+	\end{equation}
 	\begin{proof}
-		The determinant is preserved by adding a scalar multiple of one column to another. Let $C_i$ denote the $i$th column of $A$. If we perform the following sequence of column operations, which preserve the determinant,
+		We use induction. For the base case\footnote{We can also say that \eqref{eq:vandermonde_det} is true for $n=1$ under the convention that the product over the empty set is $1$, and that a $1\times 1$ Vandermonde matrix is given by $A = \mat{1}$, but this complicates the induction step a bit by generating two cases.}, consider $n = 2$. Then
+		\begin{equation*}
+			A = \mat{1 & x_1 \\ 1 & x_2}, \qquad x_1, x_2\in \R \text{ (or $\C$)},
+		\end{equation*}
+		so
+		\begin{equation*}
+			\det(A) = x_2 -x_1 = \prod_{1 \le i < j \le 2} (x_j - x_i);
+		\end{equation*}
+		that is, \eqref{eq:vandermonde_det} holds for $n = 2$.
+		
+		Now suppose for induction that, for some $n \ge 2$, the determinant of any Vandermonde matrix in $\R^{n\times n}$  (or $\C^{n\times n}$) is given by \eqref{eq:vandermonde_det}. Let $A \in \R^{(n+1)\times(n+1)}$ (or $\C^{(n+1)\times(n+1)})$. The determinant of $A$ is preserved by adding a scalar multiple of one column to another. Let $C_i$ denote the $i$th column of $A$. If we perform the following sequence of column operations, which preserve the determinant,
 		\begin{align*}
-			C_n &\gets C_n - x_1C_{n-1}, \\
-			C_{n-1} &\gets C_{n-1} - x_1C_{n-2}, \\
+			C_{n+1} &\gets C_{n+1} - x_1C_n, \\
+			C_{n} &\gets C_{n} - x_1C_{n-1}, \\
 			&\vdots \\
 			C_3 &\gets C_3 - x_1C_2, \\
 			C_2 &\gets C_2 - x_1C_1, \\
@@ -51,30 +129,35 @@
 		\begin{equation*}
 			\det(A) = \det\left(\mat{
 				1 & 0 & 0 & 0 & \dots & 0 \\
-				1 & x_2 - x_1 & x_2(x_2-x_1) & x_2^2(x_2-x_1) & \dots & x_2^{n-2}(x_2-x_1) \\
-				1 & x_3 - x_1 & x_3(x_3-x_1) & x_3^2(x_3-x_1) & \dots & x_3^{n-2}(x_3-x_1) \\
+				1 & x_2 - x_1 & x_2(x_2-x_1) & x_2^2(x_2-x_1) & \dots & x_2^{n-1}(x_2-x_1) \\
+				1 & x_3 - x_1 & x_3(x_3-x_1) & x_3^2(x_3-x_1) & \dots & x_3^{n-1}(x_3-x_1) \\
 				\vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
-				1 & x_n - x_1 & x_n(x_n-x_1) & x_n^2(x_n-x_1) & \dots & x_n^{n-2}(x_n-x_1)
+				1 & x_{n+1} - x_1 & x_{n+1}(x_{n+1}-x_1) & x_{n+1}^2(x_{n+1}-x_1) & \dots & x_{n+1}^{n-1}(x_{n+1}-x_1)
 			}\right).
 		\end{equation*}
 		Using the Laplace expansion for the determinant on the first row of the matrix on the right-hand side we get
 		\begin{equation*}
 			\det(A) = \det\left(\mat{
-				x_2 - x_1 & x_2(x_2-x_1) & x_2^2(x_2-x_1) & \dots & x_2^{n-2}(x_2-x_1) \\
-				x_3 - x_1 & x_3(x_3-x_1) & x_3^2(x_3-x_1) & \dots & x_3^{n-2}(x_3-x_1) \\
+				x_2 - x_1 & x_2(x_2-x_1) & x_2^2(x_2-x_1) & \dots & x_2^{n-1}(x_2-x_1) \\
+				x_3 - x_1 & x_3(x_3-x_1) & x_3^2(x_3-x_1) & \dots & x_3^{n-1}(x_3-x_1) \\
 				\vdots & \vdots & \vdots & \ddots & \vdots \\
-				x_n - x_1 & x_n(x_n-x_1) & x_n^2(x_n-x_1) & \dots & x_n^{n-2}(x_n-x_1)
+				x_{n+1} - x_1 & x_{n+1}(x_{n+1}-x_1) & x_{n+1}^2(x_{n+1}-x_1) & \dots & x_{n+1}^{n-1}(x_{n+1}-x_1)
 			}\right).
 		\end{equation*}
-		Factoring $x_{j} - x_1$ out of the $i$th row of the above matrix on the right-hand side, for $j =2,3,\dots,n$, and applying the multilinearity of the determinant gives
+		Factoring $x_{j} - x_1$ out of the $i$th row of the above matrix on the right-hand side, for $j =2,3,\dots,n+1$, and applying the multilinearity of the determinant gives
 		\begin{equation*}
-			\det(A) = \prod_{j=2}^n (x_j -x_1)\det\left(\mat{
-				1 & x_2 & x_2^2 & \dots & x_2^{n-2} \\ 
-				1 & x_3 & x_3^2 & \dots & x_3^{n-2} \\
+			\det(A) = \prod_{j=2}^{n+1} (x_j -x_1)\det\left(\mat{
+				1 & x_2 & x_2^2 & \dots & x_2^{n-1} \\ 
+				1 & x_3 & x_3^2 & \dots & x_3^{n-1} \\
 				\vdots & \vdots & \vdots & \ddots & \vdots \\
-				1 & x_n & x_n^2 & \dots & x_n^{n-2}
-			}\right)
+				1 & x_n & x_n^2 & \dots & x_n^{n-1}
+			}\right).
 		\end{equation*}
+		The right factor in the product above is the determinant of a Vandermonde matrix in $\R^{n\times n}$ (or $\C^{n\times n})$, so, by the induction hypothesis, it follows that 
+		\begin{equation*}
+			\det(A) = \prod_{j=2}^{n+1}(x_j-x_1)\prod_{2\le i < j \le n+1}(x_j - x_i) = \prod_{1 \le i < j \le n+1}(x_j - x_i),
+		\end{equation*}
+		which proves the claim by induction.
 	\end{proof}
 	
 	\question Let $\vec{x}_1, \vec{x}_2, \dots, \vec{x}_k \in \C^n$ be a set of nonzero, orthogonal vectors. Then $\vec{x}_1,\vec{x}_2,\dots, \vec{x}_k$ are linearly independent.
