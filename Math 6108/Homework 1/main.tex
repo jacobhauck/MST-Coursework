@@ -1,0 +1,94 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{1}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question
+	
+	\question If $P \in \R^{n\times n}$ is a projection, then $I-P$ is projection.
+	\begin{proof}
+		Since $P$ is a projection, $P^2 = P$. Thus,
+		\begin{equation*}
+			(I-P)^2 = (I-P)(I-P) = I^2 - IP - PI + P^2 = I - 2P + P = I - P,
+		\end{equation*}
+		so $I-P$ is also a projection.
+	\end{proof}
+	
+	\question
+	
+	\question
+	
+	\question
+	
+	\question If a matrix $A \in \R^{n\times n}$ (or $\C^{n\times n}$) has the form
+	\begin{equation*}
+		A = \mat{
+			1 & x_1 & x_1^2 & \dots & x_1^{n-1} \\ 
+			1 & x_2 & x_2^2 & \dots & x_2^{n-1} \\
+			\vdots & \vdots & \vdots & \ddots & \vdots \\
+			1 & x_n & x_n^2 & \dots & x_n^{n-1}
+		},
+	\end{equation*}
+	where $x_1,x_2,\dots,x_n \in \R$ (or $\C$) then $A$ is called a Vandermonde matrix. The determinant of $A$ is given by
+	\begin{equation*}
+		\det(A) = \prod_{1\le i < j \le n} (x_j - x_i).
+	\end{equation*}
+	\begin{proof}
+		The determinant is preserved by adding a scalar multiple of one column to another. Let $C_i$ denote the $i$th column of $A$. If we perform the following sequence of column operations, which preserve the determinant,
+		\begin{align*}
+			C_n &\gets C_n - x_1C_{n-1}, \\
+			C_{n-1} &\gets C_{n-1} - x_1C_{n-2}, \\
+			&\vdots \\
+			C_3 &\gets C_3 - x_1C_2, \\
+			C_2 &\gets C_2 - x_1C_1, \\
+		\end{align*}
+		then we find that
+		\begin{equation*}
+			\det(A) = \det\left(\mat{
+				1 & 0 & 0 & 0 & \dots & 0 \\
+				1 & x_2 - x_1 & x_2(x_2-x_1) & x_2^2(x_2-x_1) & \dots & x_2^{n-2}(x_2-x_1) \\
+				1 & x_3 - x_1 & x_3(x_3-x_1) & x_3^2(x_3-x_1) & \dots & x_3^{n-2}(x_3-x_1) \\
+				\vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+				1 & x_n - x_1 & x_n(x_n-x_1) & x_n^2(x_n-x_1) & \dots & x_n^{n-2}(x_n-x_1)
+			}\right).
+		\end{equation*}
+		Using the Laplace expansion for the determinant on the first row of the matrix on the right-hand side we get
+		\begin{equation*}
+			\det(A) = \det\left(\mat{
+				x_2 - x_1 & x_2(x_2-x_1) & x_2^2(x_2-x_1) & \dots & x_2^{n-2}(x_2-x_1) \\
+				x_3 - x_1 & x_3(x_3-x_1) & x_3^2(x_3-x_1) & \dots & x_3^{n-2}(x_3-x_1) \\
+				\vdots & \vdots & \vdots & \ddots & \vdots \\
+				x_n - x_1 & x_n(x_n-x_1) & x_n^2(x_n-x_1) & \dots & x_n^{n-2}(x_n-x_1)
+			}\right).
+		\end{equation*}
+		Factoring $x_{j} - x_1$ out of the $i$th row of the above matrix on the right-hand side, for $j =2,3,\dots,n$, and applying the multilinearity of the determinant gives
+		\begin{equation*}
+			\det(A) = \prod_{j=2}^n (x_j -x_1)\det\left(\mat{
+				1 & x_2 & x_2^2 & \dots & x_2^{n-2} \\ 
+				1 & x_3 & x_3^2 & \dots & x_3^{n-2} \\
+				\vdots & \vdots & \vdots & \ddots & \vdots \\
+				1 & x_n & x_n^2 & \dots & x_n^{n-2}
+			}\right)
+		\end{equation*}
+	\end{proof}
+	
+	\question Let $\vec{x}_1, \vec{x}_2, \dots, \vec{x}_k \in \C^n$ be a set of nonzero, orthogonal vectors. Then $\vec{x}_1,\vec{x}_2,\dots, \vec{x}_k$ are linearly independent.
+	
+	\begin{proof}
+		Let $c_1, c_2, \dots, c_k \in \C$ satisfy
+		\begin{equation*}
+			c_1\vec{x}_1 + c_2\vec{x}_2 + \dots + c_k\vec{x}_k = 0.
+		\end{equation*}
+		Taking the inner product of both sides with $\vec{x}_i$, for $i = 1,2,\dots,k$, gives
+		\begin{equation*}
+			c_i(\vec{x}_i, \vec{x}_i) = (0, \vec{x}_i) = 0, \qquad i = 1,2,\dots, k.
+		\end{equation*}
+		Since $\vec{x}_i \ne 0$ for $i=1,2,\dots,k$, it follows that $(\vec{x}_i, \vec{x}_i) \ne0$, and $c_i = 0$ for $i = 1,2,\dots, k$. Therefore, $\vec{x}_1,\vec{x}_2,\dots,\vec{x}_k$ are linearly independent.
+	\end{proof}
+	
+\end{document}

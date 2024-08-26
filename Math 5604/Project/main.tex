@@ -204,8 +204,15 @@
 	
 	\section{Conclusion}
 	
-	\section{Fun}
+	In this project I solved the Allen-Cahn equation using the 5-point discretization of the Laplacian and two different time-stepping schemes: the convex splitting scheme and the Crank-Nicolson scheme. Using these implementations, I was able to compare the two time-stepping schemes in terms of accuracy and ability to preserve an important physical and mathematical property, a sort of minimum/maximum principle, of solutions of the Allen-Cahn equation.
 	
+	I was able to observe the first-order accuracy in time of the convex splitting scheme and the second-order accuracy in time of the Crank-Nicolson scheme. I was also able to observe the unconditional preservation of the maximum/minimum condition for the convex splitting scheme and the conditional preservation for the Crank-Nicolson scheme. I also observed that the numerical solutions behaved qualitatively in a physically plausible manner.
+	
+	\section{Bonus}
+	
+	For fun, I created a video similar to the one linked \href{https://www.youtube.com/watch?v=t1swj0QJUTw}{earlier}. You can find the video \href{https://drive.google.com/file/d/1sug_CRWRYPw71M63ox62002TP3sIG_EA/view?usp=sharing}{here}. For this I used the parameter settings $\varepsilon = 0.075$, $T=40$, $h = \frac{2\pi}{256}$, and $k = 0.01$. The initial condition $u_0$ is white noise, so that $u_0(x,y) \sim \mathcal{N}(0,\sigma^2)$ for each $(x,y) \in [0,2\pi]^2$, where the set of random variables $\left\{u_0\left(x^{(i)}, y^{(i)}\right)\right\}_{i=1}^V$ are independent for any finite set of points $\left\{\left(x^{(i)}, y^{(i)}\right)\right\}_{i=1}^V$. I chose $\sigma = 0.25$ (so that the value of $u_0(x,y)$ is very likely between $-1$ and $1$). The code to generate the video can be found in \verb*|fun.m|.
+	
+	The result is a solution that rapidly becomes smooth (due to the diffusion term), separating into randomly-shaped, smooth regions of positive and negative values which then approach $1$ or $-1$. The boundary between the two regions becomes smoother as time goes on.
 	
 	\bibliographystyle{plain}
 	\bibliography{references}
