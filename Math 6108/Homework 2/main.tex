@@ -1,0 +1,113 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{2}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question 
+	\begin{enumerate}
+		\item Let $S = \{(x,y) \in \R^2 \mid x \ge 0,\, y\ge 0\}$. Then $S$ is not a subspace of $\R^2$ because $(1,0) \in S$, but $-(1,0) = (-1,0) \notin S$; that is, $S$ is not closed under scalar multiplication in $\R^2$.
+		
+		\item Let $S = \{f \in \poly^3 \mid f(4) = 0\}$. Then $S$ is a subspace of $\poly^3$. To see this, let $f,g\in S$, and let $a \in \R$. Then $(f+g)(4) = f(4) + g(4) = 0$, so $f+g \in S$, and $(af)(4) = af(4) = 0$, so $af \in S$. Finally, $\vec{0} \in S$ because $\vec{0}(4) = 0$, so $S$ is nonempty. This shows that $S$ is a subspace of $\poly^3$.
+		
+		\item Let $S = \{f \in \poly^4 \mid f(4) = 2\}$. Then $S$ is not a subspace of $\poly^4$ because $\vec{0} \notin S$, as $\vec{0}(4) = 0\ne 2$. A subspace must contain the zero element of the larger space.
+		
+		\item Let $S = \{f \in \func \mid f'(x) + f(x) = 2\}$. Then $S$ is not a subspace of $\func$ because $\vec{0} \notin S$, as $\vec{0}'(x) + \vec{0}(x) = 0 \ne 2$.
+		
+		\item Let $S = \{f \in \func \mid f''(x) - 2f(x) = 0\}$. Then $S$ is a subspace of $\func$. To see this, let $f,g\in S$, and let $a \in \R$. Then $(f+g)''(x) -2(f+g)(x) = f''(x) - 2f(x) + g''(x) -2g(x) = 0$, so $f+g \in S$, and $(af)''(x) -2(af)(x) = a(f''(x) - 2f(x)) = 0$, so $af \in S$. This shows that $S$ is a subspace of $\func$.
+	\end{enumerate}
+	
+	\question Let $\cont$ and $\diff$ denote the sets of all continuous and differentiable functions. Then $\cont$ and $\diff$ are subspaces of $\func$. This is because continuity and differentiability are preserved under addition and scalar multiplication. That is, if $f,g$ are continuous functions, and $a \in \R$, then $f+g$ and $af$ are continuous functions. Similarly, if $f,g$ are differentiable, and $a \in \R$, then $f+g$ and $af$ are differentiable. Since $\vec{0} \in \cont$, and $\vec{0} \in \diff$, it follows that $\cont$ and $\diff$ are subspaces of $\func$.
+	
+	\question Let $V$ be a vector space over a field $\field$, and let $S \subseteq V$ be nonempty. Then $S$ is subspace of $V$ if and only if $S$ is closed under linear combinations.
+	\begin{proof}
+		Let $S$ be a subspace of $V$, let $\vec{v}_1, \vec{v}_2, \dots, \vec{v_n} \in S$, let $c_1,c_2,\dots,c_n \in \R$, and let $\vec{v} = c_1\vec{v}_1 + c_2\vec{v_2} + \dots + c_n\vec{v}_n$. If $\vec{u}_i = c_i\vec{v}_i$, then $\vec{u}_i \in S$ for $i=1$ to $n$ because subspaces are closed under scalar multiplication. Furthermore, $\vec{v} = \vec{u}_1+ \vec{u}_2 + \dots + \vec{u}_n$; therefore, $\vec{v} \in S$ because subspaces are closed under addition (we have to apply this inductively). Thus, $S$ is closed under linear combinations.
+		
+		Suppose that $S$ is closed under linear combinations. If $\vec{v}_1, \vec{v}_2 \in S$, then $\vec{v}_1 + \vec{v}_2$ is a linear combination of elements of $S$ and therefore also in $S$. Similarly, if $a \in \field$, then $a\vec{v}_1$ is a liner combination of elements of $S$ and therefore also in $S$. Hence, $S$ is a subspace of $V$.
+	\end{proof}
+	
+	\question Let $S_1$ and $S_2$ be subspaces of a vector space $V$ over a field $\field$. Then $S_1 \cap S_2$ is a subspace of $V$.
+	\begin{proof}
+		Since $S_1$ and $S_2$ are subspaces they both contain $\vec{0} \in S$. Therefore, $\vec{0} \in S_1 \cap S_2$, so $S_1\cap S_2$ is nonempty.
+		
+		Let $\vec{v}_1, \vec{v}_2 \in S_1 \cap S_2$, and let $a \in \field$. Then for $i \in \{1,2\}$, $\vec{v}_1,\vec{v}_2\in S_i$, so $\vec{v}_1 + \vec{v}_2 \in S_i$, and $a\vec{v}_1 \in S_i$ because $S_i$ is subspace of $V$. Therefore, $\vec{v}_1 + \vec{v_2} \in S_1 \cap S_2$, and $a\vec{v}_1 \in S_1\cap S_2$.
+		
+		This shows that $S_1 \cap S_2$ is a subspace of $V$.
+	\end{proof}
+	
+	\question
+	\begin{enumerate}
+		\item Let $S = \{1 + x^2, 1+x, x^2 - x\}\subseteq \poly^2$. Then $S$ is linearly dependent because
+		\begin{equation*}
+			c_1(x^2-x) + c_2(1+x^2) + c_3(1+x) = 0
+		\end{equation*}
+		if we choose $c_1 = 1$, $c_2 = -1$, and $c_3 = 1$. Furthermore, $x^2-x = 1+x^2 + (-1)(1+x)$.
+		
+		\item Let $S = \{\cos(x), \sin(x), 1\} \subseteq \func$. Then $S$ is linearly independent. To see this, let $c_1,c_2,c_3 \in \R$, and suppose that
+		\begin{equation*}
+			c_1\cos(x) + c_2\sin(x) + c_3 = 0.
+		\end{equation*}
+		This must be true for all $x\in \R$ by the definition of scalar multiplication and addition in $\func$; in particular, if $x = 0$, then we obtain $c_1 = -c_3$, and if $x =\pi$, then we obtain $c_1 = c_3$. Thus, $c_1 = c_3 = 0$. This means that $c_2\sin(x) = 0$. Taking $x = \frac{\pi}{2}$, we get $c_2 = 0$. Thus, $c_1 =c_2=c_3 = 0$. This means that $S$ is linearly independent.
+	\end{enumerate}
+	
+	\question
+	
+	\question 
+	
+	\question Let $S$ be the set of all symmetric matrices in $\R^{n\times n}$.
+	\begin{enumerate}
+		\item $S$ is a subspace of $\R^{n\times n}$.
+		\begin{proof}
+			Clearly, $S$ is nonempty (it contains, for example, the zero matrix). Let $A, B \in S$, and let $a \in \R$. Then
+			$(A+B)^T = A^T + B^T = A + B$, so $A+B \in S$. Furthermore, $(aA)^T = aA^T$, so $aA \in S$. This shows that $S$ is a subspace of $\R^{n\times n}$.
+		\end{proof}
+		
+		\item Let $[A]_{k\ell}$ mean taking the element in the $k$th row and $\ell$th column of a matrix $A$. Define $B = \{A^{ij} : 1 \le j \le i \le n\}$, where $A^{ij} \in \R^{n\times n}$ is defined by 
+		\begin{equation*}
+			A^{ij}_{k\ell} = \begin{cases}
+				1 & (k,\ell) = (i, j) \text{ or } (k,\ell) = (j,i) \\
+				0 & \text{otherwise,}
+			\end{cases}
+		\end{equation*}
+		for $k,\ell = 1,2,\dots,n$. Then $B$ is a basis for $S$. 
+		\begin{proof}
+			We need to show that $B$ is linearly independent and that $\span(B) = S$.
+			\begin{enumerate}[label=\arabic*.]
+				\item Suppose that
+				\begin{equation*}
+					\sum_{A^{ij} \in B} c_{ij}A^{ij} = \vec{0}
+				\end{equation*}
+				for some $\{c_{ij} : 1 \le j \le i \le n\}\subseteq\R$. For $\ell \le k$, we have
+				\begin{equation*}
+					\sum_{1\le j\le i\le n}c_{ij}a^{ij}_{k\ell} = 0.
+				\end{equation*}
+				Since $\ell \le k$, and $j \le i$, the definition of $A^{ij}_{k\ell}$ implies that only the term $c_{k\ell}A^{k\ell}_{k\ell}$ is nonzero. Then we get $c_{k\ell} = 0$. Since $\ell \le k$ were arbitrary, it follows that $c_{ij} = 0$ for all $1\le j\le i\le n$, so $B$ is linearly independent.
+				
+				\item If $(i,j) \ne (k,\ell)$ and $(i,j) \ne (\ell, k)$, then $A^{ij}_{k\ell} = 0 = A^{ij}_{\ell k}$. If $(i,j) = (k,\ell)$, then $A^{ij}_{k\ell} = 1 = A^{ij}{\ell k}$. Hence, $A^{ij} = (A^{ij})^T$ for all $1 \le i \le j \le n$. Thus $B \subseteq S$, which implies that every element of $\span(B)$ is a linear combination of elements of $S$. Since $S$ is a subspace by part 1. and subspaces are closed under linear combination by Problem 3., it follows that $\span(B) \subseteq S$.
+				
+				Conversely, let $C \in S$ be a symmetric matrix. Since
+				\begin{equation*}
+					\begin{aligned}
+					\left[\sum_{A^{ij} \in B}C_{ij}A^{ij}\right]_{k\ell} &= \sum_{1\le j\le i \le n}C_{ij}A^{ij}_{k\ell} \\
+					&= \begin{cases}
+						C_{k\ell} & \ell \le k \\
+						C_{\ell k} \;(=C_{k\ell}) & k \le \ell
+					\end{cases} \\
+					&= C_{k\ell}
+					\end{aligned}
+				\end{equation*}
+				by the symmetry of $C$, we must have
+				\begin{equation*}
+					C = \sum_{A^{ij}\in B}C_{ij}A^{ij}.
+				\end{equation*}
+				Thus, $C \in \span(B)$. This shows that $S\subseteq\span(B)$. Since $S\subseteq\span(B)$, and $\span(B) \subseteq S$, it follows that $\span(B) = S$.
+			\end{enumerate}
+			This completes the proof that $B$ is a basis for $S$.
+		\end{proof}
+	\end{enumerate}
+	
+\end{document}
