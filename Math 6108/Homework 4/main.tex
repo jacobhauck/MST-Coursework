@@ -1,0 +1,125 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{4}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question Let $T : \R^3 \to \R^3$ be defined by
+	\begin{equation*}
+		T\left(\mat{x\\y\\z}\right) = \mat{x-y+2z \\ 2x+y \\ -x-2y+2z}.
+	\end{equation*}
+	
+	\begin{enumerate}
+		\item $T$ is a linear transformation.
+		\begin{proof}
+			Let $\vec{x} = (x,y,z)^T, \vec{u} = (u,v,w)^T \in \R^3$, and let $a \in \R$. Then
+			\begin{equation*}
+				\begin{aligned}
+					T(a\vec{x} + \vec{u}) &= \mat{ax+u - (ay+v) + 2(az+w) \\ 2(ax+u) + ay+v \\ -(ax+u) - (ay+v) + 2(az+w)}\\
+					&= a\mat{x-y+2z \\ 2x+y \\ -x-y+2z} + \mat{u -v+2w \\ 2u + v \\ -u-v+2w} \\
+					&= aT(\vec{x}) + T(\vec{u}).
+				\end{aligned}
+			\end{equation*}
+			This shows that $T$ is a linear transformation.
+		\end{proof}
+	\end{enumerate}
+	
+	\question Let $T : V \to V$ be a linear transformation of an $n$-dimensional vector space $V$. Let $B$ be any basis for $V$. Then $[T]_B = I_n$ if and only if $T$ is the identity mapping.
+	\begin{proof}
+		Suppose that $[T]_B = I_n$. By the definition of the standard matrix, for all $\vec{v} \in V$,
+		\begin{equation*}
+			[T(\vec{v})]_B = [T]_B[\vec{v}]_B = I_n[\vec{v}]_B = [\vec{v}]_B.
+		\end{equation*}
+		By the uniqueness of coordinates, it follows that $T(\vec{v}) = \vec{v}$ for all $\vec{v} \in V$. Thus, $T$ is the identity mapping.
+		
+		Conversely, suppose that $T$ is the identity mapping. Then $T(\vec{v}) = \vec{v}$ for all $\vec{v} \in V$. Let $B = \{\vec{v}_1, \dots, \vec{v}_n\}$. Then, using block matrix multiplication, we have
+		\begin{equation*}
+			\begin{aligned}
+			I_n &= \mat{[\vec{v}_1]_B & \cdots& [\vec{v}_n]_B} \\
+			&= \mat{[T(\vec{v}_1)]_B & \cdots& [T(\vec{v}_n)]_B} \\
+			&= \mat{[T]_B[\vec{v}_1]_B & \cdots&[T]_B [\vec{v}_n]_B} \\
+			&= [T]_B \mat{[\vec{v}_1]_B & \cdots& [\vec{v}_n]_B} \\
+			&= [T]_B I_n \\
+			&= [T]_B.
+			\end{aligned}
+		\end{equation*}
+	\end{proof}
+	
+	\question 
+	
+	\question Let $T : V \to W$ be an invertible linear transformation between vector spaces $V$ and $W$, and let $B = \{\vec{v}_1, \dots, \vec{v}_n\}$ be a set of vectors in $V$.
+	
+	\begin{enumerate}
+		\item If $B$ is linearly independent, then $T(B)$ is linearly independent in $W$.
+		\begin{proof}
+			Let $c_1, \dots, c_n \in \mathbb{F}$, the underlying field for $V$ and $W$. Suppose that
+			\begin{equation*}
+				c_1T(\vec{v}_1) + \dots + c_nT(\vec{v}_n) = 0.
+			\end{equation*}
+			By the linearity of $T$, we have
+			\begin{equation*}
+				T(c_1\vec{v}_1 + \dots + c_n\vec{v}_n) = 0.
+			\end{equation*}
+			Since $T^{-1}$ is also linear, we must have $T^{-1}(0) = 0$, so
+			\begin{equation*}
+				c_1\vec{v}_1 + \dots + c_n\vec{v}_n = 0,
+			\end{equation*}
+			which implies that $c_1 = c_2 = \dots = c_n = 0$ by the linear independence of $B$. Thus, $T(B)$ is linearly independent.
+		\end{proof}
+		
+		\item If $\span(B) = V$, then $\span(T(B)) = W$.
+		\begin{proof}
+			Let $\vec{w} \in W$. Then there exists $c_1, c_2, \dots, c_n \in \mathbb{F}$, the field underlying $V$ and $W$, such that
+			\begin{equation*}
+				T^{-1}(\vec{w}) = c_1\vec{v}_1 + \dots + c_n \vec{v}_n
+			\end{equation*}
+			because $B$ spans $V$. Applying $T$ to both sides and using the linearity of $T$ shows that
+			\begin{equation*}
+				\vec{w} = c_1T(\vec{v}_1) + \dots + c_nT(\vec{v}_n).
+			\end{equation*}
+			Thus $\vec{w} \in \span(T(B))$, and $W \subseteq\span(T(B))$ because $\vec{w} \in W$ was arbitrary. Certainly $T(B) \subseteq W$, so $W = \span(T(B))$.
+		\end{proof}
+		
+		\item If $B$ is a basis for $V$, then $T(B)$ is a basis for $W$.
+		\begin{proof}
+			If $B$ is a basis for $V$, then $B$ is linearly independent, and $\span(B) = V$. By part 1.\ $T(B)$ is linearly independent, and by part 2.\ $\span(T(B)) = W$. This means that $B$ is a basis for $W$ by definition.
+		\end{proof}
+	\end{enumerate}
+	
+	\question Let $T : V \to W$ be a linear transformation.
+	\begin{enumerate}
+		\item The range of $T$, defined by $T(V) = \{T(\vec{v}) \mid \vec{v} \in V\}$, is a subspace of $W$.
+		\begin{proof}
+			We begin by noting that $T(V)$ is nonempty because, for example, $T(0) =0$, so $0 \in T(V)$. 
+			
+			Now, let $\vec{w}_1$ and $\vec{w}_2 \in W$, and let $a \in \mathbb{F}$, the field underlying $V$ and $W$. Then there exist $\vec{v}_1, \vec{v}_2 \in V$ such that $\vec{w}_1 = T(\vec{v}_1)$, and $\vec{w}_2 = T(\vec{v}_2)$. Thus,
+			\begin{equation*}
+				\vec{w}_1  + \vec{w}_2 = T(\vec{v}_1) + T(\vec{v}_2) = T(\vec{v}_1 + \vec{v}_2),
+			\end{equation*}
+			so $\vec{w}_1 + \vec{w}_2 \in T(V)$, as $\vec{v}_1 + \vec{v}_2 \in V$. Additionally,
+			\begin{equation*}
+				a\vec{w}_1 = aT(\vec{v}_1) = T(a\vec{v}_1),
+			\end{equation*}
+			so $a\vec{w}_1 \in T(V)$, as $a\vec{v}_1\in V$. This shows that $T(V)$ is a subspace of $W$.
+		\end{proof}
+		
+		\item The null space of $T$, defined by $\Null(T) = \{\vec{v} \in V \mid T(\vec{v}) = 0\}$, is a subspace of $V$.
+		\begin{proof}
+			We begin by noting that $\Null(T)$ is nonempty because $T(0) = 0$, so $0 \in \Null(T)$.
+			
+			Now, let $\vec{v}_1, \vec{v}_2 \in \Null(T)$. Then
+			\begin{equation*}
+				T(\vec{v}_1 + \vec{v}_2) = T(\vec{v}_1) + T(\vec{v}_2) = 0,
+			\end{equation*}
+			so $\vec{v}_1 +\vec{v}_2 \in \Null(T)$. Let $a \in \mathbb{F}$, the field underlying $V$ and $W$. Then
+			\begin{equation*}
+				T(a\vec{v}_1) = aT(\vec{v}_1) = 0,
+			\end{equation*}
+			so $a\vec{v}_1 \in \Null(T)$. This shows that $\Null(T)$ is a subspace of $V$.
+		\end{proof}
+	\end{enumerate}
+\end{document}
