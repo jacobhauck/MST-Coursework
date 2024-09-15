@@ -26,6 +26,30 @@
 			\end{equation*}
 			This shows that $T$ is a linear transformation.
 		\end{proof}
+		
+		\item Let $E = \{\vec{e}_1, \vec{e}_2, \vec{e}_3\}$ be the standard basis for $\R^3$. Then
+		\begin{equation*}
+			[T]_E = \mat{[T(\vec{e}_1)]_E & [T(\vec{e}_2)]_E & [T(\vec{e}_3)]_E} = \mat{1 & - 1 & 2 \\ 2 & 1 & 0 \\ -1 & -2 & 2}.
+		\end{equation*}
+		Calculating the row echelon form of $[T]_E$, we have
+		\begin{equation*}
+			[T]_E \xrightarrow[\substack{R_2 \gets R_2 - 2R_1 \\[0.25em] R_3 \gets R_3 + R_1}]{} \mat{1 & -1 & 2 \\ 0 & 3 & -4 \\ 0 & -3 & 4} \xrightarrow[R_3 \gets R_3 + R_2]{} \mat{1 & -1 & 2 \\ 0 & 3 & -4 \\ 0 & 0 & 0}.
+		\end{equation*}
+		Since the pivots are in the first two columns, it follows that
+		\begin{equation*}
+			B = \left\{\mat{1 \\ 2 \\ -1}, \mat{-1 \\ 1 \\ -2}\right\}
+		\end{equation*}
+		is a basis for the column space of $[T]_E$. Then the vectors whose coordinates are given by the elements of $B$ form a basis for $\Range(T)$. Since we are using the standard basis $E$, these vectors are actually the same as those in $B$. Thus, $B$ is also a basis for $\Range(T)$.
+		
+		\item Reusing the row echelon form computed in part 2., a vector $(x,y,z)^T \in \R^3$ is in $\Null([T]_E)$ if and only if 
+		\begin{equation*}
+			\mat{1 & -1 & 2 \\ 0 & 3 & -4 \\ 0 & 0 & 0}\mat{x\\y\\z} = 0,
+		\end{equation*}
+		or $3y =4z$, and $x = \frac{4}{3}z - 2z = -\frac{2}{3}z$. That is, $\vec{v} \in \Null([T]_E)$ if and only if
+		\begin{equation*}
+			\vec{v} = z\mat{-2 \\ 4 \\ 3}, \qquad z \in \R.
+		\end{equation*}
+		Thus, $\Null([T]_E) = \span\{(2,4,1)^T\}$, so $N = \{(2,4,1)^T\}$ forms a basis for $\Null([T]_E)$ (because a set with only one nonzero element is always linearly independent). The vectors whose coordinates in $E$ are the elements of $N$ form a basis for $\Null(T)$. Since we are using the standard basis $E$, these vectors are the same as those in $N$. Hence, $N$ is also a basis for $\Null(T)$.
 	\end{enumerate}
 	
 	\question Let $T : V \to V$ be a linear transformation of an $n$-dimensional vector space $V$. Let $B$ be any basis for $V$. Then $[T]_B = I_n$ if and only if $T$ is the identity mapping.
@@ -49,7 +73,37 @@
 		\end{equation*}
 	\end{proof}
 	
-	\question 
+	\question Let $V = \span\{e^x\sin(2x), e^x\cos(2x)\}$, and let $D : V \to V$ be the differentiation operator, defined by
+	\begin{equation*}
+	\begin{aligned}
+		D(ae^x\sin(2x) + be^x\cos(2x)) &= ae^x\sin(2x) + 2ae^x\cos(2x) + be^x\cos(2x) - 2be^x\sin(2x) \\
+		&= (a-2b)e^x\sin(2x) + (2a+b)e^x\cos(2x).
+	\end{aligned}
+	\end{equation*}
+	Noting that $B = \{e^x\sin(2x), e^x\cos(2x)\}$ is linearly independent because the Wronskian of $B$ at $x=0$ is given by
+	\begin{equation*}
+		W(0) = \det\left(\mat{0 & 1 \\ 2 & 1}\right) = -2 \ne 0,
+	\end{equation*}
+	it follows that $B$ is a basis for $V$. Then
+	\begin{equation*}
+		[D]_B = \mat{[D(e^x\sin(2x))]_B & [D(e^x\cos(2x))]_B} = \mat{1 & -2 \\ 2 & 1}.
+	\end{equation*}
+	It is easy to see that $[D]_B$ is invertible, with 
+	\begin{equation*}
+		[D]_B^{-1} = \frac{1}{5}\mat{1 & 2 \\ -2 & 1}.
+	\end{equation*}
+	Then $D$ is also invertible, with $[D^{-1}]_B = [D]_B^{-1}$. The vector $e^x\sin(2x) \in V$ has coordinates $[e^x\sin(2x)]_B = (1, 0)^T$. Thus, 
+	\begin{equation*}
+		[D^{-1}(e^x\sin(2x))]_B = \frac{1}{5}\mat{1 & 2 \\ -2 & 1}\mat{1 \\ 0} = \frac{1}{5}\mat{1 \\ -2}.
+	\end{equation*}
+	This implies that
+	\begin{equation*}
+		D\left(\frac{1}{5}e^x\sin(2x) - \frac{2}{5}e^x\cos(2x)\right) = D(D^{-1}(e^x\sin(2x))) = e^x\sin(2x).
+	\end{equation*}
+	Since $\int e^x\sin(2x)$ is given by $f(x) + C$, where $f$ is any function such that $D(f) = e^x\sin(2x)$, and $C$ is an arbitrary constant, it follows that
+	\begin{equation*}
+		\int e^x\sin(2x) = \frac{1}{5}e^x\sin(2x) - \frac{2}{5}e^x\cos(2x) +C.
+	\end{equation*}
 	
 	\question Let $T : V \to W$ be an invertible linear transformation between vector spaces $V$ and $W$, and let $B = \{\vec{v}_1, \dots, \vec{v}_n\}$ be a set of vectors in $V$.
 	

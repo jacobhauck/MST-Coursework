@@ -27,7 +27,7 @@
 	\begin{proof}
 		Let $S$ be a subspace of $V$, let $\vec{v}_1, \vec{v}_2, \dots, \vec{v_n} \in S$, let $c_1,c_2,\dots,c_n \in \R$, and let $\vec{v} = c_1\vec{v}_1 + c_2\vec{v_2} + \dots + c_n\vec{v}_n$. If $\vec{u}_i = c_i\vec{v}_i$, then $\vec{u}_i \in S$ for $i=1$ to $n$ because subspaces are closed under scalar multiplication. Furthermore, $\vec{v} = \vec{u}_1+ \vec{u}_2 + \dots + \vec{u}_n$; therefore, $\vec{v} \in S$ because subspaces are closed under addition (we have to apply this inductively). Thus, $S$ is closed under linear combinations.
 		
-		Suppose that $S$ is closed under linear combinations. If $\vec{v}_1, \vec{v}_2 \in S$, then $\vec{v}_1 + \vec{v}_2$ is a linear combination of elements of $S$ and therefore also in $S$. Similarly, if $a \in \field$, then $a\vec{v}_1$ is a liner combination of elements of $S$ and therefore also in $S$. Hence, $S$ is a subspace of $V$.
+		Suppose that $S$ is closed under linear combinations. If $\vec{v}_1, \vec{v}_2 \in S$, then $\vec{v}_1 + \vec{v}_2$ is a linear combination of elements of $S$ and therefore also in $S$. Similarly, if $a \in \field$, then $a\vec{v}_1$ is a linear combination of elements of $S$ and therefore also in $S$. Hence, $S$ is a subspace of $V$.
 	\end{proof}
 	
 	\question Let $S_1$ and $S_2$ be subspaces of a vector space $V$ over a field $\field$. Then $S_1 \cap S_2$ is a subspace of $V$.
@@ -45,7 +45,7 @@
 		\begin{equation*}
 			c_1(x^2-x) + c_2(1+x^2) + c_3(1+x) = 0
 		\end{equation*}
-		if we choose $c_1 = 1$, $c_2 = -1$, and $c_3 = 1$. Furthermore, $x^2-x = 1+x^2 + (-1)(1+x)$.
+		if we choose $c_1 = 1$, $c_2 = -1$, and $c_3 = 1$. Furthermore, $x^2-x = (1)(1+x^2) + (-1)(1+x)$.
 		
 		\item Let $S = \{\cos(x), \sin(x), 1\} \subseteq \func$. Then $S$ is linearly independent. To see this, let $c_1,c_2,c_3 \in \R$, and suppose that
 		\begin{equation*}
@@ -54,9 +54,93 @@
 		This must be true for all $x\in \R$ by the definition of scalar multiplication and addition in $\func$; in particular, if $x = 0$, then we obtain $c_1 = -c_3$, and if $x =\pi$, then we obtain $c_1 = c_3$. Thus, $c_1 = c_3 = 0$. This means that $c_2\sin(x) = 0$. Taking $x = \frac{\pi}{2}$, we get $c_2 = 0$. Thus, $c_1 =c_2=c_3 = 0$. This means that $S$ is linearly independent.
 	\end{enumerate}
 	
-	\question
+	\question Let $W_1$ and $W_2$ be subspaces of a vector space $R$ of dimensions $\dim(W_1) = m$ and $ \dim(W_2) = p$. Define
+	\begin{equation*}
+		W_1 + W_2 = \{\vec{w}_1 + \vec{w}_2 : \vec{w}_1 \in W_1 \text{ and } \vec{w}_2 \in W_2\}.
+	\end{equation*}
+	Then $W_1 + W_2$ is a subspace of $R$, and $\dim(W_1 + W_2) = \dim(W_1) + \dim(W_2) -\dim(W_1 \cap W_2)$.
+	\begin{proof}
+		We begin by showing that $W_1 + W_2$ is a subspace. Noting that $\vec{0} \in W_1$ and $\vec{0} \in W_2$, it follows that $\vec{0} + \vec{0} \in W_1 + W_2$, so $W_1 + W_2$ is nonempty. Now let $\vec{v}_1, \vec{v}_2 \in W_1 + W_2$, and let $a \in \mathbb{F}$, the field for $R$. Then there exist $\vec{w}_{11} \in W_1, \vec{w}_{12} \in W_2$, and $\vec{w}_{21} \in W_1, \vec{w}_{22} \in W_2$ such that
+		\begin{equation*}
+			\vec{v}_1 = \vec{w}_{11} + \vec{w}_{12}, \qquad \vec{v}_2 = \vec{w}_{21} + \vec{w}_{22}.
+		\end{equation*}	
+		Then
+		\begin{equation*}
+			\vec{v}_1 + \vec{v}_2 = \vec{w}_{11} + \vec{w}_{12} + \vec{w}_{21} + \vec{w}_{22} = (\vec{w}_{11} + \vec{w}_{21}) + (\vec{w}_{12} + \vec{w}_{22}) \in W_1 + W_2
+		\end{equation*}
+		because $W_1$ and $W_2$ are closed under addition. Similarly,
+		\begin{equation*}
+			a\vec{v}_1 = a(\vec{w}_{11} + \vec{w}_{12}) = a\vec{w}_{11} + a\vec{w}_{12} \in W_1 + W_2
+		\end{equation*}
+		because $W_1$ and $W_2$ are closed under scalar multiplication. Thus, $W_1 + W_2$ is a subspace of $R$.
+		
+		Since $W_1 \cap W_2$ is a subspace of $W_1$, it must have a lower dimension because any basis for $W_1$ would span $W_1 \cap W_2 \subseteq W_1$. Similarly, $\dim(W_1\cap W_2) \le W_2$, as well. Let $k=\dim(W_1\cap W_2)$. Then $k \le m$, and $k \le p$.
+		
+		There is a basis $B = \{\vec{v}_1, \dots, \vec{v}_k\}$ for $W_1\cap W_2$. We would like to extend this basis with vectors $\{\vec{w}_{11}, \vec{w}_{21}, \dots, \vec{w}_{(m-k)1}\}\subseteq W_1$ to form a basis for $W_1$. This can be done inductively. If $m = k$, then it is trivial. Otherwise, $m > k$, so $B$ does not span $W_1$. This implies that there is a vector $\vec{w}_{11} \in W_1$ that cannot be expressed as a linear combination of elements of $B$; thus, if
+		\begin{equation*}
+			c_0\vec{w}_{11} + c_1\vec{v}_1 + \dots + \vec{v}_k = 0,
+		\end{equation*}
+		then $c_0 = 0$, because $c_0\ne 0$ implies that $\vec{w}_{11} \in \span(B)$, contrary to our assumption. Since $c_0 = 0$, it follows that $c_1 = c_2 = \dots = c_k = 0$ by the linear independence of $B$. This shows that $B \cup\{\vec{w}_{11}\}$ is linearly independent. We can repeat this argument inductively to construct a linearly independent set $C = B \cup \{\vec{w}_{11}, \vec{w}_{21}, \dots, \vec{w}_{(m-k)1}\}\subseteq W_1$. 
+		
+		If there were another vector $\vec{w} \in W_1$ not in $\span(C)$, then we could add $\vec{w}$ to $C$ to obtain a linearly independent subset of $W_1$ of size $m + 1$, which is impossible. Therefore, $C$ spans $W_1$ and must be a basis for $W_1$.
+		
+		In a similar way, we can choose vectors $\{\vec{w}_{21}, \vec{w}_{22}, \dots, \vec{w}_{(p-k)2}\}$ such that $D = B \cup\{\vec{w}_{21}, \vec{w}_{22}, \dots, \vec{w}_{(p-k)2}\}$ is a basis for $W_2$. 
+		
+		We claim that $C \cup D$ is a basis for $W_1 + W_2$. To see that $C\cup D$ is linearly independent, suppose there were coefficients $c_{10}, \dots c_{k0}, c_{11}, \dots c_{(m-k)1}, c_{12}, \dots, c_{(p-k)2}$ such that
+		\begin{equation}
+			\label{eq:big_combo}
+			c_{10}\vec{v}_1 + \dots + c_{k0}\vec{v}_k + c_{11}\vec{w}_{11} + \dots c_{(m-k)1}\vec{w}_{(m-k)1} + c_{12}\vec{w}_{12} + \dots + c_{(p-k)2}\vec{w}_{(p-k)2} = 0.
+		\end{equation}
+		Then we would have $\vec{w} = c_{12}\vec{w}_{12} + \dots + c_{(p-k)2}\vec{w}_{(p-k)w} \in W_1$. Since $\vec{w} \in W_2$ by construction, we would have $\vec{w} \in W_1\cap W_2$ Then there would be coefficients $d_1, \dots d_k$ such that $\vec{w} = d_1\vec{v}_1 + \dots + d_k \vec{v}_k$. Substituting into \eqref{eq:big_combo}, we would have
+		\begin{equation*}
+			(c_{10} + d_1)\vec{v}_1 + \dots + (c_{k0} + d_k)\vec{v}_k + c_{11}\vec{w}_{11} + \dots c_{(m-k)1}\vec{w}_{(m-k)1} = 0,
+		\end{equation*}
+		which implies that $c_{11} = c_{21} = \dots = c_{(m-k)1} = 0$ by the linear independence of $C$. Substituting this into \eqref{eq:big_combo} gives
+		\begin{equation*}
+			c_{10}\vec{v}_1 + \dots + c_{k0}\vec{v}_k + c_{12}\vec{w}_{12} + \dots + c_{(p-k)2}\vec{w}_{(p-k)2} = 0,
+		\end{equation*}
+		from which we deduce that $c_{10} = c_{20} = \dots = c_{k0} = c_{12} = c_{22} = \dots = c_{(p-k)2} = 0$ by the linear independence of $D$. Therefore, $C \cup D$ is linearly independent.
+		
+		To see that $C \cup D$ spans $W_1 + W_2$, let $\vec{w}_1 + \vec{w}_2 \in W_1 + W_2$, where $\vec{w}_1 \in W_1$, and $\vec{w}_2 \in W_2$. Then, because $C$ is a basis for $W_1$ and $D$ is a basis for $W_2$, there exist coefficients $c_{101}, c_{201}, \dots, c_{k01}, c_{102}, c_{202}, \dots, c_{k02}$, $c_{11}, c_{21}, \dots c_{(m-k)1}$, and $c_{12}, c_{22}, \dots c_{(p-k)2}$ such that
+		\begin{equation*}
+			\begin{aligned}
+			\vec{w}_1 &= c_{101}\vec{v}_1 + \dots + c_{k01}\vec{v}_k + c_{11}\vec{w}_{11} + \dots + c_{(m-k)1}\vec{w}_{(m-k)1}, \\
+			\vec{w}_2 &= c_{102}\vec{v}_2 + \dots + c_{k02}\vec{v}_k + c_{12}\vec{w}_{12} + \dots + c_{(m-k)2}\vec{w}_{(m-k)2},
+			\end{aligned}
+		\end{equation*}
+		which implies that
+		\begin{equation*}
+			\vec{w}_1 + \vec{w}_2 = (c_{101} + c_{102})\vec{v}_1 + \dots + (c_{k01} + c_{k02})\vec{v}_k + c_{11}\vec{w}_11 + \dots + c_{(m-k)1}\vec{w}_{(m-k)1} + c_{12}\vec{w}_{12} + \dots + c_{(p-k)2}\vec{w}_{(p-k)2},
+		\end{equation*}
+		which is in the $\span(C \cup D)$. Since $\vec{w}_1 + \vec{w}_2 \in W_1 + W_2$ was arbitrary, it follows that $W_1 + W_2 \subseteq C \cup D$. 
+		
+		On the other hand, if $\vec{w} \in C \cup D$, then there exist $c_{10}, \dots c_{k0}$, $c_{11}, \dots, c_{(m-k)1}$, and $c_{12}, \dots, c_{(p-k)2}$ such that
+		\begin{equation*}
+			\vec{w} = (c_{10}\vec{v}_1 + \dots + c_{k0}\vec{v}_k + c_{11}\vec{w}_{11} + \dots + c_{(m-k)1}\vec{w}_{(m-k)1}) + (c_{12}\vec{w}_{12} + \dots + c_{(p-k)2}\vec{w}_{(p-k)2}) \in W_1 + W_2
+		\end{equation*}
+		by the construction of of the vectors $\vec{w}_{ij}$. Thus, $\span(C \cup D) \subseteq W_1 + W_2$. Then $\span(C\cup D) = W_1 + W_2$.
+		
+		This shows that $C\cup D$ is a basis for $W_1 + W_2$. Since $|C\cup D| = k + m-k + p-k = m + p - k$, it follows that
+		\begin{equation*}
+			\dim(W_1 + W_2) = \dim(W_1) + \dim(W_2) - \dim(W_1 \cap W_2).
+		\end{equation*}
+	\end{proof}
 	
-	\question 
+	\question \begin{enumerate}
+		\item The set
+		\begin{equation*}
+			B = \left\{\mat{1&0\\0&1}, \mat{1&1\\0&1}, \mat{1&0\\1&1}\right\}
+		\end{equation*}
+		is not a basis for $\mathcal{M}_2$ because it does not span $\mathcal{M}_2$. Indeed, the vector
+		\begin{equation*}
+			A = \mat{1&0\\0&0}
+		\end{equation*}
+		cannot be expressed as linear combination of elements of $B$. To see why, suppose that there were scalars $c_1,c_2,c_3$ such that
+		\begin{equation*}
+			A = c_1\mat{1&0\\0&1} +  c_2\mat{1&1\\0&1} + c_3\mat{1&0\\1&1}.
+		\end{equation*}
+		From the top left component of both sides we get $c_1+c_2+c_3 = 1$, but from the bottom right component we get $c_1+c_2+c_3 = 0$. This is a contradiction, so $A \notin \span\{B\}$.
+	\end{enumerate}
 	
 	\question Let $S$ be the set of all symmetric matrices in $\R^{n\times n}$.
 	\begin{enumerate}
@@ -66,48 +150,60 @@
 			$(A+B)^T = A^T + B^T = A + B$, so $A+B \in S$. Furthermore, $(aA)^T = aA^T$, so $aA \in S$. This shows that $S$ is a subspace of $\R^{n\times n}$.
 		\end{proof}
 		
-		\item Let $[A]_{k\ell}$ mean taking the element in the $k$th row and $\ell$th column of a matrix $A$. Define $B = \{A^{ij} : 1 \le j \le i \le n\}$, where $A^{ij} \in \R^{n\times n}$ is defined by 
-		\begin{equation*}
-			A^{ij}_{k\ell} = \begin{cases}
-				1 & (k,\ell) = (i, j) \text{ or } (k,\ell) = (j,i) \\
-				0 & \text{otherwise,}
-			\end{cases}
-		\end{equation*}
-		for $k,\ell = 1,2,\dots,n$. Then $B$ is a basis for $S$. 
+		\item As we did in class, let $E_{ij}$ denote the matrix with all zero entries except for the entry in the $i$th row and $j$th column, which is $1$. For $1 \le i \le j < n$, define $A_{ij} = E_{ij} + E_{ji}$. Then $B = \{A_{ij} \mid 1 \le i \le j \le n\}$ is a basis for $S$.
 		\begin{proof}
-			We need to show that $B$ is linearly independent and that $\span(B) = S$.
-			\begin{enumerate}[label=\arabic*.]
+			We need to show that 1. $\span{B} = S$ and 2. $B$ is linearly independent.
+			\begin{enumerate}
+				\item Since $E_{ij}^T = E_{ji}$ for all $i,j =1,\dots, n$, it follows that $A_{ij}^T = E_{ij}^T + E_{ji}^T = E_{ji} + E_{ij} = A_{ij}$, so $A_{ij}\in S$ for all $1\le i \le j\le n$. Thus, $\span(B)\subseteq S$, as subspaces are closed under linear combination by Problem 3. On the other hand, let $C = (c_{ij}) \in S$. Then
+				\begin{equation*}
+					\sum_{1\le i\le j \le n} \alpha_{ij}c_{ij}A_{ij} = \sum_{1\le i < j \le n}c_{ij}(E_{ij} + E_{ji}) + \sum_{i=1}^n c_{ii}E_{ii} = \sum_{i,j=1}^n c_{ij}E_{ij} = C,
+				\end{equation*}
+				where $\alpha_{ij} = 1$ if $i < j$, and $\alpha_{ii} = \frac{1}{2}$, for $1 \le i \le n$. This shows that $C \in \span(B)$. Since $C$ was arbitrary, it follows that $S \subseteq \span(B)$. Therefore, $S = \span(B)$.
+				
 				\item Suppose that
 				\begin{equation*}
-					\sum_{A^{ij} \in B} c_{ij}A^{ij} = \vec{0}
+					\sum_{1\le i\le j\le n}c_{ij}A_{ij} = 0
 				\end{equation*}
-				for some $\{c_{ij} : 1 \le j \le i \le n\}\subseteq\R$. For $\ell \le k$, we have
+				for some $c_{ij} \in \R$, for $1 \le i \le j \le n$. Then
 				\begin{equation*}
-					\sum_{1\le j\le i\le n}c_{ij}a^{ij}_{k\ell} = 0.
+					\sum_{1\le i < j \le n}c_{ij}(E_{ij} + E_{ji}) + \sum_{i=1}^n 2c_{ii}E_{ii} = 0.
 				\end{equation*}
-				Since $\ell \le k$, and $j \le i$, the definition of $A^{ij}_{k\ell}$ implies that only the term $c_{k\ell}A^{k\ell}_{k\ell}$ is nonzero. Then we get $c_{k\ell} = 0$. Since $\ell \le k$ were arbitrary, it follows that $c_{ij} = 0$ for all $1\le j\le i\le n$, so $B$ is linearly independent.
-				
-				\item If $(i,j) \ne (k,\ell)$ and $(i,j) \ne (\ell, k)$, then $A^{ij}_{k\ell} = 0 = A^{ij}_{\ell k}$. If $(i,j) = (k,\ell)$, then $A^{ij}_{k\ell} = 1 = A^{ij}{\ell k}$. Hence, $A^{ij} = (A^{ij})^T$ for all $1 \le i \le j \le n$. Thus $B \subseteq S$, which implies that every element of $\span(B)$ is a linear combination of elements of $S$. Since $S$ is a subspace by part 1. and subspaces are closed under linear combination by Problem 3., it follows that $\span(B) \subseteq S$.
-				
-				Conversely, let $C \in S$ be a symmetric matrix. Since
-				\begin{equation*}
-					\begin{aligned}
-					\left[\sum_{A^{ij} \in B}C_{ij}A^{ij}\right]_{k\ell} &= \sum_{1\le j\le i \le n}C_{ij}A^{ij}_{k\ell} \\
-					&= \begin{cases}
-						C_{k\ell} & \ell \le k \\
-						C_{\ell k} \;(=C_{k\ell}) & k \le \ell
-					\end{cases} \\
-					&= C_{k\ell}
-					\end{aligned}
-				\end{equation*}
-				by the symmetry of $C$, we must have
-				\begin{equation*}
-					C = \sum_{A^{ij}\in B}C_{ij}A^{ij}.
-				\end{equation*}
-				Thus, $C \in \span(B)$. This shows that $S\subseteq\span(B)$. Since $S\subseteq\span(B)$, and $\span(B) \subseteq S$, it follows that $\span(B) = S$.
+				Since the entry in the $i$th row and $j$th column on the left side is $c_{ij}$ if $i< j$ and $2c_{ij}$ if $i = j$, it follows that $c_{ij} = 0$ for $1\le i\le j \le n$. Therefore, $B$ is linearly independent.
 			\end{enumerate}
-			This completes the proof that $B$ is a basis for $S$.
 		\end{proof}
 	\end{enumerate}
+	
+	\question The polynomials 2, $1+t$, $t + t^2$ form a basis for $\poly^2$.
+	\begin{proof}
+		Let $S = \{2, 1+t, t+t^2\}$. We need to show that $\span(S) = \poly^2$ and that $S$ is linearly independent.
+		\begin{enumerate}[label=\arabic*.]
+			\item Each element of $S$ is an element of $\poly^2$. Thus, every linear combination of elements of $S$ is an element of $\poly^2$ (by the same argument used in Problem 3.). This implies that $\span(S) \subseteq \poly^2$. On the other hand, let $p_0 + p_1t + p_2t^2 \in \poly^2$ be an arbitrary element. Then
+			\begin{equation*}
+				p_0 + p_1t + p_2t^2 = p_2(t+ t^2) + (p_1 - p_2)(1+t) + \frac{p_0 - p_1 + p_2}{2}(2),
+			\end{equation*}
+			so $p_0 + p_1t + p_2t^2 \in \span(S)$. This implies that $\poly^2 \subseteq \span(S)$. Therefore, $\span(S) = \poly^2$.
+			
+			\item Let $c_1,c_2,c_3 \in \R$, and suppose that
+			\begin{equation*}
+				0 = c_1(2) + c_2(1+t) + c_3(t+t^2) = c_3t^3 + (c_2 + c_3)t + (2c_1 + c_2).
+			\end{equation*}
+			Since this equation holds for all $t$, it follows (by, say, differentiation) that the coefficients of each power of $t$ are equal on both sides. In particular, we must have $c_3 =0$, $c_2 + c_3 =0$, and $2c_1 + c_2 = 0$. Together these equations imply that $c_1 = c_2 = c_3 = 0$. Hence, $S$ is linearly independent.
+		\end{enumerate}
+		This shows that $S$ is a basis for $\poly^2$.
+	\end{proof}
+	
+	The coordinates of $3 + t + 2t^2$ in $S$ is the vector $\vec{c} \in \R^3$ such that $\vec{c} = (c_1,c_2,c_3)^T$, and
+	\begin{equation*}
+		3 + t + 2t^2 = c_1(2) + c_2(1+t) + c_3(t+t^2).
+	\end{equation*}
+	Equating the coefficients of the powers of $t$ on both sides gives
+	\begin{equation*}
+		\begin{alignedat}{3}
+		2 &= && && c_3\\
+		1 &= &&c_2 &{}+{}&c_3\\
+		3 &= 2c_1 &{}+{}& c_2,
+		\end{alignedat}
+	\end{equation*}
+	from which we deduce that $c_3 = 2$, $c_2 = 1-2 = -1$, and $c_1 = \frac{3 +1}{2} = 2$. That is, $\vec{c} = (2, -1, 2)^T$.
 	
 \end{document}

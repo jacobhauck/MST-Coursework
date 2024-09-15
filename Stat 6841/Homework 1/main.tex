@@ -1,0 +1,460 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\usepackage{listings}
+
+\newcommand{\hwnum}{1}
+\renewcommand{\questiontype}{Problem}
+
+
+\begin{document}
+	\maketitle
+	
+	\question If dividends are paid at times $t =0,1,2,\dots$, then the payment and suspension of dividends can be modeled by a Markov chain $\{X_t : t\ge 0\}$, where $X_t = 1$ means that a dividend is paid at time $t$, and $X_t = 2$ means that a dividend is suspended at time $t$. Based on the information given, the transition matrix for this chain must be
+	\begin{equation*}
+		P = \mat{0.9 &0.1 \\ 0.4 & 0.6}.
+	\end{equation*}
+	Let $\pi = \mat{\pi_1 & \pi_2}$ be the proportion of the time the chain spends in states 1 and 2 in the long run. Then
+	\begin{align*}
+		\pi P = \pi &\implies \mat{\pi_1 & \pi_2} \mat{0.9 &0.1 \\ 0.4 & 0.6} = \mat{\pi_1 & \pi_2}\\
+		&\implies 0.9\pi_1 + 0.4\pi_2 = \pi_1 \\
+		&\implies \pi_1 = 4\pi_2.
+	\end{align*}
+	Since we also have $\pi_1 + \pi_2 = 1$, it follows that $\pi_2 = \frac{1}{5}$, and $\pi_1 = \frac{4}{5}$. Thus, the chain spends $\pi_1 = \frac{4}{5}$ of its time in state 1 in the long run; that is, in the long run dividends are paid $\frac{4}{5}$ of the time.
+	
+	\question Let $\pi = \mat{\pi_L & \pi_M & \pi_H}$ be the limiting fraction of the population in each income class. Then we must have
+	\begin{alignat*}{2}
+		\pi P = \pi &\implies&& \mat{\pi_L & \pi_M & \pi_H}\mat{0.6 & 0.3 & 0.1 \\ 0.2 & 0.7 & 0.1 \\ 0.1 & 0.3 & 0.6} = \mat{\pi_L & \pi_M & \pi_H} \\[0.5em]
+		&\implies&&\; 0.3\pi_L + 0.7\pi_M + 0.3\pi_H = \pi_M, \\
+		&&&\; 0.1\pi_L + 0.1\pi_M + 0.6\pi_H = \pi_H \\[0.5em]
+		&\implies&&\; \pi_L + \pi_H = \pi_M, \\
+		&&&\; \pi_L + \pi_M = 4\pi_H.
+	\end{alignat*}
+	Since we also have $\pi_L + \pi_M + \pi_H = 1$, it follows that $2\pi_M = 1$, and $5\pi_H = 1$, so $\pi_M = \frac{1}{2}$, $\pi_H = \frac{1}{5}$, and $\pi_L = \frac{3}{10}$.
+	
+	\question 
+	\begin{alphaparts}
+		\questionpart Let $\pi = \mat{\pi_1 & \pi_2 & \pi_3 & \pi_4 & \pi_5 &\pi_6}$ be the fraction of time the chain spends in states 1 through 6 in the long run. The machine is working if and only it the chain is in state 1, 2 or 3, so $\pi_1 + \pi_2 + \pi_3$ represents the fraction of the time the machine is working in the long run. Noting that the transition matrix with the additional repair states is given by
+		\begin{equation*}
+			P = \mat{
+				0.95 & 0.05 & 0 & 0 & 0 & 0 \\
+				0 & 0.9 & 0.1 & 0 & 0 & 0 \\
+				0 & 0 & 0.875 & 0.125 & 0  & 0\\
+				0 & 0 & 0 & 0 & 1 & 0 \\
+				0 & 0 & 0 & 0 & 0 & 1 \\
+				1 & 0 & 0 & 0 & 0 & 0
+			},
+		\end{equation*}
+		we have
+		\begin{alignat*}{2}
+			\pi P = \pi &\implies  &&\mat{\pi_1 & \pi_2 & \pi_3 & \pi_4 & \pi_5 &\pi_6}\mat{
+				0.95 & 0.05 & 0 & 0 & 0 & 0 \\
+				0 & 0.9 & 0.1 & 0 & 0 & 0 \\
+				0 & 0 & 0.875 & 0.125 & 0  & 0\\
+				0 & 0 & 0 & 0 & 1 & 0 \\
+				0 & 0 & 0 & 0 & 0 & 1 \\
+				1 & 0 & 0 & 0 & 0 & 0
+			}= \mat{\pi_1 & \pi_2 & \pi_3 & \pi_4 & \pi_5 &\pi_6} \\
+			& \implies &&\; 0.125\pi_3 = \pi_4 = \pi_5 = \pi_6, \\
+			&&&\; 0.95\pi_1 + \pi_6 = \pi_1, \\
+			&&&\; 0.05\pi_1 + 0.9\pi_2 = \pi_2 \\[0.5em]
+			&\implies&&\; \pi_1 = 20\pi_6, \quad \pi_2 = 0.5\pi_1 = 10\pi_6, \\
+			&&&\; \pi_3 = 8\pi_6, \quad \pi_4 = \pi_5 = \pi_6.
+		\end{alignat*}
+		Since we also have $\pi_1 + \pi_2 + \pi_3 + \pi_4 + \pi_5 + \pi_6 = 1$, it follows that $\pi_6 = \frac{1}{41}$, so $\pi_1 + \pi_2 + \pi_3 = 38\pi_6 = \frac{38}{41}$; that is, the machine is working a fraction $\frac{38}{41}$ of the time in the long run.
+		
+		\questionpart Once again, we search for a solution $\pi$ of $\pi P = \pi$ such that $\pi_1 + \pi_2 + \pi_3 = 1$. In this case, states 1 and 2 are working states, and state 3 is not working. Thus, we need to calculate $\pi_1 + \pi_2$. We obtain this from
+		\begin{align*}
+			\pi P = \pi &\implies \mat{\pi_1 & \pi_2 & \pi_3} \mat{0.95 & 0.05 & 0 \\ 0 & 0.9 & 0.1 \\ 1 & 0 & 0} = \mat{\pi_1 & \pi_2 & \pi_3} \\[0.5em]
+			& \implies 0.95\pi_1 + \pi_3 = \pi_1, \qquad 0.1\pi_2 = \pi_3 \\
+			& \implies \pi_1 = 20\pi_3 = 2\pi_2.
+		\end{align*}
+		Since we must also have $\pi_1 +\pi_2 + \pi_3 = 1$, it follows that $\pi_3 = \frac{1}{31}$, so $\pi_1 + \pi_2 = \frac{30}{31}$. Thus, the machine is working a fraction $\frac{30}{31}$ of the time.
+	\end{alphaparts}
+	
+	\question 
+	\begin{alphaparts}
+		\questionpart
+		Let $I_n = 1$ if Xavier has not been caught at time $n$, and let $I_n = 0$ if Xavier has been caught at time $n$. Then $\{I_n \mid n \ge 0\}$ is a Markov chain, with the following transition matrix
+		\begin{equation*}
+			P = \mat{1 & 0 \\ a & 1-a},
+		\end{equation*}
+		where $a$ is the probability that Xavier will be caught at the next location given that he has not been caught at the current one. Based on the rules of the game, this means that $a = P(X_{n+1} = Y_{n+1} \mid X_n \ne Y_n)$. We can calculate $a$ from the transition matrices $P_X$ and $P_Y$. We note that
+		\begin{equation*}
+			T = \sum_{n=0}I_n,
+		\end{equation*}
+		so we can compute $E[T]$ by computing $E\left[\sum_{n=0}^\infty I_n\right] = \sum_{n=0}^\infty E[I_n]$.
+		
+	 	Using the law of total probability and the independence of $\{X_n \mid n \ge 0\}$ and $\{Y_n \mid n \ge 0\}$, we have
+		\begin{align*}
+			a &= P(X_{n+1} = Y_{n+1} \mid X_n\ne Y_n) \\
+			&= \sum_{i\ne j} P(X_{n+1} = Y_{n+1} \mid X_n = i, Y_n = j) \frac{P(X_n=i, Y_n = j)}{P(X_n \ne Y_n)} \\
+			&= \sum_{i\ne j} \sum_{k=1}^3 P(X_{n+1}=k, Y_{n+1}=k\mid X_n = i, Y_n=j) \frac{P(X_n=i, Y_n = j)}{P(X_n \ne Y_n)} 	\\
+			&= \sum_{i\ne j}\sum_{k=1}^3 P(X_{n+1}=k\mid X_n = i)P(Y_{n+1} = k \mid Y_n=j) \frac{P(X_n=i, Y_n = j)}{P(X_n \ne 	Y_n)} \\
+			&= \sum_{i\ne j}\frac{P(X_n=i, Y_n = j)}{P(X_n \ne Y_n)}\sum_{k=1}^3 P_{X,ik}P_{Y,jk}.\tag{$*$}
+		\end{align*}
+		At this point, the symmetry of the problem helps us. In particular, the values of $P_{X,ik}$ and $P_{Y,jk}$ depend only on whether $i=k$ and $j=k$, with
+		\begin{equation*}
+			P_{X,ij} = \begin{cases}
+				0.6 & i = j\\
+				0.2 & i \ne j,
+			\end{cases}
+			\qquad
+			P_{Y,ij} = \begin{cases}
+				0 & i = j \\
+				0.5 & i\ne j
+			\end{cases}
+		\end{equation*}
+		Thus, the inner summation over $k$ always has the same value, with $k=i \ne j$ in one term, $k = j \ne i$, in another term, and $k\ne i$, $k \ne j$ in the remaining term. Hence,
+		\begin{align*}
+			a &= \sum_{i\ne j}\frac{P(X_n=i, Y_n = j)}{P(X_n \ne Y_n)} \left[0.6\cdot 0.5 + 0.2 \cdot 0 + 0.2 \cdot 	0.5\right] \\
+			&= \frac{0.4}{P(X_n \ne Y_n)}\sum_{i\ne j} P(X_n=i, Y_n=j) = 0.4\cdot \frac{P(X_n \ne Y_n)}{P(X_n \ne Y_n)} \\
+			&= 0.4.
+		\end{align*}
+		Now we can compute $E[T]$. Since $I_0 = 1$, we have
+		\begin{equation*}
+			E[T] = \sum_{n=0}^\infty E[I_n] = \sum_{n=0}^\infty P(I_n = 1) = \sum_{n=0}^\infty P^n_{11}.
+		\end{equation*}
+		By the Chapman-Kolmogorov equation, $P^n_{11} = P^{n-1}_{10}P_{01} + P^{n-1}_{11}P_{11}$. Since $P_{01} = 0$, it follows that $P^n_{11} = \left(P_{11}\right)^n = (1-a)^n$. Hence,
+		\begin{equation*}
+			E[T] = \sum_{n=0}^\infty (1-a)^n = \frac{1}{a} = \frac{1}{0.4} = 2.5.
+		\end{equation*}
+		
+		\questionpart We perform essentially the same calculation as in (a) to find $E[T]$ in terms of $p$ and $q$. In fact, everything is the same up to equation $(*)$ from part (a). At that point, we note that under our new assumptions,
+		\begin{equation*}
+			P_{X,ij} = \begin{cases}
+				1-2p & i = j\\
+				p & i \ne j,
+			\end{cases}
+			\qquad
+			P_{Y,ij} = \begin{cases}
+				1-2q & i = j \\
+				q & i\ne j
+			\end{cases},
+		\end{equation*}
+		which gives
+		\begin{align*}
+			a &= \sum_{i\ne j}\frac{P(X_n =i, Y_n=i)}{P(X_n\ne Y_n)}[(1-2p)q + (1-2q)p + pq] \\
+			&= p + q - 3pq.
+		\end{align*}
+		Replacing this value for $a$ in the calculation of $E[T]$ from part (a) we get
+		\begin{equation*}
+			E[T] = \frac{1}{a} = \frac{1}{p + q - 3pq}.
+		\end{equation*}
+		Suppose $q = 0.5$, then $E[T] = g(p) = \frac{2}{1 -p}$. The derivative of $g$ is $g'(p) = \frac{2}{(1-p)^2}$. Hence, $g' > 0$ for all $p \in [0, 0.5]$, which is the range of possible $p$ values that Xavier could use. It follows that $E[T] = g(p)$ is maximal for $p = 0$ or $p=0.5$. Since $g(0) = 1$, and $g(0.5) = 4$, Xavier should use $p = 0.5$ to maximize the expected amount of time before he gets caught.
+		
+		If $q = \frac{1}{3}$, then $E[T] = \frac{1}{p + \frac{1}{3} - p}= 3$ independent of $p$, so any value of $p$ that Xavier uses will trivially maximize $E[T]$.
+	\end{alphaparts}
+	
+	\question 
+	
+	\lstinputlisting[language=Python, numbers=left, frame=single, basicstyle=\small\ttfamily, showstringspaces=false]{markov_sim.py}
+	
+	
+	\question*{Textbook: 14, p. 285}
+	\begin{alphaparts}
+		\questionpart For $P_1$, there is only one class consisting of all states: $\{0, 1, 2\}$. This class must be recurrent.
+		\questionpart For $P_2$, we have $0 \to 1 \to 2$, and $2 \to 0$, and $2\to 1$. Thus, $\{0,1,2\}$ is a class. Since $3$ is not accessible from any state other than 3, the other class is $\{3\}$. The state 3 will always be left with probability 1, so the class $\{3\}$ is transient. This means that $\{0,1,2\}$ must be recurrent.
+		\questionpart For $P_3$, we have $0 \to 1 \to 2 \to 0$, but none of $0, 1,2$ are accessible from $3$ or $4$, so $\{0,1,2\}$ is a class. Additionally, we have $3\to 4$, and $4 \to 3$, so $\{3,4\}$ is the other class. Since neither class is accessible from the other, they must both be recurrent.
+		\questionpart For $P_4$, we have $0 \to 1$, and $1 \to 0$, but no other state is accessible from $0$ or $1$, so $\{0,1\}$ is a class. In addition, states $3$ and $4$ are not accessible from any different states, so they must be in classes of their own, which leaves $2$ in a class of its own. Thus, the classes are $\{0,1\}$, $\{2\}$, $\{3\}$, and $\{4\}$. Since there is a nonzero probability of the chain leaving states $3$ and $4$, the classes $\{3\}$ and $\{4\}$ must be transient. The probability of staying in state 2 given that the chain starts in state 2 is 1, so $\{2\}$ is recurrent. Lastly, the class $\{0,1\}$ is recurrent because the probability that the chain leaves the class is 0.
+	\end{alphaparts}
+	
+	\question*{Textbook: 21, p. 286}
+	\begin{alphaparts}
+		\questionpart Since the chain is symmetric with respect to permutation of the states, it follows that the transition probability $P^n_{ij}$ depends only on whether $i$ and $j$ are the same. In other words,
+		\begin{equation*}
+			P^n_{ij} = \begin{cases}
+				d_n & i =j \\
+				f_n & i \ne j.
+			\end{cases}
+		\end{equation*}
+		On the other hand, for any fixed $i$, we must have $\sum_{j=1}^4 P^n_{ij} = 1$. It follows that $f_n = \frac{1 - d_n}{3}$.
+		Note that $d_1 = P_{11} = 1-3\alpha$, and $f_1 = P_{12} = \alpha$. By the Chapman-Kolmogorov equation, for $n \ge 0$,
+		\begin{align*}
+			d_{n+1} &= P^{n+1}_{11} \\
+			&= \sum_{k=1}^4 P^n_{1k}P_{k1} \\
+			&= P^n_{11}(1-3\alpha) + \alpha\sum_{k=2}^4 P^{n}_{k1} \\
+			&= d_n(1-3\alpha) + 3\alpha f_n = d_n(1-3\alpha) + \alpha(1-d_n) \\
+			&=\alpha + (1-4\alpha)d_n. 
+		\end{align*}
+		A particular solution of this nonhomogeneous, linear recurrence relation is $d_n = \frac{1}{4}$, as $\frac{1}{4} = \alpha + (1-4\alpha)\frac{1}{4}$. The general solution of the homogeneous equation $d_{n+1} = (1-4\alpha)d_n$ is $d_n = c (1-4\alpha)^n$, where $c$ is a constant. Thus, the solution of the nonhomogeneous equation is
+		\begin{equation*}
+			d_n = \frac{1}{4} + c(1-4\alpha)^n.
+		\end{equation*}
+		Since $d_0 = P^0_{11} = 1$, we must have $c = \frac{3}{4}$, giving
+		\begin{equation*}
+			d_n = \frac{1}{4} + \frac{3}{4}(1-4\alpha)^n.
+		\end{equation*}
+		
+		\questionpart Let $\pi = \mat{\pi_1 & \pi_2 & \pi_3 & \pi_4}$ be the long-run proportions of time the chain is in each state. Then we must have
+		\begin{equation*}
+			\pi P = \pi \implies \mat{\pi_1 & \pi_2 & \pi_3 & \pi_4}\mat{
+				1-3\alpha & \alpha & \alpha &\alpha \\
+				\alpha & 1-3\alpha & \alpha & \alpha \\
+				\alpha & \alpha & 1-3\alpha & \alpha \\
+				\alpha & \alpha & \alpha & 1-3\alpha
+			} = \mat{\pi_1 & \pi_2 & \pi_3 & \pi_4}.
+		\end{equation*}
+		From this we obtain
+		\begin{align*}
+			1 = \pi_1 + \pi_2 + \pi_3 + \pi_4 &= 4\pi_j, \qquad j = 1,2,3,4.\\
+		\end{align*}
+		Thus, $\pi_1 = \pi_2 = \pi_3 = \pi_4= \frac{1}{4}$; that is, in the long-run, the chain is in each state an equal proportion of the time.
+	\end{alphaparts}
+	
+	\question*{Textbook: 23, p. 287}
+	Let $X_n$ be a random variable indicating whether year $n$ was good or bad, with $X_n = 1$ meaning good weather, and $X_n = 2$ meaning bad weather. Then $\{X_n : n \ge 0\}$ is a Markov chain because of the assumption that the weather condition depends only on the previous year's condition. Based on the description of the problem, the chain has the following transition matrix
+	\begin{equation*}
+		P = \mat{\frac{1}{2} & \frac{1}{2} \\[0.5em] \frac{1}{3} & \frac{2}{3}},
+	\end{equation*}
+	with the first row and column corresponding to good weather (state 1), and the second row and column to bad weather (state 2). Let $S_n$ denote the number of storms in year $n$.
+	
+	\begin{alphaparts}
+		\questionpart We want to compute $E[S_1 + S_2]$. By the law of iterated expectation,
+		\begin{equation*}
+			E[S_n] = E[E[S_n \mid X_n]] = E[S_n\mid X_n=1]P(X_n=1) + E[S_n \mid X_n=2]P(X_n=2).
+		\end{equation*}
+		We are starting in state 1, so $P(X_n = 1) = P^n_{11}$, and $P(X_n =2) = P^n_{12}$. We see immediately that $P^1_{11} = \frac{1}{2}$, and $P^1_{12} = \frac{1}{2}$. We use the Chapman-Kolmogorov equation to compute $P^2_{11}$ and $P^2_{12}$:
+		\begin{align*}
+			P^2_{11} &= P^1_{11}P^1_{11} + P^1_{12}P^1_{21} = \frac{5}{12} \\
+			P^2_{12} &= P^1_{11}P^1_{12} + P^1_{12}P^1_{22} = \frac{7}{12}.
+		\end{align*}
+		Thus,
+		\begin{align*}
+			E[S_1 + S_2] &= E[S_1 \mid X_1=1]P^1_{11} + E[S_1 \mid X_1=2]P^1_{12} + E[S_2 \mid X_2 = 1]P^2_{11} + E[S_2 \mid X_2 = 2]P^2_{12} \\
+			&= \frac{1}{2} + \frac{3}{2} + \frac{5}{12} + \frac{21}{12} = \frac{25}{6}.
+		\end{align*}
+		
+		\questionpart Using the law of total probability, the p.m.f. of the Poisson distribution, and the fact that the chain starts in state 1, we have
+		\begin{align*}
+			P(S_3=0) &= P(S_3 = 0 \mid X_3 = 1)P(X_3=1) + P(S_3=0 \mid X_3 = 2)P(X_3 = 2) \\
+			&= e^{-1}P(X_3=1) + e^{-3}P(X_3=2) \\
+			&= e^{-1}P^3_{11} + e^{-3}P^3_{12}.
+		\end{align*}
+		A simple computation shows that
+		\begin{equation*}
+			P^3 = \frac{1}{216}\mat{87 & 129 \\ 86 & 130}.
+		\end{equation*}
+		Thus,
+		\begin{equation*}
+			P(S_3=0)= e^{-1}\frac{87}{216}+ e^{-3}\frac{129}{216} \approx 0.178.
+		\end{equation*}
+		
+		\questionpart To determine the long-run average number of storms per year, we need the probabilities $\pi_1$ and $\pi_2$ that the chain is in states 1 and 2 in the long-run. Then the long-run average number of storms $S$ is given by
+		\begin{equation*}
+			S = E[S_n \mid X_n = 1]\pi_1 + E[S_n \mid X_n = 2]\pi_2.
+		\end{equation*}
+		To find $\pi = \mat{\pi_1 & \pi_2}$, we must solve
+		\begin{equation*}
+			\pi P = \pi \quad \text{or} \quad \mat{\pi_1 & \pi_2}  \mat{\frac{1}{2} & \frac{1}{2} \\[0.5em] \frac{1}{3} & \frac{2}{3}}= \mat{\pi_1 & \pi_2}.
+		\end{equation*}
+		This gives us the equation $3\pi_1 + 2\pi_2 = 6\pi_1$. Together with the fact that $\pi_1 + \pi_2 = 1$, this implies that $\pi_1 = \frac{2}{5}$, and $\pi_2 = \frac{3}{5}$. Thus,
+		\begin{equation*}
+			S = \frac{2}{5} + 3\cdot\frac{3}{5} = \frac{11}{5} = 2.2
+		\end{equation*}
+		is the long-run average number of storms per year.
+		
+		\questionpart The proportion of years that have no storms is the probability of $S_n = 0$ in the long-run. That is, the proportion of years without storms $p$ is
+		\begin{equation*}
+			p = P(S_n = 0 \mid X_n =1)\pi_1 + P(S_n=0 \mid X_n)\pi_2 = e^{-1}\frac{2}{5} + e^{-3}\frac{3}{5} \approx 0.177.
+		\end{equation*}
+	\end{alphaparts}
+	
+	\question*{Textbook: 31, p. 288} The weather can be described by a Markov chain $\{X_n : n \ge 0\}$ with state space $\{1,2,3\}$, where $X_n = 1$ means that day $n$ is sunny, $X_n = 2$ means that day $n$ is cloudy, and $X_n = 3$ means that day $n$ is rainy. The transition matrix is then
+	\begin{equation*}
+		P = \mat{0 & 0.5 & 0.5\\ 0.25 & 0.5 & 0.25 \\ 0.25 & 0.25 & 0.5}.
+	\end{equation*}
+	To find the proportion of days with given weather in the long run, we need to find $\pi = \mat{\pi_1 & \pi_2 & \pi_3}$ such that $\pi P = \pi$. Since
+	\begin{align*}
+		\pi P &= \pi \implies \mat{\pi_1 & \pi_2 & \pi_3} \mat{0 & 0.5 & 0.5\\ 0.25 & 0.5 & 0.25 \\ 0.25 & 0.25 & 0.5} \mat{\pi_1 & \pi_2 & \pi_3} \\
+		& \implies \frac{1}{4}\pi_2 + \frac{1}{4}\pi_3 = \pi_1, \qquad \frac{1}{2}\pi_1 + \frac{1}{2}\pi_2 + \frac{1}{4}\pi_3 = \pi_2.
+	\end{align*}
+	Since we also have $\pi_1 + \pi_2 + \pi_3 = 1$, it follows that $5\pi_1 = \pi_1 + \pi_2 + \pi_3$, so $\pi_1 = \frac{1}{5}$. Furthermore, $2\pi_1 + 2\pi_2 + \pi_3 = 4\pi_2$, so $2 - \pi_3 = 4\pi_2$, meaning $\pi_3 = 2-4\pi_2$. Hence,
+	\begin{equation*}
+		1 = \frac{1}{5} + \pi_2 + 2-4\pi_2 \implies -\frac{6}{5} = -3\pi_2 \implies \pi_2 = \frac{2}{5}.
+	\end{equation*}
+	This leaves $\pi_3 = \frac{2}{5}$. Therefore, in the long run $\frac{1}{5}$ of days are sunny, and $\frac{2}{5}$ are cloudy (or $\frac{4}{5}$, if cloudy means cloudy with or without rain).
+	
+	\question*{Textbook: 49, p. 292}
+	\begin{alphaparts}
+		\questionpart We need to find $P^2_{12}$. Using the Chapman-Kolmogorov equation, we have
+		\begin{equation*}
+			P^2_{12} = P_{11}P_{12} + P_{12}P_{22} + P_{13}P_{32} = 0.15 + 0.12 + 0 = 0.27.
+		\end{equation*}		
+		
+		\questionpart Let $\pi = \mat{\pi_1 & \pi_2 & \pi_3}$ be the long-run proportion of the time the chain spends in each state. Then the long-run average reward per unit time $R$ is
+		\begin{equation*}
+			R = \pi_1 \cdot 1^2 + \pi_2 \cdot 2^2 + \pi_3 \cdot 3^2.
+		\end{equation*}
+		To find $\pi$, we solve $\pi P = \pi$:
+		\begin{align*}
+			\pi P = \pi &\implies \mat{\pi_1 & \pi_2 &\pi_3} \mat{0.5 & 0.3 &0.2 \\ 0 & 0.4 & 0.6 \\ 0.8 & 0 & 0.2} = \mat{\pi_1 & \pi_2 &\pi_3} \\[0.5em]
+			&\implies 0.5\pi_1 + 0.8\pi_3 = \pi_1, \quad 0.3\pi_1 + 0.4\pi_2 = \pi_2 \\[0.5em]
+			&\implies \pi_3 = \frac{5}{8}\pi_1, \quad \pi_2 = \frac{1}{2}\pi_1.
+		\end{align*}
+		Since we must also have $\pi_1 + \pi_2 + \pi_3 = 1$, it follows that $8\pi_1 + 4\pi_1 + 5\pi_1 = 8$, so $\pi_1 = \frac{8}{17}$. Then $\pi_2 = \frac{4}{17}$, and $\pi_3 = \frac{5}{17}$. This allows us to compute $R$:
+		\begin{equation*}
+			R = \frac{8}{17} + \frac{16}{17} + \frac{45}{17} = \frac{69}{17}.
+		\end{equation*}
+		
+		\questionpart Due to the Markov property, the number of transitions to reach state 3 after the first one given that the chain does not go to state 3 on the first step is distributed the same as the number of transitions to reach state 3 given that the chain starts in state 3. Thus,
+		\begin{equation*}
+			E[N_1 \mid X_1 = 1] = 1 + E[N_1], \quad E[N_1 \mid X_1 = 2] = 1 +E[N_2], \quad E[N_1 \mid X_1 = 3] = 1.
+		\end{equation*}
+		Similarly,
+		\begin{equation*}
+			E[N_2 \mid X_1 = 1] = 1 + E[N_1], \quad E[N_2 \mid X_2 = 2] = 1 + E[N_2], \quad E[N_2 \mid X_1 = 3] = 1.
+		\end{equation*}
+		By the law of iterated expectation, we must have
+		\begin{alignat*}{2}
+			E[N_1] &{}={} &&E[N_1 \mid X_1 = 1]P(X_1 = 1 \mid X_0=1) + E[N_1 \mid X_1=2]P(X_1=1 \mid X_0=1) \\
+			&&&{}+ E[N_1 \mid X_1=3]P(X_1=3 \mid X_0=1), \\[0.5em]
+			E[N_2] &{}={} &&E[N_2 \mid X_1 = 1]P(X_1 = 1 \mid X_0=2) + E[N_2 \mid X_1=2]P(X_1=1 \mid X_0=2) \\
+			&&&{}+ E[N_2 \mid X_1=3]P(X_1=3 \mid X_0=2),
+		\end{alignat*}
+		so
+		\begin{align*}
+			E[N_1] &= (1 + E[N_1])P_{11} + (1+E[N_2])P_{12} + P_{13}, \\
+			E[N_2] &= (1 + E[N_1])P_{21} + (1+E[N_2])P_{22} + P_{23}.
+		\end{align*}
+		This implies that
+		\begin{equation*}
+			E[N_2] = \frac{(1+E[N_1])P_{21} + P_{22} + P_{23}}{1 - P_{22}},
+		\end{equation*}
+		so
+		\begin{equation*}
+			E[N_1]\left(1-P_{11} - \frac{P_{21}P_{12}}{1-P_{22}}\right) = P_{11} +P_{12} + \frac{P_{12}(P_{21} + P_{22} + P_{23})}{1-P_{22}} + P_{13}.
+		\end{equation*}
+		Solving for $E[N_1]$ gives
+		\begin{equation*}
+			E[N_1] = \frac{1-P_{22} + P_{12}}{(1-P_{11})(1-P_{22}) - P_{21}P_{12}}.
+		\end{equation*}
+		Substituting the known values from the transition matrix $P$ gives
+		\begin{equation*}
+			E[N_1] = \frac{1 - 0.4 + 0.3}{(1-0.5)(1-0.4) - 0\cdot0.3} = \frac{0.9}{0.3} = 3.
+		\end{equation*}
+		
+		\questionpart Let $a_n = P(N_1 \le n)$, and let $b_n = P(N_2 \le n)$. By the same logic we used in (c), it follows that for $n \ge 1$,
+		\begin{equation*}
+			P(N_1 \le n+1 \mid X_1=1) = P(N_1 \le n), \qquad P(N_1 \le n+1 \mid X_1 = 2) = P(N_2 \le n),
+		\end{equation*}
+		and similarly that
+		\begin{equation*}
+			P(N_2 \le n+1 \mid X_1=1) = P(N_1 \le n), \qquad P(N_2 \le n+1 \mid X_1 = 2) = P(N_2 \le n).
+		\end{equation*}
+		Moreover, $P(N_1 \le n+1\mid X_1=3) = 1$, and $P(N_2 \le n+1\mid X_1=3) = 1$ for $n \ge 1$. Hence,
+		\begin{align*}
+			a_{n+1} &= P(N_1 \le n+1) = \sum_{i=1}^3P(N_1 \le n+1 \mid X_1= i)P(X_1=i\mid X_0=1) \\
+			&= P(N_1 \le n)P_{11} + P(N_2 \le n)P_{12} + P_{13} \\
+			&= P_{11}a_n + P_{12}b_n + P_{13},
+		\end{align*}
+		and similarly we can obtain
+		\begin{align*}
+			b_{n+1} &= P(N_2 \le n+1) = \sum_{i=1}^3P(N_2 \le n+1 \mid X_1= i)P(X_1=i\mid X_0=2) \\
+			&= P(N_1 \le n)P_{21} + P(N_2 \le n)P_{22} + P_{23} \\
+			&= P_{21}a_n + P_{22}b_n + P_{23}.
+		\end{align*}
+		In addition, we have $a_1 = P(N_1 \le 1) = P(N_1 = 1) = P(X_1=3 \mid X_0 =1) = P_{13}$, and similarly $b_1 = P_{23}$. Substituting the required values from the transition matrix, we need to solve the linear recurrence relation
+		\begin{equation*}
+		\begin{cases}
+			a_{n+1} = 0.5a_n + 0.3b_n + 0.2, &\\
+			b_{n+1} = 0.4b_n + 0.6, & n\ge 1;\\
+			a_1 = 0.2,\quad b_1 = 0.6.
+		\end{cases}	
+		\end{equation*}
+		We start by finding $b_n$, as it is easier. A general solution of the homogeneous equation is $b^h_n = C(0.4)^n$, where $C$ is a constant. On the other hand, a particular solution of the equation is $b^p_n = 1$, so a general solution of the equation is $b_n = b^p_n+ b^h_n = 1 + C(0.4)^n$. To satisfy the initial condition $b_1 = 0.6$, we need $C = -1$, so $b_n = 1 - (0.4)^n$.
+		
+		Thus, we obtain a modified equation for $a_n$:
+		\begin{equation*}
+		\begin{cases}
+			a_{n+1} = 0.5a_n - 0.3\cdot(0.4)^n + 0.5, & n \ge 1;\\
+			a_1 = 0.2.		
+		\end{cases}
+		\end{equation*}
+		We note that a general solution of the homogeneous equation is $a^h_n = C(0.5)^n$, where $C$ is a constant. We hypothesize that $a^p_n = A(0.4)^n + B$ is a particular solution of the equation for some constants $A$ and $B$. In order to make this work, we need
+		\begin{equation*}
+			a^p_{n+1} = 0.5a^p_n - 0.3\cdot(0.4)^n + 0.5, \quad n \ge 1,
+		\end{equation*}
+		or 
+		\begin{equation*}
+			0.4A (0.4)^n + B = 0.5A(0.4)^n + 0.5B -0.3\cdot(0.4)^n + 0.5, \quad n \ge 1.
+		\end{equation*}
+		Thus, we see that $a^p_n$ is a solution only if we choose $0.4A = 0.5A -0.3$ and $B = 0.5B + 0.5$, so that $A = 3$, and $B = 1$. That is, $a^p_n = 3(0.4)^n + 1$ is a particular solution. Then $a_n = a^p_n + a^h_n = 1 + 3(0.4)^n + C(0.5)^n$, for some constant $C$. To find $C$, we apply the initial condition, which requires that
+		\begin{equation*}
+			0.2 = 1 + 1.2 + 0.5C \implies C = -4,
+		\end{equation*}
+		so $a_n = 3(0.4)^n - 4\cdot(0.5)^n + 1$. This gives the value of $P(N_1 \le 4)$ as
+		\begin{equation*}
+			P(N_1 \le 4) = a_4 = 3\cdot(0.4)^4 - 4\cdot(0.5)^4 +1 = 0.8268.
+		\end{equation*}
+		
+		\questionpart Using the previous part, we can easily calculate $P(N_1=4)$ by noting that 
+		\begin{equation*}
+			P(N_1=4) = P(N_1\le 4) - P(N_1 \le 3) = a_4 - a_3.
+		\end{equation*}
+		Thus,
+		\begin{equation*}
+			P(N_1 = 4) = a_4 - a_3 = 0.8268 - 3\cdot(0.4)^3 + 4\cdot(0.5)^3 - 1 = 0.1348.
+		\end{equation*}
+	\end{alphaparts}
+	
+	\question*{Textbook: 60, p. 292}
+	\begin{alphaparts}
+		\questionpart Let $A$ denote the event that state 3 is entered before state 4. We want to calculate $P(A \mid X_0=1)$. Conditioning further on the first transition, we have
+		\begin{align*}
+			P(A \mid X_0 = 1) &= \sum_{i=1}^4P(A \mid X_0 = 1,\, X_1=i)P(X_1=i\mid X_0=1) \\
+			&= \sum_{i=1}^2P(A\mid X_0=1,\, X_1=i) P_{1i} + 1P_{13} + 0P_{14} \\
+			&= P(A \mid X_1 = 1)P_{11} + P(A \mid X_1=2)P_{12} + P_{13},
+		\end{align*}
+		where the last equation follows from the Markov property. The Markov property also implies that $P(A \mid X_0 =1) = P(A\mid X_1=1)$, and $P(A \mid X_0=2) = P(A\mid X_1=2)$. On the other hand, we can use similar reasoning to obtain
+		\begin{equation*}
+			P(A \mid X_0=2) = P(A\mid X_1=1)P_{21} + P(A \mid X_1=2)P_{22} + P_{23}.
+		\end{equation*}
+		Thus, we obtain the system of equations
+		\begin{align*}
+			p &= P_{11}p + P_{12}q + P_{13},\\
+			q &= P_{21}p + P_{22}q + P_{23},
+		\end{align*}
+		where $p = P(A\mid X_0=1)$, and $q = P(A\mid X_0=2)$. Substituting the values from the transition matrix, we have
+		\begin{align*}
+			p &= 0.4p + 0.3q + 0.2,\\
+			q &= 0.2p + 0.2q + 0.2.
+		\end{align*}
+		The first equation implies that $q = 2p - \frac{2}{3}$. Thus, 
+		\begin{equation*}
+			2p-\frac{2}{3} = 0.2p + 0.4p - \frac{0.4}{3} + 0.2,
+		\end{equation*}
+		which gives
+		\begin{equation*}
+			4.2p = 2.2 \implies p = \frac{11}{21}.
+		\end{equation*}
+		Thus, $P(A\mid X_0 =1) = p = \frac{11}{21}$.
+		
+		\questionpart Let $N$ be the number of transitions before state 3 or state 4 is entered. We want to find $E[N \mid X_0 = 1]$. Conditioning on the first transition, we have
+		\begin{align*}
+			E[N \mid X_0 = j] &= \sum_{i=1}^4 E[N \mid X_0=j,\, X_1=i]P(X_1=i \mid X_0=j) \\
+			&= \sum_{i=1}^2E[N \mid X_0=j,\, X_1=i]P_{ji} + 1\cdot P_{j3} + 1\cdot P_{j4} \\
+			&= E[N \mid X_1=1]P_{j1} + E[N \mid X_1=2]P_{j2} + P_{j3} + P_{j4}
+		\end{align*}
+		for $j = 1,2$. Let $\mu = E[N \mid X_0 = 1]$, and let $\nu = E[N \mid X_0=2]$. The Markov property implies that $E[N \mid X_1=j] = E[N \mid X_0=j] + 1$, for $j=1,2$. Then from the above we obtain the system of equations
+		\begin{align*}
+			\mu &= P_{11}(\mu+1) + P_{12}(\nu+1) + P_{13} + P_{14}, \\
+			\nu &= P_{21}(\mu+1) + P_{22}(\nu+1) + P_{23} + P_{24}.
+		\end{align*}
+		Substituting from the transition matrix, we have
+		\begin{align*}
+			\mu &= 0.4\mu + 0.3\nu + 1 \\
+			\nu &= 0.2\mu + 0.2\nu + 1.
+		\end{align*}
+		The first equation implies that $\nu = 2\mu - \frac{10}{3}$. Substituting into the second gives
+		\begin{equation*}
+			2\mu - \frac{10}{3} = 0.2\mu + 0.4\mu - \frac{2}{3} + 1,
+		\end{equation*}
+		so
+		\begin{equation*}
+			4.2\mu = 11 \implies \mu = \frac{110}{42} = \frac{55}{21}.
+		\end{equation*}
+		Thus, $E[N \mid X_0=1] = \mu = \frac{55}{21}$.
+	\end{alphaparts}
+\end{document}
