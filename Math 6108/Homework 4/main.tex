@@ -39,7 +39,7 @@
 		\begin{equation*}
 			B = \left\{\mat{1 \\ 2 \\ -1}, \mat{-1 \\ 1 \\ -2}\right\}
 		\end{equation*}
-		is a basis for the column space of $[T]_E$. Then the vectors whose coordinates are given by the elements of $B$ form a basis for $\Range(T)$. Since we are using the standard basis $E$, these vectors are actually the same as those in $B$. Thus, $B$ is also a basis for $\Range(T)$.
+		is a basis for the column space of $[T]_E$. Then the vectors whose coordinates are given by the elements of $B$ form a basis for $\Range(T)$. Since we are using the standard basis $E$, these vectors are actually the same as those in $B$. Thus, $B$ is also a basis for $\Range(T)$. Then $\rank(T) = \# B = 2$.
 		
 		\item Reusing the row echelon form computed in part 2., a vector $(x,y,z)^T \in \R^3$ is in $\Null([T]_E)$ if and only if 
 		\begin{equation*}
@@ -49,7 +49,7 @@
 		\begin{equation*}
 			\vec{v} = z\mat{-2 \\ 4 \\ 3}, \qquad z \in \R.
 		\end{equation*}
-		Thus, $\Null([T]_E) = \span\{(2,4,1)^T\}$, so $N = \{(2,4,1)^T\}$ forms a basis for $\Null([T]_E)$ (because a set with only one nonzero element is always linearly independent). The vectors whose coordinates in $E$ are the elements of $N$ form a basis for $\Null(T)$. Since we are using the standard basis $E$, these vectors are the same as those in $N$. Hence, $N$ is also a basis for $\Null(T)$.
+		Thus, $\Null([T]_E) = \span\{(2,4,1)^T\}$, so $N = \{(2,4,1)^T\}$ forms a basis for $\Null([T]_E)$ (because a set with only one nonzero element is always linearly independent). The vectors whose coordinates in $E$ are the elements of $N$ form a basis for $\Null(T)$. Since we are using the standard basis $E$, these vectors are the same as those in $N$. Hence, $N$ is also a basis for $\Null(T)$, and $\Nullity(T) = \# N= 1$.
 	\end{enumerate}
 	
 	\question Let $T : V \to V$ be a linear transformation of an $n$-dimensional vector space $V$. Let $B$ be any basis for $V$. Then $[T]_B = I_n$ if and only if $T$ is the identity mapping.
