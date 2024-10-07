@@ -1,0 +1,153 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{5}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question Let $V$ be a finite-dimensional vector space, and let $T :V\to V$ be a linear transformation such that $\rank(T) = \rank(T^2)$. Then $\Null(T) \cap T(V) = \{\vec{0}\}$.
+	
+	\begin{proof}
+		We observe that $\Null(T) \subseteq \Null\left(T^2\right)$ because $T(\vec{v}) = \vec{0} \implies T^2(\vec{v}) = T(T(\vec{v})) = \vec{0}.$ By the Dimension Theorem, we must also have
+		\begin{equation*}
+			\Nullity(T) + \rank(T) = \dim(V) = \Nullity\left(T^2\right) + \rank\left(T^2\right),
+		\end{equation*}
+		which implies that $\Null(T) = \Null\left(T^2\right)$.
+		
+		Suppose that $\vec{v} \in \Null(T) \cap T(V)$. Then $\vec{v} \in T(V)$, so there exists $\vec{w} \in V$ such that $\vec{v} = T(\vec{w})$. On the other hand, $\vec{v} \in \Null(T)$, so $\vec{0} = T(\vec{v}) = T^2(\vec{w})$. This implies that $\vec{w} \in \Null\left(T^2\right) = \Null(T)$. Hence, $\vec{v} = T(\vec{w}) = \vec{0}$. Since $\vec{v} \in \Null(T)\cap T(V)$ was arbitrary and $\vec{0}$ belongs to any subspace, it follows that $\Null(T) \cap T(V) = \{\vec{0}\}$.
+	\end{proof}
+	
+	\question Let $T : V \to W$ and $L : W \to U$ be linear transformations. Then
+	\begin{equation*}
+		\rank(L \circ T) \le \min\{\rank(L), \rank(T)\}.
+	\end{equation*}
+	
+	\begin{proof}
+		Let $\vec{u} \in \Range(L\circ T)$. Then there exists $\vec{v} \in V$ such that $\vec{u} = L(T(\vec{v}))$. Thus, $T(\vec{v}) \in W$ is a vector whose image under $L$ is $\vec{u}$. This implies that $\vec{u} \in \Range(L)$. Hence, $\Range(L\circ T) \subseteq \Range(L)$, and it follows that $\rank(L\circ T) \le \rank(L)$.
+		
+		Now suppose that $\dim((L\circ T)(V)) = \dim(L(T(V))) > \dim(T(V)) =: n$. Then there exist $n+1$ vectors $\vec{w}_1, \dots, \vec{w}_n, \vec{w}_{n+1}\in L(T(V))$ that are linearly independent. There also must be $\vec{v}_1, \dots, \vec{v}_n, \vec{v}_{n+1} \in T(V)$ such that $L(\vec{v}_i) = \vec{w}_i$ for $i=1,2,\dots, n+1$. If
+		\begin{equation*}
+			c_1\vec{v}_1 + \dots + c_{n+1}\vec{v}_{n+1} = \vec{0}
+		\end{equation*}
+		for some $c_1, \dots, c_{n+1}$ in the underlying field, then applying $L$ on both sides implies
+		\begin{equation*}
+		\begin{aligned}
+			\vec{0} &= L(\vec{0}) = L(c_1\vec{v}_1 + \dots + c_{n+1}\vec{v}_{n+1}) \\
+			&= c_1L(\vec{v}_1) + \dots + c_{n+1}L(\vec{v}_{n+1}) \\
+			&= c_1\vec{w}_1 + \dots +c_{n+1}\vec{w}_{n+1},
+		\end{aligned}
+		\end{equation*}
+		which implies that $c_1 = c_2 = \dots = c_{n+1} = 0$ by the linear independence of $\vec{w}_1, \dots, \vec{w}_{n+1}$. This means that $\vec{v}_1, \dots, \vec{v}_{n+1}$ are linearly independent, contradicting the fact that $\dim(T(V)) = n$. Thus, $\dim(L(T(V))) \le \dim(T(V))$.
+		
+		Finally, we obtain $\rank(L\circ T) = \dim((L\circ T)(V)) = \dim(L(T(V))) \le \dim(T(V)) = \rank(T)$.
+		
+		This proves that $\rank(L \circ T) \le \min\{\rank(L), \rank(T)\}$.
+	\end{proof}
+	
+	\question Let $A$ be an $m\times n$ matrix with a left inverse. Then $A^*$ has a right inverse.
+	\begin{proof}
+		Let $B$ be a left inverse of $A$; that is, $B$ is an $n \times m$ matrix such that $BA = I$, the $n\times n$ identity matrix. Then
+		\begin{equation*}
+			I = I^* = (BA)^* = A^*B^*,
+		\end{equation*}
+		so $B^*$ is a right inverse for $A^*$.
+	\end{proof}
+	
+	\question Let $A \in \mathbb{C}^{n\times n}$ be Hermitian positive definite, and let $\langle \vec{x}, \vec{y}\rangle = \vec{x}^*A\vec{y}$ for $\vec{x},\vec{y} \in \mathbb{C}^n$. Then $\langle\cdot,\cdot\rangle$ is an inner product on $\mathbb{C}^n$.
+	\begin{proof}
+		We show that $\langle \cdot,\cdot\rangle$ is positive definite, conjugate symmetric, and linear in the second argument.
+		\begin{enumerate}
+			\item \textbf{Positive definiteness.} For $\vec{x} \in \mathbb{C}^n$, we have
+			\begin{equation*}
+				\langle \vec{x}, \vec{x}\rangle  = \vec{x}^*A\vec{x} \ge \vec{0}
+			\end{equation*}
+			because $A$ is positive definite. Furthermore, if $\vec{x} \ne \vec{0}$, then
+			\begin{equation*}
+				\langle \vec{x}, \vec{x} \rangle =\vec{x}^*A\vec{x} > \vec{0},
+			\end{equation*}
+			because $A$ is positive definite, so $\langle \vec{x}, \vec{x} \rangle =\vec{0}$ only if $\vec{x} = \vec{0}$.
+			
+			\item \textbf{Conjugate symmetry.} For $\vec{x}, \vec{y} \in\mathbb{C}$, we have
+			\begin{equation*}
+				\langle \vec{y}, \vec{x}\rangle  = \vec{y}^*A\vec{x} = \overline{(\vec{y}^*A\vec{x})^*} = \overline{\vec{x}^*A^*\vec{y}} = \overline{\vec{x}^*A\vec{y}} = \overline{\langle \vec{x}, \vec{y}\rangle}
+			\end{equation*}
+			because $A$ is Hermitian.
+			
+			\item \textbf{Linearity in second argument.} For $\vec{x}, \vec{y}, \vec{z} \in \mathbb{C}$ and $a \in \mathbb{C}$, we have
+			\begin{equation*}
+				\langle \vec{x}, \vec{y} + a\vec{z}\rangle = \vec{x}^*A(\vec{y} + a\vec{z}) = \vec{x}^*A\vec{y} + a(\vec{x}^*A\vec{z}) = \langle \vec{x}, \vec{y}\rangle + a\langle \vec{x}, \vec{z}\rangle.
+			\end{equation*}
+		\end{enumerate}
+		
+		\question 
+		\begin{enumerate}
+			\item $\langle\cdot,\cdot\rangle$ is not an inner product because it is not conjugate symmetric. For $\vec{v} = (1,0)^T$ and $\vec{w} = (0,1)^T$, we have
+			\begin{equation*}
+				\langle\vec{v},\vec{w}\rangle = 1 + 1 + 1 = 3,
+			\end{equation*}
+			but
+			\begin{equation*}
+				\langle\vec{w},\vec{v}\rangle = 1 + 0 + 1 = 2 \ne 3 = \overline{\langle\vec{v},\vec{w} \rangle}
+			\end{equation*}
+			
+			\item $\langle \cdot, \cdot\rangle$ is not an inner product because it is not positive definite. Let $\vec{v} = (1,-1)^T$. Then
+			\begin{equation*}
+				\langle \vec{v}, \vec{v}\rangle = 1 -1 - 1 + 1 = 0,
+			\end{equation*}
+			but $\vec{v} \ne 0 $.
+			
+			\item $\langle \cdot, \cdot\rangle$ is not an inner product because it is not positive definite. Let $A \in \mathbb{M}_n$ be the matrix with zero diagonal and all other components equal to 1. Then
+			\begin{equation*}
+				\langle A, A\rangle = \tr(A^* + A) = 0,
+			\end{equation*}
+			but $A \ne 0$.
+			
+			\item Assuming that elements of $C([-1,1])$ are real-valued, then $\langle\cdot,\cdot\rangle$ is an inner product. We observe that $\langle f,g\rangle$ is an improper integral, but it can be shown to exist for all $f, g \in C([-1,1])$ by making the trigonometric substitution $x = \cos(\theta)$ for $\theta \in [0,\pi]$:
+			\begin{equation*}
+			\begin{aligned}
+				\langle f, g\rangle &= \int_{-1}^1 \frac{f(x)g(x)}{\sqrt{1-x^2}}\dee x = \int_0^\pi f(\cos(\theta))g(\cos(\theta))\frac{\sin(\theta)}{\sqrt{1-\cos^2(\theta)}}\dee\theta \\
+				&= \int_0^\pi f(\cos(\theta))g(\cos(\theta))\dee\theta.
+			\end{aligned}
+			\end{equation*}
+			The latter-most integrand is integrable because $f\circ \cos$ and $g\circ \cos$ are continuous. We now show that $\langle\cdot,\cdot\rangle$ satisfies the requirements for being an inner product.
+			\begin{enumerate}
+				\item \textbf{Positive definiteness.} Let $f \in C([-1,1])$. Then
+				\begin{equation*}
+					\langle f, f\rangle = \int_{-1}^1 \frac{(f(x))^2}{\sqrt{1-x^2}}\dee x \ge 0
+				\end{equation*}
+				because the integrand is pointwise nonnegative. Suppose that $\langle f, f \rangle = 0$. Since the integral is improper, we have to be a bit careful. For any $a \in (0,1)$, the nonnegativity of the integrand implies that
+				\begin{equation*}
+					0 \le \int_{-a}^a \frac{(f(x))^2}{\sqrt{1-x^2}}\dee x \le \int_{-1}^1\frac{(f(x))^2}{\sqrt{1-x^2}}\dee x = 0.
+				\end{equation*}
+				Since $a$ was arbitrary, and the integral of a continuous, nonnegative function is zero only if the function is zero, we obtain
+				\begin{equation*}
+					\frac{(f(x))^2}{\sqrt{1-x^2}} = 0, \qquad x \in (-1,1).
+				\end{equation*}
+				Since $\sqrt{1-x^2} \ne 0$ for $x \in (-1,1)$, it follows that $f(x) = 0$ for $x \in (-1,1)$. Since $f$ is continuous on $[-1,1]$, it follows that $f(-1)=f(1) = 0$ as well. Thus, $f = 0$.
+				
+				\item \textbf{Conjugate symmetry.} For any $f, g\in C([-1,1])$, we have
+				\begin{equation*}
+					\langle f, g\rangle = \int_{-1}^1\frac{f(x)g(x)}{\sqrt{1-x^2}}\dee x = \overline{\int_{-1}^1 \frac{g(x)f(x)}{\sqrt{1-x^2}}\dee x} = \overline{\langle g, f\rangle}
+				\end{equation*}
+				because $f$ and $g$ are real-valued.
+				
+				\item \textbf{Linearity in second argument.} Let $f, g, h \in C([-1,1])$, and let $a \in \mathbb{R}$. Then
+				\begin{equation*}
+					\langle f, g+ah \rangle = \int_{-1}^1\frac{f(x)(g(x) + ah(x))}{\sqrt{1-x^2}}\dee x = \int_{-1}^1\frac{f(x)g(x)}{\sqrt{1-x^2}}\dee x + a\int_{-1}^1\frac{f(x)h(x)}{\sqrt{1-x^2}}\dee x = \langle f, g\rangle + a\langle f, h\rangle.
+				\end{equation*}
+			\end{enumerate}
+		\end{enumerate}
+		
+		\question Let $V$ be an inner product space. Then $\langle \vec{v}, \vec{0} \rangle = 0$ for all $\vec{v} \in V$.
+		\begin{proof}
+			Let $\vec{v} \in V$. Since $\vec{0} = 0\cdot \vec{0}$, it follows from the linearity of the inner product in the second argument that
+			\begin{equation*}
+				\langle\vec{v},\vec{0}\rangle =\langle \vec{v}, 0\cdot\vec{0}\rangle =0\cdot\langle\vec{v},\vec{0}\rangle = 0.
+			\end{equation*}
+		\end{proof}
+	\end{proof}
+	
+\end{document}
