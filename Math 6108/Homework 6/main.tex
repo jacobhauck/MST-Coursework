@@ -3,11 +3,63 @@
 \input{../homework_shared.tex}
 
 \newcommand{\hwnum}{6}
+\renewcommand{\questiontype}{Problem}
+
 
 \begin{document}
 	\maketitle
 	
-	\question
+	\question Let $V$ be a vector space over $\mathbb{C}$. If $\lVert \cdot \rVert$ is a norm on $V$, then there exists an inner product $\langle \cdot, \cdot\rangle$ on $V$ that induces $\lVert \cdot \rVert$ if and only if
+	\begin{equation}
+		\label{eq:parallelogram}
+		\lVert \vec{x} + \vec{y} \rVert^2 + \lVert \vec{x} - \vec{y}\rVert^2 = 2(\lVert \vec{x}\rVert^2 + \lVert \vec{y}\rVert^2) \quad \text{for all $\vec{x}, \vec{y}\in V$.}
+	\end{equation}
+	
+	\begin{proof}
+		Suppose that there is an inner product $\langle\cdot, \cdot\rangle$ that induces $\lVert\cdot\rVert$. Then for all $\vec{x},\vec{y}\in V$,
+		\begin{equation*}
+			\begin{aligned}
+				\lVert \vec{x} +\vec{y}\rVert^2 + \lVert \vec{x} - \vec{y}\rVert^2 &= \langle\vec{x}+\vec{y},\vec{x}+ \vec{y}\rangle + \langle\vec{x}-\vec{y},\vec{x}-\vec{y}\rangle  \\
+				&= \langle\vec{x},\vec{x}\rangle  + \langle\vec{x},\vec{y}\rangle + \langle\vec{y},\vec{x}\rangle +  \langle\vec{y},\vec{y}\rangle + \langle\vec{x},\vec{x}\rangle +\langle\vec{x},-\vec{y}\rangle + \langle-\vec{y},\vec{x}\rangle + \langle-\vec{y},-\vec{y}\rangle \\
+				&= 2\langle\vec{x},\vec{x}\rangle + 2\langle\vec{y},\vec{y}\rangle + \langle\vec{x},\vec{y}\rangle + \langle\vec{y},\vec{x}\rangle - \langle\vec{x},\vec{y}\rangle - \langle\vec{y},\vec{x}\rangle \\
+				&= 2(\lVert\vec{x}\rVert^2 + \lVert\vec{y}\rVert^2)
+			\end{aligned}
+		\end{equation*}
+		because $\lVert\cdot\rVert$ is induced by $\langle\cdot,\cdot\rangle$.
+		
+		Conversely, suppose that \eqref{eq:parallelogram} holds. We note that $V$ is also a vector space over $\mathbb{R}$ if we use the same addition operator and a scalar multiplication operator given by restricting the scalar multiplication from $\mathbb{C}$ to $\mathbb{R}$. This can be verified by checking the vector space axioms. The axioms relating only to the addition operator are automatically satisfied because we are using the same addition. Then the axioms relating to the scalar multiplication remain. Let $a,b \in \mathbb{R}$, and $\vec{x}, \vec{y} \in V$.
+		\begin{enumerate}
+			\item \textbf{(Closure)} Since $a \in \mathbb{C}$, it follows that $a\vec{x} \in V$.
+			\item \textbf{(Associativity of field and scalar multiplication)} Since $a, b \in \mathbb{R}$, we also have $ab \in \mathbb{R}$. On the other hand, $a,b,ab \in \mathbb{C}$, so $a(b\vec{x}) = (ab)\vec{x}$.
+			\item \textbf{(Multiplicative identity)} We note that $1 \in \mathbb{R}$, and $1\vec{x} = \vec{x}$.
+			\item \textbf{(Distributivity over vector addition)} Since $a \in \mathbb{C}$, we have $a(\vec{x} + \vec{y}) = a\vec{x} + a\vec{y}$.
+			\item \textbf{(Distributivity over field addition)} Since $a, b \in \mathbb{R}$, we also have $a+b\in\mathbb{R}$. On the other hand, $a,b,a+b\in\mathbb{C}$, so $(a+b)\vec{x} = a\vec{x} + b\vec{x}$.
+		\end{enumerate}
+		Furthermore, we also see that $\lVert\cdot\rVert$ is a norm for $V$ as a vector space over $\mathbb{R}$. In particular, positive definiteness is retained because it does not depend on the scalar multiplication, and the triangle inequality is retained because it depends only on the vector addition operator, which is the same. For the homogeneity property, we note that if $a \in \mathbb{R}$, and $\vec{x} \in V$, then $a \in \mathbb{C}$, so
+		\begin{equation*}
+			\lVert a\vec{x}\rVert = |a|\lVert\vec{x}\rVert.
+		\end{equation*}
+		Thus, we can apply the theorem we proved in class; namely, the function $\langle\cdot,\cdot\rangle_R$ defined by
+		\begin{equation*}
+			\langle\vec{x},\vec{y}\rangle_R = \frac{1}{4}\left(\lVert\vec{x} + \vec{y}\rVert^2 - \lVert\vec{x} - \vec{y}\rVert^2\right), \qquad \vec{x},\vec{y}\in V,
+		\end{equation*}
+		is an inner product for $V$, as a vector space over $\mathbb{R}$, that induces $\lVert\cdot\rVert$.
+		
+		Now define $\langle\cdot,\cdot\rangle$ by
+		\begin{equation*}
+			\langle\vec{x},\vec{y}\rangle = \langle\vec{x},\vec{y}\rangle_R+ i\langle i\vec{x}, \vec{y}\rangle_R, \qquad \vec{x},\vec{y}\in V.
+		\end{equation*}
+		Then $\langle\cdot,\cdot\rangle$ is an inner product for $V$, as a vector space over $\mathbb{C}$, that induces $\lVert\cdot\rVert$. We begin by observing that for $\vec{x} \in V$,
+		\begin{equation*}
+			\langle \vec{x}, \vec{x}\rangle = \langle \vec{x}, \vec{x}\rangle_R + \frac{i}{4}\left(\lVert i\vec{x} + \vec{x}\rVert^2 - \lVert i\vec{x} - \vec{x}\rVert^2\right) = \langle \vec{x},\vec{x}\rangle_R = \lVert x\rVert^2
+		\end{equation*}
+		because $\lVert i\vec{x} - \vec{x}\rVert = |i|\lVert\vec{x} - i^{-1}\vec{x}\rVert = \lVert \vec{x} + i\vec{x}\rVert$. This implies that $\langle \cdot,\cdot\rangle$ is positive definite and, if it is an inner product for $V$ over $\mathbb{C}$, that it induces $\lVert\cdot\rVert$.
+		
+		Let $\vec{x}, \vec{y} \in V$. Then
+		\begin{equation*}
+			\langle \vec{x}, i\vec{y}\rangle = \langle \vec{x},i\vec{y}\rangle_R + \frac{i}{4}\left(\lVert i\vec{x} + i\vec{y}\rVert^2 - \lVert i\vec{x} - i\vec{y}\rVert^2\right) = \langle\vec{x},\vec{y}\rangle_R
+		\end{equation*}
+	\end{proof}
 	
 	\question Let $\vec{x}_1,\vec{x}_2, \dots,\vec{x}_n\in\mathbb{R}^n$ be orthonormal. Let $A \in \mathbb{R}^n$. If $A\vec{x}_1, A\vec{x}_2,\dots, A\vec{x}_n$ are also orthonormal, then $A$ is orthogonal.
 	
@@ -58,4 +110,5 @@
 	\pythonexternal[caption={Python implementation of the Gram-Schmidt process}, label={lst:gs}]{gs.py}
 	
 	\txtexternal[caption={Output for test cases}, label={lst:gs_output}]{gs_output.txt}
+	
 \end{document}
