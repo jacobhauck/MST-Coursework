@@ -16,3 +16,87 @@
 \newcommand{\rank}{\mathrm{rank}}
 \newcommand{\Nullity}{\mathrm{Nullity}}
 \newcommand{\Range}{\mathrm{range}}
+
+
+\usepackage[ruled,linesnumbered]{algorithm2e}
+
+% ===== Python code formatting =====
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{9} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{9}  % for normal
+
+% Custom colors
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{orange}{rgb}{1.0,0.5,0}
+\definecolor{light-gray}{gray}{0.95} 
+
+\usepackage{listings}
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+	language=Python,
+	basicstyle=\ttm,
+	upquote=true,
+	morekeywords={self, assert, True, False, None, as},   % Add keywords here
+	keywordstyle=\ttb\color{deepblue},
+	commentstyle=\color{orange},
+	emph={__init__, BaseException, float, int, str},          % Custom highlighting
+	emphstyle=\ttb\color{deepred},    % Custom highlighting style
+	stringstyle=\color{deepgreen},          % Any extra options here
+	showstringspaces=false,
+	numbers=left,
+	backgroundcolor=\color{light-gray},
+	framexleftmargin=0.5ex,
+	framextopmargin=0.5em
+}}
+
+\newcommand\txtstyle{\lstset{
+	basicstyle=\ttm,
+	upquote=true,
+	numbers=left,
+	breaklines=true,
+	postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+	backgroundcolor=\color{light-gray},
+	framexleftmargin=0.5ex,
+	framextopmargin=0.5em
+}}
+
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+	\pythonstyle
+	\lstset{#1}
+}
+{}
+
+% Python for external files
+\newcommand\pythonexternal[2][]{{
+	\pythonstyle
+	\lstinputlisting[#1]{#2}
+}}
+
+% Python for inline
+\newcommand\pythoninline[1]{{\pythonstyle\lstinline!#1!}}
+
+% .txt enviornment
+\lstnewenvironment{txtinline}[1][]
+{
+	\txtstyle
+	\lstset{#1}
+}
+{}
+
+% .txt external input
+\newcommand\txtexternal[2][]{{
+	\txtstyle
+	\lstinputlisting[#1]{#2}
+}}
