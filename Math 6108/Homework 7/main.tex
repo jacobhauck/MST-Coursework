@@ -1,0 +1,138 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{7}
+\renewcommand{\questiontype}{Problem}
+
+
+\begin{document}
+	\maketitle
+	
+	\question Let
+	\begin{equation*}
+		B = \left\{\mat{1 & 1 \\ 1 & 1}, \mat{1 & 0 \\ 0 & 1}, \mat{0 & 2 \\ 1 & -1}\right\} \subseteq \mathcal{M}_2.
+	\end{equation*}
+	Recall that $\langle C, D \rangle = \tr(C^*D)$ in $\mathcal{M}_2$. We can use the Gram-Schmidt process to orthonormalize the elements $B$; the resulting orthonormal set will be an orthonormal basis for $\span(B)$. We begin by setting
+	\begin{equation*}
+		\vec{v}_1 = \mat{1 & 1 \\ 1 & 1},\quad\vec{v}_2 = \mat{1 & 0 \\ 0 & 1},\quad\vec{v}_3= \mat{0 & 2 \\ 1 & -1}.
+	\end{equation*}
+	Now we start the Gram-Schmidt process: let $\vec{u}_1 = \frac{\vec{v}_1}{\lVert\vec{v}_1\rVert}$. Since $\lVert \vec{v}_1\rVert = \sqrt{1^2 + 1^2 + 1^2+1^2} = 2$, we have
+	\begin{equation*}
+		\vec{u}_1 = \frac{1}{2}\mat{1&1\\1&1}.
+	\end{equation*}
+	Next, we compute 
+	\begin{equation*}
+	\begin{aligned}
+		\widetilde{\vec{u}}_2 &= \vec{v}_2 - \langle \vec{u}_1, \vec{v}_2\rangle\vec{u}_1 =\vec{v}_2- \tr(\vec{u}_1^*\vec{v}_2)\vec{u}_1 \\
+		&= \vec{v}_2 - \left(\frac{1}{2}\cdot 1 + 0 + 0 + \frac{1}{2}\cdot 1\right)\vec{u}_1 \\
+		&= \mat{1&0\\0&1} - \frac{1}{2}\mat{1&1\\1&1} \\
+		&= \frac{1}{2}\mat{1 & -1 \\ -1 & 1}.
+	\end{aligned}
+	\end{equation*}
+	Then we set $\vec{u}_2 = \frac{\widetilde{\vec{u}}_2}{\left\lVert\widetilde{\vec{u}}_2\right\rVert}$. Since $\left\lVert\widetilde{\vec{u}}_2\right\rVert = \sqrt{\frac{1}{4} + \frac{1}{4} + \frac{1}{4} + \frac{1}{4}} = 1$, we have $\vec{u}_2 = \widetilde{\vec{u}}_2$. Lastly, we compute
+	\begin{equation*}
+	\begin{aligned}
+		\widetilde{\vec{u}}_3 &= \vec{v}_3 - \langle\vec{u}_1,\vec{v}_3\rangle\vec{u}_1 - \langle \vec{u}_2, \vec{v}_3\rangle\vec{u}_2 \\
+		&= \vec{v}_3 - \left(\frac{1}{2}\cdot 2 + \frac{1}{2}\cdot 1 - \frac{1}{2}\cdot 1\right)\vec{u}_1 - \left(-\frac{1}{2}\cdot 2 - \frac{1}{2}\cdot 1 - \frac{1}{2}\cdot 1\right)\vec{u}_2\\
+		&= \mat{0 & 2 \\1 & -1} - \frac{1}{2}\mat{1 & 1 \\ 1 & 1} + \mat{1 & -1 \\ -1 & 1}\\
+		&= \frac{1}{2}\mat{1 & 1\\ -1 & -1}.
+	\end{aligned}
+	\end{equation*}
+	Finally, we set $\vec{u}_3 = \frac{\widetilde{\vec{u}}_3}{\left\lVert\widetilde{\vec{u}}_3\right\rVert}$. Since $\left\lVert\widetilde{\vec{u}}_3\right\rVert = \sqrt{\frac{1}{4} + \frac{1}{4} + \frac{1}{4} + \frac{1}{4}} = 1$, we have $\vec{u}_3 = \widetilde{\vec{u}}_3$. Since none of the vectors from the Gram-Schmidt process were zero, it follows that $B$ is linearly independent, and $U = \{\vec{u}_1, \vec{u}_2, \vec{u}_3\}$ is orthonormal and a subset of $\span(B)$. Then $\dim(\span(B)) = 3$, so $U$ is an orthonormal basis for $\span(B)$.
+	
+	\question Let $U, V \in \mathcal{M}_n$ be unitary. Then $UV$ is also unitary.
+	
+	\begin{proof}
+		First, we observe that
+		\begin{equation*}
+			(UV)^*(UV) = V^*U^*UV = V^*V = I
+		\end{equation*}
+		by the unitarity of $U$ and $V$. Second, we observe that
+		\begin{equation*}
+			(UV)(UV)^* = UVV^*U^* = UU^* = I
+		\end{equation*}
+		by the unitarity of $U$ and $V$. This implies that $UV$ is unitary.
+	\end{proof}
+	
+	\question Let $U \in \mathcal{M}_n$ be a unitary matrix, and let $\lambda \in \mathbb{C}$ be an eigenvalue of $U$. Then $|\lambda| = 1$.
+	
+	\begin{proof}
+		If $\lambda$ is an eigenvalue of $U$, then, by definition, there is a nonzero vector $\vec{v} \in \mathbb{C}^n$ such that $U\vec{v} = \lambda \vec{v}$. This implies that
+		\begin{equation*}
+			|\lambda|^2\lVert\vec{v}\rVert^2 = \lVert \lambda \vec{v}\rVert^2 = \lVert U\vec{v}\rVert^2 = (U\vec{v})^*(U\vec{v}) = \vec{v}^*U^*U\vec{v} = \vec{v}^*\vec{v} = \lVert\vec{v}\rVert^2.
+		\end{equation*}
+		Dividing both sides by $\lVert\vec{v}\rVert^2 \ne 0$ gives $|\lambda|^2 = 1$, which implies that $|\lambda| = 1$.
+	\end{proof}
+	
+	\question Consider the overconstrained system $A\vec{x} = \vec{z}$, where
+	\begin{equation*}
+		A = \mat{-2 & 1 \\ -1 & 1 \\ 0 & 1 \\ 1 & 1 \\ 2 & 1}, \qquad \vec{z} = \mat{0 \\ 1 \\ 0 \\ 2 \\ 2}.
+	\end{equation*}
+	We find the least-squares solution $\vec{x}$ using two methods.
+	\begin{enumerate}
+		\item By definition, $\vec{x}$ is the minimizer of $\lVert A\vec{x} - \vec{z}\rVert^2$, which is given explicitly by
+		\begin{equation*}
+		\begin{aligned}
+			\lVert A\vec{x} - \vec{z}\rVert^2 &= (A\vec{x} - \vec{z})^T(A\vec{x} -\vec{z}) \\
+			&= \vec{x}^TA^TA\vec{x} -2\vec{z}^TA\vec{x} + \vec{z}^T\vec{z} \\
+			&= \mat{x_1&x_2}\mat{10 & 0\\0 & 5}\mat{x_1 \\x_2} -2\cdot\mat{5&5}\mat{x_1\\x_2} + 9\\
+			&= 10x_1^2 + 5x_2^2 - 10x_1 - 10x_2 + 9 \\
+			&= 10\left(x_1-\frac{1}{2}\right)^2 + 5\left(x_2-1\right)^2 +4,
+		\end{aligned}
+		\end{equation*}
+		which is evidently minimal when $x_1 = \frac{1}{2}$, and $x_2 = 1$. Thus, $\vec{x} = \frac{1}{2}\mat{1\\2}$ is the least-squares solution $A\vec{x} = \vec{z}$.
+		
+		\item We can also use the fact that the least squares solution $\vec{x}$ of $A\vec{x} = \vec{z}$ is the solution of $A\vec{x} = \vec{y}$, where $\vec{y}$ is the projection of $\vec{z}$ onto $\col(A)$. In order to find $\vec{y}$, we need an orthonormal basis for $\col(A)$. We observe that the two columns of $A$ are already orthogonal because
+		\begin{equation*}
+			\mat{-2\\-1\\0\\1\\2}^*\mat{1\\1\\1\\1\\1} = -2 + -1 + 0 + 1 + 2 = 0.
+		\end{equation*}
+		Let $A = \mat{\vec{a}_1, \vec{a}_2}$. Then $\{\vec{u}_1, \vec{u}_2\}$, with $\vec{u}_1 = \frac{\vec{a}_1}{\lVert\vec{a}_1\rVert}$, and $\vec{u}_2 = \frac{\vec{a}_2}{\lVert\vec{a}_2\rVert}$ is an orthonormal basis for $\col(A)$. Since $\lVert\vec{a}_1\rVert=\sqrt{4+1+0+1+4} = \sqrt{10}$, and $\lVert \vec{a}_2\rVert = \sqrt{1+1+1+1+1} = \sqrt{5}$, we have $\vec{u}_1 = \frac{1}{\sqrt{10}}\mat{-2&-1&0&1&2}^T$, and $\vec{u}_2 = \frac{1}{\sqrt{5}}\mat{1&1&1&1&1}^T$.
+		
+		Then we get
+		\begin{equation*}
+		\begin{aligned}
+			\vec{y} &= \langle\vec{u}_1,\vec{z}\rangle\vec{u}_1 + \langle\vec{u}_2,\vec{z}\rangle\vec{u}_2 = \frac{1}{10}\mat{-2&-1&01&2}\mat{0\\1\\0\\2\\2}\mat{-2\\-1\\0\\1\\2} + \frac{1}{5}\mat{1&1&1&1&1}\mat{0\\1\\0\\2\\2}\mat{1\\1\\1\\1\\1} \\
+			&= \frac{1}{2}\mat{0 \\ 1 \\ 2 \\ 3 \\ 4}.
+		\end{aligned}
+		\end{equation*}
+		Finally, $\vec{x}$ is the least-squares solution of $A\vec{x} = \vec{z}$ if and only if $\vec{x}$ is the solution of $A\vec{x} = \vec{y}$. Since $\vec{y} \in \col(A)$, we can use any two rows of $A$ to solve for $\vec{x}$ and the result will work for the other rows. Using the third and fourth rows, we have $x_2 = 1$, and $x_1 + x_2 = \frac{3}{2}$, which implies that $x_1 = \frac{1}{2}$. Thus, $\vec{x} = \frac{1}{2}\mat{1\\2}$ is the least-squares solution of $A\vec{x} = \vec{z}$.
+	\end{enumerate}
+	
+	\question To implement QR factorization, we just need to do Gram-Schmidt orthogonalization (normalizing the vectors as well) to obtain the orthogonal factor $U$. If $A = \mat{\vec{a}_1 &\hdots & \vec{a}_n}$, then the upper-triangular factor $T$ is given by
+	\begin{equation*}
+		T = \mat{\langle \vec{u}_1, \vec{a}_1\rangle & \langle\vec{u}_1, \vec{a}_2\rangle & \hdots & \langle\vec{u}_1, \vec{a}_n\rangle \\ 0 & \langle\vec{u}_2, \vec{a}_2\rangle & \hdots & \langle\vec{u}_n, \vec{a}_2\rangle \\ \vdots & \ddots & \ddots & \vdots \\ 0 & 0 & \hdots & \langle\vec{u}_n, \vec{a}_n \rangle}.
+	\end{equation*}
+	In obtaining $\vec{u}_j$, we already compute $\langle\vec{u}_i,\vec{a}_j\rangle$, for $i = 1,\dots, n-1$; in other words, the $j$th column of $T$ except for the diagonal element $\langle \vec{u}_j, \vec{a}_j\rangle$. Thus, we need only save these values as we compute them to obtain $\vec{u}_j$ to construct $T$, and we also need to compute the diagonal element $\langle\vec{u}_j,\vec{a}_j\rangle$. The diagonal element, however, is also secretly computed as a part of the Gram-Schmidt process because to obtain $\vec{u}_j$, we first compute $\widetilde{\vec{u}}_j$ via
+	\begin{equation*}
+		\widetilde{\vec{u}}_j = \vec{a}_j - \sum_{i=1}^{j-1} \langle\vec{u}_i, \vec{a}_j\rangle\vec{u}_i
+	\end{equation*}
+	and then normalize to obtain $\vec{u}_j = \frac{\widetilde{\vec{u}}_j}{\left\lVert\widetilde{\vec{u}}_j\right\rVert}$. Hence,
+	\begin{equation*}
+		\langle \vec{u}_j, \vec{a}_j\rangle = \left\langle\frac{\widetilde{\vec{u}}_j}{\left\lVert\widetilde{\vec{u}}_j\right\rVert}, \widetilde{\vec{u}}_j + \sum_{i=1}^{j-1}\langle\vec{u}_i,\vec{a}_j\rangle\vec{u}_i\right\rangle = \frac{\langle\widetilde{\vec{u}}_j, \widetilde{\vec{u}}_j\rangle}{\left\lVert\widetilde{\vec{u}}_j\right\rVert} + \sum_{i=1}^{j-1}\langle \vec{u}_i,\vec{a}_j\rangle\langle\vec{u}_i, \vec{u}_j\rangle = \lVert \widetilde{\vec{u}}_j\rVert
+	\end{equation*}
+	because $\vec{u}_j$ is orthogonal to $\vec{u}_i$ for $i = 1,\dots, j-1$. These considerations lead to Algorithm \ref{alg:qr}.
+	
+	\begin{algorithm}[htb!]
+		\caption{QR Decomposition}\label{alg:qr}
+		\KwIn{Nonsingular matrix $A \in \mathbb{R}^{n\times n}$ with columns $\vec{a}_1, \dots, \vec{a}_n \in \mathbb{R}^n$}
+		\KwOut{Matrices $U, T\in \mathbb{R}^{n\times n}$ with columns $\vec{u}_1,\dots, \vec{u}_n$ and $\vec{t}_1,\dots, \vec{t}_n$ such that $U$ is orthogonal, $T$ is upper-triangular, and $A = UT$.}
+		$c \gets 1$\;
+		\Repeat{$c = n$}{
+			$\vec{t}_c \gets \vec{0}$\;
+			$p \gets 1$\;
+			\Repeat{$p=c-1$}{
+				$(\vec{t}_c)_p \gets \langle \vec{u}_p, \vec{a}_c\rangle$\tcp*{Loop is no-op by convention if $c = 1$}
+			}
+			$\vec{u}_c \gets \vec{a}_c - \sum\limits_{p=1}^{c-1} (\vec{t}_c)_p\vec{u}_p$\tcp*{Sum is 0 by convention if $c = 1$}
+			$(\vec{t}_t)_c \gets \lVert \vec{u}_c\rVert$\;
+			$\vec{u}_c \gets \frac{\vec{u}_c}{t_c}$\;
+		}
+	\end{algorithm}
+	
+	A Python implementation of this algorithm is provided in Listing \ref{lst:qr}. The command \texttt{python -m qr} can be used to run the tests, which verify that the function works across a range of input types that cover every code path. The output from running these tests is given in Listing \ref{lst:qr_output}.
+	
+	\pythonexternal[caption={Python implementation of the QR decomposition}, label={lst:qr}]{qr.py}
+	
+	\txtexternal[caption={Output for test cases}, label={lst:qr_output}]{qr_output.txt}
+\end{document}

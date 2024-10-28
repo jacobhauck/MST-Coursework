@@ -1,4 +1,4 @@
-"""Gram-Schmidt orthogonalization
+"""Gram-Schmidt orthogonlization
 """
 import numpy as np
 

@@ -49,16 +49,39 @@
 		\begin{equation*}
 			\langle\vec{x},\vec{y}\rangle = \langle\vec{x},\vec{y}\rangle_R+ i\langle i\vec{x}, \vec{y}\rangle_R, \qquad \vec{x},\vec{y}\in V.
 		\end{equation*}
-		Then $\langle\cdot,\cdot\rangle$ is an inner product for $V$, as a vector space over $\mathbb{C}$, that induces $\lVert\cdot\rVert$. We begin by observing that for $\vec{x} \in V$,
-		\begin{equation*}
-			\langle \vec{x}, \vec{x}\rangle = \langle \vec{x}, \vec{x}\rangle_R + \frac{i}{4}\left(\lVert i\vec{x} + \vec{x}\rVert^2 - \lVert i\vec{x} - \vec{x}\rVert^2\right) = \langle \vec{x},\vec{x}\rangle_R = \lVert x\rVert^2
-		\end{equation*}
-		because $\lVert i\vec{x} - \vec{x}\rVert = |i|\lVert\vec{x} - i^{-1}\vec{x}\rVert = \lVert \vec{x} + i\vec{x}\rVert$. This implies that $\langle \cdot,\cdot\rangle$ is positive definite and, if it is an inner product for $V$ over $\mathbb{C}$, that it induces $\lVert\cdot\rVert$.
+		Then $\langle\cdot,\cdot\rangle$ is an inner product for $V$, as a vector space over $\mathbb{C}$, that induces $\lVert\cdot\rVert$.
 		
-		Let $\vec{x}, \vec{y} \in V$. Then
+		Let $\vec{x}, \vec{y}, \vec{z}\in V$. To begin with, we observe the property
 		\begin{equation*}
-			\langle \vec{x}, i\vec{y}\rangle = \langle \vec{x},i\vec{y}\rangle_R + \frac{i}{4}\left(\lVert i\vec{x} + i\vec{y}\rVert^2 - \lVert i\vec{x} - i\vec{y}\rVert^2\right) = \langle\vec{x},\vec{y}\rangle_R
+			\langle i\vec{x},\vec{y}\rangle_R = \frac{1}{4}\left(\lVert i\vec{x} + \vec{y}\rVert - \lVert i\vec{x} - \vec{y}\rVert^2\right) = \frac{1}{4}\left(\lVert \vec{x} - i\vec{y}\rVert^2 - \lVert \vec{x} + i\vec{y}\rVert^2\right) = -\langle \vec{x}, i\vec{y}\rangle_R.
 		\end{equation*}
+		Thus,
+		\begin{equation*}
+			\langle \vec{x}, \vec{x}\rangle = \langle\vec{x}, \vec{x}\rangle_R + i\langle i\vec{x},\vec{x}\rangle_R = \lVert \vec{x}\rVert^2
+		\end{equation*}
+		because $\langle\vec{x},\vec{x}\rangle_R = \lVert \vec{x}\rVert^2$, and $\langle i\vec{x}, \vec{x}\rangle_R = \langle \vec{x},i\vec{x}\rangle_R$ by symmetry, but also $\langle i\vec{x}, \vec{x}\rangle_R = -\langle \vec{x}, i\vec{x} \rangle_R$ by the above property, which implies that $\langle i\vec{x},\vec{x}\rangle_R = 0$.
+		This proves that $\langle\cdot,\cdot\rangle$ is positive definite because $\lVert \cdot\rVert$ is positive definite, and it also shows that $\langle\cdot,\cdot\rangle$ induces $\lVert\cdot\rVert$, as long as $\langle\cdot,\cdot\rangle$ is actually an inner product.
+		
+		Since
+		\begin{equation*}
+			\langle \vec{x}, \vec{y}\rangle= \langle\vec{x},\vec{y}\rangle_R + i\langle i\vec{x},\vec{y}\rangle_R = \langle\vec{y},\vec{x}\rangle_R -i\langle\vec{x}, i\vec{y}\rangle_R = \langle \vec{y},\vec{x}\rangle_R - i\langle i\vec{y}, \vec{x}\rangle_R = \overline{\langle\vec{y}, \vec{x}\rangle},
+		\end{equation*}
+		we see that $\langle\cdot,\cdot\rangle$ is conjugate symmetric. Next, we see that
+		\begin{equation*}
+			\langle \vec{x}, \vec{y}+\vec{z}\rangle = \langle\vec{x}, \vec{y}+\vec{z}\rangle_R + i\langle i\vec{x}, \vec{y}+\vec{z}\rangle_R = \langle \vec{x},\vec{y}\rangle_R + \langle\vec{x}, \vec{z}\rangle_R + i(\langle i\vec{x}, \vec{y}\rangle_R + \langle i\vec{x},\vec{z}\rangle_R) = \langle\vec{x},\vec{y}\rangle + \langle\vec{x}, \vec{z}\rangle.
+		\end{equation*}
+		Lastly, let $c = a+ ib \in \mathbb{C}$, with $a,b \in \mathbb{R}$. Then
+		\begin{equation*}
+		\begin{aligned}
+			\langle \vec{x}, c\vec{y}\rangle &= \langle\vec{x}, a\vec{y} + ib\vec{y}\rangle_R + i\langle i\vec{x}, a\vec{y} + ib\vec{y}\rangle_R \\
+			&= a\langle\vec{x}, \vec{y}\rangle_R + b\langle\vec{x},i\vec{y}\rangle_R +ia\langle i\vec{x},\vec{y}\rangle_R + ib\langle i\vec{x},i\vec{y}\rangle_R \\
+			&= a\langle\vec{x},\vec{y}\rangle_R - b\langle i\x, \y\rangle_R + ia\langle i\x, \y\rangle_R -ib\langle \x,-\y\rangle_R \\
+			&= (a+ib)\langle \x,\y\rangle_R + (ia - b)\langle i\x,\y\rangle_R \\
+			&= (a+ib)\langle \x, \y\rangle_R + i(a + ib)\langle i\x,\y\rangle_R \\
+			&= c\langle \x,\y\rangle.
+		\end{aligned}
+		\end{equation*}
+		Thus, $\langle\cdot,\cdot\rangle$ is positive definite, conjugate symmetric, and linear in the second argument. Then $\langle\cdot,\cdot\rangle$ defines an inner product on $V$ that induces the norm $\lVert\cdot\rVert$.
 	\end{proof}
 	
 	\question Let $\vec{x}_1,\vec{x}_2, \dots,\vec{x}_n\in\mathbb{R}^n$ be orthonormal. Let $A \in \mathbb{R}^n$. If $A\vec{x}_1, A\vec{x}_2,\dots, A\vec{x}_n$ are also orthonormal, then $A$ is orthogonal.
@@ -71,7 +94,7 @@
 		Since $(BX^T)^T(BX^T) = XB^TBX^T = I$ and $(BX^T)(BX^T)^T = BX^TXB^T = I$ by the orthogonality of $B$ and $X$, it follows that $A$ is invertible with $A^{-1} = (BX^T)^T = A^T$. This implies that $A$ is orthogonal.
 	\end{proof}
 	
-	\question The algorithm for the Gram-Schmidt process is described in Algorithm \ref{alg:gs}. An implementation in Python is provided in Listing \ref{lst:gs}. We note that this implementation detects linear dependence of the columns of $A$ as a part of the Gram-Schmidt process by checking if the produced orthogonal vectors are zero (well, almost zero, to account for numerical rounding error). This is possible because the columns of $A$ are linearly dependent if and only the Gram-Schmidt process produces a zero vector at some point. This is easy to prove.
+	\question The algorithm for the Gram-Schmidt process is described in Algorithm \ref{alg:gs}. An implementation in Python is provided in Listing \ref{lst:gs}. We note that this implementation detects linear dependence of the columns of $A$ as a part of the Gram-Schmidt process by checking if the produced orthogonal vectors are zero (well, almost zero, to account for numerical rounding error). This is possible because the columns of $A$ are linearly dependent if and only if the Gram-Schmidt process produces a zero vector at some point. This is easy to prove.
 	
 	For $j < i$, each $\vec{b}_j$ is a linear combination of the first $j$ columns of $A$. We can prove this by induction. For the base case, $\vec{b}_1 = \lVert\vec{a}_1\rVert^{-1}\vec{a}_1$. For some $1 \le k < i-1$, suppose for induction that $\vec{b}_j = \sum\limits_{m=1}^jc_{jm}\vec{a}_m$ for $1 \le j \le k$ and some constants $c_{jm}$. Then
 	\begin{equation*}
@@ -103,7 +126,7 @@
 		$c \gets 1$\;
 		\Repeat{$c = n$}{
 			$\vec{b}_c \gets \vec{a}_c - \sum\limits_{p=1}^{c-1} \langle \vec{b}_p, \vec{a}_c\rangle\vec{b}_p$ \tcp*{Sum is 0 by convention if $c=1$}
-			$\vec{b}_c \gets \frac{\vec{b}_c}{\lVert\vec{b}_c\rVert}$
+			$\vec{b}_c \gets \frac{\vec{b}_c}{\lVert\vec{b}_c\rVert}$\;
 		}
 	\end{algorithm}
 	

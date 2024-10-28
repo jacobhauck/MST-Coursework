@@ -1,0 +1,152 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{8}
+
+\begin{document}
+	\maketitle
+	
+	\question Let $A = \mat{a&b\\c&d}$, and let $f(\lambda) = \lambda^2 -(a+d)\lambda + ad -bc = 0$ be the characteristic polynomial of $A$. Then
+	\begin{equation*}
+	\begin{aligned}
+		f(A) = A^2 - (a+d)A + (ad-bc)I &= \mat{a^2 + bc & (a+d)b \\ (a+d)c & d^2 + bc} -(a+d)\mat{a&b\\c&d} + \mat{ad-bc & 0 \\ 0 & ad-bc} \\
+		&= \mat{a^2 +bc-a(a+d) + ad-bc & (a+d)b - (a+d)b \\ (a+d)c - (a+d)c & d^2+bc - (a+d)d + ad-bc} \\
+		& = \mat{a^2 +bc - a^2 -ad+ad-bc & 0 \\0 & d^2+bc-ad-d^2+ad-bc} \\
+		& =\mat{0 & 0 \\ 0 & 0}.
+	\end{aligned}
+	\end{equation*}
+	
+	\question Let $A \in \mathbb{R}^{n\times n}$ be invertible. Then $A^{-1} = g(A)$, where $g$ is a polynomial over $\mathbb{R}$ of degree $n-1$.
+	
+	\begin{proof}
+		Let $f$ be the characteristic polynomial of $A$. Then $f(x) = a_nx^n + \dots + a_0I$ for some $a_0, a_1, \dots a_n \in \mathbb{R}$. Suppose that $a_0 = 0$; then $0$ is a root of $f$, which implies that $0$ is an eigenvalue of $A$, which implies that $A\vec{v} = 0\vec{v} = \vec{0}$ for some $\vec{v} \ne \vec{0}$, contradicting the invertibility of $A$. Hence, $a_0 \ne 0$.
+		
+		By the Cayley-Hamilton theorem, we must have
+		\begin{equation*}
+			0 = a_nA^n + \dots +a_0I \implies I = -\frac{a_n}{a_0}A^n - \dots - \frac{a_1}{a_0}A.
+		\end{equation*}
+		Multiplying by $A^{-1}$ on both sides, we get
+		\begin{equation*}
+			A^{-1} = -\frac{a_n}{a_0}A^{n-1} - \dots - \frac{a_1}{a_0}I = g(A),
+		\end{equation*}
+		where $g(x) = -\frac{a_n}{a_n}x^{n-1} -\dots-\frac{a_1}{a_0}$ is a polynomial of degree $n-1$.
+	\end{proof}
+	
+	\question Let $A \in \mathbb{C}^{n\times n}$, and let $f$ be a polynomial over $\mathbb{C}$. Then $c$ is an eigenvalue of $f(A)$ if and only if $c = f(\lambda)$, where $\lambda$ is an eigenvalue of $A$.
+	
+	\begin{proof}
+		Suppose that $\lambda \in \mathbb{C}$ is an eigenvalue of $A$ with corresponding eigenvector $\vec{v}$. There exists $f_0,f_1,\dots,f_k \in \mathbb{C}$ such that  $f(x) = f_kx^k +f_{k-1}x^{k-1} + \dots + f_0$. Then
+		\begin{equation*}
+			f(A)\vec{v} = f_kA^k\vec{v} + f_{k-1}A^{k-1}\vec{v} + \dots + f_0\vec{v} = f_k\lambda^k\vec{v} + f_{k-1}\lambda^{k-1}\vec{v} + f_0\vec{v} = f(\lambda)\vec{v} = c\vec{v}.
+		\end{equation*}
+		This shows that $c$ is an eigenvalue of $f(A)$.
+		
+		Conversely, suppose that $c$ is an eigenvalue of $f(A)$ with corresponding eigenvector $\vec{v}$. Let $A = UTU^*$ be the Schur decomposition of $A$, where $U$ is unitary and $T$ is upper-triangular, with diagonal entries equal to eigenvalues $\lambda_1, \dots, \lambda_n$ of $A$. Then
+		\begin{equation*}
+			f(A)\vec{v} = c\vec{v} = \implies f_kA^k\vec{v} + \dots + f_0\vec{v} = c\vec{v} \implies f_kUT^kU^*\vec{v} + f_{k-1}UT^{k-1}U^*\vec{v} + \dots + f_0 \vec{v} = c\vec{v}.
+		\end{equation*}
+		Let $\vec{w} = U^*\vec{v}$. Then $\vec{v} \ne0 \implies \vec{w} \ne 0$ because $U$ is unitary, and, multiplying by $U^*$ on both sides of the last equation above, we have
+		\begin{equation*}
+			f_kT^k\vec{w} + f_{k-1}T^{k-1}\vec{w} + \dots + f_0\vec{w} = c\vec{w}.
+		\end{equation*}
+		We can show by induction that
+		\begin{equation}
+			\label{eq:power_of_t}
+			T^j = \mat{\lambda_1^j & * & \hdots & * \\ 0 & \lambda_2^j & \hdots & * \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \hdots & \lambda_n^j},\qquad j=1,\dots, k,
+		\end{equation}
+		where $*$ is a placeholder for any complex number (the exact values are irrelevant to our proof). The base case $T^1$ follows from the Schur decomposition: the diagonal elements of $T = T^1$ are eigenvalues of $A$. Suppose that \eqref{eq:power_of_t} holds for some $1 \le j \le k-1$. Then
+		\begin{equation*}
+			T^{j+1} = T^j T = \mat{\lambda_1^j & * & \hdots & * \\ 0 & \lambda_2^j & \hdots & * \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \hdots & \lambda_n^j}\mat{\lambda_1 & * & \hdots & * \\ 0 & \lambda_2 & \hdots & * \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \hdots & \lambda_n} =\mat{\lambda_1^{j+1} & * & \hdots & * \\ 0 & \lambda_2^{j+1} & \hdots & * \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \hdots & \lambda_n^{j+1}},
+		\end{equation*}
+		which completes the proof by induction. Thus, \eqref{eq:power_of_t} holds for all $j=1,2,\dots,k$. Then we have
+		\begin{equation*}
+			f_k\mat{\lambda_1^k & * & \hdots & * \\ 0 & \lambda_2^k & \hdots & * \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \hdots & \lambda_n^k}\vec{w} + f_{k-1}\mat{\lambda_1^{k-1} & * & \hdots & * \\ 0 & \lambda_2^{k-1} & \hdots & * \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \hdots & \lambda_n^{k-1}}\vec{w} + \dots + f_0\vec{w} = c\vec{w}.
+		\end{equation*}
+		Since $\vec{w} \ne 0$, at least one component of $\vec{w} = (w_1, \dots, w_n)^T$ is nonzero. Let $w_p$ be the last nonzero component of $\vec{w}$, so that $w_q = 0$ if $q > p$. Then looking at the $p$th component of the above equation gives
+		\begin{equation*}
+			f_k\lambda_p^kw_p + f_{k-1}\lambda_p^{k-1}w_p + \dots +f_0w_p = cw_p.
+		\end{equation*}
+		Dividing both sides by $w_p \ne 0$ implies that $c = f(\lambda_p)$.
+	\end{proof}
+	
+	\question Let $A = \mat{0 & 1 & 1 & -1 \\ 1 & 0 & -1 & 1 \\ 1 & -1 & 0 & 1 \\ -1 & 1 & 1 & 0}$.
+	
+	To find an orthogonal matrix $P$ such that $P^TAP = D$, where $D$ is diagonal, we should find linearly independent unit eigenvectors of $A$. This matrix looks like it has some symmetries, so I think that I can guess the eigenvectors fairly easily.
+	
+	My first guess is $\vec{v}_1^T = \mat{1 & 0 & 0 & 1}$. We have
+	\begin{equation*}
+		A\vec{v}_1 = \mat{0 & 1 & 1 & -1 \\ 1 & 0 & -1 & 1 \\ 1 & -1 & 0 & 1 \\ -1 & 1 & 1 & 0}\mat{1\\0\\0\\-1} = \mat{1 \\ 0 \\ 0 \\ -1} = 1\vec{v}_1,
+	\end{equation*}
+	so $\vec{v}_1$ is an eigenvector of $A$ with eigenvalue $\lambda_1 = 1$. This suggests a second guess by permuting some of the rows and columns of $A$; let $\vec{v}_2^T = \mat{0 & 1 & -1 & 0}$. Then
+	\begin{equation*}
+		A\vec{v}_2 = \mat{0 & 1 & 1 & -1 \\ 1 & 0 & -1 & 1 \\ 1 & -1 & 0 & 1 \\ -1 & 1 & 1 & 0}\mat{0\\1\\-1\\0} = \mat{0\\1\\-1\\0} = 1\vec{v}_2,
+	\end{equation*}
+	so $\vec{v}_2$ is an eigenvector of $A$ with eigenvalue $\lambda_2 = 1$. To be orthogonal to the first two eigenvectors, let $\vec{v}_3^T = \mat{1 & 1 & 1 & 1}$. Then
+	\begin{equation*}
+		A\vec{v}_3 = \mat{0 & 1 & 1 & -1 \\ 1 & 0 & -1 & 1 \\ 1 & -1 & 0 & 1 \\ -1 & 1 & 1 & 0}\mat{1\\1\\1\\1} = \mat{1\\1\\1\\1} = 1\vec{v}_3,
+	\end{equation*}
+	so $\vec{v}_3$ is an eigenvector of $A$ with eigenvalue $\lambda_3 = 1$. Lastly, I will guess $\vec{v}_4^T = \mat{-1&1&1&-1}$ to be orthogonal to the first three guesses. Then
+	\begin{equation*}
+		A\vec{v}_4 = \mat{0 & 1 & 1 & -1 \\ 1 & 0 & -1 & 1 \\ 1 & -1 & 0 & 1 \\ -1 & 1 & 1 & 0}\mat{-1\\1\\1\\-1} = \mat{3\\-3\\-3\\3} = -3\vec{v}_4,
+	\end{equation*}
+	so $\vec{v}_4$ is an eigenvector $A$ with eigenvalue $\lambda_4 = -3$. Noting that
+	\begin{equation*}
+		\begin{aligned}
+		&\langle\vec{v}_1,\vec{v}_2\rangle = 0, \quad \langle\vec{v}_1,\vec{v}_3\rangle = 0, \quad\langle\vec{v}_1,\vec{v}_4\rangle = 0, \\
+		&\langle\vec{v}_2,\vec{v}_3\rangle = 0, \quad \langle\vec{v}_2,\vec{v}_4\rangle = 0,\\
+		&\langle\vec{v}_3,\vec{v}_4\rangle = 0,
+		\end{aligned}
+	\end{equation*}
+	we see that $\{\vec{v}_1,\vec{v}_2,\vec{v}_3,\vec{v}_4\}$ is an orthogonal set. Normalizing these vectors to
+	\begin{equation*}
+		\begin{aligned}
+		&\vec{u}_1 = \frac{\vec{v}_1}{\lVert\vec{v}_1\rVert} = \frac{1}{\sqrt{2}}\mat{1&0&0&-1}^T,\\
+		&\vec{u}_2 = \frac{\vec{v}_2}{\lVert\vec{v}_2\rVert} = \frac{1}{\sqrt{2}}\mat{0&1&-1&0}^T,\\
+		&\vec{u}_3 = \frac{\vec{v}_3}{\lVert\vec{v}_3\rVert} = \frac{1}{2}\mat{1&1&1&1}^T,\\
+		&\vec{u}_4 = \frac{\vec{v}_4}{\lVert\vec{v}_4\rVert} = \frac{1}{2}\mat{-1&1&1&-1}^T,\\
+		\end{aligned}
+	\end{equation*}
+	we see that $\{\vec{u}_1,\vec{u}_2, \vec{u}_3, \vec{u}_4\}$ is an orthonormal set. Then $P = \mat{\vec{u}_1 & \vec{u}_2 & \vec{u}_3 & \vec{u}_4}$ is an orthogonal matrix, and
+	\begin{equation*}
+		AP = \mat{A\vec{u}_1 & A\vec{u}_2 & A\vec{u}_3 & A\vec{u}_4} = \mat{\vec{u}_1 & \vec{u}_2 & \vec{u}_3 & -3\vec{u}_4} = P\mat{1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 &-3} = PD,
+	\end{equation*}
+	where
+	\begin{equation*}
+		D = \mat{1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 &-3}.
+	\end{equation*}
+	Thus, $P^TAP = D$, as desired.
+	
+	\newcommand{\gramschmidt}{{\textnormal{\texttt{gram\_schmidt}}}}
+	\question We recall the orthogonal projection formula. Let $S \subset \mathbb{R}^n$ be a subspace spanned by the orthonormal set $\{\vec{u}_1, \vec{u}_2, \dots, \vec{u}_k\}$. Define the matrix $U = \mat{\vec{u}_1 & \vec{u}_2 & \dots & \vec{u}_k}$. Then the projection $\vec{z}$ of a vector $\vec{x}$ onto the subspace $S$ is given by
+	\begin{equation*}
+		\vec{z} = UU^T\vec{x}.
+	\end{equation*}
+	To implement this formula when $S = \span\{\vec{x}_1, \vec{x}_2\}$ we need to find the matrix $U$ whose columns are orthonormal vectors that span $S$. We can use our Gram-Schmidt code from Homework 6 to do this. Recall that we had a subroutine \gramschmidt{} that took a matrix $A$ and found a matrix $U$ whose columns were orthonormal and spanned the column space of $A$. It also detected if the columns of $A$ were linearly independent.
+	
+	Thus, we can implement the projection formula by applying \gramschmidt{} to obtain $U$. If \gramschmidt{} indicates that the columns of $A$ are linearly dependent, then $S$ is one-dimensional, so $U$ is just one column, which is the normalization of $\vec{x}_1$ or $\vec{x}_2$, whichever is nonzero (if both are zero, we report an error). These considerations lead us to Algorithm \ref{alg:proj2}.
+	
+	\begin{algorithm}
+		\caption{Orthogonal projection onto a subspace spanned by 2 vectors}
+		\label{alg:proj2}
+		\KwIn{$\vec{x}_1, \vec{x}_2 \in \mathbb{R}^n$, not both zero}
+		\KwIn{$\vec{x} \in \mathbb{R}^n$}
+		\KwOut{$\vec{z} \in \mathbb{R}^n$, the orthogonal projection of $\vec{x}$ onto $\span\{\vec{x}_1,\vec{x}_2\}$}
+		$A \gets \mat{\vec{x}_1 & \vec{x}_2}$\;
+		$U \gets \gramschmidt(A)$\;
+		\If{\gramschmidt{} returned error}{
+			{$\vec{w} \gets (\vec{x}_1 \ne \vec{0}) \;?\; \vec{x}_1 : \vec{x}_2$}\tcp*{?\ is the ternary operator}
+			$U \gets \frac{\vec{w}}{\lVert\vec{w}\rVert}$\;
+		}
+		$\vec{z} \gets UU^T\vec{x}$\;
+	\end{algorithm}
+	
+	This algorithm is implemented in Python in Listing \ref{lst:proj2}. The result of running the algorithm with 
+	\begin{equation*}
+		\vec{x}_1 = \mat{1\\0\\1}, \qquad \vec{x}_2 = \mat{1\\1\\0}, \qquad \vec{x} = \mat{1\\2\\3}
+	\end{equation*}
+	is given in Listing \ref{lst:output}.
+	\pythonexternal[label=lst:proj2, caption={Projection onto a subspace spanned by 2 vectors}]{proj2.py}
+	
+	\txtexternal[label=lst:output, caption={Output of test of projection code}]{proj2_output.txt}
+\end{document}
