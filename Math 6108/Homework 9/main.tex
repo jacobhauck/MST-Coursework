@@ -1,0 +1,154 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{9}
+
+\begin{document}
+	\maketitle
+	
+	\question Let $A \in \mathbb{C}^{n\times n}$ be a normal matrix. Then $A$ is unitary if and only if every eigenvalue of $A$ has absolute value 1.
+	
+	\begin{proof}
+		Suppose that $A$ is unitary. Let $\lambda$ be an eigenvalue of $A$ with corresponding eigenvector $\vec{v}$. Then, by the unitarity of $A$,
+		\begin{equation*}
+			1 = \vec{v}^*\vec{v} = \vec{v}^*A^*A\vec{v} = \vec{v}^*\bar{\lambda}\lambda\vec{v} = |\lambda|^2,
+		\end{equation*}
+		which implies that $|\lambda| = 1$.
+		
+		Conversely, suppose that every eigenvalue of $A$ has absolute value $1$. Since $A$ is normal, there exists a unitary matrix $U$ such that
+		\begin{equation*}
+			A = UDU^*, \qquad D = \mat{\lambda_1 & & \\ & \ddots & \\ & & \lambda_n},
+		\end{equation*}
+		where $\lambda_1, \dots, \lambda_n$ are the eigenvalues of $A$. Then
+		\begin{equation*}
+			D^*D = DD^* = \mat{|\lambda_1|^2 & & \\ & \ddots &\\ & & |\lambda_n|^2} = I,
+		\end{equation*}
+		which implies that
+		\begin{equation*}
+			\begin{aligned}
+			A^*A &= (UDU^*)^*UDU^* = UD^*DU^* = UU^* = I, \\ AA^* &= UDU^*(UDU^*)^* = UDD^*U^* = UU^* = I.
+			\end{aligned}
+		\end{equation*}
+		Thus, $A$ is unitary.
+	\end{proof}
+	
+	\question Let $A \in \mathbb{C}^{n\times n}$ be Hermitian, positive definite, and unitary. Then $A = I$.
+	\begin{proof}
+		Since $A$ is Hermitian, it is normal; therefore, there exists a unitary matrix $U$ such that
+		\begin{equation*}
+			A = UDU^*, \qquad D = \mat{\lambda_1&&\\&\ddots&\\&&\lambda_n},
+		\end{equation*}
+		where $\lambda_1, \dots, \lambda_n$ are the eigenvalues of $A$. Since $A$ is positive definite and Hermitian, its eigenvalues are all real and positive. On the other hand, since $A$ is unitary, its eigenvalues all have absolute value 1 by Question 1. The only positive real number with absolute value 1 is 1 itself, so all the eigenvalues of $A$ are 1, which means that $D = I$. Then
+		\begin{equation*}
+			A = UDU^* = UU^* = I.
+		\end{equation*}
+	\end{proof}
+	
+	\question Let $A = \mat{1 & x \\ x & 9}$, where $x \in \mathbb{R}$. Then $A$ is positive semidefinite if and only if $|x| \le 3$.
+	
+	\begin{proof}
+		The matrix $A$ is positive semidefinite if and only if all of its eigenvalues are nonnegative. Any eigenvalue $\lambda$ of $A$ must be a root of the characteristic polynomial:
+		\begin{equation*}
+			0 = \det(A- I\lambda) = (1-\lambda)(9-\lambda) - x^2 \iff \lambda^2-10\lambda + 9 -x^2 =0.
+		\end{equation*}
+		By the quadratic formula, $\lambda$ is an eigenvalue of $A$ if and only if
+		\begin{equation*}
+			\lambda = \frac{10 \pm \sqrt{100 - 4(9-x^2)}}{2} = 5 \pm \sqrt{16+x^2}.
+		\end{equation*}
+		Thus, $A$ is positive semidefinite if and only if
+		\begin{equation*}
+			5\pm\sqrt{16+x^2} \ge0 \iff 5 - \sqrt{16+x^2} \ge 0 \iff x^2\le 9 \iff |x| \le 3.
+		\end{equation*}
+	\end{proof}
+	
+	\question Let $A \in\mathbb{C}^{m\times n}$, and let $P \in \mathbb{C}^{m\times m}$ and $Q \in\mathbb{C}^{n\times n}$ be unitary matrices. Then $A$ and $PAQ$ have the same singular values.
+	\begin{proof}
+		Let $A = U\Sigma V^*$ be a singular value decomposition of $A$. Then the diagonal elements of $\Sigma$ are the singular values of $A$. On the other hand, $(PU)\Sigma (Q^*V)^*$ is a singular value decomposition of $PAQ$ because
+		\begin{equation*}
+			PAQ = PU\Sigma V^*Q = (PU)\Sigma (Q^*V)^*.
+		\end{equation*}
+		Then the singular values of $PAQ$ are also the diagonal elements of $\Sigma$, meaning that $A$ and $PAQ$ have the same singular values.
+	\end{proof}
+	
+	\question 
+	\begin{alphaparts}
+		\questionpart Let
+		\begin{equation*}
+			A = \mat{-1 & 0 & 1 \\ 1 & -1 & 0}.
+		\end{equation*}
+		We first compute $AA^*$ as
+		\begin{equation*}
+			AA^* = \mat{-1 & 0 & 1 \\ 1 & -1 & 0}\mat{-1 & 1 \\ 0 & -1 \\ 1 & 0} = \mat{2 & -1 \\ -1 & 2}.
+		\end{equation*}
+		The characteristic polynomial of $AA^*$ is
+		\begin{equation*}
+			\det(AA^*-I\lambda) = (2-\lambda)^2 -1 = \lambda^2 - 4\lambda +3 = (\lambda-3)(\lambda-1).
+		\end{equation*}
+		Thus, the eigenvalues of $AA^*$ are $\lambda_1 = 1$ and $\lambda_2=3$, and the singular values of $A$ are 1 and $\sqrt{3}$. Let $\vec{u}_i$ be the eigenvector of $AA^*$ corresponding to $\lambda_i$. Then
+		\begin{equation*}
+			\mat{2&-1\\-1&2}\vec{u}_1 = \vec{u}_1, \qquad \mat{2&-1\\-1&2}\vec{u}_2 = 3\vec{u}_2
+		\end{equation*}
+		gives orthonormal eigenvectors $\vec{u}_1 = \frac{1}{\sqrt{2}}\mat{1\\1}$, and $\vec{u}_2 = \frac{1}{\sqrt{2}}\mat{1\\-1}$. Thus, the $U$ and $\Sigma$ matrices in a singular value decomposition $A = U\Sigma V^*$ of $A$ can be chosen as
+		\begin{equation*}
+			U = \mat{\vec{u}_1 & \vec{u}_2} = \frac{1}{\sqrt{2}}\mat{1 & 1 \\1 &-1}, \qquad \Sigma = \mat{1 & 0 & 0 \\ 0 & \sqrt{3} & 0}.
+		\end{equation*}
+		Since $A = U\Sigma V^*$, we find that
+		\begin{equation*}
+			\mat{A^*\vec{u}_1 & A^*\vec{u}_2} = A^*U = V\Sigma^T = \mat{\vec{v}_1 & \vec{v}_2 & \vec{v}_3}\mat{1 & 0 \\ 0 & \sqrt{3} \\ 0 & 0} = \mat{\vec{v}_1 & \sqrt{3}\vec{v}_2},
+		\end{equation*}
+		so we can obtain the first two columns of $V$ as
+		\begin{equation*}
+			\vec{v}_1 = A^*\vec{u}_1 = \frac{1}{\sqrt{2}}\mat{-1 & 1 \\ 0 & -1 \\ 1 & 0}\mat{1 \\1} = \frac{1}{\sqrt{2}}\mat{0 \\-1\\1},\qquad \vec{v}_2 = \frac{1}{\sqrt{3}}A^*\vec{u}_2 = \frac{1}{\sqrt{6}}\mat{-1 & 1 \\ 0 & -1 \\ 1 & 0}\mat{1\\-1} = \frac{1}{\sqrt{6}}\mat{-2\\1\\1}.
+		\end{equation*}
+		The third column of $V$ can be chosen freely as long as it is orthonormal with the first two columns, so that $V$ is unitary. We observe that $\vec{v}_3 = \frac{1}{\sqrt{3}}\mat{1\\1\\1}$ works because
+		\begin{equation*}
+			\langle\vec{v}_1,\vec{v}_3\rangle = 0, \qquad \langle\vec{v}_2,\vec{v}_3\rangle = 0, \qquad \langle\vec{v}_3, \vec{v}_3\rangle = \frac{1}{\sqrt{3}}\cdot\frac{1}{\sqrt{3}}(1+1+1) = 1.
+		\end{equation*}
+		Thus, a singular value decomposition of $A$ is given by
+		\begin{equation*}
+			A = \frac{1}{\sqrt{2}}\mat{1 &1\\1&-1}\mat{1 &0 & 0\\0&\sqrt{3}& 0}\mat{0 & -\frac{2}{\sqrt{6}} & \frac{1}{\sqrt{3}}\\ -\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{6}} & \frac{1}{\sqrt{3}}\\ \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{6}} & \frac{1}{\sqrt{3}}}^*.
+		\end{equation*}
+		
+		\questionpart Let
+		\begin{equation*}
+			A = \mat{1 & 1 & -1\\ 0& 1& 1 \\ 1 & 0 &1}.
+		\end{equation*}
+		We first compute
+		\begin{equation*}
+			AA^* = \mat{1 & 1 & -1\\ 0& 1& 1 \\ 1 & 0 &1}\mat{1 & 0 &1 \\ 1&1&0\\-1&1&1} = \mat{3 & 0 & 0 \\ 0 & 2 & 1\\ 0 & 1 & 2}.
+		\end{equation*}
+		The characteristic polynomial of $AA^*$ is
+		\begin{equation*}
+			\det(AA^*-I\lambda) = (3-\lambda)((2-\lambda)^2-1) = (3-\lambda)(\lambda - 3)(\lambda - 1),
+		\end{equation*}
+		so the eigenvalues of $AA^*$ are $\lambda_1 =1$, $\lambda_2= 3$, and $\lambda_3=3$. Then the singular values of $A$ are $1, \sqrt{3}, \sqrt{3}$. Let $\vec{u}_i$ be the eigenvector of $AA^*$ corresponding to $\lambda_i$. Consider
+		\begin{equation*}
+			\mat{3 & 0 & 0 \\ 0 & 2 & 1 \\ 0 & 1 & 2}\mat{x\\y\\z} = \mat{x\\y\\z}.
+		\end{equation*}
+		Then $3x = x$, so $x = 0$, and $2y + z = y$, so $z = -y$, and we can choose $\vec{u}_1 = \frac{1}{\sqrt{2}}\mat{0\\1\\-1}$. Now consider
+		\begin{equation*}
+			\mat{3 & 0 & 0 \\ 0 & 2 & 1 \\ 0 & 1 & 2}\mat{x\\y\\z} = 3\mat{x\\y\\z}.
+		\end{equation*}
+		Then $x$ may be chosen freely, and $2y + z = 3y$ implies that $z = y$. Hence, we may choose $\vec{u}_2 = \mat{1\\0\\0}$, and $\vec{u}_3 = \frac{1}{\sqrt{2}}\mat{0\\1\\1}$. Then $\vec{u}_1, \vec{u}_2$, and $\vec{u}_3$ are a set of orthonormal eigenvectors of $AA^*$, and the $U$ matrix and $\Sigma$ matrix in a singular value decomposition $A =U\Sigma V^*$ of $A$ can be chosen as
+		\begin{equation*}
+			U = \mat{\vec{u}_1 &\vec{u}_2 & \vec{u}_3} = \mat{0 & 1 & 0 \\ \frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}}, \qquad \Sigma = \mat{1 & 0 & 0 \\ 0& \sqrt{3} & 0 \\ 0 & 0 & \sqrt{3}}.
+		\end{equation*}
+		As before, we have
+		\begin{equation*}
+			\mat{A^*\vec{u}_1 & A^*\vec{u}_2 & A^*\vec{u}_3} = A^*U = V\Sigma^T = \mat{\vec{v}_1 & \vec{v}_2 & \vec{v}_3}\mat{1 & 0 & 0 \\ 0 & \sqrt{3} & 0 \\ 0 & 0 &\sqrt{3}} = \mat{\vec{v}_1 & \sqrt{3}\vec{v}_2 & \sqrt{3}\vec{v}_3},
+		\end{equation*}
+		from which we may compute $\vec{v}_i$ for $i=1,2,3$:
+		\begin{equation*}
+			\begin{aligned}
+			\vec{v}_1 &= A^*\vec{u}_1 = \mat{1 & 0 &1 \\ 1&1&0\\-1&1&1}\frac{1}{\sqrt{2}}\mat{0\\1\\-1} = \frac{1}{\sqrt{2}}\mat{-1\\1\\0}, \\[0.5em]
+			\vec{v}_2 &= \frac{1}{\sqrt{3}}A^*\vec{u}_2 = \frac{1}{\sqrt{3}}\mat{1 & 0 &1 \\ 1&1&0\\-1&1&1}\mat{1\\0\\0} = \frac{1}{\sqrt{3}}\mat{1\\1\\-1}, \\[0.5em]
+			\vec{v}_1 &= \frac{1}{\sqrt{3}}A^*\vec{u}_1 = \frac{1}{\sqrt{3}}\mat{1 & 0 &1 \\ 1&1&0\\-1&1&1}\frac{1}{\sqrt{2}}\mat{0\\1\\1} = \frac{1}{\sqrt{6}}\mat{1\\1\\2}. \\
+			\end{aligned}
+		\end{equation*}
+		Then a singular value decomposition of $A$ is
+		\begin{equation*}
+			A = \mat{0 & 1 & 0 \\ \frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}}\mat{1 & 0 & 0 \\ 0& \sqrt{3} & 0 \\ 0 & 0 & \sqrt{3}}\mat{-\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{3}} & \frac{1}{\sqrt{6}} \\ \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{3}} & \frac{1}{\sqrt{6}} \\ 0 &  -\frac{1}{\sqrt{3}} & \frac{2}{\sqrt{6}}}^*.
+		\end{equation*}
+	\end{alphaparts}
+\end{document}

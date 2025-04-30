@@ -1,0 +1,422 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{}
+\renewcommand{\hwtype}{Midterm}
+\renewcommand{\questiontype}{Problem}
+\newcommand{\pow}[1]{^{\left(#1\right)}}
+\newcommand{\norm}[1]{\left\lVert{#1}\right\rVert}
+
+\begin{document}
+	\maketitle
+	
+	\question Suppose that $G : \R^n \to \R^n$ is a contraction with contraction factor $\alpha \in (0,1)$ on a closed set $D_0 \subseteq \R^n$ and that $G(D_0) \subseteq D_0$. Then
+	\begin{enumerate}
+		\item $G$ has a unique fixed point $x^* \in D_0$;
+		\item for any $x\pow{0} \in D_0$, the sequence $\big\{x\pow{k}\big\}$ defined recursively by $x\pow{k+1} = G\big(x\pow{k}\big)$ converges to $x^*$;
+		\item for any norm $\lVert \cdot\rVert$ on $\R^n$, the sequence $\big\{x\pow{k}\big\}$ in 2.\ satisfies the inequalities
+		\begin{equation}
+			\label{eq:p1:a_posteriori_error}
+			\norm{x\pow{k} - x^*} \le \frac{\alpha}{1-\alpha} \norm{x\pow{k} - x\pow{k-1}}, \qquad k =1,2,\dots,
+		\end{equation}
+		and
+		\begin{equation}
+			\label{eq:p1:convergence}
+			\norm{x\pow{k} - x^*} \le \frac{\alpha^k}{1-\alpha}\norm{G\left(x\pow{0}\right) - x\pow{0}}.
+		\end{equation}
+	\end{enumerate}
+	
+	\begin{proof}
+		Choose any point $x\pow{0}$ and consider the sequence $\big\{x\pow{k}\big\}$ from 2. Given integer $m<n$, we can apply the contraction condition $m$ times to show that this sequence satisfies
+		\begin{equation*}
+		\begin{aligned}
+			\norm{x\pow{n} - x\pow{m}} &\le \alpha^{m}\norm{x\pow{n-m} - x\pow{0}} \\
+			& \le \alpha^{m} \norm{x\pow{n-m} - x\pow{n-m-1} + x\pow{n-m-1} -\dots + x\pow{2} - x\pow{1} + x\pow{1} - x\pow{0}} \\
+			&\le \alpha^{m}\left[\norm{x\pow{n-m} - x\pow{n-m-1}} + \dots + \norm{x\pow{1}- x\pow{0}}\right].
+		\end{aligned}
+		\end{equation*}
+		Applying the contraction condition as many times as possible to each term yields
+		\begin{equation}
+		\label{eq:p1:cauchy_condition}
+		\begin{aligned}
+			\norm{x\pow{n} - x\pow{m}} &\le \alpha^{m}\left[\alpha^{n-m-1} + \dots + \alpha + 1\right]\norm{x\pow{1} - x\pow{0}} \\
+			&\le \alpha^{m}\norm{x\pow{1} - x\pow{0}}\sum_{k=0}^\infty \alpha^k \\
+			& \le \frac{\alpha^{m}}{1-\alpha}\norm{x\pow{1} - x\pow{0}}.
+		\end{aligned}
+		\end{equation}
+		Since the right-hand side of \eqref{eq:p1:cauchy_condition} converges to 0 as $m \to \infty$, it follows that $\big\{x\pow{k}\big\}$ is Cauchy. By the equivalence of norms on $\R^n$, the subset $D_0$ is closed with respect to $\norm{\cdot}$, and $\R^n$ is complete with respect to $\norm{\cdot}$, so $D_0$ is also complete with respect to $\norm{\cdot}$. By applying the condition $G(D_0) \subseteq D_0$ repeatedly, we easily see that $x\pow{k} \in D_0$ for all $k$. Thus, the sequence $\big\{x\pow{k}\big\}$ converges to a point $x^* \in D_0$, which we now show is the unique fixed point of $G$ in $D_0$.
+		
+		Firstly, we show that $x^*$ is a fixed point of $G$. Let $\varepsilon > 0$ be given. Then we can choose $K$ such $k > K$ implies that $\norm{x^* - x\pow{k}}\le \frac{\varepsilon}{2}$. It follows that
+		\begin{equation*}
+		\begin{aligned}
+			\norm{G(x^*) - x^*} &\le \norm{G(x^*) - x\pow{K+2}} + \norm{x^* - x\pow{K+2}} \\
+			&\le \norm{G(x^*) - G\left(x\pow{K+1}\right)} + \frac{\varepsilon}{2} \\
+			&\le \alpha\norm{x^* - x\pow{K+1}} + \frac{\varepsilon}{2} \\
+			&\le \alpha\frac{\varepsilon}{2} + \frac{\varepsilon}{2} \le \varepsilon.
+		\end{aligned}
+		\end{equation*}
+		Since $\varepsilon > 0$ was arbitrary, it follows that $\norm{G(x^*) - x^*} = 0$, which implies that $G(x^*) = x^*$; that is, $x^*$ is a fixed point of $G$.
+		
+		Secondly, we show that $x^*$ is the only fixed point of $G$ in $D_0$. Suppose that $y^* \in D_0$ is a fixed point of $G$. Then
+		\begin{equation*}
+			\norm{x^* - y^*} = \norm{G(x^*) - G(y^*)} \le \alpha\norm{x^* - y^*} \implies (1-\alpha)\norm{x^* - y^*} \le 0,
+		\end{equation*}
+		which implies that $\norm{x^* - y^*} = 0$ because $1-\alpha > 0$, so $x^* = y^*$; that is, $x^*$ is the unique fixed point of $G$ in $D_0$. This concludes the proof of 1.
+		
+		The proof of 2.\ is now trivial, as the point $x\pow{0}$ chosen in the proof of 1.\ was arbitrary.
+		
+		Lastly, to prove 3.\ we observe that, by the contraction condition,
+		\begin{equation*}
+			\norm{x\pow{k} - x^*} \le \norm{x\pow{k}-x\pow{k+1}} + \norm{x\pow{k+1}-x^*} \le \alpha\norm{x\pow{k} - x\pow{k-1}} + \alpha\norm{x\pow{k} - x^*},
+		\end{equation*}
+		which clearly implies \eqref{eq:p1:a_posteriori_error}. Furthermore, given $\varepsilon > 0$, we can choose $m>k$ large enough that $\norm{x\pow{m} - x^*} \le \varepsilon$. Then, by \eqref{eq:p1:cauchy_condition}, we have
+		\begin{equation*}
+			\norm{x\pow{k} - x^*} \le \norm{x\pow{k} - x\pow{m}} + \norm{x\pow{m} - x^*} \le \frac{\alpha^k}{1-\alpha}\norm{x\pow{1} - x\pow{0}} + \varepsilon,
+		\end{equation*}
+		which implies \eqref{eq:p1:convergence} because $\varepsilon > 0$ was arbitrary and $x\pow{1} =G\left(x\pow{0}\right)$.
+	\end{proof}
+	
+	\question Let $D_0 \subseteq \R^n$ be convex, and let the component functions $g_1, \dots, g_n$ of $G$ be continuously differentiable with bounded derivatives on $D_0$. Then $G$ satisfies the Lipschitz condition
+	\begin{equation}
+		\label{eq:p2:lipschitz_condition}
+		\norm{G(x) - G(y)} \le L\norm{x -y} \qquad x, y\in D_0,
+	\end{equation}
+	where $L = \sup\limits_{x\in D_0}\norm{DG(x)}$, where $DG$ is the Jacobian matrix function of $G$, and $\norm{\cdot}$ as a matrix norm is the norm induced by $\norm{\cdot}$ as a norm on $\R^n$. Note that if $L < 1$, then $G$ is a contraction on $D_0$ by definition.
+	\begin{proof}
+		Let $x, y \in D_0$ be given. Then the line segment $\{tx + (1-t)y : t \in [0,1]\} \subseteq D_0$ because $D_0$ is convex, so we may define $h_i: [0,1] \to \R$ by $h_i(t) = g_i(tx + (1-t)y)$, and by the chain rule
+		\begin{equation*}
+			h_i'(t) = \sum_{j=1}^n\partial_jg_i(tx+(1-t)y)\cdot(x_j - y_j) = DG_i(tx + (1-t)y)(x-y),
+		\end{equation*}
+		where $\partial_j$ means the partial derivative with respect to the $j$th component, and $DG_i$ is the $i$th row of $DG$. By the fundamental theorem of calculus, we have
+		\begin{equation*}
+			g_i(x) - g_i(y) = h_i(1) - h_i(0) = \int_0^1 h_i'(t)\;\text{d}t = \int_0^1DG_i(tx+(1-t)y)(x-y)\;\text{d}t.
+		\end{equation*}
+		It follows that
+		\begin{equation*}
+			G(x) - G(y) = \int_0^1 \mat{DG_1(tx+(1-t)y)(x-y) \\ \vdots \\ DG_n(tx+(1-t)y)(x-y)}\;\text{d}x = \int_0^1 DG(tx+(1-t)y)(x-y)\;\text{d}t.
+		\end{equation*}
+	\end{proof}
+	Thus,
+	\begin{equation*}
+		\norm{G(x) - G(y)} \le \int_0^1\norm{DG(tx+(1-t)y)(x-y)}\;\text{d}t \le \int_0^1L\norm{x-y}\;\text{d}t = L\norm{x-y},
+	\end{equation*}
+	if $DG$ is bounded with respect to the induced norm $\norm{\cdot}$. This is, indeed, the case, because each component of $DG$ is bounded by hypothesis, so that there exists a $n\times n$ matrix $M = \{m_{ij}\}$ such that $m_{ij} > |DG_{ij}(x)|$ for all $x \in D_0$, where $DG_{ij} = \partial_jg_i$ is the element of $DG$ in the $i$th row and $j$th column. Then for any $x,y\in D_0$ with $\norm{y} = 1$, we have
+	\begin{equation*}
+	\begin{aligned}
+		\norm{DG(x)y} &\le C_1\norm{DG(x)y}_\infty \le C_1\norm{DG(x)}_\infty \norm{y}_\infty \\
+		&\le C_1C_2\norm{y} \max_{i}\sum_{j=1}^n |DG_{ij}(x)| \le C_1C_2 \max_{i}\sum_{j=1}^n m_{ij} =C < \infty,
+	\end{aligned}
+	\end{equation*}
+	where the positive constants $C_1$ and $C_2$ are obtained from the equivalence of norms on $\R^n$. Thus, $\norm{DG(x)} \le C$ for all $x \in D_0$, which shows that $DG$ is bounded in the induced norm, and $L < \infty$, so that $G$ truly does satisfy a Lipschitz condition.
+	
+	\question Let $G: \R^2 \to \R^2$ be defined by
+	\begin{equation*}
+		G(x) = \mat{\frac{1}{3}\cos(x_1x_2) + \frac{1}{6} \\[0.5em] -\frac{1}{20}e^{-x_1x_2} - \frac{8}{20}}.
+	\end{equation*}
+	Set $x\pow{0} = 0$ and $D_0 = [-1,1]^2$. Then if $x\pow{k+1}= G\left(x\pow{k}\right)$ for $k \ge 0$, the sequence $\big\{x\pow{k}\big\}$ converges to a unique fixed point $x^*$ of $G$ in $D_0$.
+	\begin{proof}
+		We begin by showing the $G(D_0) \subseteq D_0$. Indeed, if $x \in D_0$, then
+		\begin{equation*}
+			\left|\frac{1}{3}\cos(x_1x_2) + \frac{1}{6}\right| \le \frac{1}{3} + \frac{1}{6} = \frac{1}{2},
+		\end{equation*}
+		and
+		\begin{equation*}
+			\left|-\frac{1}{20}e^{-x_1x_2}-\frac{8}{20}\right| \le \frac{1}{20}e + \frac{8}{20} \le \frac{9}{20}
+		\end{equation*}
+		because $e^{-x_1x_2}$ is clearly maximal in $D_0$ when $x_1=x_2=-1$. The above two facts imply that $G(x) \in D_0$. Thus, $G(D_0) \subseteq D_0$.
+		
+		Next, we compute the Jacobian $DG$ of $G$:
+		\begin{equation*}
+			DG(x) = \mat{-\frac{x_2}{3}\sin(x_1x_2) & -\frac{x_1}{3}\sin(x_1x_2) \\[0.5em] \frac{x_2}{20}e^{-x_1x_2} & \frac{x_1}{20}e^{-x_1x_2}}.
+		\end{equation*}
+		In the induced infinity norm, we have
+		\begin{equation*}
+			\norm{DG(x)}_\infty = \max\left\{\frac{|x_1| + |x_2|}{3}|\sin(x_1x_2)|,\; \frac{|x_1| + |x_2|}{20}e^{-x_1x_2}\right\}.
+		\end{equation*}
+		If $x \in D_0$, then $e^{-x_2x_2} \le e \le 4$, so we get
+		\begin{equation*}
+			\norm{DG(x)}_\infty \le \max\left\{\frac{|x_1| + |x_2|}{3},\; \frac{|x_1|+|x_2|}{5}\right\} \le \frac{2}{3}.
+		\end{equation*}
+		Since the component functions of $G$ are continuously differentiable on the closed and bounded set $D_0$, their derivatives are also bounded and hence satisfy the hypotheses of Problem 2. Since the above shows that $L = \sup\limits_{x\in D_0}\norm{DG(x)}_\infty \le \frac{2}{3} < 1$, it follows that $G$ satisfies all hypotheses of Problem 2. We therefore conclude that $G$ is a contraction on $D_0$. Then $G$ also satisfies the hypotheses of Problem 1.\ (note that $x\pow{0} = 0 \in D_0$), and we can conclude that $\big\{x\pow{x}\big\}$ converges to a unique fixed point $x^*$ of $G$ on $D_0$.
+	\end{proof}
+	
+	\question Let $A = \{a_{ij}\}$ be the $n\times n$ tridiagonal matrix with $a_{ii} = 2$ and $a_{i(i-1)} = a_{i(i+1)} = -1$ for all $i$ that make sense. Then the eigenvectors of $A$ are given by $\{\xi^k\}$ and $\{\lambda_k\}$, where
+	\begin{equation*}
+		\lambda_k = 4\sin^2\left(\frac{\pi}{2}x_k\right), \qquad \xi^k_j = \sin(k\pi x_j), \qquad k =1,2,\dots,n,\; j =1,2,\dots, n,
+	\end{equation*}
+	where $x_k = \frac{k}{n+1}$ for $k=1,2,\dots,n$. Furthermore, the $\ell^2$ condition number of $A$ is roughly given by
+	\begin{equation*}
+		\cond_2(A) \approx \frac{4(n+1)^2}{\pi^2}
+	\end{equation*}
+	when $n$ is large.
+	\begin{proof}
+		Suppose that $n = 1$. Then $A = \mat{2}$, of which the only eigenvalue is $2$ with corresponding eigenvector $\mat{1}$. Since $\lambda_1 = 4\sin^2\left(\frac{\pi}{2}\cdot\frac{1}{2}\right) = 2$, and $\xi^1_1 = \sin\left(\pi\cdot\frac{1}{2}\right) = 1$, we see that the claim is correct.
+		
+		Now suppose that $n \ge 2$. Then for $k=1,\dots,n$ and $j=1,\dots,n$,
+		\begin{equation*}
+		\begin{aligned}
+			\left[A\xi^k\right]_j &= \sum_{m=1}^n a_{jm}\xi^k_m = \begin{cases}
+				a_{j(j-1)}\xi^k_{j-1} + a_{jj}\xi^k_j + a_{j(j+1)}\xi^k_{j+1} & 1 < j < n \\
+				a_{11}\xi^k_1 + a_{12}\xi^k_2 & j = 1 \\
+				a_{n(n-1)}\xi^k_{n-1} + a_{nn}\xi^k_n & j = n
+			\end{cases}\\
+			&= \begin{cases}
+				-\sin\left(\frac{k(j-1)\pi}{n+1}\right) + 2\sin\left(\frac{kj\pi}{n+1}\right) - \sin\left(\frac{k(j+1)\pi}{n+1}\right) & 1 < j < n \\
+				2\sin\left(\frac{k\pi}{n+1}\right) - \sin\left(\frac{2k\pi}{n+1}\right) & j = 1 \\
+				-\sin\left(\frac{k(n-1)\pi}{n+1}\right) + 2\sin\left(\frac{kn\pi}{n+1}\right) & j = n. \\
+			\end{cases} \\
+			&= -\sin\left(\frac{k(j-1)\pi}{n+1}\right) + 2\sin\left(\frac{kj\pi}{n+1}\right) - \sin\left(\frac{k(j+1)\pi}{n+1}\right)
+		\end{aligned}
+		\end{equation*}
+		in any case because $-\sin\left(\frac{k(j-1)\pi}{n+1}\right) = 0$ if $j=1$, and $\sin\left(\frac{k(j+1)}{n+1}\right) = 0$ if $j = n$.
+		Thus, by the addition formula for sine and the double-angle identity for cosine,
+		\begin{equation*}
+		\begin{alignedat}{2}
+			\left[A\xi^k\right]_j &{}={}&&-\sin\left(\frac{kj\pi}{n+1}\right)\cos\left(\frac{k\pi}{n+1}\right) + \cos\left(\frac{kj\pi}{n+1}\right)\sin\left(\frac{k\pi}{n+1}\right) + 2\sin\left(\frac{kj\pi}{n+1}\right) \\
+			&&& {}- \sin\left(\frac{kj\pi}{n+1}\right)\cos\left(\frac{k\pi}{n+1}\right) - \cos\left(\frac{kj\pi}{n+1}\right)\sin\left(\frac{k\pi}{n+1}\right) \\
+			&={} && 2\left(1-\cos\left(\frac{k\pi}{n+1}\right)\right)\sin\left(\frac{kj\pi}{n+1}\right) \\
+			&={} && 4\sin^2\left(\frac{k\pi}{2(n+1)}\right)\sin\left(\frac{kj\pi}{n+1}\right) \\
+			&={} && 4\sin^2\left(\frac{\pi}{2}x_k\right)\sin\left(k\pi x_j\right) \\
+			&={} && \left[\lambda_k\xi^k\right]_j.
+		\end{alignedat}
+		\end{equation*}
+		Thus, for all $k=1,\dots, n$, we have $A\xi^k = \lambda_k\xi^k$, so $\lambda_k$ is an eigenvalue of $A$, and $\xi^k$ is an eigenvector. Since the values $\frac{\pi}{2}x_k \in \left[0, \frac{\pi}{2}\right]$ are distinct for $k=1,\dots, n$, and sine is one-to-one on this interval, it follows that the eigenvalues $\lambda_1, \dots, \lambda_n$ are distinct. Since the matrix $A$ can have no more than $n$ distinct eigenvalues, it follows that $\{\lambda_k\}$ and $\{\xi^k\}$ constitute all the eigenvalues and eigenvectors of $A$.
+		
+		The matrix $A$ is symmetric, and, because all its eigenvalues are positive, it is also positive definite (note that $\lambda_k \ne 0$ for any $k$ because $x_k \ne \pi m$ for any integer $m$, which are the only roots of $\sin^2$).
+		
+		Thus, the $\ell^2$ condition number of $A$ is given by
+		\begin{equation*}
+			\cond_2(A) = \frac{\max\limits_k \{\lambda_k\}}{\min\limits_k\{x_k\}}.
+		\end{equation*}
+		As mentioned above, sine and consequently $\sin^2$ are monotonic on the interval containing $\frac{\pi}{2}x_k$ for any $k$. In fact, $\sin^2$ is increasing; since the sequence $\{x_k\}$ is also increasing in $k$, it follows that $\{\lambda_k\}$ is increasing in $k$, giving $\max\limits_k\{\lambda_k\} = \lambda_n$, and $\min\limits_k\{\lambda_k\} = \lambda_1$. Then
+		\begin{equation*}
+			\cond_2(A) = \frac{\sin^2\left(\frac{n\pi}{2(n+1)}\right)}{\sin^2\left(\frac{\pi}{2(n+1)}\right)}.
+		\end{equation*}
+		Clearly, as $n\to\infty$ the numerator approaches 1, but the denominator approaches 0, meaning that the condition number of $A$ approaches infinity as $n \to \infty$. We can estimate the rate of blow-up by using the Taylor series for sine centered at 0 to approximate the denominator for large $n$. We have $\sin(x) = x + \mathcal{O}(x^3)$ as $x \to 0$, so $\sin^2(x) \approx x^2 + \mathcal{O}(x^4)$ as $x \to 0$, yielding
+		\begin{equation*}
+			\cond_2(A) \approx \frac{1}{\left(\frac{\pi}{2(n+1)}\right)^2 + \mathcal{O}(n^{-4})} \approx \frac{4(n+1)^2}{\pi^2}\frac{1}{1 + \mathcal{O}(n^{-2})} \approx \frac{4(n+1)^2}{\pi^2}\left(1 + \mathcal{O}\left(n^{-2}\right)\right) \approx \frac{4(n+1)^2}{\pi^2}.
+		\end{equation*}
+		as $n\to\infty$, where we have expanded the first fraction using a geometric series.
+	\end{proof}
+	
+	\question Let $A$ be a symmetric positive definite $n\times n$ matrix, and let $b \in \R^n$ be a nonzero vector. In the conjugate gradient method with initial guess $x\pow{0} = 0$, assume that $r\pow{k} \ne 0$ for $k < n$. Then all of the following hold for $1\le k \le n$.
+	\begin{enumerate}
+		\item[(a)] If $X_k= \spn\left\{x\pow{1}, x\pow{2},\dots, x\pow{k}\right\}$, and $R_k = \spn\left\{r\pow{0}, r\pow{1}, \dots, r\pow{k-1}\right\}$, and $V_k = \spn\left\{v\pow{1}, v\pow{2}, \dots, v\pow{k}\right\}$, then $X_k = R_k = V_k$.
+		\item[(b)] The residuals are pairwise orthogonal: $\left(r\pow{j}, r\pow{k}\right) = 0$ if $j < k$.
+		\item[(c)] The direction vectors are pairwise $A$-orthogonal: $\left(v\pow{j}, Av\pow{k}\right) = 0$ if $j < k$.
+	\end{enumerate}
+	
+	\begin{proof}
+		Note that $x\pow{1} = x\pow{0} + t_1v\pow{1} = t_1v\pow{1} = t_1r\pow{0}$, so clearly $X_1 = R_1 = V_1$. Now suppose for the sake of induction that $X_k = R_k = V_k$ for some $1 \le k < n$.
+		
+		Since $x\pow{k+1} = x\pow{k} + t_{k+1}v\pow{k+1}$, it follows that $x\pow{k+1} \in V_{k+1}$ because $x\pow{k} \in V_k \subseteq V_{k+1}$ by the inductive hypothesis. Hence, $X_{k+1} \subseteq V_{k+1}$. 
+		
+		Furthermore, since $v\pow{k+1} = r\pow{k} + s_kv\pow{k}$, it follows that $v\pow{k+1} \in R_{k+1}$ because $v\pow{k} \in R_k \subseteq R_{k+1}$ by the inductive hypothesis. Hence, $V_{k+1} \subseteq R_{k+1}$. 
+		
+		We showed in class that $t_{k+1} = \frac{\left(r\pow{k},\, r\pow{k}\right)}{\left(v\pow{k+1},\, Av\pow{k+1}\right)}$; therefore, the assumption $r\pow{k} \ne 0$ implies that $t_{k+1} \ne 0$. Thus, $r\pow{k} = v\pow{k+1} - s_kv\pow{k} = t_{k+1}^{-1}\left(x\pow{k+1} -x\pow{k}\right) - s_kv\pow{k} \in X_{k+1}$ because $v\pow{k} \in X_k \subseteq X_{k+1}$ by the inductive hypothesis. Hence, $R_{k+1} \subseteq X_{k+1}$.
+		
+		Then $X_{k+1} = R_{k+1} = V_{k+1}$. This completes the proof of (a) by induction.
+		
+		Now we prove (b) and (c). First, we observe that
+		\begin{equation*}
+			\begin{aligned}
+				\left(r\pow{0}, r\pow{1}\right) &= \left(r\pow{0}, r\pow{0} - t_1Av\pow{1}\right) = \left(r\pow{0}, r\pow{0}\right) - \frac{\left(r\pow{0}, r\pow{0}\right)}{\left(r\pow{0}, Ar\pow{0}\right)}\left(r\pow{0}, Ar\pow{0}\right) = 0
+			\end{aligned}
+		\end{equation*}
+		by the definition of $t_1$, and
+		\begin{equation*}
+		\begin{aligned}
+			\left(v\pow{1}, Av\pow{2}\right) &= \left(Av\pow{1}, r\pow{1} + s_1v\pow{1}\right) = \left(t_1^{-1}\left(r\pow{0} - r\pow{1}\right), r\pow{1} + s_1r\pow{0}\right) \\
+			&= t_1^{-1}\left[s_1\left(r\pow{0}, r\pow{0}\right) - \left(r\pow{1}, r\pow{1}\right)\right] = 0
+		\end{aligned}
+		\end{equation*}
+		by the above and by the definition of $s_1$.
+		Second, suppose for the sake of induction that, for some $1 \le k < n-1$ we have $\left(r\pow{j}, r\pow{k}\right) = 0$ if $j < k$ and $\left(v\pow{j}, Av\pow{k+1}\right) = 0$ if $j < k+1$. Then if $j < k$, we have
+		\begin{equation*}
+			\left(r\pow{j}, r\pow{k+1}\right) = \left(r\pow{j}, r\pow{k} - t_{k+1}Av\pow{k+1}\right) = -t_{k+1}\left(r\pow{j}, Av\pow{k+1}\right)
+		\end{equation*}
+		by the inductive hypothesis. Then, since $r\pow{j} = v\pow{j+1} - s_jv\pow{j}$, we have
+		\begin{equation*}
+			\left(r\pow{j}, r\pow{k+1}\right) = -t_{k+1}\left(v\pow{j+1} - s_jv\pow{j}, Av\pow{k+1}\right) = 0
+		\end{equation*}
+		by the inductive hypothesis and the fact that $j< k$ implies $j+1 <k+1$. Additionally, we see that
+		\begin{equation*}
+			\left(r\pow{k}, r\pow{k+1}\right) = \left(r\pow{k}, r\pow{k}- t_{k+1}Av\pow{k+1}\right) = \left(r\pow{k}, r\pow{k}\right) - \frac{\left(r\pow{k}, r\pow{k}\right)}{\left(v\pow{k+1}, Av\pow{k+1}\right)}\left(r\pow{k}, Av\pow{k+1}\right).
+		\end{equation*}
+		Since $r\pow{k} = v\pow{k+1} - s_kv\pow{k}$, we get
+		\begin{equation*}
+			\left(r\pow{k}, Av\pow{k+1}\right) = \left(v\pow{k+1} - s_kv\pow{k}, Av\pow{k+1}\right) = \left(v\pow{k+1}, Av\pow{k+1}\right)
+		\end{equation*}
+		by the inductive hypothesis. Thus,
+		\begin{equation*}
+			\left(r\pow{k}, r\pow{k+1}\right) = 0.
+		\end{equation*}
+		
+		Furthermore, if $j< k+1$, then
+		\begin{equation*}
+			\left(v\pow{j}, Av\pow{k+2}\right) = \left(v\pow{j}, Ar\pow{k+1}+ s_{k+1}Av\pow{k+1}\right) = \left(Av\pow{j}, r\pow{k+1}\right)
+		\end{equation*}
+		by the inductive hypothesis as well as the fact that $A$ is symmetric. Then, since $Av\pow{j} = t_j^{-1}\left(r\pow{j-1} - r\pow{j}\right)$, we have
+		\begin{equation*}
+			\left(v\pow{j}, Av\pow{k+2}\right) = t_j^{-1}\left(r\pow{j-1}- r\pow{j},r\pow{k+1}\right) = 0
+		\end{equation*}
+		by the above and the fact that $j < k+1$ and $j-1<k+1$. Lastly, we see that
+		\begin{equation*}
+		\begin{aligned}
+			\left(v\pow{k+1}, Av\pow{k+2}\right) &= \left(Av\pow{k+1}, r\pow{k+1} + s_{k+1}v\pow{k+1}\right) = \left(t_{k+1}^{-1}\left(r\pow{k} - r\pow{k+1}\right), r\pow{k+1} + s_{k+1}v\pow{k+1}\right) \\
+			&= t_{k+1}^{-1}\left[s_{k+1}\left(r\pow{k} - r\pow{k+1}, v\pow{k+1}\right) - \left(r\pow{k+1}, r\pow{k+1}\right)\right].
+		\end{aligned}
+		\end{equation*}
+		By (a), we can choose $c_0, c_1, \dots c_{k-1}\in \R$ such that $v\pow{k+1} = c_0r\pow{0} + c_1r\pow{1} + \dots + r\pow{k}$, where the last coefficient must be 1 because $v\pow{k+1} = r\pow{k} + s_kv\pow{k}$, and $v\pow{k} \in R_k$ by (a). Thus, applying pairwise orthogonality of the residuals from the inductive hypothesis and what we have proved for $r\pow{k+1}$, we have
+		\begin{equation*}
+			\left(r\pow{k} - r\pow{k+1}, v\pow{k+1}\right) = \left(r\pow{k} - r\pow{k+1}, c_0r\pow{0} + c_1r\pow{1} + \dots + r\pow{k}\right) = \left(r\pow{k}, r\pow{k}\right).
+		\end{equation*}
+		Hence,
+		\begin{equation*}
+			\left(v\pow{k+1}, Av\pow{k+2}\right) = t_{k+1}^{-1}\left[\frac{\left(r\pow{k+1}, r\pow{k+1}\right)}{\left(r\pow{k}, r\pow{k}\right)}\left(r\pow{k}, r\pow{k}\right) - \left(r\pow{k+1}, r\pow{k+1}\right)\right] = 0.
+		\end{equation*}
+		Then, by induction, given $1 \le k \le n-1$, we have $\left(r\pow{j}, r\pow{k}\right) = 0$ if $j < k$, and $\left(v\pow{j}, Av\pow{k+1}\right) =0$ if $j < k+1$. This proves (c) because (c) is trivially true for $k=1$; to prove (b), it remains to show that $\left(r\pow{j}, r\pow{n}\right) = 0$ if $j < n$. We do this using the same argument as above: if $j < n-1$, we have
+		\begin{equation*}
+			\left(r\pow{j}, r\pow{n}\right) = \left(r\pow{j}, r\pow{n-1} - t_{n}Av\pow{n}\right) = -t_{n}\left(r\pow{j}, Av\pow{n}\right)
+		\end{equation*}
+		because we have proved (b) up to $k=n-1$. Then, since $r\pow{j} = v\pow{j+1} - s_jv\pow{j}$, we have
+		\begin{equation*}
+			\left(r\pow{j}, r\pow{n}\right) = -t_{n}\left(v\pow{j+1} - s_jv\pow{j}, Av\pow{n}\right) = 0
+		\end{equation*}
+		by (c). Additionally, we see that
+		\begin{equation*}
+			\left(r\pow{n-1}, r\pow{n}\right) = \left(r\pow{n-1}, r\pow{n-1}- t_{n}Av\pow{n}\right) = \left(r\pow{n-1}, r\pow{n-1}\right) - \frac{\left(r\pow{n-1}, r\pow{n-1}\right)}{\left(v\pow{n}, Av\pow{n}\right)}\left(r\pow{n-1}, Av\pow{n}\right).
+		\end{equation*}
+		Since $r\pow{n-1} = v\pow{n} - s_{n-1}v\pow{n-1}$, we get
+		\begin{equation*}
+			\left(r\pow{n-1}, Av\pow{n}\right) = \left(v\pow{n} - s_{n-1}v\pow{n-1}, Av\pow{n}\right) = \left(v\pow{n}, Av\pow{n}\right)
+		\end{equation*}
+		by (c). Thus,
+		\begin{equation*}
+			\left(r\pow{n-1}, r\pow{n}\right) = 0.
+		\end{equation*}
+		This completes the proof of (b).
+	\end{proof}
+	
+	\question Let $A \in \R^{n\times n}$ be symmetric positive definite, and $b \in \R^n$. Let $x^*$ be the unique solution of $Ax = b$. Suppose that the set $\sigma(A)$ of eigenvalues of $A$ is the union of two subsets, so that $\sigma(A) = \sigma_0(A) \cup \sigma_1(A)$, and let $\ell = \#\sigma_0(A)$ be the number of elements in $\sigma_0(A)$. For $k \ge 0$, let $x\pow{k}$ be the $k$th iteration of the conjugate gradient method for solving $Ax = b$. Then, if $k \ge \ell$,
+	\begin{equation*}
+		\norm{x^* - x\pow{k}}_A \le 2M\left(\frac{\sqrt{\kappa_1(A)}-1}{\sqrt{\kappa_1(A)}+1}\right)^{k-\ell}\norm{x^* - x\pow{0}}_A,
+	\end{equation*}
+	where
+	\begin{equation*}
+		\kappa_1(A) = \frac{\max(\sigma_1(A))}{\min(\sigma_1(A))}, \qquad M = \max_{\lambda \in \sigma_1(A)}\prod_{\mu \in \sigma_0(A)}\left|1-\frac{\lambda}{\mu}\right|.
+	\end{equation*}
+	\begin{proof}
+		By the argument used to prove Theorem (VI) in class, we have
+		\begin{equation*}
+			\norm{x^* - x\pow{k}}_A^2 \le \norm{x^* - x\pow{0}}_A^2\cdot\min_{q_k(0)=1}\max_{\lambda\in\sigma(A)}|q_k(\lambda)|^2
+		\end{equation*}
+		where $q_k$ is a polynomial of degree at most $k$.
+		
+		Now let $q_{k-\ell}$ be a given polynomial of degree at most $k-\ell$ (which is nonnegative because $k\le \ell$) such that $q_{k-\ell}(0) = 1$. Then we can choose
+		\begin{equation*}
+			q_{k}(x) = q_{k-\ell}(x)\prod_{\mu \in \sigma_0(A)}\left(1 - \frac{x}{\mu}\right).
+		\end{equation*}
+		It is clear that $q_k$ has degree at most $k$ and satisfies $q_k(0) = 1$. Furthermore, $q_k(\mu)= 0$ if $\mu \in \sigma_0(A)$. Thus,
+		\begin{equation*}
+			\max_{\lambda \in \sigma(A)}|q_k(\lambda)| \le \max_{\lambda \in \sigma_1(A)}|q_k(\lambda)| \le \max_{\lambda \in \sigma_1(A)}|q_{k-\ell}(\lambda)| \cdot \max_{\lambda \in \sigma_1(A)}\prod_{\mu\in\sigma_0(A)}\left|1-\frac{\lambda}{\mu}\right| = M \cdot\max_{\lambda \in\sigma_1(A)}|q_{k-\ell}(\lambda)|.
+		\end{equation*}
+		Choosing $q_{k-\ell}$ the same way we did in the proof in class, that is,
+		\begin{equation*}
+			q_{k-\ell}(x) = \frac{T_{k-\ell}\left(\frac{b - a - 2x}{b-a}\right)}{T_{k-\ell}\left(\frac{b+a}{b-a}\right)},
+		\end{equation*}
+		where $T_{k-\ell}$ is the $(k-\ell)$th Chebyshev polynomial, and $b = \max(\sigma_1(A))$ and $a = \min(\sigma_1(A))$, we can apply the same logic to obtain the inequality
+		\begin{equation*}
+			|q_{k-\ell}(x)| \le 2\left(\frac{\sqrt{\kappa_1(A)}-1}{\sqrt{\kappa_1(A)+1}}\right)^{k-\ell},
+		\end{equation*}
+		where $\kappa_1(A) = \frac{b}{a}$. Thus,
+		\begin{equation*}
+			\max_{\lambda \in \sigma(A)}|q_k(\lambda)| \le 2M\left(\frac{\sqrt{\kappa_1(A)}-1}{\sqrt{\kappa_1(A)+1}}\right)^{k-\ell}.
+		\end{equation*}
+		It follows that
+		\begin{equation*}
+			\min_{q_k(0)=1}\max_{\lambda \in \sigma(A)}|q_k(\lambda)|\le 2M\left(\frac{\sqrt{\kappa_1(A)}-1}{\sqrt{\kappa_1(A)+1}}\right)^{k-\ell},
+		\end{equation*}
+		and combining this with the first inequality proves the theorem.
+	\end{proof}
+	
+	\question Consider the boundary value problem
+	\begin{equation}
+		\label{eq:p7:bvp}
+		\phi'' = \kappa^2\sinh(\phi) + f(x), \qquad x\in (0,4\pi), \quad \phi(0) = 0, \; \phi(4\pi) = 0,
+	\end{equation}
+	where $\kappa\in\R$ is a parameter, and $f(x) = -\sin(x) - \kappa^2\sinh(\sin(x))$. The exact solution is $\phi(x) = \sin(x)$. Using a centered difference formula to approximate $\phi''$ at the mesh points $\{x_i\}$, where $x_i = hi$ for $0 \le i \le N$, and $h = \frac{4\pi}{N}$ leads to the nonlinear system of equations
+	\begin{equation}
+		\label{eq:p7:discretized}
+		0 = F(\Phi) = -\frac{1}{h^2}\mat{
+			2 & - 1 \\
+			-1 & 2 & -1 \\
+			& \ddots & \ddots & \ddots \\
+			& & -1 & 2 & -1 \\
+			& & & -1 & 2
+		}\mat{\Phi_1 \\ \vdots \\ \Phi_{N-1}} - \kappa^2 \mat{\sinh(\Phi_1) \\ \vdots \\ \sinh(\Phi_{N-1})} - \mat{f(x_1) \\ \vdots \\ f(x_{N-1})},
+	\end{equation}
+	where $\Phi = (\Phi_1, \dots \Phi_{N-1})^T$ is an approximation of $(\phi(x_1), \dots, \phi(x_{N-1}))^T$.
+	\begin{alphaparts}
+		\questionpart We calculate the Jacobian of $F$ by computing the value in its $i$th row and $j$th column, which is
+		\begin{equation*}
+			DF_{ij}(\Phi) = \partial_jF_i(\Phi) = -\frac{1}{h^2}A_{ij} - \kappa^2I_{ij}\cosh(\Phi_i),
+		\end{equation*}
+		where $F_i(\Phi)$ is the $i$th element of $F(\Phi)$, $\partial_j$ is the partial derivative with respect to the $j$th component, $I_{ij}$ is the element of the identity matrix in row $i$ and column $j$, and $A \in \R^{(N-1)\times(N-1)}$ is given by
+		\begin{equation*}
+			A = \mat{
+				2 & - 1 \\
+				-1 & 2 & -1 \\
+				& \ddots & \ddots & \ddots \\
+				& & -1 & 2 & -1 \\
+				& & & -1 & 2
+			}.
+		\end{equation*}
+		Then we can write $DF(\Phi)$ as
+		\begin{equation*}
+			DF(\Phi) = \mat{
+				-\frac{2}{h^2} - \kappa^2\cosh(\Phi_1) & \frac{1}{h^2} \\[0.5em]
+				\frac{1}{h^2} & -\frac{2}{h^2} - \kappa^2\cosh(\Phi_2) & \frac{1}{h^2} \\[0.5em]
+				& \ddots & \ddots & \ddots \\[0.5em]
+				& & \frac{1}{h^2} & -\frac{2}{h^2} - \kappa^2\cosh(\Phi_{N-2}) & \frac{1}{h^2} \\[0.5em]
+				& & & \frac{1}{h^2} & -\frac{2}{h^2} - \kappa^2\cosh(\Phi_{N-1})
+			}
+		\end{equation*}
+		\questionpart The errors $e_N$ are reported in Table \ref{table:p7b}. The code used to generate these values is in \texttt{p7b\_output.txt}.
+		\begin{table}[htb!]
+			\centering
+			\begin{tabular}{@{}rr@{}}
+				\toprule
+				$N$ & $e_N$ \\
+				\midrule
+				32 & 5.270610e-03 \\
+				64 & 1.319870e-03 \\
+				128 & 3.301004e-04 \\
+				256 & 8.253332e-05 \\
+				512 & 2.063384e-05 \\
+				1024 & 5.158493e-06 \\
+				\bottomrule
+			\end{tabular}
+			\caption{Numerical errors using Newton's method to solve \eqref{eq:p7:discretized} with different values of $N$.}
+			\label{table:p7b}
+		\end{table}
+		
+		\questionpart The average iterations are reported in Table \ref{table:p7c}. The code used to generate these values is in \texttt{p7c.m} and the outputs from running this script are in \texttt{p7c\_output.txt}. Note that a tolerance of $\varepsilon = 10^{-10}$ is used for the forward error stopping condition in the conjugate gradient method.
+		
+		\begin{table}[htb!]
+			\centering
+			\begin{tabular}{@{}rrrr@{}}
+				\toprule
+				& \multicolumn{3}{c}{$\kappa$} \\
+				\cmidrule(ll){2-4}
+				$N$ & 1 & 10 & 100 \\
+				\midrule
+				64 & 8.25 & 8.00 & 7.20 \\
+				1024 & 108.00 & 64.60 & 12.80 \\
+				\bottomrule
+			\end{tabular}
+			\caption{$Aiters_{N,\kappa}$}
+			\label{table:p7c}
+		\end{table}
+	\end{alphaparts}
+\end{document}

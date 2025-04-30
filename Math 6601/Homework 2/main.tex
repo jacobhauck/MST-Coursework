@@ -1,0 +1,333 @@
+\documentclass[newpage]{homework}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{2}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+\maketitle
+
+\question 
+\begin{alphaparts}
+	\questionpart Let $f(x) = -x^3 - \cos(x)$, and let $x_0 = -1$. Newton's method for solving $f(x) =0$ is given by
+	\begin{equation*}
+		x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)} = x_k + \frac{x_k^3 + \cos(x_k)}{-3x_k^2 + \sin(x_k)}, \qquad k \ge 0.
+	\end{equation*}
+	Then
+	\begin{equation*}
+		x_1 = -1 + \frac{-1 + \cos(-1)}{-3 + \sin(-1)} = -\frac{2 + \sin(1) + \cos(1)}{3 + \sin(1)},
+	\end{equation*}
+	and
+	\begin{equation*}
+		x_2 = -\frac{2 + \sin(1) + \cos(1)}{3 + \sin(1)} + \frac{\left(-\frac{2 + \sin(1) + \cos(1)}{3 + \sin(1)}\right)^3 + \cos\left(-\frac{2 + \sin(1) + \cos(1)}{3 + \sin(1)}\right)}{-3\left(-\frac{2 + \sin(1) + \cos(1)}{3 + \sin(1)}\right)^2 + \sin\left(-\frac{2 + \sin(1) + \cos(1)}{3 + \sin(1)}\right)} \approx -0.865684.
+	\end{equation*}
+	Newton's method would not work with $x_0 = 0$ because $f'(x_0) = 0$.
+	
+	\questionpart Let
+	\begin{equation*}
+		f(x) = \int_0^xe^{t^2}\;\text{d}t - 1.
+	\end{equation*}
+	Then Newton's method can be used to solve for $f(x) = 0$, or to find $x$ such that $\int_0^xe^{t^2}\;\text{d}t = 1$. Given an initial guess $x_0$, the iteration is given by
+	\begin{equation*}
+		x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)} = x_k - \frac{\int_0^{x_k}e^{t^2}\;\text{d}t -1}{e^{x_k^2}}, \qquad k \ge 0
+	\end{equation*}
+	because $f'(x) = e^{x^2}$ by the fundamental theorem of calculus.
+\end{alphaparts}
+
+\question If $f$ is $m+1$ times continuously differentiable on $[a,b]$, which contains a root $z$ of $f$ of multiplicity $m > 1$, then Modified Newton's Method
+\begin{equation*}
+	x_{k+1} = x_k - \frac{mf(x_k)}{f'(x_k)}, \qquad k \ge 0
+\end{equation*}
+converges locally and quadratically to $z$.
+\begin{proof}
+	Using the Taylor expansion of $f$ about $z$ and of $f'$ about $z$ and the fact that $z$ has multiplicity $m$, we have
+	\begin{align*}
+		f(x_k) &= f(z) + f'(z)(x_k-z) + \dots  + \frac{1}{m!}f^{(m)}(z)(x_k-z)^m + \frac{1}{(m+1)!}f^{(m+1)}(\xi_1(z))(x_k-z)^{m+1} \\
+		&= \frac{1}{m!}f^{(m)}(z)(x_k-z)^m + \frac{1}{(m+1)!}f^{(m+1)}(\xi_1(x_k))(x_k-z)^{m+1}
+	\end{align*}
+	for some $\xi_1(x_k)$ such that $|\xi_1(x_k) - z| \le |x_k - z|$, and
+	\begin{align*}
+		f'(x_k) &= f'(z) + f''(z)(x_k-z) + \dots + \frac{1}{(m-1)!}f^{(m)}(z)(x_k-z)^{m-1} + \frac{1}{m!}f^{(m+1)}(\xi_2(z))(x_k-z)^m\\
+		&=\frac{1}{(m-1)!}f^{(m)}(z)(x_k-z)^{m-1} + \frac{1}{m!}f^{(m+1)}(\xi_2(x_k))(x_k-z)^m
+	\end{align*}
+	for some $\xi_2(x_k)$ such that $|\xi_2(x_k) - z| \le |x_k - z|$. Then
+	\begin{align*}
+		|x_{k+1} - z| &= \left|x_k - z - m\frac{f(x_k)}{f'(x_k)}\right| \\
+		&= \left|x_k - z - m\frac{\frac{1}{m!}f^{(m)}(z)(x_k-z)^m + \frac{1}{(m+1)!}f^{(m+1)}(\xi_1(x_k))(x_k-z)^{m+1}}{\frac{1}{(m-1)!}f^{(m)}(z)(x_k-z)^{m-1} + \frac{1}{m!}f^{(m+1)}(\xi_2(z))(x_k-z)^m}\right| \\
+		&= \left|x_k - z - \frac{(m+1)f^{(m)}(z)(x_k-z) + f^{(m+1)}(\xi_1(x_k))(x_k-z)^2}{(m+1)f^{(m)}(z) + \frac{m+1}{m}f^{(m+1)}(\xi_2(z))(x_k-z)}\right| \\
+		&= \left|\frac{\frac{m+1}{m}f^{(m+1)}(\xi_2(z))(x_k-z)^2 - f^{(m+1)}(\xi_1(x_k))(x_k-z)^2}{(m+1)f^{(m)}(z) + \frac{m+1}{m}f^{(m+1)}(\xi_2(z))(x_k-z)}\right| \\
+		&\le \left|(m+1)f^{(m)}(z) + \frac{m+1}{m}f^{(m+1)}(\xi_2(z))(x_k-z)\right|^{-1}\left(\frac{m+1}{m}\left|f^{(m+1)}(\xi_2(z))\right| + \left|f^{(m+1)}(\xi_1(x_k))\right|\right)\left|x_k-z\right|^2.
+	\end{align*}
+	Since $f^{(m+1)}$ is continuous on $[a,b]$ it is bounded, say by $C_{m+1} > 0$. Thus, given $\delta>0$, then $|x_k - z| < \delta$ implies that
+	\begin{equation*}
+		\left|(m+1)f^{(m)}(z) + \frac{m+1}{m}f^{(m+1)}(\xi_2(x_k))(x_k-z)\right| \ge (m+1)\left|f^{(m)}(z)\right| - \frac{m+1}{m}C_{m+1}\delta.
+	\end{equation*}
+	Since $f^{(m)}(z) \ne 0$ (because the multiplicity of $z$ is $m$), we can choose $\delta > 0$ small enough that the quantity on the right is positive. In this case, $|x_k - z| < \delta$ implies that
+	\begin{equation*}
+		\left|(m+1)f^{(m)}(z) + \frac{m+1}{m}f^{(m+1)}(\xi_2(x_k))(x_k-z)\right|^{-1} \le \frac{1}{(m+1)\left|f^{(m)}(z)\right| - \frac{m+1}{m}C_{m+1}\delta} =: D.
+	\end{equation*}
+	Then setting
+	\begin{equation*}
+		C = DC_{m+1}\left(\frac{m+1}{m} + 1\right),
+	\end{equation*}
+	we obtain
+	\begin{equation*}
+		|x_{k+1} - z| \le C|x_k - z|^2
+	\end{equation*}
+	if $|x_k - z| < \delta$. Thus, we can choose $\delta' > 0$ such that if $x_0 \in (z-\delta', z+\delta') \cap [a,b]$, then $x_k \to z$ quadratically. In particular, choose $\delta' > 0$ such that $\delta' < \min\{\delta, \frac{1}{C}\}$.
+\end{proof}
+
+\question 
+Let 
+\begin{equation*}
+	f(x) = \frac{1}{2} + \frac{1}{4}x^2 - x\sin(x) - \frac{1}{2}\cos(2x).
+\end{equation*}
+\begin{alphaparts}
+	\questionpart Running Newton's method using the code in \texttt{problem3a\_output.txt}, it takes 18 steps to reach an error $|x_{k+1} - x_k| < 10^{-6}$. Steps are presented in Table \ref{table:problem3a}
+	\begin{table}[htb!]
+		\centering
+		\begin{tabular}{@{}rr@{}}
+			\toprule
+			$k$ & $x_k$ \\
+			\midrule
+			0 & 1.57079632679490\\
+			1 & 1.78539816339745\\
+			2 & 1.84456162960179\\
+			3 & 1.87083441768886\\
+			4 & 1.88334642692721\\
+			5 & 1.88946376418230\\
+			6 & 1.89248962453426\\
+			7 & 1.89399456835593\\
+			8 & 1.89474506969115\\
+			9 & 1.89511983090939\\
+			10 & 1.89530708955216\\
+			11 & 1.89540068843122\\
+			12 & 1.89544748026546\\
+			13 & 1.89547087428599\\
+			14 & 1.89548257081704\\
+			15 & 1.89548841897691\\
+			16 & 1.89549134299450\\
+			17 & 1.89549280504346\\
+			18 & 1.89549353608069 \\
+			\bottomrule
+		\end{tabular}
+		\caption{Steps for Newton's method for solving $f(x) = 0$ with $x_0 = \frac{\pi}{2}$}
+		\label{table:problem3a}
+	\end{table}
+	
+	\questionpart The convergence seems to be too slow for Newton's method. Indeed, by solving to a much lower error ($10^{-12}$) to get a good approximation of the true root $z$, we can estimate the error on each step above and compute the convergence rate. This is presented in Table \ref{table:problem3b} (the code is also in \texttt{problem3a\_output.txt}). The result suggests that Newton's method is converging linearly with rate $\frac{1}{2}$. 
+	
+	\begin{table}[htb!]
+		\centering
+		\begin{tabular}{@{}rr@{}}
+			\toprule
+			$k$ & $\frac{|x_{k+1} - z|}{|x_k - z|}$ \\
+			\midrule
+			0 & 0.339072360071223 \\
+			1 & 0.462619750185422 \\
+			2 & 0.484165857812748 \\
+			3 & 0.492615943053683 \\
+			4 & 0.496425510330024 \\
+			5 & 0.498239941979161 \\
+			6 & 0.499125462815884 \\
+			7 & 0.499561850963095 \\
+			8 & 0.499776240554527 \\
+			9 & 0.499878023019502 \\
+			10 & 0.499918634151070 \\
+			11 & 0.499918522333072 \\
+			12 & 0.499877563762001 \\
+			13 & 0.499775562212887 \\
+			14 & 0.499559963878091 \\
+			15 & 0.499129833394247 \\
+			16 & 0.498242847250807 \\
+			17 & 0.496464515761668 \\
+			\bottomrule
+		\end{tabular}
+		\caption{Estimated step-by-step convergence rate for Newton's method from \textbf{(a)}}
+		\label{table:problem3b}
+	\end{table}
+	
+	This is corroborated by the fact that $f'(z) = 0$; in fact, by the double-angle identity,
+	\begin{equation*}
+		f(x) = \frac{1}{4}x^2 -x\sin(x) + \sin^2(x) = \left(\frac{1}{2}x - \sin(x)\right)^2,
+	\end{equation*}
+	so $f(z) = 0$ implies that $\frac{1}{2}z - \sin(z) = 0$. Then
+	\begin{equation*}
+		f'(x) = 2\left(\frac{1}{2}x - \sin(x)\right)\left(\frac{1}{2} - \cos(x)\right) \implies f'(z) = 0.
+	\end{equation*}
+	Thus, Newton's method should converge linearly, as we observed.
+	
+	\questionpart If we can determine the multiplicity $m$ of the root $z$, then we can use improved Newton's method from Problem 2 to achieve quadratic convergence again. We already know that $m \ge 2$. Now, we have
+	\begin{equation*}
+		f''(x) = 2\left(\frac{1}{2} - \cos(x)\right)^2 + 2\left(\frac{1}{2}x - \sin(x)\right)\sin(x).
+	\end{equation*}
+	Thus, $\frac{1}{2}z-\sin(z) = 0$ implies that
+	\begin{equation*}
+		f''(z) = 2\left(\frac{1}{2} - \cos(z)\right)^2.
+	\end{equation*}
+	If $\cos(z) = \frac{1}{2}$, then $z = \pm \frac{\pi}{3} + 2\pi n$, where $n$ is an integer. Then $\sin(z) = \pm \frac{\sqrt{3}}{2} \ne \frac{1}{2}\left(\pm \frac{\pi}{3} + 2\pi n\right)$ for any choice of signs or value of $n$, meaning that the condition $\frac{1}{2}z - \sin(z) = 0$ is violated. Thus, we cannot have $\cos(z) = \frac{1}{2}$, so $f''(z) \ne 0$. This means that $m = 2$, and we can use modified Newton's method from Problem 2 to achieve enhanced convergence.
+	
+	This is implemented in \texttt{problem3c\_output.txt}. Numerical results are also presented in Table \ref{table:problem3c}. As expected, it took far fewer steps to achieve a tolerance of $10^{-6}$ (only 5 steps).
+	
+	\begin{table}
+		\centering
+		\begin{tabular}{@{}rr@{}}
+			\toprule
+			$k$ & $x_k$ \\
+			\midrule
+			0 & 1.57079632679490 \\
+			1 & 2.00000000000000 \\
+			2 & 1.90099559420391 \\
+			3 & 1.89551164537963 \\
+			4 & 1.89549426721330 \\
+			5 & 1.89549380571069 \\
+			\bottomrule
+		\end{tabular}
+		\caption{Modified Newton's method steps for solving $f(x) = 0$.}
+		\label{table:problem3c}
+	\end{table}
+\end{alphaparts}
+
+\question 
+Let $f(x) = (x-\sin(x))(x-\cos(x))$.
+\begin{alphaparts}
+	\questionpart Running Newton's method (see \texttt{problem4a\_output.txt}) with $x_0 = 0.6$ exhibits quadratic convergence, as can be seen in the estimated convergence orders in Table \ref{table:problem4a}.
+	\begin{table}[htb!]
+		\centering
+		\begin{tabular}{@{}rr@{}}
+			\toprule
+			$k$ & Approximate order \\
+			\midrule
+			1 & 0.51790088486251 \\
+			2 & 1.67903770973958 \\
+			3 & 1.56906120587407 \\
+			4 & 1.58561581327327 \\
+			5 & 1.68105326786349 \\
+			6 & 1.80036881025641 \\
+			7 & 1.88878749395772 \\
+			\bottomrule
+		\end{tabular}
+		\caption{Estimated convergence order for Newton's method for solving $f(x) = 0$ with $x_0 = 0.6$}
+		\label{table:problem4a}
+	\end{table}
+	
+	\questionpart Running Newton's method (see \texttt{problem4b\_output.txt}) with $x_0 = 0.1$ seems to exhibit linear convergence. This is likely because it is converging to the root $z = 0$, and $f'(0) = 0$ because
+	\begin{equation*}
+		f'(x) = (1-\cos(x))(x-\cos(x)) + (x-\sin(x))(1+\sin(x)) \implies f'(0) = (1-1)(0-1) + (0-0)(1+0)=0,
+	\end{equation*}
+	which implies that Newton's method will converge linearly if $x_0$ is near $0$. Noting that 
+	\begin{align*}
+		f''(x) &= 1 + \sin(x) + \sin(x)(x-\cos(x)) - \cos(x)(1 + \sin(x)) + 1 -\cos(x) + \cos(x)(x-\sin(x)) + \sin(x)(1-\cos(x)) \\
+		&= 2 + 2(\sin(x) - \cos(x) - \sin(x)\cos(x)) + \sin(x)(x-\cos(x)) + \cos(x)(x-\sin(x)),
+	\end{align*}
+	it follows that
+	\begin{equation*}
+		f''(0) = 0.
+	\end{equation*}
+	Furthermore,
+	\begin{equation*}
+		f'''(x) = 2(\cos(x) + \sin(x) - \cos(2x)) + \cos(x)(x-\cos(x)) + \sin(x)(1+\sin(x)) - \sin(x)(x-\sin(x)) + \cos(x)(1-\cos(x)),
+	\end{equation*}
+	so
+	\begin{equation*}
+		f'''(0) = 2(1 + 0 -1) + 1(0-1) + 0(1+0) - 0(0-0) + 1(1-1) = -1 \ne 0.
+	\end{equation*}
+	Then $0$ is a root of multiplicity $m = 3$, and we can use modified Newton's method with $m=3$ to obtain quadratic convergence. This can be seen in \texttt{problem4b\_output.txt}, in which we see that the modified method requires 4 steps to reach the same tolerance as the original Newton's method did in 36 steps.
+\end{alphaparts}
+
+\question Let $\alpha$ be a root of $f$, and suppose that $f'(\alpha) \ne 0$ and $f''(\alpha) \ne 0$, and $f$ is three times continuously differentiable on an interval $[a,b]$ containing $\alpha$. Define the iteration
+\begin{equation*}
+	x_{k+1} = z_{k+1} - \frac{f(z_{k+1})}{f'(x_{k})}, \qquad z_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}.
+\end{equation*}
+Then $x_k \to \alpha$ locally with order 3.
+\begin{proof}
+	By Taylor's theorem, we have for $x \in U$,
+	\begin{equation*}
+		f(x) = f'(\alpha)(x-\alpha) + \frac{1}{2}f''(\alpha)(x-\alpha)^2 + \frac{1}{6}f'''(\xi_1(x))(x-\alpha)^3
+	\end{equation*}
+	for some $\xi_1(x) \in U$ satisfying $|\xi_1(x) - \alpha| \le |x - \alpha|$, and
+	\begin{equation*}
+		f'(x) = f'(\alpha) + f''(\alpha)(x-\alpha) + \frac{1}{2}f'''(\xi_2(x))(x-\alpha)^2
+	\end{equation*}
+	for some $\xi_2(x) \in U$ satisfying $|\xi_2(x) - \alpha| \le |x-\alpha|$. Then
+	\begin{align*}
+		z_{k+1} &= \alpha + x_k - \alpha - \frac{f'(\alpha)(x_k - \alpha) + \frac{1}{2}f''(\alpha)(x_k-\alpha)^2 + \frac{1}{6}f'''(\xi_1(x_k))(x_k-\alpha)^3}{f'(\alpha) + f''(\alpha)(x_k-\alpha) + \frac{1}{2}f'''(\xi_2(x_k))(x_k-\alpha)^2} \\
+		&= \alpha + \frac{\frac{1}{2}f''(\alpha) + \left(\frac{1}{2}f'''(\xi_2(x_k)) + \frac{1}{6}f'''(\xi_1(x_k))\right)(x_k-\alpha)}{f'(\alpha) + f''(\alpha)(x_k - \alpha) + \frac{1}{2}f'''(\xi_2(x_k))(x_k-\alpha)^2}(x_k-\alpha)^2 \\
+		&= \alpha + c_1(x_k)(x_k-\alpha)^2,
+	\end{align*}
+	where
+	\begin{equation*}
+		c_1(x) = \frac{\frac{1}{2}f''(\alpha) + \left(\frac{1}{2}f'''(\xi_2(x)) + \frac{1}{6}f'''(\xi_1(x))\right)(x-\alpha)}{f'(\alpha) + f''(\alpha)(x - \alpha) + \frac{1}{2}f'''(\xi_2(x))(x-\alpha)^2}.
+	\end{equation*}
+	Then substituting for $z_{k+1}$, we obtain
+	\begin{align*}
+		x_{k+1} - \alpha &= c_1(x_k)(x_k-\alpha)^2 - \frac{f(\alpha + c_1(x_k)(x_k-\alpha)^2)}{f'(x_k)} \\
+		&= c_1(x_k)(x_k-\alpha)^2 - \frac{f'(\alpha)c_1(x_k)(x_k-\alpha)^2 + \frac{1}{2}f''(\alpha)c_1^2(x_k)(x_k-\alpha)^4 + \frac{1}{6}f'''(\xi_1(x_k))c_1^3(x_k)(x_k-\alpha)^6}{f'(\alpha) + f''(\alpha)(x_k-\alpha) + \frac{1}{2}f'''(\xi_2(x_k))(x_k-\alpha)^2} \\
+		&= \frac{f''(\alpha)c_1(x_k) + \left(\frac{1}{2}f'''(\xi_2(x_k))c_1(x_k)-\frac{1}{2}f''(\alpha)c_1^2(x_k)\right)(x_k-\alpha) - \frac{1}{6}f'''(\xi_1(x_k))c_1^3(x_k)(x_k-\alpha)^3}{f'(x_k)}(x_k-\alpha)^3.
+	\end{align*}
+	Now, $f'$ is continuous on $U$, so $f'(x) \to f'(\alpha) \ne 0$ as $x \to \alpha$. Moreover, since $f'''$ is continuous on $[a,b]$, it is bounded. This implies that $c_1$ is continuous at $\alpha$, and clearly $c_1(x) \to \frac{f''(\alpha)}{2f'(\alpha)}$ as $x \to \alpha$. Since the entire coefficient of $(x_k - \alpha)^3$ above depends continuously on $x_k$ and $c_1(x_k)$, it follows that the coefficient is continuous at $\alpha$. Then there exists some constant $C > 0$ and $\delta > 0$ so that $|x_k - \alpha| < \delta$ implies
+	\begin{equation*}
+		|x_{k+1} - \alpha| \le C|x_k - \alpha|^3.
+	\end{equation*}
+	Then $x_k \to \alpha$ locally and with order 3.
+\end{proof}
+
+\question 
+Let $F(x) = (x_1^2 + x_2^2 - 2, -x_1 + x_2)^T$.
+\begin{alphaparts}
+	\questionpart First, note that
+	\begin{equation*}
+		DF(x) = \mat{2x_1 & 2x_2 \\ -1 & 1},
+	\end{equation*}
+	and
+	\begin{equation*}
+		DF^{-1}(x) = \frac{1}{2(x_1 + x_2)}\mat{1 & -2x_2 \\ 1 & 2x_1}.
+	\end{equation*}
+	If the initial guess is $x^{(0)} = (2,2)^T$, then the first step of Newton's method is
+	\begin{equation*}
+		x^{(1)} = x^{(0)} - DF^{-1}\left(x^{(0)}\right)F\left(x^{(0)}\right) = \mat{2 \\ 2} - \frac{1}{2(2+2)}\mat{1 & -4 \\ 1 & 4}\mat{6 \\ 0} = \mat{\frac{5}{4} \\[0.5em] \frac{5}{4}}.
+	\end{equation*}
+	The next step is then
+	\begin{equation*}
+		x^{(2)} = x^{(1)} - DF^{-1}\left(x^{(1)}\right)F\left(x^{(1)}\right) = \mat{\frac{5}{4} \\[0.5em] \frac{5}{4}} - \frac{1}{2\left(\frac{5}{4} +\frac{5}{4}\right)}\mat{1 & -\frac{10}{4} \\ 1 & \frac{10}{4}}\mat{\frac{9}{8} \\[0.5em] 0} = \mat{\frac{41}{40} \\[0.5em] \frac{41}{40}}.
+	\end{equation*}
+	
+	\questionpart Based on the output in \texttt{problem6b\_output.txt}, it appears that Newton's method is converging quadratically.
+	
+	\questionpart If $F(x) = 0$, then $x_1 = x_2$ by the second component being $0$, and then $x_1^2 = 1$ by the first component being zero, leading to two solutions
+	\begin{equation*}
+		z^{(1)} = \mat{1 \\ 1}, \qquad z^{(2)} = \mat{-1 \\ -1}.
+	\end{equation*}
+	
+	\questionpart We have $\det(DF(z)) = 2(x_1+x_2)$, so $\det\left(DF\left(z^{(1)}\right)\right) = 4 \ne0$, and $\det\left(DF\left(z^{(2)}\right)\right) = -4 \ne 0$.
+\end{alphaparts}
+
+\question
+Let $F(x) = (x_1^2+2x_2^2, -4x_1 +x_2)$.
+\begin{alphaparts}
+	\questionpart First, note that
+	\begin{equation*}
+		DF(x) = \mat{2x_1 & 4x_2 \\ -4 & 1},
+	\end{equation*}
+	and
+	\begin{equation*}
+		DF^{-1}(x) = \frac{1}{2x_1 + 16x_2}\mat{1 & -4x_2 \\ 4 & 2x_1}.
+	\end{equation*}
+	Then with initial guess $x^{(0)} = (2,2)^T$, we have
+	\begin{equation*}
+		x^{(1)} = x^{(0)} - DF^{-1}\left(x^{(0)}\right)F\left(x^{(0)}\right) = \mat{2\\2} - \frac{1}{36}\mat{1 & -8 \\ 4 & 4}\mat{12 \\ -6} = \mat{\frac{1}{3} \\[0.5em] \frac{4}{3}}.
+	\end{equation*}
+	Then the next step is
+	\begin{equation*}
+		x^{(2)} = x^{(1)} - DF^{-1}\left(x^{(1)}\right)F\left(x^{(1)}\right) = \mat{\frac{1}{3} \\[0.5em] \frac{4}{3}} - \frac{1}{22}\mat{1 & -\frac{4}{3} \\[0.5em] 4 & \frac{8}{3}}\mat{\frac{11}{3} \\[0.5em] 0} = \mat{\frac{1}{6} \\[0.5em] \frac{2}{3}}.
+	\end{equation*}
+	
+	\questionpart Based on the numerical results in \texttt{problem7b\_output.txt}, it seems that the convergence is linear.
+	
+	\questionpart The first component of $F(x)$ can only be zero if $x_1= x_2=0$, which makes the second component zero. Thus, $z = (0,0)^T$ is the only root of $F$.
+	
+	\questionpart We have $\det(DF(z)) = 2z_1 + 16z_2 = 0$.
+	
+	\questionpart Based on the calculations in \texttt{problem7e\_output.txt}, it seems that the convergence rate is $0.5$.
+\end{alphaparts}
+\end{document}

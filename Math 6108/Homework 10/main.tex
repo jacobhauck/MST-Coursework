@@ -1,0 +1,189 @@
+\documentclass{homework}
+\input{../../standardcmd.tex}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{10}
+
+\begin{document}
+	\maketitle
+	
+	\question Suppose that $\mathbb{F} = \mathbb{R}$ or $\mathbb{F} = \mathbb{C}$, and $B,C \in \mathcal{M}_{mn}(\mathbb{F})$. Then $B^*B = C^*C$ if and only if there exists a unitary matrix $U \in \mathcal{M}_m(\mathbb{F})$ such that $B = UC$.
+	
+	\begin{proof}
+		If there is a unitary matrix $U \in \mathcal{M}_m(\mathbb{F})$ such that $B = UC$, then certainly
+		\begin{equation*}
+			B^*B = C^*U^*UC =C^*C.
+		\end{equation*}
+		Conversely, suppose that $B^*B = C^*C$. Let $K = \{\vec{v}_1, \dots, \vec{v}_k\} \subseteq \mathbb{F}^m$ be an orthonormal basis for $C(\mathbb{R}^n)$, which we can construct by using the Gram-Schmidt process. Basis extension plus further Gram-Schmidt process implies that we can extend this basis to an orthonormal basis $M = \{\vec{v}_1, \dots, \vec{v}_k, \vec{v}_{k+1},\dots, \vec{v}_m\}\subseteq \mathbb{F}^m$ that spans $\mathbb{F}^m$.
+		
+		We can choose $L = \{\vec{u}_1, \dots, \vec{u}_k\} \subseteq \mathbb{F}^n$ such that $C\vec{u}_i = \vec{v}_i$. If $L$ were linearly dependent, then $K = C(L)$ would also be linearly dependent; hence, $L$ is linearly independent.
+		
+		\textbf{Claim:} For all $\vec{y} \in \mathbb{F}^n$, there exists $\vec{u} \in \span(L)$ and $\vec{h} \in \Null(C)$ such that $\vec{y} = \vec{u} + \vec{h}$. Since $C\vec{u} \in \span(K)$ by construction, it follows that there exists $a_1,\dots, a_k \in \mathbb{F}$ such that
+		\begin{equation*}
+			C\vec{y} = a_1 \vec{v}_1 + \dots + a_k\vec{v}_k.
+		\end{equation*}
+		Choose $\vec{u} = a_1\vec{u}_1 + \dots + a_k \vec{u}_k$, and choose $\vec{h} = \vec{y} - \vec{u}$. Then $\vec{u} \in \span(L)$, and $\vec{y} = \vec{u} + \vec{h}$, and
+		\begin{equation*}
+			\begin{aligned}
+			C\vec{h} &= C\vec{y} - C\vec{u} = a_1\vec{v}_1 + \dots + a_k\vec{v}_k - C(a_1\vec{u}_1 + \dots + c_k\vec{u}_k) \\
+			&= a_1\vec{v}_1 + \dots a_k\vec{v}_k - (a_1\vec{v}_1 + \dots + a_k\vec{v}_k) = \vec{0},
+			\end{aligned}
+		\end{equation*}
+		so $\vec{h} \in \Null(C)$.
+		
+		Observe that $\Null(B) = \Null(C)$ because for any $\vec{x} \in \mathbb{R}^n$,
+		\begin{equation*}
+			B\vec{x} = 0 \iff \lVert B\vec{x}\rVert^2 = 0 \iff \vec{x}^*B^*B\vec{x} = 0 \iff \vec{x}^*C^*C\vec{x} = 0 \iff \lVert C\vec{x}\rVert^2 = 0 \iff C\vec{x} = 0.
+		\end{equation*}
+		This implies that the rank of $B$ is the same as the rank of $C$ by the rank-nullity theorem. The rank of $C$ is $k$, so the rank of $B$ is also $k$, which is also the rank of $B^*$. Then $\Nullity(B^*) = m - k$ because $B^* \in \mathcal{M}_{nm}(\mathbb{F})$. Let $N = \{\vec{n}_1, \dots, \vec{n}_{m-k}\} \subseteq \mathbb{F}^m$ be an orthonormal basis for the null space of $B^*$.
+		
+		Now define the matrix $U \in M_m(\mathbb{F})$ by
+		\begin{equation*}
+			U = \mat{B\vec{u}_1 & \cdots & B\vec{u}_k & \vec{n}_1 & \cdots & \vec{n}_{m-k}}
+			\mat{\vec{v}_1^*\\ \vdots \\ \vec{v}_k^* \\\vec{v}_{k+1}^* \\ \vdots \\ \vec{v}_m^*}.
+		\end{equation*}
+		Then $B = UC$. To prove this, let $\vec{y} \in \mathbb{R}^n$ be given. Choose $\vec{u} \in \span(L)$ and $\vec{h} \in \Null(C)= \Null(B)$ such that $\vec{y} = \vec{u} + \vec{h}$. Then
+		\begin{equation*}
+			\vec{u} = a_1 \vec{u}_1 + \dots + a_k \vec{u}_k,
+		\end{equation*}
+		so
+		\begin{equation*}
+			C\vec{y} = a_1\vec{v}_1 + \dots + a_k \vec{v}_k.
+		\end{equation*}
+		Since $M$ is orthonormal, it follows that $a_i = \vec{v}_i^*C\vec{y}$ for $i = 1,2,\dots, m$, and $a_i = 0$ if $i > k$. This implies that
+		\begin{equation*}
+			\mat{\vec{v}_1^*\\ \vdots \\ \vec{v}_k^* \\\vec{v}_{k+1}^* \\ \vdots \\ \vec{v}_m^*}C\vec{y} = \mat{a_1 \\ \vdots \\ a_k \\ 0 \\ \vdots \\ 0}.
+		\end{equation*}
+		Thus,
+		\begin{equation*}
+			UC\vec{y} = \mat{B\vec{u}_1 & \cdots & B\vec{u}_k & \vec{n}_1 & \cdots & \vec{n}_{m-k}} \mat{a_1 \\ \vdots \\ a_k \\ 0 \\ \vdots \\ 0} = a_1B\vec{u}_1 + \dots + a_kB\vec{u}_k = B(a_1\vec{u}_1 + \dots + a_k \vec{u}_k) = B\vec{u}.
+		\end{equation*}
+		Since $\vec{h} \in \Null(B)$, it follows that
+		\begin{equation*}
+			UC\vec{y} = B\vec{u} = B(\vec{u} + \vec{h}) = B\vec{y}.
+		\end{equation*}
+		The vector $\vec{y} \in \mathbb{F}^n$ was arbitrary, so $B = UC$. Lastly, we observe that $U$ is unitary. Let $\vec{x} \in \mathbb{F}^m$. There exists $a_1, \dots, a_m$ such that
+		\begin{equation*}
+			\vec{x} = a_1\vec{v}_1 + \dots + a_m \vec{v}_m
+		\end{equation*}
+		because $M$ is a basis for $\mathbb{F}^m$. Then by the orthonormality of $M$,
+		\begin{equation*}
+			U\vec{x} = \mat{B\vec{u}_1&\cdots&B\vec{u}_k&\vec{n}_1 & \cdots&\vec{n}_{m-k}}\mat{a_1 \\ \vdots \\ a_m} = B(a_1\vec{u}_1 + \dots + a_k\vec{u}_k) + a_{k+1}\vec{n}_1 + \dots +a_m\vec{n}_{m-k}.
+		\end{equation*}
+		Thus,
+		\begin{equation*}
+			\begin{aligned}
+			\mat{\vec{u}_1^*B^* \\ \vdots \\ \vec{u}_k^*B^* \\ \vec{n}_1^* \\ \vdots \\ \vec{n}_{m-k}^*} U\vec{x} &= \mat{a_1\vec{u}_1^*B^*B\vec{u}_1 + \dots  + a_k\vec{u}_1^*B^*B\vec{u}_k + a_{k+1}\vec{u}_1^*B^*\vec{n}_1 + \dots + a_m\vec{u}_1^*B^*\vec{n}_{m-k} \\ \vdots \\ a_1\vec{u}_k^*B^*B\vec{u}_1 + \dots  + a_k\vec{u}_k^*B^*B\vec{u}_k + a_{k+1}\vec{u}_k^*B^*\vec{n}_1 + \dots + a_m\vec{u}_k^*B^*\vec{n}_{m-k} \\[0.5em] a_1\vec{n}_1^*B\vec{u}_1 + \dots + a_k\vec{n}_1^*B\vec{u}_k + a_{k+1}\vec{n}_1^*\vec{n}_1 + \dots + a_m\vec{n}_{1}^*\vec{n}_{m-k} \\ \vdots \\ a_1\vec{n}_{m-k}^*B\vec{u}_1 + \dots + a_k\vec{n}_{m-k}^*B\vec{u}_k + a_{k+1}\vec{n}_{m-k}^*\vec{n}_1 + \dots + a_m\vec{n}_{m-k}^*\vec{n}_{m-k} } \\[0.7em]
+			&= \mat{a_1\vec{u}_1^*C^*C\vec{u}_1 + \dots  + a_k\vec{u}_1^*C^*C\vec{u}_k \\ \vdots \\ a_1\vec{u}_k^*C^*C\vec{u}_1 + \dots  + a_k\vec{u}_k^*C^*C\vec{u}_k \\ a_{k+1} \\ \vdots \\ a_m}
+			\end{aligned}
+		\end{equation*}
+		because $\vec{n}_i \in \Null(B^*)$ for $i = 1, \dots, m-k$, and $B^*B = C^*C$, and by using the orthonormality of $N$. Since $\vec{v}_i = C\vec{u}_i$ for $i =1,\dots, k$, and because $M$ is orthornormal, we get
+		\begin{equation*}
+			\mat{\vec{u}_1^*B^* \\ \vdots \\ \vec{u}_k^*B^* \\ \vec{n}_1^* \\ \vdots \\ \vec{n}_{m-k}^*} U\vec{x} = \mat{a_1\\\vdots\\ a_k \\ a_{k+1} \\ \vdots \\ a_m}.
+		\end{equation*}
+		Finally, this implies that
+		\begin{equation*}
+			U^*U\vec{x} = \mat{\vec{v}_1 & \cdots & \vec{v}_k & \vec{v}_{k+1} & \cdots & \vec{v}_m} \mat{a_1\\\vdots\\ a_k \\ a_{k+1} \\ \vdots \\ a_m} = a_1\vec{v}_1 + \dots a_m\vec{v}_m = \vec{x}.
+		\end{equation*}
+		Since $\vec{x} \in \mathbb{F}^m$ was arbitrary, it follows that $U^*U = I$, which implies that $U$ is unitary.
+	\end{proof}
+	
+	\question Let $\lambda \in \mathbb{C}$ be an eigenvalue of a matrix $A\in \mathcal{M}_n(\mathbb{C})$. Then $|\lambda|\le \lVert A\rVert$.
+	\begin{proof}
+		Let $\vec{v} \in \mathbb{C}^n$ be a unit eigenvector corresponding to $\lambda$. Then
+		\begin{equation*}
+			\lVert A\rVert = \max_{\lVert\vec{x}\rVert = 1} \lVert A\vec{x}\rVert \ge \lVert A\vec{v}\rVert = \lVert \lambda \vec{v}\rVert = |\lambda|.
+		\end{equation*}
+	\end{proof}
+	
+	\question Let $A \in \mathcal{M}_{m,n}$ and $B \in \mathcal{M}_{n,p}$.
+	\begin{alphaparts}
+		\questionpart Let $B = \mat{\vec{b}_1, \cdots, \vec{b}_p}$, where $\vec{b}_i \in \mathbb{C}^n$ for $i = 1,\dots, p$. Then $AB = \mat{A\vec{b}_1, \dots, A\vec{b}_p}$, and
+		\begin{equation*}
+			\lVert AB \rVert_F^2 = \sum_{i=1}^p \lVert A\vec{b}_i\rVert^2 \le \lVert A\rVert^2\sum_{i=1}^p\lVert \vec{b}_i\rVert^2 \le \lVert A\rVert^2\lVert B\rVert_F^2.
+		\end{equation*}
+		Hence, $\lVert AB \rVert_F \le \lVert A\rVert \lVert B\rVert_F$.
+		
+		\questionpart Let $\vec{x} \in \mathbb{C}^n$ be a unit vector, and let $\vec{a}_1, \dots \vec{a}_m \in \mathbb{C}^n$ be the rows of $A$. Then, by the Cauchy-Schwarz inequality,
+		\begin{equation*}
+			\lVert A\vec{x}\rVert^2 = \sum_{i=1}^n |\vec{a}_i\vec{x}|^2 =\sum_{i=1}^n |\langle\vec{a}_i^*, \vec{x}\rangle|^2\le \sum_{i=1}^m \lVert \vec{a}_i^*\rVert^2 \lVert \vec{x}\rVert^2 = \sum_{i=1}^m \lVert \vec{a}_i\rVert^2 = \lVert A \rVert_F^2.
+		\end{equation*}
+		Thus, $\lVert A\vec{x}\rVert \le \lVert A\rVert_F$ for all unit vectors $\vec{x}$. We conclude that
+		\begin{equation*}
+			\lVert A \rVert = \max_{\lVert x\rVert=1}\lVert A\vec{x}\rVert \le \lVert A\rVert_F.
+		\end{equation*}
+		From part (a), it follows that
+		\begin{equation*}
+			\lVert AB \rVert_F \le \lVert A\rVert_F\lVert B\rVert_F.
+		\end{equation*}
+	\end{alphaparts}
+	
+	\question To show that the operator norm $\lVert \cdot\rVert$ on $\mathcal{M}_{m,n}(\mathbb{F})$, where $\mathbb{F} = \mathbb{R}$ or $\mathbb{F} = \mathbb{C}$, is indeed a norm, we need to prove
+	\begin{enumerate}
+		\item For all $A \in \mathcal{M}_{m,n}(\mathbb{F})$, we have $\lVert A\rVert \ge 0$, with equality if and only if $A = 0$.
+		\item For all $A \in \mathcal{M}_{m,n}(\mathbb{F})$ and all $\lambda \in \mathbb{F}$, we have $\lVert \lambda A\rVert = |\lambda|\lVert A\rVert$.
+		\item For all $A, B \in \mathcal{M}_{m,n}(\mathbb{F})$, we have $\lVert A + B\rVert \le \lVert A\rVert + \lVert B \rVert$.
+	\end{enumerate}
+	To prove 1., we let $A \in \mathcal{M}_{m,n}(\mathbb{F})$. Choose any unit vector $\vec{x} \in \mathbb{F}^n$. Then $\lVert A\vec{x}\rVert \ge 0$ implies that $\lVert A \rVert \ge 0$. Now suppose that $A = 0$. Then $\lVert A\vec{x} \rVert = 0$ for all $\vec{x} \in \mathbb{F}^n$, so $\lVert A \rVert = 0$. On the other hand, if $\lVert A \rVert =0$, then $0 \le \lVert A\vec{x} \rVert \le \lVert A\rVert = 0$ for any unit vector $\vec{x} \in \mathbb{F}^n$. Then for any $\vec{v} \in \mathbb{F}^n$, we can write $\vec{v} = \alpha \vec{x}$, where $\alpha \in \mathbb{F}$ and $\vec{x}$ is a unit vector. Then $\lVert A\vec{v}\rVert = |\alpha|\lVert A\vec{x}\rVert = 0$, which implies that $A\vec{v} = 0$ for all vectors $\vec{v} \in \mathbb{F}^n$. This means that $A = 0$.
+	
+	To prove 2., we let $A \in \mathcal{M}_{m,n}(\mathbb{F})$ and $\lambda \in \mathbb{F}$. Then
+	\begin{equation*}
+		\lVert \lambda A\rVert = \max_{\lVert \vec{x}\rVert =1}\lVert \lambda A\vec{x}\rVert = \max_{\lVert \vec{x}\rVert =1} |\lambda|\lVert A \vec{x}\rVert = |\lambda|\max_{\lVert\vec{x}\rVert=1} \lVert A\vec{x}\rVert = |\lambda|\lVert A\rVert.
+	\end{equation*}
+	
+	To prove 3., we let $A, B \in\mathcal{M}_{m,n}(\mathbb{F})$. Then
+	\begin{equation*}
+		\lVert A+ B\rVert =\max_{\lVert \vec{x}\rVert=1}\lVert (A+B)\vec{x}\rVert \le \max_{\lVert \vec{x}\rVert=1}(\lVert A\vec{x}\rVert + \lVert B\vec{x}\rVert) \le \max_{\lVert \vec{x}\rVert=1}\lVert A\vec{x}\rVert + \max_{\lVert \vec{x}\rVert=1}\lVert B\vec{x}\rVert = \lVert A\rVert + \lVert B \rVert.
+	\end{equation*}
+	
+	\question Suppose that $\mathbb{F} = \mathbb{R}$ or $\mathbb{F} = \mathbb{C}$, and $A \in \mathcal{M}_{m,n}(\mathbb{F})$. If the rank of $A$ is $r$ and $A$ has singular values $\sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_r > 0$, then
+	\begin{equation*}
+		\lVert A\rVert = \sigma_1, \qquad \lVert A \rVert_F = \sqrt{\sum_{i=1}^r\sigma_i^2}.
+	\end{equation*}
+	\begin{proof}
+		Let $A= UDV^*$ be a singular value decomposition of $A$. Suppose that $\vec{v}_1$ is the first column of $V$. Then
+		\begin{equation*}
+			\lVert A \rVert \ge \lVert A\vec{v}_1\rVert = \lVert U D V^*\vec{v}_1\rVert = \lVert D \vec{e}_1\rVert = \sigma_1,
+		\end{equation*}
+		where $\vec{e}_1 = \mat{1 & 0 & \cdots & 0}^T \in \mathbb{F}^n$. On the other hand, if $\vec{x} \in \mathbb{F}^n$ is a unit vector, then so is $\vec{y} = V^*\vec{x}$ because $V^*$ is unitary, and
+		\begin{equation*}
+			\lVert A \vec{x} \rVert = \lVert UDV^*\vec{x}\rVert = \lVert D\vec{y}\rVert = \sqrt{\sum_{i=1}^r|\sigma_iy_i|^2} \le \sqrt{\sum_{i=1}^r\sigma_1^2|y_i|^2} \le \sigma_1\lVert \vec{y}\rVert = \sigma_1,
+		\end{equation*}
+		where $\vec{y} = \mat{y_1 & \cdots & y_n}^T$. Taking the maximum over all unit vector $\vec{x} \in \mathbb{F}^n$, we get $\lVert A\rVert \le \sigma_1$. Thus, $\lVert A \rVert = \sigma_1$.
+		
+		Furthermore,
+		\begin{equation*}
+			\lVert A \rVert_F = \mathrm{Tr}(A^*A) = \mathrm{Tr}(VD^*U^*UDV^*) = \mathrm{Tr}(V^*VD^*D) = \mathrm{Tr}(D^*D) = \sum_{i=1}^r \sigma_i^2.
+		\end{equation*}
+		Thus,
+		\begin{equation*}
+			\lVert A \rVert_F = \sqrt{\sum_{i=1}^r\sigma_i^2}.
+		\end{equation*}
+	\end{proof}
+	
+	\question Let
+	\begin{equation*}
+		A = \mat{1 & - 1 \\ 1 & -1}.
+	\end{equation*}
+	\begin{alphaparts}
+		\questionpart The rank of $A$ is 1 because its rows are clearly linearly dependent, implying its rank is less than 2, but $A \ne 0$, implying its rank is greater than 0. Then $\lVert A \rVert = \sigma_1 = \lVert A\rVert_F$ by Question 5. Hence, $\lVert A \rVert = \sqrt{1+1+1+1} =2$.
+		
+		\questionpart The characteristic polynomial of $A$ is
+		\begin{equation*}
+			P_A(\lambda) = \det\mat{1-\lambda & -1 \\ -1 & -1-\lambda} =-(\lambda-1)(\lambda+1) +1 = \lambda^2.
+		\end{equation*}
+		Thus, 0 is the only eigenvalue of $A$, and it has multiplicity 2. Since the Jordan canonical form $J$ of $A$ is $2\times 2$, the only two possibilities are two Jordan blocks of size 1 or one Jordan block of size 2. If there were two Jordan blocks of size 1, then we would have $J =0$, which implies $A= 0$, which is false. Hence, there is one Jordan block of size 2; that is,
+		\begin{equation*}
+			J = \mat{0 & 1 \\ 0 & 0}.
+		\end{equation*}
+		
+		\questionpart Note that
+		\begin{equation*}
+			A^2 = 0,
+		\end{equation*}
+		so $A^n = 0$ for all $n \ge 2$. Then
+		\begin{equation*}
+			e^A = \sum_{n=0}^\infty \frac{A^n}{n!} = I + A = \mat{2 & -1 \\ 1  & 0}.
+		\end{equation*}
+	\end{alphaparts}
+\end{document}

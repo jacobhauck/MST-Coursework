@@ -1,0 +1,145 @@
+>> format longg;
+>> x0s = [1.1, 2, 5, 10, 50];
+>> a = 1;
+>> for x0 = x0s
+[steps, state] = fixed(@(x) x/2 + a/(2*x), x0, -1.0, -1.0, 10);  % negative tolerances force 10 iterations
+state
+convergence_rate = abs(steps(2:end) - sqrt(a)) ./ abs(steps(1:end-1) - sqrt(a))
+convergence_order = log(abs(steps(2:end) - sqrt(a))) ./ log(abs(steps(1:end-1) - sqrt(a)))
+end
+
+state = 
+
+    "max_iter"
+
+
+convergence_rate =
+
+  Columns 1 through 7
+
+        0.0454545454545463       0.00226244343890065      5.14187094683126e-06                         0                       NaN                       NaN                       NaN
+
+  Columns 8 through 11
+
+                       NaN                       NaN                       NaN                       NaN
+
+
+convergence_order =
+
+  Columns 1 through 7
+
+           2.3424226808222          2.12935308004408          2.06035349545206                       Inf                       NaN                       NaN                       NaN
+
+  Columns 8 through 11
+
+                       NaN                       NaN                       NaN                       NaN
+
+
+state = 
+
+    "max_iter"
+
+
+convergence_rate =
+
+  Columns 1 through 7
+
+                      0.25        0.0999999999999996        0.0121951219512173        0.0001523925633862      2.38957298168326e-08                         0                       NaN
+
+  Columns 8 through 11
+
+                       NaN                       NaN                       NaN                       NaN
+
+
+convergence_order =
+
+  Columns 1 through 7
+
+                      -Inf          2.66096404744368          2.19459562235083          2.08565790335981          2.03937994994524                       Inf                       NaN
+
+  Columns 8 through 11
+
+                       NaN                       NaN                       NaN                       NaN
+
+
+state = 
+
+    "max_iter"
+
+
+convergence_rate =
+
+  Columns 1 through 7
+
+                       0.4         0.307692307692308         0.164948453608247        0.0375531758838204       0.00152012454373137      2.31780107576999e-06                         0
+
+  Columns 8 through 11
+
+                       NaN                       NaN                       NaN                       NaN
+
+
+convergence_order =
+
+  Columns 1 through 7
+
+         0.339035952556319         -1.50775722356263          3.54303080462371          2.30716576610032          2.12018290841334          2.05643809539044                       Inf
+
+  Columns 8 through 11
+
+                       NaN                       NaN                       NaN                       NaN
+
+
+state = 
+
+    "max_iter"
+
+
+convergence_rate =
+
+  Columns 1 through 7
+
+                      0.45         0.400990099009901         0.309451938496368         0.167233038696648        0.0387638825552859       0.00162363598374955      2.64477328879282e-06
+
+  Columns 8 through 11
+
+                         0                       NaN                       NaN                       NaN
+
+
+convergence_order =
+
+  Columns 1 through 7
+
+         0.636583486069579         0.346673687102386         -1.41896577823605          3.59916607280668          2.31248529071196          2.12160603132838          2.05705048391573
+
+  Columns 8 through 11
+
+                       Inf                       NaN                       NaN                       NaN
+
+
+state = 
+
+    "max_iter"
+
+
+convergence_rate =
+
+  Columns 1 through 7
+
+                      0.49         0.480007996801279         0.460079814831634          0.42066534719656         0.345227245301087         0.217521166761219        0.0717348044640029
+
+  Columns 8 through 11
+
+       0.00593649128524689      3.56628379814138e-05                         0                       NaN
+
+
+convergence_order =
+
+  Columns 1 through 7
+
+         0.816705337545062         0.769086252037039         0.682409649923508         0.480915313251162        -0.325720293131801          6.83779403971984          2.47460741261643
+
+  Columns 8 through 11
+
+          2.15946712786235          2.07260214449385                       Inf                       NaN
+
+>> 

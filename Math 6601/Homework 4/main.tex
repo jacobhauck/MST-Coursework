@@ -1,0 +1,146 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{4}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question Let $v = (v_1, \dots, v_n^T) \in \R^n$, and suppose that $(v,x) = 0$ for all $x \in \R^n$. Then $v = 0$.
+	\begin{proof}
+		Let $e_i = (0, \dots, 0, 1, 0, \dots, 0)^T \in \R^n$, so that the $i$th entry of $e_i$ is 1 and all others are 0 for $i = 1,2,\dots, n$. Then
+		\begin{equation*}
+			v_i = \left(v, e_i\right) = 0
+		\end{equation*}
+		for $i = 1,2,\dots, n$, so $v = (0, 0, \dots, 0)^T = 0$.
+	\end{proof}
+	
+	\newcommand{\seq}[1]{^{(#1)}}
+	\question Let $A \in \R^{n\times n}$ be symmetric and positive definite, and let $V = \left\{v\seq{1}, \dots, v\seq{n}\right\} \subseteq \R^n$ be a set of nonzero, $A$-orthogonal vectors.
+	
+	\begin{alphaparts}
+		\questionpart $V$ is linearly independent.
+		\begin{proof}
+			Let $c_1, \dots, c_n \in \R$, and suppose that
+			\begin{equation*}
+				c_1v\seq{1} + \dots c_nv\seq{n} = 0.
+			\end{equation*}
+			Taking the inner product of both sides with $Av\seq{i}$ gives
+			\begin{equation*}
+				c_i \left(v\seq{i}, Av\seq{i}\right) = \left(c_1v\seq{1} + \dots + c_nv\seq{n}, Av\seq{i}\right) = \left(0, Av\seq{i}\right) = 0
+			\end{equation*}
+			because $\left(v\seq{j}, Av\seq{i}\right) = 0$ if $i \ne j$ by the $A$-orthogonality of $V$. Furthermore, since $A$ is positive definite, $\left(v\seq{i}, Av\seq{i}\right) \ne 0$. This implies that $c_i = 0$. Since $1 \le i \le n$ was arbitrary, it follows that $c_1 = c_2 = \dots = c_n = 0$. Thus, $V$ is linearly independent.
+		\end{proof}
+		
+		\questionpart If $x$ is orthogonal to every element of $V$, then $x = 0$. 
+		\begin{proof}
+			Since $V$ is linearly independent and contains $n$ elements, it follows that $V$ is a basis for $\R^n$. Let $v \in \R^n$ be given. Then there exist $v_1, \dots, v_n \in \R$ such that
+			\begin{equation*}
+				v = v_1v\seq{1} + \dots + v_nv\seq{n}.
+			\end{equation*}
+			Because $x$ is orthogonal to every element of $V$, we have
+			\begin{equation*}
+				(x, v) = \left(x, v_1v\seq{1} + \dots + v_nv\seq{n}\right) = v_1\left(x, v\seq{1}\right) + \dots + v_n\left(x, v\seq{n}\right) = 0 + \dots + 0 = 0.
+			\end{equation*}
+			Apply the result in Problem 1 shows that $x = 0$.
+		\end{proof}
+	\end{alphaparts}
+	
+	\question Let $\big\{r\seq{k}\big\}$ be the residual vectors for a conjugate direction method to solve $Ax = b$, where $x, b \in \R^n$, and $A \in \R^{n\times n}$ is symmetric positive definite, and the direction vectors are $\big\{v\seq{k}\big\}$. Then for $k =1, \dots, n$,
+	\begin{equation*}
+		\left(r\seq{k}, v\seq{j}\right) = 0 \quad \text{if } j \le k.
+	\end{equation*}
+	\begin{proof}
+		First, we show that $\left(r\seq{1}, v\seq{1}\right) = 0$. Indeed, since $r\seq{1} = r\seq{0} - t_1Av\seq{1}$, and $v\seq{1} = r\seq{0}$, we have
+		\begin{equation*}
+			\left(r\seq{1}, v\seq{1}\right) = \left(r\seq{0} - t_1Av\seq{1}, v\seq{1}\right) = \left(r\seq{0}, r\seq{0}\right) - t_1\left(Av\seq{1},v\seq{1}\right).
+		\end{equation*}
+		Recalling that $t_1 = \frac{\left(r\seq{0}, r\seq{0}\right)}{\left(Av\seq{1}, v\seq{1}\right)}$, we get $\left(r\seq{1}, v\seq{1}\right) = 0$.
+		
+		Second, suppose for the sake of induction that, for some $1 \le \ell < n$, we have $\left(r\seq{\ell}, v\seq{j}\right) = 0$ for $j \le \ell$. Then, since $r\seq{\ell+1} = r\seq{\ell} - At_{\ell+1}v\seq{\ell+1}$, we get, for $j \le \ell$,
+		\begin{equation*}
+			\left(r\seq{\ell+1}, v\seq{j}\right) = \left(r\seq{\ell} - t_{\ell+1}Av\seq{\ell+1}, v\seq{j}\right) = \left(r\seq{\ell}, v\seq{j}\right) - t_{\ell+1}\left(Av\seq{\ell+1}, v\seq{j}\right) = 0;
+		\end{equation*}
+		the first term is zero by the induction hypothesis, and the second term is 0 because the direction vectors are $A$-orthogonal in a conjugate direction method.
+		
+		Finally, when $j = \ell + 1$, recalling that $t_{\ell+1} = \frac{\left(v\seq{\ell+1}, r\seq{\ell}\right)}{\left(Av\seq{\ell+1}, v\seq{\ell+1}\right)}$, we have
+		\begin{equation*}
+			\left(r\seq{\ell+1}, v\seq{\ell+1}\right) = \left(r\seq{\ell}, v\seq{\ell+1}\right) - \frac{\left(v\seq{\ell+1}, r\seq{\ell}\right)}{\left(Av\seq{\ell+1}, v\seq{\ell+1}\right)}\left(Av\seq{\ell+1}, v\seq{\ell+1}\right) = 0.
+		\end{equation*}
+		Thus, the result follows for $k=1,\dots, n$ by induction.
+	\end{proof}
+	
+	\question Let
+	\begin{equation*}
+		T_k(t) = \begin{cases}
+			\cos\left(k\cos^{-1}(t)\right) & |t| < 1 \\[0.5em]
+			[\sgn(t)]^k\cosh(k\cosh^{-1}(|t|)) & |t| \ge 1,
+		\end{cases}
+	\end{equation*}
+	where $\sgn$ is the signum function. Then $T_k$ is a polynomial of degree $k$ for all $k \ge 0$.
+	
+	\begin{proof}
+		Suppose that $|t| < 1$. Then $T_0(t) = \cos(0) = 1$, and $T_1(t) = \cos\left(\cos^{-1}(t)\right) = t$. For $k \ge 1$, we have
+		\begin{equation*}
+		\begin{aligned}
+			T_{k+1}(t) &= \cos\left((k+1)\cos^{-1}(t)\right) \\
+			&= \cos\left(k\cos^{-1}(t)\right)\cos\left(\cos^{-1}(t)\right) - \sin(k\cos^{-1}(t))\sin\left(\cos^{-1}(t)\right) \\
+			&= tT_k(t) - \left[\sin\left((k-1)\cos^{-1}(t)\right)\cos\left(\cos^{-1}(t)\right) + \cos\left((k-1)\cos^{-1}(t)\right)\sin\left(\cos^{-1}(t)\right)\right]\sin\left(\cos^{-1}(t)\right) \\
+			&= tT_k(t) - t\sin\left((k-1)\cos^{-1}(t)\right)\sin\left(\cos^{-1}(t)\right) - T_{k-1}(t)\sin^2\left(\cos^{-1}(t)\right).
+		\end{aligned}
+		\end{equation*}
+		Observing that
+		\begin{equation*}
+			\sin\left((k-1)\cos^{-1}(t)\right)\sin\left(\cos^{-1}(t)\right) = \cos\left((k-1)\cos^{-1}(t)\right)\cos\left(\cos^{-1}(t)\right) - \cos\left(k\cos^{-1}(t)\right) = tT_{k-1}(t) - T_k(t),
+		\end{equation*}
+		we can substitute into the above to get
+		\begin{equation*}
+		\begin{aligned}
+			T_{k+1}(t) &= tT_k(t) - t(tT_{k-1}(t) - T_k(t)) - T_{k-1}(t)\left(1-\cos^2\left(\cos^{-1}(t)\right)\right) \\
+			&= 2tT_k(t) - t^2T_{k-1}(t) - T_{k-1}(t)(1-t^2) = 2tT_k(t) - T_{k-1}(t).
+		\end{aligned}
+		\end{equation*}
+		
+		Similarly, if $|t| \ge 1$, then $T_0(t) = \cosh(0) = 1$, and $T_1(t) = \sgn(t)\cosh\left(\cosh^{-1}(|t|)\right) = \sgn(t)|t| = t$. For $k \ge 1$, we have
+		\begin{equation*}
+		\begin{aligned}
+			T_{k+1}(t) &= [\sgn(t)]^{k+1}\cosh\left((k+1)\cosh^{-1}(|t|)\right) \\
+			&= [\sgn(t)]^{k+1}\left[\cosh\left(k\cosh^{-1}(|t|)\right)|t| + \sinh\left(k\cosh^{-1}(|t|)\right)\sinh\left(\cosh^{-1}(|t|)\right)\right] \\
+			&= tT_{k}(t) + [\sgn(t)]^{k+1}\left[\sinh\left(k\cosh^{-1}(|t|)\right)\sinh\left(\cosh^{-1}(|t|)\right)\right].
+		\end{aligned}
+		\end{equation*}
+		Note that
+		\begin{equation*}
+		\begin{aligned}
+			\sinh\left(k\cosh^{-1}(|t|)\right) &= \sinh\left((k-1)\cosh^{-1}(|t|)\right)\cosh\left(\cosh^{-1}(|t|)\right) + \cosh\left((k-1)\cosh^{-1}(|t|)\right)\sinh\left(\cosh^{-1}(|t|)\right) \\
+			&= |t|\sinh\left((k-1)\cosh^{-1}(|t|)\right) + [\sgn(t)]^{k-1}T_{k-1}(t)\sinh\left(\cosh^{-1}(|t|)\right).
+		\end{aligned}
+		\end{equation*}
+		Substituting into the above, we get
+		\begin{equation*}
+			T_{k+1}(t) = tT_k(t) + t[\sgn(t)]^{k-1}\sinh\left((k-1)\cosh^{-1}(|t|)\right)\sinh\left(\cosh^{-1}(|t|)\right) + T_{k-1}(t)\sinh^2\left(\cosh^{-1}(|t|)\right).
+		\end{equation*}
+		Finally, we observe that
+		\begin{equation*}
+		\begin{aligned}
+			\sinh\left((k-1)\cosh^{-1}(|t|)\right)\sinh\left(\cosh^{-1}(|t|)\right) &= \cosh\left(k\cosh^{-1}(|t|)\right) - \cosh\left((k-1)\cosh^{-1}|t|\right)\cosh\left(\cosh^{-1}(|t|)\right) \\
+			&= [\sgn(t)]^kT_k(t) - t[\sgn(t)]^{k}T_{k-1}(t)\\
+			&= [\sgn(t)]^k(T_k(t) - tT_{k-1}(t)),
+		\end{aligned}
+		\end{equation*}
+		which yields
+		\begin{equation*}
+		\begin{aligned}
+			T_{k+1}(t) &= tT_k(t) + t(T_k(t) - tT_{k-1}(t)) + T_{k-1}(t)\left(\cosh^2\left(\cosh^{-1}(|t|)\right) - 1\right) \\
+			&= 2tT_{k}(t) - t^2T_{k-1}(t) + t^2T_{k-1}(t) - T_{k-1}(t) \\
+			&= 2tT_{k}(t) - T_{k-1}(t).
+		\end{aligned}
+		\end{equation*}
+		Thus, for all $t$, the sequence $\{T_k(t)\}$ satisfies the recurrence $T_{k+1}(t) = 2tT_k(t) - T_{k-1}(t)$ for $k \ge 1$ subject to initial conditions $T_0(t) = 1$ and $T_1(t) = t$. It follows from a simple inductive argument that $T_k$ must be a polynomial of degree $k$ for all $k$. Indeed, we observe that $T_0(t) = 1$, and $T_1(t) = t$, which are polynomials of degree 0 and 1. Suppose for some $k \ge 1$ that $T_{k-1}$ and $T_{k}$ are polynomials of degree $k-1$ and $k$. Then
+		\begin{equation*}
+			T_{k+1}(t) = 2tT_k(t) - T_{k-1}(t)
+		\end{equation*}
+		is a polynomial of degree $k+1$. This shows by induction that $T_k$ is a polynomial of degree $k$ for all $k\ge 0$.
+	\end{proof}
+\end{document}

@@ -1,0 +1,103 @@
+\documentclass[newpage]{homework}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{3}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question 
+	\begin{alphaparts}
+		\questionpart Let $x = (2,-3,0,1)^T$. Then
+		\begin{equation*}
+			\lVert x \rVert_1 = |2| + |-3| + |0| + |1| = 6,
+		\end{equation*}
+		\begin{equation*}
+			\lVert x\rVert_2 = \sqrt{(2)^2 + (-3)^2 + (0)^2 + (1)^2} = \sqrt{14},
+		\end{equation*}
+		and
+		\begin{equation*}
+			\lVert x \rVert_\infty = \max\{|2|, |-3|, |0|, |1|\} = 3.
+		\end{equation*}
+		
+		\questionpart Let
+		\begin{equation*}
+			A = \mat{
+				2 & -1 & 3 \\
+				4 & 2 & -1 \\
+				2 & 3 & 2
+			}.
+		\end{equation*}
+		If $A = \{a_{ij}\}$, then
+		\begin{align*}
+			\lVert A \rVert_1 &= \max_{j\in\{1,2,3\}}\sum_{i=1}^3 |a_{ij}| = \max\{|2|+|4|+|2|, |-1|+|2|+|3|, |3|+|-1|+|2|\} \\
+			&= \max\{8, 6, 6\} = 8,
+		\end{align*}
+		and
+		\begin{align*}
+			\lVert A \rVert_\infty &=\max_{i\in\{1,2,3\}}\sum_{j=1}^3 |a_{ij}| = \max\{|2|+|-1| + |3|, |4|+|2| + |-1|, |2|+|3|+|2|\} \\
+		&= \max\{6, 7, 7\} = 7.
+		\end{align*}
+	\end{alphaparts}
+	
+	\question 
+	\begin{alphaparts}
+		\questionpart Let
+		\begin{equation*}
+			A = \mat{0 & -2 \\ -\frac{1}{8} & 0}.
+		\end{equation*}
+		Then the characteristic equation of $A$ is $\lambda^2 - \frac{1}{4} = 0$, so the eigenvalues of $A$ are the roots $\lambda_1 = \frac{1}{2}$, and $\lambda_2 = -\frac{1}{2}$. Thus, $\rho(A) = \frac{1}{2} < 1$ implies that $\lim\limits_{k\to\infty} A^k = 0$.
+		
+		\questionpart Let
+		\begin{equation*}
+			A = \mat{1 & -1 \\ -\frac{1}{2} & \frac{3}{2}}.
+		\end{equation*}
+		Then the characteristic equation of $A$ is $\lambda^2 - \frac{5}{2}\lambda + 1 = 0$, or equivalently $(2\lambda - 1)(\lambda - 2) = 0$. Then the eigenvalues of $A$ are the roots $\lambda_1 = \frac{1}{2}$ and $\lambda_2 = 2$. Thus, $\rho(A) = 2 > 1$ implies that $\lim\limits_{k\to \infty} A^k \ne 0$.
+	\end{alphaparts}
+	
+	\question Let
+	\begin{equation*}
+		A = \mat{2 & -1 & 1 \\ 3 & 3 & 9 \\ 3 & 3 & 5}.
+	\end{equation*}
+	To compute the condition number $\cond(A)$ using $\lVert \cdot\rVert_2$, we use the fact that $\cond(A) = \lVert A\rVert_2 \lVert A^{-1}\rVert_2$. We know that $\lVert A \rVert_2 = \sqrt{\rho(A^TA)}$, and $\lVert A^{-1}\rVert_2 = \sqrt{\rho\left(\left(A^{-1}\right)^TA^{-1}\right)}$. We can compute
+	\begin{equation*}
+		A^TA = \mat{22 & 16 & 44 \\ 16 & 19 & 41 \\ 44 & 41 & 107},
+	\end{equation*}
+	and
+	\begin{equation*}
+		A^{-1} = \frac{1}{36}\mat{12 & -8 & 12 \\ -12 & -7 & 15 \\ 0 & 9 & -9},
+	\end{equation*}
+	and
+	\begin{equation*}
+		\left(A^{-1}\right)^TA^{-1} = \frac{1}{648}\mat{144 & -6 & -18 \\ -6 & 97 & -141 \\ -18 & -141 & 225}.
+	\end{equation*}
+	The characteristic equation of $A^TA$ is then $\det(A^TA-\lambda I) = -\lambda^3 + 148\lambda^2 - 932\lambda + 1296$. The exact value of the largest root of this equation is very complicated; instead, we can find an approximation of the largest root $\rho(A^TA) = \lambda_1 \approx 141.47711088$ using Newton's method with a very large initial guess.
+	
+	Similarly, the characteristic equation of $\left(A^{-1}\right)^TA^{-1}$ is 
+	\begin{equation*}
+		\det\left(\left(A^{-1}\right)^TA^{-1} - \lambda I\right) = -\lambda^3 + \frac{466}{648}\lambda^2 - \frac{47952}{648^2}\lambda + \frac{209952}{648^3} = 0,
+	\end{equation*}
+	which we can also solve approximately with Newton's method using a large initial guess to get an approximation of the largest root $\rho\left(\left(A^{-1}\right)^TA^{-1}\right) = \lambda_1 \approx 0.48868217$.
+	
+	Then the condition number of $A$ using $\lVert \cdot \rVert_2$ is
+	\begin{equation*}
+		\cond(A) = \lVert A\rVert_2\lVert A^{-1}\rVert_2 = \sqrt{\rho(A^TA)\rho\left(\left(A^{-1}\right)^TA^{-1}\right)} \approx \sqrt{141.47711088\cdot  0.48868217} \approx 8.314887.
+	\end{equation*}
+	
+	\question Let $A$ be a real, symmetric, positive definite matrix. Then $A^{-1}$ is also a symmetric, positive definite matrix.
+	\begin{proof}
+		First, we show that $A^{-1}$ is symmetric. This is the case because
+		\begin{gather*}
+			\left(A^{-1}\right)^TA = \left(A^TA^{-1}\right)^T = \left(AA^{-1}\right)^T = I^T = I,\\
+			A\left(A^{-1}\right)^T = \left(A^{-1}A^T\right)^T = \left(A^{-1}A\right)^T = I^T = I,
+		\end{gather*}
+		by the symmetry of $A$, which implies that $\left(A^{-1}\right)^T$ is the inverse of $A$. That is, $A^{-1} = \left(A^{-1}\right)^T$, or $A^{-1}$ is symmetric.
+		
+		Second, we show that $A^{-1}$ is positive definite. This is the case because, for any vector $x \ne 0$, we can set $y = A^{-1}x$, so that $x = Ay$, giving
+		\begin{equation*}
+			x^TA^{-1}x = y^TA^TA^{-1}Ay = y^TAA^{-1}Ay = y^TAy > 0
+		\end{equation*}
+		by the positive-definiteness of $A$. Thus, $A^{-1}$ is positive definite.
+	\end{proof}
+\end{document}

@@ -1,0 +1,27 @@
+% Page layout and formatting
+\usepackage{fullpage}
+\usepackage[parfill]{parskip}
+
+% Symbols
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+
+% User commands
+\newcommand{\bigoh}{\mathcal{O}}
+\newcommand{\C}{\mathbb{C}}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheoremstyle{remarkstyle}% name
+{\topsep}% Space above
+{\topsep}% Space below
+{\normalfont}% Body font
+{}% Indent amount
+{\bfseries}% Theorem head font
+{.}%Punctuation after theorem head
+{.5em}%Space after theorem head
+{}% theorem head spec
+\theoremstyle{remarkstyle}
+\newtheorem{remark}{Remark}

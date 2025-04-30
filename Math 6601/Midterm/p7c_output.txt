@@ -1,0 +1,7 @@
+>> p7c
+kappa = 1, n = 64, Aiters = 8.250000
+kappa = 1, n = 1024, Aiters = 108.000000
+kappa = 10, n = 64, Aiters = 8.000000
+kappa = 10, n = 1024, Aiters = 64.600000
+kappa = 100, n = 64, Aiters = 7.200000
+kappa = 100, n = 1024, Aiters = 12.800000

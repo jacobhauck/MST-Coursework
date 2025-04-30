@@ -1,0 +1,18 @@
+>> format longg;
+>> f = @(x) (x-sin(x))*(x-cos(x));
+>> df = @(x) (1-cos(x))*(x-cos(x)) + (x-sin(x))*(1+sin(x));
+>> x0 = 0.6;
+>> [steps, state] = newton_1d(f, df, x0, 1e-8, -1.0, 1e-15, 100);
+>> [steps_precise, state_precise] = newton_1d(f, df, x0, 1e-15, -1.0, 1e-15, 100);
+>> errors = abs(steps - steps_precise(end));
+>> convergence_order = log(errors(2:end)) ./ log(errors(1:end-1))
+
+convergence_order =
+
+  Columns 1 through 7
+
+         0.517900884862516          1.67903770973958          1.56906120587407          1.58561581327327          1.68105326786349          1.80036881025641          1.88878749395772
+
+  Column 8
+
+                       Inf

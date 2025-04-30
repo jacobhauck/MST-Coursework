@@ -1,0 +1,75 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{}
+\renewcommand{\questiontype}{Problem}
+\newcommand{\pow}[1]{^{\left(#1\right)}}
+\newcommand{\norm}[1]{\left\lVert{#1}\right\rVert}
+
+\begin{document}
+	\maketitle
+	
+	\question
+	\begin{proof}
+		By the Weierstrass approximation theorem, there is a sequence of polynomials $\{P_n\}$ that converges to $f$ uniformly on $[0,1]$. Let $\varepsilon > 0$ be given. Then we can choose $m$ such that $|P_m(x) -f(x)| \le \frac{\varepsilon}{2}$ for all $x \in [0,1]$. Hence, if $N$ is the degree of $P_m$, then for any $n\ge N$ we must have
+		\begin{align*}
+			|E_n(f)| &= \left|\int_0^1f(x)\;\text{d}x - \sum_{i=1}^nw_if(x_i)\right| \\
+			&\le \int_0^1|P_m(x) - f(x)|\;\text{d}x + \sum_{i=1}^nw_i\left|f(x_i) - P_m(x_i)\right| +\left|\int_0^1P_m(x)\;\text{d}x - \sum_{i=1}^nw_iP_m(x_i)\right| \\
+			&\le \int_0^1\frac{\varepsilon}{2}\;\text{d}x + \sum_{i=1}^n\frac{\varepsilon}{2} w_i + \left|E_n(P_m)\right| \\
+			&\le \varepsilon
+		\end{align*}
+		because, by assumption, $E_n(P_m) = 0$, and
+		\begin{equation*}
+			0 = E_n(1) = \int_0^11\;\text{d}x - \sum_{i=1}^nw_i\cdot 1 = 1 - \sum_{i=1}^nw_i,
+		\end{equation*}
+		which implies that $\sum\limits_{i=1}^nw_i = 1$.
+	\end{proof}
+	
+	\question 
+	\begin{proof}
+		We begin by observing that, by the product rule,
+		\begin{equation*}
+			\psi'(x) = \sum_{k=0}^n\prod_{\substack{i=0\\i\ne k}}^n (x - x_i).
+		\end{equation*}
+		Hence,
+		\begin{equation*}
+			\psi'(x_k) = \prod_{\substack{i=0\\i\ne k}}^n (x_k-x_i) \ne 0.
+		\end{equation*}
+		It follows that, if $x \ne x_k$, then
+		\begin{equation*}
+			L_k(x) = \prod_{\substack{i=0\\i\ne k}}^n \frac{x-x_i}{x_k-x_i} = \frac{1}{\psi'(x_k)}\prod_{\substack{i=0\\i\ne k}}^n (x-x_i) = \frac{\psi(x)}{(x-x_k)\psi'(x_k)}.
+		\end{equation*}
+		Thus, for $x\ne x_k$,
+		\begin{equation*}
+			p(x) = \sum_{k=0}^nL_k(x)f(x_k) = \psi(x)\sum_{k=0}^n\frac{f(x_k)}{(x-x_k)\psi'(x_k)}.
+		\end{equation*}
+	\end{proof}
+	
+	\question Let $z_i = e^{x_i}$ for $i = 0, 1,\dots n$. Then $z_0, z_1,\dots, z_n$ are unique because $x_0, x_1, \dots, x_n$ are unique and the exponential function is injective; therefore, there is a unique polynomial $Q_n(z) = \sum_{k=0}^n b_kz^k$ such that $Q(z_i) = y_i$ for $i = 0,1,\dots, n$. Choose $c_i = b_i$ for $i = 0,1,\dots, n$. Then
+	\begin{equation*}
+		P_n(x) = \sum_{k=0}^nc_ke^{kx} = \sum_{k=0}^nb_k\left(e^x\right)^k = Q_n(e^x),
+	\end{equation*}
+	so $P_n(x_i) =Q_n(e^{x_i}) = y_i$. If $p_n(x) = \sum\limits_{k=0}^nC_ke^{kx}$ satisfies $p_n(x_i) = y_i$ for $i =0,1,\dots, n$, then $q_n(z) = \sum\limits_{k=0}^nC_kz^k$ satisfies
+	\begin{equation*}
+		q_n(z_i) = \sum_{k=0}^nC_kz_i^k = \sum_{k=0}^nC_ke^{kx_i} = p_n(x_i) = y_i
+	\end{equation*}
+	for $i = 0,1,\dots, n$. Hence, $q_n$ and $Q_n$ are the same polynomial by the uniqueness of $Q_n$. Then $c_i = C_i$ for $i = 0,1,\dots, n$, which implies that $P_n = p_n$. Thus, $P_n$ is unique.
+	
+	\question 
+	\begin{alphaparts}
+		\questionpart Let $f(x) = 1$. Then $f$ is a polynomial of degree 0, so it is its own unique interpolating polynomial $P_n$ on $x_0, x_1,\dots, x_n$ of degree at most $n$ for any $n \ge 0$. Since $P_n$ is also given in terms of Lagrange polynomials, we have
+		\begin{equation*}
+			1 = f(x) = P_n(x) = \sum_{k=0}^nf(x_k)L_k(x) = \sum_{k=0}^nL_k(x).
+		\end{equation*}
+		
+		\questionpart Assume that $n \ge 1$. Recalling that $W(x) = \prod\limits_{i=0}^n (x - x_i)$, given $x \in [0,1]$, it follows that there is some $i \in \{0,1,\dots, n-1\}$ such that $|x-x_{i}| \le \frac{1}{n}$ and $|x-x_{i+1}|\le\frac{1}{n}$. On the other hand, $|x-x_j| \le 1$ for all $j=0,1,\dots,n$. Hence,
+		\begin{equation*}
+			|W(x)| \le \frac{1}{n^2}, \qquad x \in [0,1].
+		\end{equation*}
+		This implies that
+		\begin{equation*}
+			|f(x) - P_n(x)| = \left|\frac{f^{(n+1)}(\xi(x))W(x)}{(n+1)!}\right| \le \frac{K(n+2)!}{(n+1)!n^2} \le K\frac{n+2}{n^2}, \qquad x\in[0,1].
+		\end{equation*}
+		Thus, $\lVert f - P_n\rVert_\infty \le K\frac{n+2}{n^2}$. Since $K\frac{n+2}{n^2} \to 0$ as $n\to\infty$, given $\varepsilon > 0$ we can choose $N$ such that $n \ge N$ implies that $\lVert f -- P_n\rVert_\infty < \varepsilon$.
+	\end{alphaparts}
+\end{document}

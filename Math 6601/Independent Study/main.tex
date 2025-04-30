@@ -1,0 +1,134 @@
+\documentclass{article}
+\input{setup.tex}
+
+\title{Math 6601 Independent Study Project}
+\author{Jacob Hauck}
+
+\begin{document}
+
+\maketitle
+	
+\section*{Proposal}
+
+For my independent study project I would like to study one of the most popular methods for computing all the eigenvalues and eigenvectors of an $n\times n$ matrix $A$: the QR method \cite{ackleh_2009}.
+
+\subsection*{Goals}
+I would like to achieve the following goals with this project.
+\begin{enumerate}
+	\item Understand the theory of the QR method by writing a description of the algorithm and a proof of its convergence based on the discussion in our textbook \cite{ackleh_2009}, filling the gaps of the textbook and explaining the rationale and motivation of the method.
+	
+	\item Create an implementation of the QR method in MATLAB.
+\end{enumerate}
+
+\subsection*{Project Tasks}
+I plan to achieve the above goals through the following steps.
+
+\begin{enumerate}
+	\item Describe background on the QR decomposition, the primary tool used in the QR method: what it is, and how it is computed. I will use our textbook \cite{ackleh_2009} and also the textbook from Applied Matrix Analysis \cite{meyer_2008} as sources for my own description.
+	
+	\item Learn how to reduce a matrix to Hessenberg form by using Householder transformations, based on the description in the textbook. I will write a description of the algorithm and implement it in MATLAB. This first step of the QR method reduces the computational complexity of one step of the QR method iteration from $\bigoh(n^3)$ to $\bigoh(n^2)$.
+	
+	\item I may need to create my own implementation of the QR decomposition for a Hessenberg matrix (I don't know if the built-in MATLAB implementation will do this) in order to exploit the advantage listed above.
+	
+	\item Describe the QR method and its motivation. Here I will draw on our textbook but fill in gaps by proving assertions that the textbook makes without proof and explaining the motivation of the method as I understand it.
+	
+	\item Prove the convergence of the QR method. I will write my own version of the textbook's proof, again filling in gaps and expanding on things that the textbook glosses over.
+	
+	\item Implement the QR method. With the fast QR decomposition and reduction to Hessenberg form already implemented, the QR method itself is actually pretty simple to implement. I will also devise some tests to verify the correctness of the implementation, probably using examples from the textbook and some random matrices, and I will evaluate the convergence rate of the method for these examples.
+\end{enumerate}
+
+\clearpage
+
+\section{Introduction}
+
+Computing the eigenvalues and eigenvectors of a given $n\times n$ matrix $A$ is a very important process. For example, we saw in our class that the condition number of a symmetric, positive-definite matrix is closely related to its eigenvalues. A naive approach to computing eigenvalues and eigenvectors would be to use the definition: determine the characteristic polynomial by directly computing $\det(A - I\lambda)$, then find the roots numerically, using, say Newton's method with deflation. This naive approach, however, falls apart when $n$ is even slightly large, as the cost of computing the characteristic polynomial scales terribly in $n$.
+
+Another idea is to use the fact that $A^nx_0 \to \lambda_1^nx_0 + \bigoh(|\lambda_2|^n)$ as $n \to \infty$, where $|\lambda_1| > |\lambda_2|$ are the two largest-in-magnitude eigenvalues of $A$. By re-scaling appropriately, one obtains the \textit{power method} (Section 5.2 in our book \cite{ackleh_2009}), which is an iterative method for computing the largest eigenvalue of $A$ and a corresponding eigenvector. This method only produces one eigen-pair, and only if $A$ has a unique, largest, simple (having only one eigenvector) eigenvalue; it can be applied repeatedly with deflation to find the other eigenvalues of $A$, assuming the deflated matrices all have unique, largest, simple eigenvalues.
+
+Using the easily-proved fact that $\lambda$ is an eigenvalue of $A$ if and only if $(\lambda_0 - \lambda)^{-1}$ is an eigenvalue of $(A-I\lambda_0)^{-1}$, one can then apply the power method to $(A-I\lambda)^{-1}$. By choosing $\lambda_0$ judiciously, one can ensure that $(A-I\lambda_0)^{-1}$ has a unique, largest, simple eigenvalue, then apply the power method to determine the eigenvalue. Back-transforming gives a corresponding eigenvalue $\lambda$ of $A$. In this way any eigenvalue of $A$ may be obtained by the right choice of $\lambda_0$, with a higher convergence rate if $\lambda_0$ is chosen close to $\lambda$. This is called the \textit{inverse power method} (Section 5.3 in our book \cite{ackleh_2009}); although it overcomes the main difficulty of the power method, it still requires choosing $\lambda_0$ properly, which is not trivial.
+
+Rather than use the naive approach, power iteration, or inverse power iteration, modern linear algebra libraries use a method called the \textit{QR method} (Section 5.5 in our book \cite{ackleh_2009}). The QR method relies on iterated QR decompositions, which (with the right optimizations) can be much faster, more robust, and more stable than the above three methods and converges to a matrix that provides all the eigenvalues and eigenvectors of $A$ in one iterative process, avoiding the need for deflation or repeated iterative processes used in the power methods\footnote{Power and inverse power iteration are still useful techniques in some circumstances; for example, to compute only the largest/smallest eigenvalues of a symmetric positive-definite matrix in order to compute the condition number of the matrix.}. 
+
+\section{Theory of the QR Method}
+
+\subsection{Motivation and the basic algorithm}
+
+The core idea behind the QR method is the observation that similarity transformations preserve eigenvalues; that is, if $P$ is an invertible matrix, then $B= PAP^{-1}$ has the same eigenvalues as $A$, and $v$ is an eigenvector of $A$ if and only if $Pv$ is an eigenvector of $B$. By choosing $P$ cleverly, it may be easier to find the eigenvalues and eigenvectors of $B$; then the eigenvalues of $A$ are known immediately, and the eigenvectors can be found by applying $P^{-1}$ to the eigenvectors of $B$, if desired.
+
+\begin{theorem}
+	If $P$ is an invertible matrix, then $B = PAP^{-1}$ has the same eigenvalues as $A$, and $v$ is an eigenvector of $A$ if and only if $Pv$ is an eigenvector of $B$.
+\end{theorem}
+\begin{proof}
+	Let $\lambda$ be an eigenvalue of $A$ with corresponding eigenvector $v$. Then
+	\begin{equation*}
+		BPv = PAP^{-1}Pv = PAv = P\lambda v = \lambda Pv,
+	\end{equation*}
+	so $\lambda$ is an eigenvalue of $B$, and $Pv$ is an eigenvector of $B$ (note that $Pv\ne 0$ because $v\ne 0$ and $P$ is invertible).
+	
+	Conversely suppose that $\lambda$ is an eigenvalue of $B$ with corresponding eigenvector $w$. Then
+	\begin{equation*}
+		A(P^{-1}w) = P^{-1}PAP^{-1}w = P^{-1}Bw = P^{-1}\lambda w = \lambda P^{-1}w,
+	\end{equation*}
+	so $\lambda$ is an eigenvalue of $A$, and $P^{-1}w$ is an eigenvector of $A$ (again, $P^{-1}\ne 0$ because $P$ is invertible and $w\ne0$).
+\end{proof}
+
+
+\subsubsection*{The basic QR method}
+
+The main question now is how to choose $P$. The idea of the QR method is to choose $P$ to be a product of unitary\footnote{One can also consider orthogonal matrices if $A$ is a real matrix, but we begin by focusing on the complex case, as it easier to explain.} matrices obtained through QR decompositions, with the hope of transforming $A$ through similarity transformations into and triangular matrix $B$, whose eigenvalues and eigenvectors are easy to compute---note that the upper-triangular requirement seems to fit nicely with the upper triangular matrices that will also be obtained from QR decomposition, and the fact that $P$ needs to be inverted is trivial since we will be constructing it to be unitary. The use of unitary similarity transforms has the nice benefit that it makes the algorithm as a whole more numerically stable than power iteration.
+
+The fact that every matrix is unitarily similar to an upper-triangular matrix by the Schur decomposition theorem---see section 7.2 in Meyer's book \cite{meyer_2008}---gives us some hope that the above procedure is possible. In fact, the goal of the QR method is essentially to find an (approximate) Schur decomposition of $A$.
+
+How, then, do we choose $P$? The simplest idea is just to choose $P = Q$. Then we obtain the following transformation:
+\begin{equation*}
+	A \mapsto QAQ^{-1} = QQRQ^*,
+\end{equation*}
+as $A = QR$. This suggests that $P = Q^{-1} = Q^*$ might work better, as it will cause a cancellation. Then we obtain the basic similarity transformation underlying the QR method:
+\begin{equation}
+	A \mapsto Q^*AQ = Q^*QRQ = RQ.
+\end{equation}
+Iterating this transformation yields the basic QR method algorithm, which is described precisely in Algorithm \ref{alg:basic}. Note that a key requirement for this algorithm to work is that the eigenvalues be \textit{separated}; that is, if $\lambda_1, \dots, \lambda_n$ are the eigenvalues of $A$, then 
+\begin{equation*}
+	|\lambda_1| < |\lambda_2| <\cdots < |\lambda_n|.
+\end{equation*}
+The basic algorithm may not work without this assumption, as we will see in our numerical experiments and the following theoretical investigation. We will derive the convergence criterion used to stop Algorithm \ref{alg:basic} from the convergence theory of the basic method, to which we now turn. 
+\begin{remark}
+	Separation of eigenvalues implies that $A$ is diagonalizable (by Jordan decomposition and the uniqueness of the eigenvalues; see section 7.8 of Meyer's book \cite{meyer_2008}); thus each eigenvalue has a distinct eigenvector, and the eigenvectors are linearly independent.
+\end{remark}
+\begin{remark}
+	The basic QR method is often considered to be most suitable for symmetric positive-definite matrices \cite{ackleh_2009}, as the separation of eigenvalues is easier to guarantee, and real arithmetic can be used instead of complex (if the matrix is real) because the eigenvalues and eigenvectors are all real.
+\end{remark}
+
+\begin{algorithm}
+	\caption{The Basic QR Method}
+	\label{alg:basic}
+	
+	\KwIn{$A \in \C^{n\times n}$, a matrix with separated eigenvalues}
+	\KwOut{$\lambda_1, \lambda_2, \dots, \lambda_n \in \C$, the eigenvalues of $A$}
+	\KwOut{$v_1, v_2, \dots, v_n \in \C^n$, the eigenvectors of $A$ corresponding to $\lambda_1, \dots, \lambda_n$}
+	$k \gets 0$\;
+	$A_0 \gets A$\;
+	\Repeat{}{
+		$Q_k, R_k \gets \mathrm{qr}(A_k)$ \tcp*{$\mathrm{qr}$ is QR decomposition}
+		$A_{k+1} \gets R_kQ_k$\;
+		$k\gets k + 1$\;
+	}
+\end{algorithm}
+
+\subsubsection*{Convergence of the basic QR method}
+
+\subsection{The QR method with origin shifts}
+
+\section{Implementing the QR Method in MATLAB}
+
+\subsection{Implementing the basic algorithm}
+
+\subsection{Implementing the algorithm with origin shifts}
+
+\section{Experiments}
+
+\clearpage
+\bibliographystyle{mydefaultstyle.bst}
+\bibliography{references}
+
+\end{document}

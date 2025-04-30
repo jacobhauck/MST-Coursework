@@ -1,0 +1,16 @@
+>> format longg;
+>> f = @(x) 1/2 + 1/4*x^2 - x*sin(x) - 1/2*cos(2*x);
+>> df = @(x) 1/2*x - sin(x) - x*cos(x) + sin(2*x);
+>> x0 = pi/2;
+>> [steps, state] = newton_modified(2, f, df, x0, 1e-6, -1.0, -1.0, -1);  % Negative tolerances and max_iter force use of eps condition
+>> state
+
+state = 
+
+    "eps"
+
+>> steps
+
+steps =
+
+           1.5707963267949                         2          1.90099559420391          1.89551164537963           1.8954942672133          1.89549380571069

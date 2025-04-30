@@ -1,0 +1,114 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{1}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+\maketitle
+
+\question
+Let
+\begin{equation*}
+	f(x) = x^3 - 2x^2 + \frac{4}{3}x - \frac{8}{27}.
+\end{equation*}
+
+\begin{alphaparts}
+	\questionpart The function $f(x)$ has a root $z \in [0,1]$.
+	\begin{proof}
+		Note that $f(0) = -\frac{8}{27}$ and $f(1) = 1 - 2 + \frac{4}{3} - \frac{8}{27} = \frac{1}{27}$. Then, by the Intermediate Value Theorem, there exists $z \in [0,1]$ such that $f(z) = 0$, as $-\frac{8}{27} < 0 < \frac{1}{27}$.
+	\end{proof}
+	
+	\questionpart Assuming $a_0 = 0$ and $b_0 = 1$, it follows that on the $k$th step of the bisection method the root $z$ lies in the interval $[a_k, b_k]$, which has length $b_k - a_k = \frac{b-a}{2^k}$. Since $x_k$ is at the center of this interval, the error $e_k = |x_k - z|$ on the $k$th step is no more than half the length of the interval. That is,
+	\begin{equation*}
+		e_k \le \frac{1}{2}\cdot\frac{b-a}{2^k} = \frac{b-a}{2^{k+1}} = \frac{1}{2^{k+1}}.
+	\end{equation*}
+	To guarantee that $e_k \le 10^{-9}$, then we can ensure that this upper bound is less than $10^{-9}$, giving
+	\begin{equation*}
+		\frac{1}{2^{k+1}} \le 10^{-9} \iff k \ge -\log_2(2\cdot 10^{-9}) \approx 28.897.
+	\end{equation*}
+	Since we can't do a fractional step, at least 29 steps of the bisection method are needed to guarantee an error of less than $10^{-9}$.
+	
+	\questionpart The bisection method terminates at $k = 16$ due to meeting the tolerance $\varepsilon_f$ (see \texttt{problem1c\_output.txt}). Table \ref{table:bisection} shows the steps taken by the bisection method up to the point of termination.
+	\begin{table}[htb!]
+		\centering
+		\begin{tabular}{@{}rr@{}}
+			\toprule
+			$k$ & $x_k$ \\
+			\midrule
+			0 & 0.500000000000000 \\
+			1 & 0.750000000000000 \\
+			2 & 0.625000000000000 \\
+			3 & 0.687500000000000 \\
+			4 & 0.656250000000000 \\
+			5 & 0.671875000000000 \\
+			6 & 0.664062500000000 \\
+			7 & 0.667968750000000 \\
+			8 & 0.666015625000000 \\
+			9 & 0.666992187500000 \\
+			10 & 0.666503906250000 \\
+			11 & 0.666748046875000 \\
+			12 & 0.666625976562500 \\
+			13 & 0.666687011718750 \\
+			14 & 0.666656494140625 \\
+			15 & 0.666671752929688 \\
+			16 & 0.666664123535156 \\
+			\bottomrule
+		\end{tabular}
+		\caption{Steps of the bisection method for finding the root of $f$ on $[0,1]$.}
+		\label{table:bisection}
+	\end{table}
+	
+	\questionpart Noting that
+	\begin{equation*}
+		\left(x-\frac{2}{3}\right)^3 = x^3 - 3\cdot\frac{2}{3}x^2 + 3\cdot\frac{4}{9}x - \frac{8}{27} = x^3-2x^2+\frac{4}{3}x - \frac{8}{27} = f(x),
+	\end{equation*}
+	we see that there is exactly root of $f$ on $[0,1]$, namely, $\frac{2}{3}$, which is a root of multiplicity 3.
+	
+	Computing the error between the numerical solution and the true root, we get around $2\cdot10^{-6}$, not reaching the $\varepsilon = 10^{-9}$ tolerance. Our code indicates that the algorithm stopped due to reaching the $\varepsilon_f$ tolerance. This behavior is expected because the multiplicity of the root is $3$, so if $|x_k - z| \approx 10^{-6}$, then $f(x_k) \approx 10^{-18}$, which matches the observed numerical error.
+\end{alphaparts}
+
+\question 
+Let $g(x) = \frac{x}{2} + \frac{1}{x}$, and let $G = (-\infty, -1]$. Then fixed point iteration converges for any initial point $x_0 \in G$.
+\begin{proof}
+	First, $g$ is differentiable on $G$, with $g'(x) = \frac{1}{2} - \frac{1}{x^2}$, and $g''(x) = \frac{2}{x^3}$. Then $g''(x) < 0$ for all $x \in G$, meaning that $g'$ is monotonic. Since $g'(-1) = -\frac{1}{2}$ and
+	\begin{equation*}
+		\lim_{x\to-\infty}g'(x) = \frac{1}{2},
+	\end{equation*}
+	it follows from the monotonicity of $g'$ that $-\frac{1}{2}\le g'(x) \le \frac{1}{2}$ for all $x \in G$. This implies that $g$ is Lipschitz on $G$ with Lipschitz constant $L = \frac{1}{2}$.
+	
+	Furthermore, the fact that $g''(x) < 0$ for all $x \in G$ also implies that $g$ is concave down, so it has a unique maximizer on $G$, which, by the Extreme Value Theorem, can only be $-1$ or the roots of $g'$. Since the only root of $g'$ on $G$ is $-\sqrt{2}$, and $g(-1) = -\frac{3}{2}$, and $g(-\sqrt{2}) = -\sqrt{2} > -\frac{3}{2}$, it follows that $-\sqrt{2}$ is the maximum of $g$ on $G$. Hence, $g(x) \in G$ for all $x \in G$; that is, $g$ maps $G$ into itself.
+	
+	Thus, we conclude by the contraction mapping theorem that fixed point iteration converges to the unique fixed point of $g$ for any initial point $x_0 \in G$.
+\end{proof}
+
+\question Let $g(x) = \frac{x}{2} + \frac{a}{2x}$. Then $g$ has fixed point $x = \sqrt{a}$. Suppose we apply the fixed point method to $g$ with $x_0 > \sqrt{a}$.
+\begin{alphaparts}
+	\questionpart Note that if $x \ge \sqrt{a}$, then $g(x) \ge \frac{\sqrt{a}}{2} + \frac{a}{2\sqrt{a}} = \sqrt{a}$, so $g$ maps $G = [\sqrt{a}, \infty)$ into itself. Furthermore, $g'(x) = \frac{1}{2} - \frac{a}{2x^2}$, from which we see immediately that if $x \in G$, then $g'(x) \ge 0$. On the other hand, $g''(x) = \frac{a}{x^3} >0$ for all $x \in G$, so $g'$ is monotonic on $G$. Finally, since
+	\begin{equation*}
+		\lim_{x\to\infty}g'(x) = \frac{1}{2},
+	\end{equation*}
+	it follows from the monotonicity of $g'$ on $G$ that $0 \le g'(x) \le \frac{1}{2}$ for all $x \in G$. Thus, $g$ is Lipschitz on $G$ with Lipschitz constant $L = \frac{1}{2}$. By the estimates for the fixed point method, this means that
+	\begin{equation*}
+		|x_{k+1} - \sqrt{a}| \le \frac{1}{2}|x_k - \sqrt{a}|, \qquad k \ge 1
+	\end{equation*}
+	for any initial guess $x_0 \in G$.
+	
+	\questionpart As seen in \texttt{problem2b\_output.txt}, the highest empirical convergence rate observed was $0.49$, and the highest convergence order was around $6.8$, but most convergence orders seemed to be converging to 2. Both of these observations are consistent with the theory of the fixed point method. First, the Lipschitz constant for $g$ is $\frac{1}{2}$, so the empirical convergence rate cannot exceed this, which is why we observed only $0.49$ at the highest. Second, because $g'(\sqrt{a}) = \frac{1}{2} - \frac{a}{2a}=0$, but $g''(\sqrt{a}) \ne 0$, the theorem about the convergence order of the fixed point method implies that the convergence order in this case should be 2. The fact that we empirically observed higher convergence orders has two potential causes. First, the constant $C$ in the convergence order definition pollutes our estimate of the convergence order $\alpha$ when $x_k$ is not close to true fixed point. Second, convergence order is an asymptotic property, so there is no guarantee that for $x_k$ far from the true fixed point the empirical estimate of convergence order will be anywhere near the true order.
+\end{alphaparts}
+
+\question Let $f$ be given such that $f(\alpha) = 0$, and $f'$ is continuous in an open neighborhood $U$ of $\alpha$ with $f'(\alpha) \ne 0$. We can define $g(x) = x + cf(x)$, which has fixed point $\alpha$, so that fixed point iteration converges for initial guesses $x_0$ sufficiently close to $\alpha$ as follows.
+
+First, we need to choose $c$ so that $g$ is Lipschitz in a neighborhood of $\alpha$ with Lipschitz constant $L < 1$. To do this, we observe that $g'(x) = 1 + cf'(x)$ is continuous on $U$. Let us arrange for $g'(\alpha) = 0$. All we need to do is solve for $c$ using the fact that $f'(\alpha) \ne 0$:
+\begin{equation*}
+	0 = 1 + cf'(\alpha) \iff c = -\frac{1}{f'(\alpha)}.
+\end{equation*}
+Next, we apply the continuity of $g'$ on $U$; from the definition of continuity, there exists $\delta > 0$ such that $|g'(x)| \le \frac{1}{2}$ if $|x-\alpha| \le \delta$. Since $\mathbb{R}$ is a normal topological space, we can choose $\delta$ so that $G = [\alpha - \delta, \alpha + \delta] \subseteq U$. Then $g$ is Lipschitz on $G$ with Lipschitz constant $L$.
+
+Furthermore, by the Lipschitz condition, for $x \in G$,
+\begin{equation*}
+	|g(x) - \alpha| = |g(x) - g(\alpha)| \le L|x-\alpha| \le \frac{1}{2}\delta < \delta,
+\end{equation*}
+so $g(x) \in G$, and $g$ maps $G$ into itself. Then the contraction mapping theorem implies that fixed point iteration converges to $\alpha$ for any initial guess in sufficiently close to $\alpha$, namely, any initial guess $x_0 \in G$.
+
+\end{document}

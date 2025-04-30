@@ -1,0 +1,94 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+
+\usepackage{enumitem}
+
+\newcommand{\hwnum}{9}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question
+	Let $f \in C^1([0,1])$. Then
+	\begin{equation}
+		\label{eq:p1_goal}
+		\left|\int_0^1 f(x)\;\text{d} x - \sum_{i=0}^{N-1}f(x_i)h\right| \le \frac{Mh}{2},
+	\end{equation}
+	where $h = \frac{1}{N}$, and $x_i = ih$, and $M = \max\limits_{0\le x\le 1}|f'(x)|$.
+	\begin{proof}
+	We have
+	\begin{equation*}
+		\int_0^1f(x)\;\text{d}x = \sum_{i=0}^{N-1}\int_{x_i}^{x_{i+1}} f(x)\;\text{d}x,
+	\end{equation*}
+	and
+	\begin{equation*}
+		f(x_i)h = \int_{x_i}^{x_{i+1}}f(x_i)\;\text{d}x.
+	\end{equation*}
+	Hence,
+	\begin{align*}
+		\left|\int_0^1 f(x)\;\text{d} x - \sum_{i=0}^{N-1}f(x_i)h\right| &= \left|\sum_{i=0}^{N-1} \int_{x_i}^{x_{i+1}}(f(x) - f(x_i))\;\text{d}x\right| \\
+		& \le \sum_{i=0}^{N-1}\int_{x_i}^{x_{i+1}}|f(x) - f(x_i)|\;\text{d}x.
+	\end{align*}
+	Let $i$ be given and let $x \in [x_i, x_{i+1}]$. By the mean value theorem there exists $c$ such that
+	\begin{equation*}
+		f(x) - f(x_i) = f'(c)(x-x_i).
+	\end{equation*}
+	 Then $|f(x) - f(x_i)| = |f'(c)|(x-x_i) \le M(x-x_i)$ for any $i$ and $x \in [x_i, x_{i+1}]$. Thus,
+	\begin{align*}
+		\left|\int_0^1 f(x)\;\text{d} x - \sum_{i=0}^{N-1}f(x_i)h\right| &\le M\sum_{i=0}^{N-1}\int_{x_i}^{x_{i+1}} (x-x_i)\;\text{d}x \\
+		& \le M\sum_{i=0}^{N-1}\frac{1}{2}(x_{i+1} -x_i)^2 \\
+		& \le \frac{MNh^2}{2} = \frac{Mh}{2}.
+	\end{align*}
+	\end{proof}
+	
+	\question Let $Q_m(f)$ be an $m$-point Gaussian quadrature rule on the compact interval $[a,b]$ with continuous weight function $\rho$. If $f$ is continuous, then $Q_m(f) \to J(f)$ as $m \to \infty$, where
+	\begin{equation*}
+		J(f) = \int_a^bf(x)\rho(x)\;\text{d}x.
+	\end{equation*}
+	
+	\begin{proof}
+		Let $\varepsilon > 0$ be given. By the Weierstrass approximation theorem there exists a polynomial $p(x)$ such that $|f(x) - p(x)| < \frac{\varepsilon}{2\lVert \rho\rVert_1}$ for $x \in [a,b]$, where
+		\begin{equation*}
+			\lVert \rho \rVert_1 = \int_a^b |\rho(x)|\;\text{d}x.
+		\end{equation*}
+		Let $M$ be the degree of $p$. Then $Q_m$ is exact for $p$ for any $m > M$; that is, $Q_m(p) = J(p)$ if $m > M$. Then if $m > M$,
+		\begin{equation*}
+			|Q_m(f) - J(f)| = |Q_m(f-p) + Q_m(p) - J(f-p) - J(p)| = |Q_m(f-p) - J(f-p)|
+		\end{equation*}
+		because $Q_m$ and $J$ are linear. Then
+		\begin{align*}
+			|Q_m(f) - J(f)| &= |Q_m(f-p) + J(f-p)| \le |Q_m(f-p)| + |J(f-p)| \\
+			&\le \sum_{i=1}^m|\alpha_i||f(x_i)-p(x_i)| + \int_a^b|f(x) - p(x)||\rho(x)|\;\text{d}x,
+		\end{align*}
+		where $\alpha_1,\dots, \alpha_m$ are the weights and $x_1, \dots, x_m$ are the nodes of the quadrature rule $Q_m$. By Theorem 6.3 in the textbook, we have $\alpha_i > 0$ for all $i$. Moreover, \begin{equation*}
+			\sum_{i=1}^m\alpha_i=Q_m(1)  = J(1) = \lVert \rho\rVert_1
+		\end{equation*} 
+		by the exactness of the $Q_m$ for polynomials of degree $0\le M<m$. Thus,
+		\begin{align*}
+			|Q_m(f) - J(f)| &\le \sum_{i=1}^m\alpha_i\frac{\varepsilon}{2\lVert \rho\rVert_1} + \int_a^b\frac{\varepsilon}{2\lVert\rho\rVert_1}|\rho(x)|\;\text{d}x \\
+			&\le \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+		\end{align*}
+		if $m > M$. This implies that $Q_m(f) \to J(f)$ as $m\to \infty$.
+	\end{proof}
+	
+	\question
+	\begin{alphaparts}
+		\questionpart 
+		
+		\questionpart 
+		
+		\questionpart 
+		
+		\questionpart 
+	\end{alphaparts}
+	
+	\question If the quadrature rule has degree of precision 3, then it must be exact for $p_i(x) = x^i$ for $i=0,1,2,3$. Then
+	\begin{align*}
+		a(1) + b(1) + c(1) = a+b+c &= \int_{-1}^1 1\;\text{d}x = 2 \\
+		a(-1) + b(0) + c(1) = -a + c &= \int_{-1}^1 x\;\text{d}x = 0 \\
+		a(-1)^2 + b(0)^2 + c(1)^2 = a+ c &= \int_{-1}^1 x^2\;\text{d}x = \frac{2}{3} \\
+		a(-1)^3 + b(0) + c(1)^3 = -a + c &= \int_{-1}^1x^3\;\text{d}x = 0.
+	\end{align*}
+	The second and fourth equations are both equivalent to $a = c$, and the third equation gives $a = c = \frac{1}{3}$. Then by the first equation $b = 2-\frac{2}{3} = \frac{4}{3}$.
+\end{document}

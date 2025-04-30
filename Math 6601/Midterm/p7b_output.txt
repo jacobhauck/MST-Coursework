@@ -1,0 +1,12 @@
+>> matlab_linear_solver = @(mat, vec) mat \ vec;
+>> kappa = 1.0;
+>> for n = [32, 64, 128, 256, 512, 1024]
+[x, phi] = solver(kappa, n, matlab_linear_solver);
+fprintf("n = %d, error = %e\n", n, max(abs(sin(x) - phi)));
+end
+n = 32, error = 5.270610e-03
+n = 64, error = 1.319870e-03
+n = 128, error = 3.301004e-04
+n = 256, error = 8.253332e-05
+n = 512, error = 2.063384e-05
+n = 1024, error = 5.158493e-06

@@ -1,0 +1,247 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+
+\usepackage{enumitem}
+
+\newcommand{\hwnum}{8}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question
+	\begin{alphaparts}
+		\questionpart Let
+		\begin{equation*}
+			A = \mat{2 & 3 \\-2 & -6 \\ 1 & 0}.
+		\end{equation*}
+		Define $v_1 = \mat{2\\-2\\1}$ and $v_2 = \mat{3 \\ -6 \\ 0}$, the columns of $A$. Then set
+		\begin{equation*}
+			q_1 = \frac{v_1}{\lVert{v_1}\rVert} = \frac{1}{3}v_1.
+		\end{equation*}
+		Using Gram-Schmidt orthogonalization, we get $q_2 = \frac{p_2}{\lVert p_2\rVert}$, where
+		\begin{equation*}
+			p_2 = v_2 - \langle v_2, q_1\rangle q_1 = v_2 - 2v_1 = \mat{-1 \\ -2 \\ -2}.
+		\end{equation*}
+		Then $q_2 = \frac{1}{3}p_2$. To complete the $Q$ matrix in the full QR factorization of $A$, we need a unit vector $q_3$ that is orthogonal to both $q_1$ and $q_2$. Set $v_3 = \mat{0\\0\\9}$. Then $q_3 = \frac{p_3}{\lVert p_3\rVert}$ does the job, where
+		\begin{equation*}
+			p_3 = v_3 - \langle v_3, q_1\rangle q_1 - \langle v_3, q_2\rangle q_2 = v_3 - v_1 + 2p_2 = \mat{-4 \\ -2 \\ 4}.
+		\end{equation*}
+		Then $q_3 = \frac{1}{6}p_3$. Thus, the $Q$ matrix in the QR factorization is
+		\begin{equation*}
+			Q = \mat{q_1 & q_2 & q_3} = \frac{1}{3}\mat{2 & -1 & -2 \\ -2 & -2 & -1 \\ 1 & -2 & 2},
+		\end{equation*}
+		and the $R$ factor is
+		\begin{equation*}
+			R = \mat{\langle v_1, q_1 \rangle & \langle v_2, q_1 \rangle \\ 0 & \langle v_2, q_2 \rangle \\ 0 & 0} = \mat{3 & 6 \\ 0 & 3 \\0 & 0}.
+		\end{equation*}
+		
+		\questionpart  Let
+		\begin{equation*}
+			A = \mat{-4 & -4 \\-2 & 7 \\ 4 & -5}.
+		\end{equation*}
+		Define $v_1 = \mat{-4\\-2\\4}$ and $v_2 = \mat{-4 \\ 7 \\ -5}$, the columns of $A$. Then set
+		\begin{equation*}
+			q_1 = \frac{v_1}{\lVert{v_1}\rVert} = \frac{1}{6}v_1.
+		\end{equation*}
+		Using Gram-Schmidt orthogonalization, we get $q_2 = \frac{p_2}{\lVert p_2\rVert}$, where
+		\begin{equation*}
+			p_2 = v_2 - \langle v_2, q_1\rangle q_1 = v_2 + \frac{1}{2}v_1 = \mat{-6 \\ 6 \\ -3}.
+		\end{equation*}
+		Then $q_2 = \frac{1}{9}p_2$. To complete the $Q$ matrix in the full QR factorization of $A$, we need a unit vector $q_3$ that is orthogonal to both $q_1$ and $q_2$. Set $v_3 = \mat{0\\0\\9}$. Then $q_3 = \frac{p_3}{\lVert p_3\rVert}$ does the job, where
+		\begin{equation*}
+			p_3 = v_3 - \langle v_3, q_1\rangle q_1 - \langle v_3, q_2\rangle q_2 = v_3 - v_1 + \frac{1}{3}p_2 = \mat{2 \\ 4 \\ 4}.
+		\end{equation*}
+		Then $q_3 = \frac{1}{6}p_3$. Thus, the $Q$ matrix in the QR factorization is
+		\begin{equation*}
+			Q = \mat{q_1 & q_2 & q_3} = \frac{1}{3}\mat{-2 & -2 & 1 \\ -1 & 2 & 2 \\ 2 & -1 & 2},
+		\end{equation*}
+		and the $R$ factor is
+		\begin{equation*}
+			R = \mat{\langle v_1, q_1 \rangle & \langle v_2, q_1 \rangle \\ 0 & \langle v_2, q_2 \rangle \\ 0 & 0} = \mat{6 & -3 \\ 0 & 9 \\0 & 0}.
+		\end{equation*}
+	\end{alphaparts}
+	
+	\question
+	\begin{alphaparts}
+		\questionpart To find the least-squares solution of $Ax=b$, we can equivalently find the least-squares solution of $Rx = Q^Tb$, where $A = QR$ is a QR factorization of $A$. Using the factorization from 1.\ (a), this means we want to find the least-squares solution of
+		\begin{equation*}
+			\mat{3 & 6 \\ 0 & 3 \\0 & 0}\mat{x_1 \\ x_2} = \frac{1}{3}\mat{2 & -2 & 1 \\ -1 & -2 & -2 \\ -2 & -1 & 2}\mat{3 \\ -3 \\ 6} = \mat{6 \\ -3 \\ 3}.
+		\end{equation*}
+		Since the last equation does not depend on $x$, the residual comes only from the first two equations, and is therefore minimized when $x$ solves the first two equations exactly. Hence, $x_2= -1$ from the second equation, and $x_1 = 4$ from the first equation is the least-square solution of $Ax = b$.
+		
+		\questionpart  To find the least-squares solution of $Ax=b$, we can equivalently find the least-squares solution of $Rx = Q^Tb$, where $A = QR$ is a QR factorization of $A$. Using the factorization from 1.\ (b), this means we want to find the least-squares solution of
+		\begin{equation*}
+			\mat{6 & -3 \\ 0 & 9 \\0 & 0}\mat{x_1 \\ x_2} = \frac{1}{3}\mat{-2 & -1 & 2 \\ -2 & 2 & -1 \\ 1 & 2 & 2}\mat{3 \\ 9 \\ 0} = \mat{-5 \\ 4 \\ 7}.
+		\end{equation*}
+		Since the last equation does not depend on $x$, the residual comes only from the first two equations, and is therefore minimized when $x$ solves the first two equations exactly. Hence, $x_2= \frac{4}{9}$ from the second equation, and $x_1 = -\frac{11}{18}$ from the first equation is the least-square solution of $Ax = b$.
+	\end{alphaparts}
+	
+	\question
+	\begin{alphaparts}
+		\questionpart
+		Let $Q$ be an $n\times n$ matrix with columns $q_1, q_2, \dots, q_n$. Then $Q$ is orthogonal if and only if the columns $q_1, q_2, \dots, q_n$ of $Q$ are pairwise orthogonal unit vectors.
+		\begin{proof}
+			Suppose that $Q$ is orthogonal. Then $Q^TQ = I$, that is,
+			\begin{equation*}
+				I = Q^TQ = \mat{q_1^T \\ q_2^T \\ \vdots \\ q_n^T}\mat{q_1 & q_2 & \cdots & q_n} = 
+				\mat{
+					q_1^Tq_1 & q_1^Tq_2 & \cdots & q_1^Tq_n \\
+					q_2^Tq_1 & q_2^Tq_2 & \cdots & q_2^Tq_n \\
+					\vdots & \vdots & \ddots & \vdots \\
+					q_n^Tq_1 & q_n^Tq_2 & \cdots & q_n^Tq_n.
+				}
+			\end{equation*}
+			Thus, 
+			\begin{equation*}
+				\langle q_i, q_j\rangle =q_i^Tq_j = I_{ij} =\begin{cases}
+					1 & i = j, \\
+					0 & i \ne j.
+				\end{cases}
+			\end{equation*}
+			This implies that $q_1,q_2, \dots, q_n$ are pairwise orthogonal unit vectors, as $\lVert q_i \rVert = \sqrt{\langle q_i, q_i\rangle} = 1$.
+			
+			Conversely, suppose that $q_1, q_2, \dots, q_n$ are pairwise orthogonal unit vectors. Then
+			\begin{equation*}
+				q_i^Tq_j = \langle q_i, q_j\rangle =\begin{cases}
+					1 & i = j, \\
+					0 & i \ne j.
+				\end{cases}
+			\end{equation*}
+			It follows that
+			\begin{equation*}
+				Q^TQ = \mat{q_1^T \\ q_2^T \\ \vdots \\ q_n^T}\mat{q_1 & q_2 & \cdots & q_n} = \mat{
+					q_1^Tq_1 & q_1^Tq_2 & \cdots & q_1^Tq_n \\
+					q_2^Tq_1 & q_2^Tq_2 & \cdots & q_2^Tq_n \\
+					\vdots & \vdots & \ddots & \vdots \\
+					q_n^Tq_1 & q_n^Tq_2 & \cdots & q_n^Tq_n.
+				} = I.
+			\end{equation*}
+			Then $Q$ is orthogonal.
+		\end{proof}
+		
+		\questionpart Let $A$ and $B$ be orthogonal $n\times n$ matrices. Then $AB$ is orthogonal.
+		\begin{proof}
+			We have
+			\begin{equation*}
+				(AB)^T(AB) = B^TA^TAB = B^TIB = B^TB = I
+			\end{equation*}
+			by the orthogonality of $A$ and $B$. Thus, $AB$ is orthogonal.
+		\end{proof}
+	\end{alphaparts}
+	
+	\question
+	\begin{alphaparts}
+		\questionpart Consider one step of the Gram-Schmidt method for computing the $QR$ factorization of a (nonsingular, so that all the steps get done) $m\times m$ matrix $A$ with columns $v_1, v_2, \dots, v_m$:
+		\begin{equation*}
+			p_k \gets v_k -\sum_{i=1}^{k-1}\langle v_k, q_i\rangle q_i, \qquad q_k \gets \frac{p_k}{\lVert p_k\rVert},
+		\end{equation*}
+		which must be computed for $k =1,2,\dots, m$. Implementing these formulas would work roughly as follows. We count additions and subtractions (A/S) and multiplications and divisions (M/D).
+		\begin{enumerate}[label=\arabic*.]
+			\item Compute $\langle v_k, q_i\rangle$ (these are stored in the $R$ matrix) for $i =1,2,\dots, k-1$. This requires ${(k-1)(m-1)}$ additions and $(k-1)m$ multiplications. A/S: $(k-1)(m-1)$, M/D: $(k-1)m$.
+			\item Compute $\langle v_k, q_i\rangle q_i$ and sum for $i=1,2,\dots, k-1$ and subtract from $v_k$. This requires $(k-1)m$ multiplications and $(k-1)m$ additions. A/S: $(k-1)m$, M/D: $(k-1)m$.
+			\item Compute $q_k = \frac{p_k}{\lVert p_k\rVert}$. Note that $\langle v_k, q_k\rangle = \lVert p_k\rVert$, so calculating the norm gives the diagonal of the $R$ matrix without needing to compute the inner product (we have to calculate the norm first anyway). The norm requires $m$ multiplications and $m-1$ additions and one square root, which we will exclude, followed by $m$ divisions. A/S: $m-1$, M/D: $2m$.
+		\end{enumerate}
+		In total, step $k$ requires 
+		\begin{align*}
+			\text{A/S:}&\; (k-1)(m-1) + (k-1)m + m-1 = 2km - m - k, \\
+			\text{M/D:}&\; (k-1)m + (k-1)m + 2m = 2km.
+		\end{align*}
+		Summing from $k=1$ to $m$ gives the total cost:
+		\begin{align*}
+			\text{A/S:}&\; \sum_{k=1}^m(2km - m -k) = m^2(m+1) - m^2 - \frac{m(m+1)}{2} = m^3 - \frac{1}{2}m^2 - \frac{1}{2}m, \\
+			\text{M/D:}&\; \sum_{k=1}^m2km =m^2(m+1) = m^3 + m^2.
+		\end{align*}
+		
+		\questionpart Consider the $k$th step of computing the QR factorization of an $m\times m$ matrix $A$. We count the number of additions and subtractions (A/S) and multiplications and divisions (M/D) required only to obtain the $R$ factor and store the reflection directions (this is the only way to get the $\frac{2}{3}m^3$ cost; computing $Q$ makes this method more expensive).
+		\begin{enumerate}[label=\arabic*.]
+			\item We start with a $(m-k+1)\times(m-k+1)$ matrix $A_k$, and let $u_k$ be the first column of $A_k$. To construct the Householder reflector $\widehat{H}_k$, we first need to compute the reflection axis $p_k = \frac{u_k - v_k}{\lVert u_k - v_k\rVert}$, where $v_k = \mat{\lVert u_k\rVert \\ 0 \\ \vdots \\ 0}$. This requires one subtraction for $u_k -v_k$, then two norms, requiring a total of $2(m-k)$ additions and $2(m-k+1)$ multiplications (and 2 square roots, which we exclude). It also requires a vector-scalar division, which consists of $m-k+1$ individual divisions. A/S: $2(m-k) + 1$, M/D: $3(m-k+1)$.
+			
+			\item Next, we compute $R_k = H_kR_{k-1}$, where we define $R_0 = A$. The algorithm will terminate with $R = R_{m-1}$. Since $H_k = \mat{I_{k-1} & 0 \\ 0 & \widehat{H}_k}$, the first $k-1$ rows of $R_k$ are the same as $R_{k-1}$. Noting that $R_{k-1}$ is upper triangular in the first $k-1$ columns, it follows that the first $k-1$ columns of $R_k$ will also be the same as those of $R_{k-1}$, saving us some computation. Let $\widehat{R}_{k-1}$ be the bottom $(m-k+1)$ rows and columns of $R_{k-1}$, and define $\widehat{R}_k$ similarly. Then 
+			\begin{equation*}
+				\widehat{R}_k = \widehat{H}_k\widehat{R}_{k-1} = (I-2p_kp_k^T)\widehat{R}_{k-1} = \widehat{R}_{k-1} - (2p_k)(p_k^T\widehat{R}_{k-1}).
+			\end{equation*}
+			Computing $p_k^T\widehat{R}_{k-1}$ is a $1\times (m-k+1)$ by $(m-k+1)\times (m-k+1)$ matrix multiplication, which requires $(m-k+1)^2$ multiplications and $(m-k+1)(m-k)$ additions. Then computing $2p_k$ times the result is a $(m-k+1)\times 1$ by $1\times(m-k+1)$ matrix multiplication, which requires $(m-k+1)^2 + m-k+1$ multiplications (if we do $2p_k$ first) and zero additions. Lastly, subtracting $\widehat{R}_{k-1} - 2p_kp_k^T\widehat{R}_{k-1}$ requires $(m-k+1)^2$ additions. Thus we have A/S: ${(m-k+1)^2 +(m-k+1)(m-k)}$, M/D: $2(m-k+1)^2 + m-k+1$.
+		\end{enumerate}
+		
+		Summing the additions and subtractions from $k=1$ to $m-1$, we have
+		\begin{align*}
+			\text{A/S:}&\; \sum_{k=1}^{m-1}2(m-k)+1+(m-k+1)^2+(m-k+1)(m-k)= \frac{2}{3}m^3 + \bigoh(m^2), \\
+			\text{M/D:}&\;\sum_{k=1}^{m-1} 2(m-k+1)^2 + 4(m-k+1) = \frac{2}{3}m^3 + \bigoh(m^2).
+		\end{align*}
+	\end{alphaparts}
+	
+	\question Let $u, v\in\R^n$ be distinct, nonzero vectors of the same length. Then the Householder matrix $H = I - 2pp^T$ is orthogonal, where $p = \frac{u - v}{\lVert u - v\rVert}$.
+	\begin{proof}
+		We have
+		\begin{align*}
+			H^TH &= (I-2pp^T)^T(I-2pp^T) = (I^T - 2(pp^T)^T)(I-2pp^T) \\
+			&= (I- 2(p^T)^Tp^T)(I-2pp^T) = (I-2pp^T)(I-2pp^T) \\
+			&= I - 4pp^T + 4pp^Tpp^T = I
+		\end{align*}
+		because $p^Tp = \frac{(u-v)^T(u-v)}{\lVert u-v\rVert^2} = 1$. This implies that $H$ is orthogonal.
+	\end{proof}
+	
+	\question 
+	\begin{alphaparts}
+		\questionpart Consider $A$ given in 1.\ (a). We want to find a QR factorization of $A$ using Householder reflectors. We want to construct a reflector taking the first column $v_1$ into $u_1 = \mat{\lVert v_1\rVert \\ 0 \\ 0}$. To do this, we set 
+		\begin{equation*}
+			p_1 = \frac{u_1 - v_1}{\lVert u_1-v_1\rVert} = \frac{1}{\sqrt{6}}\mat{-1 \\ -2 \\ 1}.
+		\end{equation*}
+		Then the reflector we want is
+		\begin{equation*}
+			H_1 = I - 2p_1p_1^T = I - \frac{1}{3}\mat{1 & 2 & -1 \\ 2 & 4 & -2 \\ -1 & -2 & 1} = \frac{1}{3}\mat{2 & -2 & 1 \\ -2 & -1 & 2 \\ 1 & 2 & 2}
+		\end{equation*}
+		Next, we compute $A_1 = H_1A$:
+		\begin{equation*}
+			A_1 = H_1A = \mat{3 & 6 \\ 0 & 0 \\0 & -3}.
+		\end{equation*}
+		Now we focus on the submatrix excluding the top row and left column of $A_1$, which is $\widehat{A}_1 = \mat{0\\-3}$. We want to construct a reflector $\widehat{H}_2$ taking $u_2 = \mat{0\\-3}$ to $v_2 = \mat{3 \\ 0}$. To do this, we set
+		\begin{equation*}
+			p_2 = \frac{u_2 - v_2}{\lVert u_2 - v_2\rVert} = \frac{1}{\sqrt{2}}\mat{-1\\-1},
+		\end{equation*}
+		and
+		\begin{equation*}
+			\widehat{H}_2 = I - 2p_2p_2^T = I - \mat{1 & 1 \\ 1 & 1}=\mat{0 & -1 \\ -1 & 0}
+		\end{equation*}
+		Then set $H_2 = \mat{1 & 0 \\ 0 & \widehat{H}_2}$. Multiplying $H_2A_1$ gives the matrix $R$ in the QR factorization of $A$:
+		\begin{equation*}
+			H_2H_1A = H_2A_1 = R = \mat{3 & 6 \\ 0 & 3 \\ 0& 0}.
+		\end{equation*}
+		Inverting $H_2H_1$, and using the fact that Householder reflectors are self-inverse, we obtain the $Q$ factor from $A = H_1H_2R$, so that $Q = H_1H_2$, or
+		\begin{equation*}
+			Q = \frac{1}{3}\mat{2 & -2 & 1 \\ -2 & -1 & 2 \\ 1 & 2 & 2}\mat{1 & 0 & 0 \\ 0 & 0 & -1 \\ 0 & -1 & 0} = \frac{1}{3}\mat{2 & -1 & 2 \\ -2 & -2 & 1 \\ 1 & -2 & -2},
+		\end{equation*}
+		which is the same as the one obtained in 1.\ (a) up to the arbitrary sign of the third column of $Q$.
+		
+		\questionpart Consider $A$ given in 1.\ (b). We want to find a QR factorization of $A$ using Householder reflectors. We want to construct a reflector taking the first column $v_1$ into $u_1 = \mat{-\lVert v_1\rVert \\ 0 \\ 0}$. To do this, we set 
+		\begin{equation*}
+			p_1 = \frac{u_1 - v_1}{\lVert u_1-v_1\rVert} = \frac{1}{\sqrt{24}}\mat{2 \\ -2 \\ 4}.
+		\end{equation*}
+		Then the reflector we want is
+		\begin{equation*}
+			H_1 = I - 2p_1p_1^T = I - \frac{1}{12}\mat{4 & -4 & 8 \\ -4 & 4 & -8 \\ 8 & -8 & 16} = \frac{1}{3}\mat{2 & 1 & -2 \\ 1 & 2 & 2 \\ -2 & 2 & -1}
+		\end{equation*}
+		Next, we compute $A_1 = H_1A$:
+		\begin{equation*}
+			A_1 = H_1A = \mat{-6 & 3 \\ 0 & 0 \\0 & 9}.
+		\end{equation*}
+		Now we focus on the submatrix excluding the top row and left column of $A_1$, which is $\widehat{A}_1 = \mat{0\\9}$. We want to construct a reflector $\widehat{H}_2$ taking $u_2 = \mat{0\\9}$ to $v_2 = \mat{9 \\ 0}$. To do this, we set
+		\begin{equation*}
+			p_2 = \frac{u_2 - v_2}{\lVert u_2 - v_2\rVert} = \frac{1}{\sqrt{2}}\mat{-1\\1},
+		\end{equation*}
+		and
+		\begin{equation*}
+			\widehat{H}_2 = I - 2p_2p_2^T = I - \mat{1 & -1 \\ -1 & 1}=\mat{0 & 1 \\ 1 & 0}
+		\end{equation*}
+		Then set $H_2 = \mat{1 & 0 \\ 0 & \widehat{H}_2}$. Multiplying $H_2A_1$ gives the matrix $R$ in the QR factorization of $A$:
+		\begin{equation*}
+			H_2H_1A = H_2A_1 = R = \mat{-6 & 3 \\ 0 & 9 \\ 0& 0}.
+		\end{equation*}
+		Inverting $H_2H_1$, and using the fact that Householder reflectors are self-inverse, we obtain the $Q$ factor from $A = H_1H_2R$, so that $Q = H_1H_2$, or
+		\begin{equation*}
+			Q = \frac{1}{3}\mat{2 & 1 & -2 \\ 1 & 2 & 2 \\ -2 & 2 & -1}\mat{1 & 0 & 0 \\ 0 & 0 & 1 \\ 0 & 1 & 0} = \frac{1}{3}\mat{2 & -2 & 1 \\ 1 & 2 & 2 \\ -2 & -1 & 2},
+		\end{equation*}
+		which is the same as the one obtained in 1.\ (b) up to different choices of signs.
+	\end{alphaparts}
+\end{document}

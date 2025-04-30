@@ -1,0 +1,48 @@
+>> format longg;
+>> f = @(x) 1/2 + 1/4*x^2 - x*sin(x) - 1/2*cos(2*x);
+>> df = @(x) 1/2*x - sin(x) - x*cos(x) + sin(2*x);
+>> x0 = pi/2;
+>> [steps, state] = newton_1d(f, df, x0, 1e-6, -1.0, -1.0, -1)  % negative tolerances and max_iter force use of eps tolerance
+
+steps =
+
+  Columns 1 through 7
+
+           1.5707963267949          1.78539816339745          1.84456162960179          1.87083441768886          1.88334642692721           1.8894637641823          1.89248962453426
+
+  Columns 8 through 14
+
+          1.89399456835593          1.89474506969115          1.89511983090939          1.89530708955216          1.89540068843122          1.89544748026546          1.89547087428599
+
+  Columns 15 through 19
+
+          1.89548257081704          1.89548841897691           1.8954913429945          1.89549280504346          1.89549353608069
+
+
+state = 
+
+    "eps"
+
+>> [steps_precise, state_precise] = newton_1d(f, df, x0, 1e-12, -1.0, -1.0, -1);
+>> state_precise  % check that 1e-12 tolerance was achieved
+
+state_precise = 
+
+    "eps"
+
+>> errors = abs(steps - steps_precise(end));  % Now we can use the last step of the more precise iteration to estimate errors
+>> convergence_rate = errors(2:end) ./ errors(1:end-1)
+
+convergence_rate =
+
+  Columns 1 through 7
+
+         0.339072360071223         0.462619750185422         0.484165857812748         0.492615943053683         0.496425510330024         0.498239941979161         0.499125462815884
+
+  Columns 8 through 14
+
+         0.499561850963095         0.499776240554527         0.499878023019502          0.49991863415107         0.499918522333072         0.499877563762001         0.499775562212887
+
+  Columns 15 through 18
+
+         0.499559963878091         0.499129833394247         0.498242847250807         0.496464515761668
