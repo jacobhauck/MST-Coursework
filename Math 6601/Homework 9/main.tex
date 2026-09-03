@@ -2,6 +2,7 @@
 \input{../homework_shared.tex}
 
 \usepackage{enumitem}
+\usepackage{siunitx}
 
 \newcommand{\hwnum}{9}
 \renewcommand{\questiontype}{Problem}
@@ -74,13 +75,56 @@
 	
 	\question
 	\begin{alphaparts}
-		\questionpart 
+		\questionpart For the composite trapezoid rule, we have
+		\begin{equation*}
+			\int_0^{0.8}f(x)\;\text{d}x \approx \frac{h}{2}\left[f(0.0) + 2f(0.2) + 2f(0.4) + 2f(0.6) + f(0.8)\right],
+		\end{equation*}
+		where $h = \frac{0.8}{4} = 0.2$. Then we get
+		\begin{equation*}
+			\int_0^{0.8}f(x)\;\text{d}x \approx 0.1\left[1 +2 e^{-0.2} + 2e^{-0.4} + 2e^{-0.6} + e^{-0.8}\right] \approx \num{0.552505}.
+		\end{equation*}
+		\questionpart For composite Simpson's rule, we have
+		\begin{equation*}
+			\int_0^{0.8}f(x)\;\text{d}x \approx  \frac{2h}{6}\left[f(0.0) + 4f(0.2) + 2f(0.4) + 4f(0.6) + f(0.8)\right],
+		\end{equation*}
+		where $h = \frac{0.8}{4} = 0.2$. Then we get
+		\begin{equation*}
+			\int_0^{0.8}f(x)\;\text{d}x \approx \frac{0.2}{3}\left[1 + 4e^{-0.2} + 2e^{-0.4} + 4e^{-0.6} + e^{-0.8}\right] \approx \num{0.550676}.
+		\end{equation*}
 		
-		\questionpart 
+		\questionpart Since $f(x) = e^{-x}$, the true value of the integral is
+		\begin{equation*}
+			\int_0^{0.8}f(x)\;\text{d}x = -e^{-x}\big|_{0}^{0.8} = 1 -e^{-0.8}.
+		\end{equation*}
+		Computing the error for the trapezoid rule, we have
+		\begin{equation*}
+			E_T(f;h) \approx \num{1.834348e-03}.
+		\end{equation*}
+		Computing the error for Simpson's rule, we have
+		\begin{equation*}
+			E_S(f;h) \approx \num{4.871642e-06}
+		\end{equation*}
+		Simpson's rule is considerably more accurate.
 		
-		\questionpart 
+		\questionpart Note that $f^{(2)}(x) = e^{-x}$, which has maximum absolute value $1$ on $[0,0.8]$ when $x =0$. We want
+		\begin{equation*}
+			E_T(f;h) \le \frac{0.8 - 0}{12}\left(\frac{0.8 - 0}{n}\right)^2 < 10^{-4}.
+		\end{equation*}
+		Solving for $n$, we see that
+		\begin{equation*}
+			n > \sqrt{\frac{(0.8)^3}{12}\cdot10^4} \approx 20.66,
+		\end{equation*}
+		so $n+1 =22$ or more points is enough to guarantee an error of at most $10^{-4}$ using the trapezoid rule.
 		
-		\questionpart 
+		For Simpson's rule, we note that $f^{(4)}(x) = e^{-x}$, which also has maximum absolute value $1$ on $[0,0.8]$ when $x = 0$. We want
+		\begin{equation*}
+			E_S(f;h) \le \frac{0.8 - 0}{180}\left(\frac{0.8-0}{2n}\right)^4 < 10^{-4}.
+		\end{equation*}
+		Solving for $n$, we see that
+		\begin{equation*}
+			n > \frac{1}{2}\left(\frac{(0.8)^5}{180}\cdot 10^{4}\right)^\frac{1}{4} \approx 1.03,
+		\end{equation*}
+		so $2n+1 = 5$ or more points is enough to guarantee an error of at most $10^{-4}$ using Simpson's rule.
 	\end{alphaparts}
 	
 	\question If the quadrature rule has degree of precision 3, then it must be exact for $p_i(x) = x^i$ for $i=0,1,2,3$. Then
