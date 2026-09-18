@@ -1,0 +1,430 @@
+\documentclass{homework}
+\input{../homework_shared.tex}
+
+\newcommand{\hwnum}{}
+\renewcommand{\hwtype}{Final Project}
+\renewcommand{\questiontype}{Problem}
+
+\begin{document}
+	\maketitle
+	
+	\question 
+	\begin{alphaparts}
+		\newcommand{\bt}{\tilde{b}}
+		\newcommand{\dt}{\tilde{d}}
+		\questionpart First we count the cost of computing $\bt_i$ and $\dt_i$. For $\bt_i = b_i - \frac{a_ic_{i-1}}{\bt_{i-1}}$ we need 1 addition/subtraction (A/S) and 2 multiplications/divisions (M/D). The computation of $\dt_i$ is similar, yielding a total of 2 A/S and 3 M/D for the $i$th step; however, we can save one M/D by reusing the computation of $\frac{a_i}{\bt_{i-1}}$. Since there are $n-1$ steps from $i=2$ to $n$, we get a total of $2(n-1)$ A/S and $3(n-1)$ M/D. 
+		
+		For the back-substitution stage we need one M/D to compute $x_n = \frac{\dt_n}{\bt_n}$, and then one A/S and 2 M/D to compute $x_i = \frac{\dt_i - c_ix_{i+1}}{\bt_i}$ for $i = n-1$ to $1$. This gives a total of $n-1$ A/S and $1 + 2(n-1) = 2n-1$ M/D.
+		
+		Then in total the cost is $3(n-1)$ A/S and $5n-4$ M/D.
+		
+		\questionpart The function \texttt{p1b(n)} implemented in \texttt{p1b.m} can be used to solve the problem for a given value of $n$ using the catch-up method. Note that the solution is $x_i = 10$ for $i=1,2,\dots, n$, which is exactly what \texttt{p1b(n)} produces.
+	\end{alphaparts}
+	
+	\question 
+	\begin{alphaparts}
+		\newcommand{\Th}{\widehat{T}}
+		\newcommand{\vh}{\widehat{v}}
+		\newcommand{\xh}{\widehat{x}}
+		\newcommand{\yh}{\widehat{y}}
+		\questionpart There could be more than one 4-point Gaussian quadrature on $\Th$. We find one that has degree-of-precision 2 by using 1D, 2-point Gaussian quadrature dimension-by-dimension. We begin by transforming $\Th$ into the unit square $[-1,1]^2$, on which we already know the 2-point Gaussian quadrature for each dimension. To this end, let
+		\begin{equation*}
+			x = \frac{1 + \xh}{2}, \qquad y = (1-x)\frac{1+\yh}{2} = \frac{(1-\xh)(1+\yh)}{4}.
+		\end{equation*}
+		Then clearly this mapping takes $[-1,1]^2$ into $\Th$. The Jacobian is given by
+		\begin{equation*}
+			J(\xh, \yh) = \mat{
+				\frac{\partial x}{\partial \xh} & \frac{\partial x}{\partial \yh} \\[0.5em]
+				\frac{\partial y}{\partial \xh} & \frac{\partial y}{\partial \yh}
+			} = \mat{\frac{1}{2} & 0 \\[0.5em] -\frac{1+\yh}{4} & \frac{1-\xh}{4}}.
+		\end{equation*}
+		Then $\dee x\dee y = |J|\dee\xh\dee \yh = \frac{1-\xh}{8}\dee\xh\dee\yh$, and
+		\begin{equation*}
+			\int_{\Th} f(x,y)\dee x\dee y = \int_{-1}^1\int_{-1}^1 f\left(\frac{1+\xh}{2}, \frac{(1-\xh)(1+\yh)}{4}\right)\frac{1-\xh}{8}\dee \yh\dee \xh.
+		\end{equation*}
+		Let $\xh_0 = -\frac{1}{\sqrt{3}}$, and $\xh_1 = \frac{1}{\sqrt{3}}$, and $\alpha_0 = \alpha_1 = 1$ be the 2-point Gaussian quadrature nodes and weights on $[-1,1]$. Then
+		\begin{equation*}
+			\int_{\Th}f(x,y)\dee x\dee y \approx \sum_{i=0}^1\alpha_i \int_{-1}^1f\left(\frac{1+\xh_i}{2}, \frac{(1-\xh_i)(1+\yh)}{4}\right)\frac{1-\xh_i}{8}\dee \yh.
+		\end{equation*}
+		Applying the same quadrature rule to the inner integral gives
+		\begin{equation*}
+			\int_{\Th}f(x,y)\dee x\dee y \approx \sum_{i=0}^1\sum_{j=0}^1 \alpha_i\alpha_j\frac{1-\xh_i}{8}f\left(\frac{1+\xh_i}{2}, \frac{(1-\xh_i)(1+\yh_j)}{4}\right).
+		\end{equation*}
+		Taking $w_{ij} = \alpha_i\alpha_j\frac{1-\xh_i}{8} = \frac{1-\xh_i}{8}$, and $x_{ij} = \frac{1+\xh_i}{2}$, and $y_{ij} = \frac{(1-\xh_i)(1+\yh_j)}{4}$, we get a four-point Gaussian quadrature $Q(f)$ for integration of $f$ on $\Th$:
+		\begin{equation*}
+			\int_{\Th} f(x,y)\dee x \dee y \approx Q(f) = \sum_{i,j=0}^1w_{ij}f(x_{ij}, y_{ij}).
+		\end{equation*}
+		We can verify that the degree of precision of this rule is 2 by definition. We have
+		\begin{align*}
+			\int_{\Th} 1\dee x\dee y &= \int_0^1\int_0^{1-x}1\dee y \dee x = \int_0^1(1-x)\dee x = \left.x-\frac{x^2}{2}\right|_0^1 = \frac{1}{2}, \\
+			\int_{\Th} x\dee x \dee y &= \int_0^1\int_0^{1-x}x\dee y \dee x = \int_0^1(x-x^2)\dee x = \left.\frac{x^2}{2} - \frac{x^3}{3}\right|_0^1 = \frac{1}{6}, \\
+			\int_{\Th}x^2\dee x\dee y &= \int_0^1\int_0^{1-x}x^2\dee y\dee x = \int_0^1(x^2-x^3)\dee x = \left.\frac{x^3}{3} - \frac{x^4}{4}\right|_0^1 = \frac{1}{12}, \\
+			\int_{\Th}xy\dee x\dee y &= \int_0^1\int_0^{1-x}xy\dee y\dee x = \frac{1}{2}\int_0^1x(x-1)^2\dee x = \frac{1}{2}\left[\frac{x^4}{4} - \frac{2x^3}{3} + \frac{x^2}{2}\right]_0^1 = \frac{1}{24}.
+		\end{align*}
+		By symmetry, we also have
+		\begin{equation*}
+			\int_{\Th}y\dee x \dee y = \frac{1}{6}, \qquad \int_{\Th}y^2\dee x \dee y = \frac{1}{12}.
+		\end{equation*}
+		Since the set $\{1,x,y,x^2,xy,y^2\}$ is a basis for the set of all polynomials of degree less than or equal to 2, we only need to verify exactness of $Q$ on this set. We compute
+		\begin{equation*}
+			Q(1) = \sum_{i,j=0}^1w_{ij} = 2\cdot\frac{1}{8}(1-\xh_0) + 2\cdot\frac{1}{8}(1-\xh_1) = \frac{1}{2} - \frac{1}{4}(\xh_0+\xh_1) = \frac{1}{2}
+		\end{equation*}
+		because $\xh_0 = -\xh_1$. Furthermore,
+		\begin{align*}
+			Q(x) &= \sum_{i,j=0}^1w_{ij}x_{ij} = 2\cdot\frac{1}{8}(1-\xh_0)\frac{1+\xh_0}{2} + 2\cdot\frac{1}{8}(1-\xh_1)\frac{1+\xh_1}{2} \\
+			&= \frac{1}{8}\left[1 - \xh_0^2 + 1-\xh_1^2\right] = \frac{1}{8}\left[2 - \frac{2}{3}\right] = \frac{1}{6},
+		\end{align*}
+		and
+		\begin{alignat*}{2}
+			Q(y) &{}={} &&\sum_{i,j=0}^1w_{ij}y_{ij}\\
+			&{}={}&&\frac{1-\xh_0}{8}\frac{(1-\xh_0)(1+\xh_0)}{4} + \frac{1-\xh_0}{8}\frac{(1-\xh_0)(1+\xh_1)}{4} \\
+			&&& + \frac{1-\xh_1}{8}\frac{(1-\xh_1)(1+\xh_0)}{4} + \frac{1-\xh_1}{8}\frac{(1-\xh_1)(1+\xh_1)}{4} \\
+			&{}={}&& \frac{1}{32}\left[\left((1-\xh_0)^2 + (1-\xh_1)^2\right)(1+\xh_0+1+\xh_1)\right] \\
+			&{}={}&& \frac{1}{16}\left[1-2\xh_0 + \xh_0^2 + 1 - 2\xh_1 + \xh_1^2\right] = \frac{1}{16}\left[2 + \frac{2}{3}\right] = \frac{1}{6}.
+		\end{alignat*}
+		Lastly,
+		\begin{align*}
+			Q(x^2) &= \sum_{i,j=0}^1w_{ij}x_{ij}^2 = 2\cdot\frac{1}{8}(1-\xh_0)\left(\frac{1+\xh_0}{2}\right)^2 + 2\cdot\frac{1}{8}(1-\xh_1)\left(\frac{1+\xh_1}{2}\right)^2 \\ 
+			&= \frac{1}{16}\left[(1-\xh_0^2)(1+\xh_0) + (1-\xh_1^2)(1+\xh_1)\right] \\
+			&= \frac{2}{3\cdot16}\left[1+\xh_0 +1+\xh_1\right] = \frac{1}{12},
+		\end{align*}
+		and
+		\begin{alignat*}{2}
+			Q(y^2) &{}={} &&\sum_{i,j=0}^1w_{ij}y_{ij}^2\\
+			&{}={}&&\frac{1-\xh_0}{8}\frac{(1-\xh_0)^2(1+\xh_0)^2}{16} + \frac{1-\xh_0}{8}\frac{(1-\xh_0)^2(1+\xh_1)^2}{16} \\
+			&&& + \frac{1-\xh_1}{8}\frac{(1-\xh_1)^2(1+\xh_0)^2}{16} + \frac{1-\xh_1}{8}\frac{(1-\xh_1)^2(1+\xh_1)^2}{16} \\
+			&{}={}&& \frac{1}{128}\left[\left((1-\xh_0)^3 + (1-\xh_1)^3\right)\left((1+\xh_0)^2 + (1+\xh_1)^2\right)\right] \\
+			&{}={}&& \frac{1}{128}\left[\left((1-\xh_0)^3 + (1-\xh_1)^3\right)\left(1+2\xh_0+\xh_0^2 + 1+2\xh_1+\xh_1^2\right)\right] \\
+			&{}={}&& \frac{1}{3\cdot 16}\left[1-3\xh_0 + 3\xh_0^2 -\xh_0^3 + 1 - 3\xh_1 + 3\xh_1^3 - \xh_1^3\right] \\
+			&{}={}&& \frac{4}{3\cdot 16} = \frac{1}{12},
+		\end{alignat*}
+		and
+		\begin{alignat*}{2}
+			Q(xy) &{}={} &&\sum_{i,j=0}^1w_{ij}x_{ij}y_{ij}\\
+			&{}={}&&\frac{1-\xh_0}{8}\frac{1+\xh_0}{2}\frac{(1-\xh_0)(1+\xh_0)}{4} + \frac{1-\xh_0}{8}\frac{1+\xh_0}{2}\frac{(1-\xh_0)(1+\xh_1)}{4} \\
+			&&& + \frac{1-\xh_1}{8}\frac{1+\xh_1}{2}\frac{(1-\xh_1)(1+\xh_0)}{4} + \frac{1-\xh_1}{8}\frac{1+\xh_1}{2}\frac{(1-\xh_1)(1+\xh_1)}{4} \\
+			&{}={}&& \frac{1}{64}\left[\left((1-\xh_0^2)(1-\xh_0) + (1-\xh_1^2)(1-\xh_1)\right)(1+\xh_0 +1+\xh_1)\right] \\
+			&{}={}&& \frac{1}{3\cdot 32}\left[(1-\xh_0 + 1-\xh_1)(1+\xh_0+1+\xh_1)\right] \\
+			&{}={}&& \frac{4}{3\cdot 32} = \frac{1}{24}.
+		\end{alignat*}
+		We can also show that $Q$ does not have degree of precision higher than 2. Indeed,
+		\begin{equation*}
+			\int_{\Th}x^3\dee x\dee y = \int_{0}^1\int_0^{1-x}x^3\dee y\dee x = \int_0^1(x^3-x^4)\dee x = \left.\frac{x^4}{4} - \frac{x^5}{5}\right|_0^1 = \frac{1}{20},
+		\end{equation*}
+		but
+		\begin{align*}
+			Q(x^3) &= \sum_{i,j=0}^1w_{ij}x_{ij}^2 = 2\cdot\frac{1}{8}(1-\xh_0)\left(\frac{1+\xh_0}{2}\right)^3 + 2\cdot\frac{1}{8}(1-\xh_1)\left(\frac{1+\xh_1}{2}\right)^3 \\ 
+			&= \frac{1}{32}\left[(1-\xh_0^2)(1+\xh_0)^2 + (1-\xh_1^2)(1+\xh_1)^2\right] \\
+			&= \frac{2}{3\cdot32}\left[(1+\xh_0)^2 +(1+\xh_1)^2\right] \\
+			&= \frac{1}{3\cdot 16}\left[1+2\xh_0+\xh_0^2 + 1+2\xh_1+\xh_1^2\right] \\
+			&= \frac{1}{3\cdot 16}\left[2 + \frac{2}{3}\right] = \frac{1}{18}.
+		\end{align*}
+		Then $Q(f) = \frac{1}{18} \ne \frac{1}{20} = \int_{\Th} x^3 \dee x \dee y$. This shows that 2 is the highest degree of precision of $Q$.
+		
+		\newcommand{\xb}{\mathbf{x}}
+		\questionpart As in \textbf{(a)}, there may be more than one 5-point Gaussian quadrature. We will use a more symmetric set of nodes in this case to avoid the added complexity of the third dimension. In particular, we observe that the integral operator $J$ defined by
+		\begin{equation*}
+			J(f) = \int_{\Th}f(x,y,z)\dee x\dee y\dee z
+		\end{equation*}
+		is symmetric with respect to permutations of the axes. That is, if $P$ is a permutation matrix, then $J(f\circ P) = J(f)$ for any integrable function $f$. We want to construct our quadrature rule $Q$ so that it shares this property; that is, we require $Q(f\circ P) = Q(f)$ for any integrable function $f$. This creates the following requirements on the set of nodes $\{\xb_1, \xb_2, \xb_3, \xb_4, \xb_5\}$ and corresponding weights $\alpha_1,\alpha_2,\alpha_3,\alpha_4,\alpha_5$.
+		\begin{enumerate}[label=(\arabic*)]
+			\item The set of nodes must be invariant under the action of the group $G$ of $3\times 3$ permutations matrices.
+			\item If two weights $\alpha_i$ and $\alpha_j$ correspond to nodes in the same orbit, then $\alpha_i =\alpha_j$.
+		\end{enumerate}
+		We prove (1) by contradiction. Suppose that the nodes are not invariant. Then, without loss of generality, there is a permutation $P$ such that $P\xb_1$ is not a node. There exists an integrable function $f$ so that $f(P\xb_1) = 1$, and $f(\xb_1) = 0$ for $i\in\{1,2,3,4,5\}$, and $f(P\xb_i) = 0$ for $i \in \{2,3,4,5\}$. Then we would have
+		\begin{equation*}
+			0 = Q(f) = Q(f\circ P) = \alpha_1.
+		\end{equation*}
+		If $\alpha_1 = 0$, then we really have a four-point rule, not a five-point rule, so we cannot allow this. Hence, (1) must hold.
+		
+		Now we prove (2). Suppose that $\xb_i$ and $\xb_j$ belong to the same orbit. Then there exists a permutation matrix $P$ such that $P\xb_i = \xb_j$. There exists an integrable function $f$ such that $f(\xb_j) = 1$ and $f(\xb_k) = 0$ if $k \ne j$. Therefore,
+		\begin{equation*}
+			\alpha_j = \alpha_jf(\xb_j) = Q(f) = Q(f\circ P) = \alpha_i f(P\xb_i) = \alpha_i.
+		\end{equation*}
+		This proves (2).
+		
+		Since (1) implies that $G$ acts on the set of nodes, it follows that we can partition the set of nodes into orbits. Thus, we can deduce further constraints on $Q$ by characterizing the orbits of $G$. We begin by considering orbits of size 1, or fixed points. 
+		
+		Suppose that $(x,y,z)^T$ is a fixed point of $G$. Then, choosing permutations that swap the $x$ and $y$ axes and $x$ and $z$ axes, we obtain $x=y=z$. On the other hand, any point $(\lambda, \lambda, \lambda)^T$ is clearly a fixed point of $G$. Thus, the set of fixed points of $G$ is $\{(\lambda, \lambda, \lambda)^T \mid \lambda \in \R\}$. 
+		
+		Now we find the other orbits. Let $\xb = (x,y,z)^T$ not be a fixed point. Then either one of $x,y,z$ is distinct and the other two are equal or all three are distinct. If, say, $y=z$, and $x\ne y$, then the orbit of $\xb$ contains three elements: $(x,y,y)^T$, $(y,x,y)^T$, and $(y,y,x)^T$. If all three of $x,y,z$ are distinct, then the orbit of $\xb$ contains 6 elements, corresponding to the permutations of the letters $x,y,z$. 
+		
+		The orbits of $G$ can only have size 1 (for fixed points), 3 (for points that have two coordinates equal) or 6 (for points that have distinct coordinates). There are only two ways to partition a five-point set into subsets of these sizes. We could have five size-1 sets, or two size-1 sets and one size-3 set.
+		
+		With five size-1 sets we would have to choose all nodes to be fixed points, meaning that $\xb_i = (\lambda_i, \lambda_i, \lambda_i)^T$ for $i \in \{1,2,3,4,5\}$, and the weights could be chosen freely, giving us 10 degrees of freedom.
+		
+		With two size-1 sets and one size-3 set we would have to choose, say, $\xb_1$ and $\xb_2$ as fixed points, meaning that $\xb_i = (\lambda_i,\lambda_i,\lambda_i)^T$ for $i\in \{1,2\}$, and then the other three points would be determined by permutations of $\xb_3$, which would only have two coordinates free to choose, say, $\xb_3 = (x_3, y_3, y_3)$. The weights $\alpha_3,\alpha_4,\alpha_5$ would also have to be equal, so we would only need to choose $\alpha_3$, giving a total of 7 degrees of freedom: $\lambda_1,\lambda_2, x_3, y_3, \alpha_1,\alpha_2,\alpha_3$.
+		
+		We note that the set $P_m$ of polynomials of degree at most $m$ has a basis
+		\begin{equation*}
+			B_m = \{x^{n_x}y^{n_y}z^{n_z} \mid n_x + n_y + n_z \le m,\, n_x \ge 0,\, n_y\ge 0,\,n_z\ge 0\}.
+		\end{equation*}
+		Then $B_3$ is generated by the action of $G$ on the set $\{1,x,x^2,xy, x^3, x^2y, xyz\}$, which has 7 elements, and $B_4$ is generated by the action of $G$ on the set $\{1,x,x^2,xy x^3,x^2y,xyz,x^4,x^3y,x^2y^2,x^2yz\}$, which has 11 elements. Since $Q$ is already invariant under $G$, we would only need to enforce exactness on these reduced sets to obtain exactness for all polynomials in $P_3$ or $P_4$. We only have 10 degrees of freedom, at the most, so exactness for $P_4$ is likely impossible. For $P_3$, however, we would have 7 constraints; using the partition of the nodes with two size-1 orbits and one size-3 orbits gives us exactly 7 degrees of freedom, allowing us to determine the parameters of the quadrature without making any arbitrary choices.
+		
+		The 7 exactness constraints in this case are given by
+		\newcommand{\dv}{\dee x \dee y \dee z}
+		\begin{align*}
+			Q(1) &= J(1) = \int_{\Th}1 \dv = \frac{1}{6}, \\
+			Q(x) &= J(x) = \int_{\Th}x \dv = \int_{0}^1x \int_0^{1-x}\int_0^{1-x-y}\dee z\dee y\dee x\\
+			&= \int_0^1 x\int_0^{1-x}(1-x-y)\dee y \dee x = -\frac{1}{2}\int_0^1x(y-x+1)^2\bigg|_0^{1-x}\dee x \\
+			&= \frac{1}{2}\int_0^1\left(x^3 - 2x^2 + x\right)\dee x = \left.\frac{x^4}{8} - \frac{2x^3}{6} + \frac{x^2}{4}\right|_0^1 \\
+			&= \frac{1}{24},\\
+			Q(x^2) &= J(x) = \int_{\Th}x^2\dv = \int_0^1x\int_0^{1-x}\int_0^{1-x-y}\dee z\dee y\dee x \\
+			&= \frac{1}{2}\int_0^1x(x^3 -2x^2+x)\dee x = \left.\frac{x^5}{10} - \frac{2x^4}{8} + \frac{x^3}{6}\right|_0^1 \\
+			&= \frac{1}{60},
+		\end{align*}
+		and
+		\begin{align*}
+			Q(xy) &= J(xy) = \int_{\Th}xy = \int_0^1x\int_0^{1-x}y\int_0^{1-x-y}\dee z\dee y\dee x \\
+			&= \int_0^1x\int_0^{1-x}(y-xy-y^2)\dee y\dee x =\int_0^1x\left(\frac{(1-x)^3}{2} - \frac{(1-x)^3}{3}\right) \dee x \\
+			&= \frac{1}{6}\int_0^1 (x - 3x^2 + 3x^3 - x^4)\dee x = \frac{1}{6}\left[\frac{x^2}{2}- \frac{3x^3}{3} + \frac{3x^4}{4} - \frac{x^5}{5}\right]_0^1 \\
+			&= \frac{1}{120}, \\
+			Q(x^3) &= J(x^3) = \int_{\Th}x^3\dv = \int_0^1x^3\int_0^{1-x}\int_0^{1-x-y}\dee z\dee y \dee x \\
+			&= \frac{1}{2}\int_0^1x^2(x^3-2x^2+x)\dee x = \left.\frac{x^6}{12} - \frac{2x^5}{10} + \frac{x^4}{8}\right|_0^1 \\
+			&= \frac{1}{120},\\
+			Q(x^2y) &= J(x^2y) = \int_{\Th}x^2y\dv = \int_0^1x^2\int_0^{1-y}y\int_0^{1-x-y}\dee z \dee y \dee x\\
+			&= \frac{1}{6}\int_0^1x(x-3x^2+3x^3-x^4)\dee x = \frac{1}{6}\left[\frac{x^3}{3} - \frac{3x^4}{4} + \frac{3x^5}{5} - \frac{x^6}{6}\right]_0^1 \\
+			&= \frac{1}{360}, \\
+			Q(xyz) &= J(xyz) = \int_{\Th}xyz\dv = \int_0^1x\int_0^{1-x}y\int_0^{1-x-y}z\dee z\dee y \dee x \\
+			&= \frac{1}{2}\int_0^1x\int_0^{1-x}y(y +x-1)^2\dee y \dee x = \frac{1}{2}\int_0^1x\left[\frac{y^4}{4} + \frac{2(x-1)y^3}{3} + \frac{(x-1)^2y^2}{2}\right]_0^{1-x}\dee x \\
+			&= \frac{1}{24}\int_0^1x(x-1)^4 \dee x = \frac{1}{24}\left\{\left[\frac{x(x-1)^5}{5}\right]_0^1 - \frac{1}{5}\int_0^1 (x-1)^5\dee x\right\} = -\frac{1}{120}\left.\frac{(x-1)^6}{6}\right|_0^1 \\
+			&= \frac{1}{720}.
+		\end{align*}
+		
+		We also have the symmetry constraints
+		\begin{equation*}
+			\xb_1 = \mat{\lambda_1 \\\lambda_1\\\lambda_1}, \quad \xb_2 = \mat{\lambda_2\\\lambda_2\\\lambda_2}, \quad \xb_3 = \mat{x_3 \\ y_3 \\ y_3}, \quad \xb_4 = \mat{y_3\\x_3\\y_3}, \quad \xb_5 = \mat{y_3\\y_3\\x_3},
+		\end{equation*}
+		and
+		\begin{equation*}
+			\alpha_3 = \alpha_4=\alpha_5.
+		\end{equation*}
+		Combining the two sets of constraints yields the following system of equations
+		\begin{align*}
+			\alpha_1 + \alpha_2 + 3\alpha_3 &= Q(1) = \frac{1}{6},\\
+			\alpha_1\lambda_1 + \alpha_2\lambda_2 + \alpha_3(x_3 + 2y_3) &= Q(x) = \frac{1}{24}, \\
+			\alpha_1\lambda_1^2 + \alpha_2\lambda_2^2 + \alpha_3(x_3^2 + 2y_3^2) &= Q(x^2) = \frac{1}{60}, \\
+			\alpha_1\lambda_1^2 + \alpha_2\lambda_2^2 + \alpha_3(2x_3y_3 + y_3^2) &= Q(xy) = \frac{1}{120}, \\
+			\alpha_1\lambda_1^3 + \alpha_2\lambda_2^3 + \alpha_3(x_3^3 + 2y_3^3) &= Q(x^3) = \frac{1}{120}, \\
+			\alpha_1\lambda_1^3 + \alpha_2\lambda_2^3 + \alpha_3(x_3^2y_3 + x_3y_3^2 + y_3^3) &= Q(x^2y) = \frac{1}{360}, \\ 
+			\alpha_1\lambda_1^3 + \alpha_2\lambda_2^3 + 3\alpha_3x_3y_3^2 &= Q(xyz) = \frac{1}{720}.
+		\end{align*}
+		The leading terms in the third and fourth equation can be eliminated to obtain one equation involving $x_3,y_3$ and $\alpha_3$; similarly, the leading terms in the last three equations can be eliminated to obtain two more equations involving $x_3,y_3$ and $\alpha_3$, giving a total of three equations for these three unknowns:
+		\begin{align*}
+			\frac{1}{60} - \alpha_3(x_3^2+2y_3^2) &= \frac{1}{120} - \alpha_3(2x_3y_3+y_3^2), \\
+			\frac{1}{120} - \alpha_3(x_3^3+2y_3^3) &= \frac{1}{360} - \alpha_3(x_3^2y_3 + x_3y_3^2 + y_3^3), \\
+			\frac{1}{720} - 3\alpha_3x_3y_3^2 &= \frac{1}{120} - \alpha_3(x_3^3+2y_3^3).
+		\end{align*}
+		Rearranging, we obtain
+		\begin{align*}
+			\frac{1}{120} &= \alpha_3(x_3^2 + y_3^2 -2x_3y_3) = \alpha_3(x_3-y_3)^2, \\
+			\frac{1}{180} &= \alpha_3(x_3^3+ y_3^3-x_3^2y_3-x_3y_3^2), \\
+			\frac{1}{144} &= \alpha_3(x_3^3 + 2y_3^3 - 3x_3y_3^2).
+		\end{align*}
+		From the first equation we get $\alpha_3 = \frac{1}{120(x_3-y_3)^2}$. Dividing the second and third equations by the first and using the fact that $\alpha_3\ne 0$ (this follows from the first equation) and $x_3 \ne y_3$ (otherwise we have only three distinct points, not five) gives
+		\begin{align*}
+			\frac{2}{3} &= \frac{x_3^3+y_3^3-x_3^2y_3-x_3y_3^2}{(x_3-y_3)^2} = x_3+y_3, \\
+			\frac{5}{6} &= \frac{x_3^3+ 2y_3^3-3x_3y_3^2}{(x_3-y_3)^2}.
+		\end{align*}
+		Substituting $x_3 = \frac{2}{3} - y_3$ into the second equation and simplifying the resulting equation into a polynomial equation, we get
+		\begin{equation*}
+			54y_3^3-45y_3^2+12y_3-1=0.
+		\end{equation*}
+		Setting $z = 3y_3$, this is equivalent to
+		\begin{equation*}
+			2z^3-5z^2+4z-1 = 0.
+		\end{equation*}
+		If this cubic polynomial has rational roots, then they must have the form $\pm 1$ or $\pm \frac{1}{2}$. It is easy to see by inspection that 1 is indeed a root. Using long division, and then factoring, we get
+		\begin{equation*}
+			2z^3-5z^2+4z-1 = (z-1)(2z^2-3z+1) = (z-1)(2z-1)(z-1).
+		\end{equation*}
+		Then the only possible choices of $z$ are $z=1$ or $z = \frac{1}{2}$. If we choose $z = 1$, then we get $y_3 = \frac{1}{3}$, and $x_3 = \frac{1}{3}=y_3$, which is not allowed. Then $z = \frac{1}{2}$, and $y_3 = \frac{1}{6}$, and $x_3 = \frac{1}{2}$. Lastly, we get $\alpha_3 = \frac{1}{120(x_3-y_3)^2} = \frac{3}{40}$.
+		
+		Having obtained $\alpha_3, x_3, y_3$, we can now find $\alpha_1,\alpha_2,\lambda_1,\lambda_2$. Rearranging our original exactness constraints and substituting the values of $\alpha_3, x_3,y_3$, we get
+		\begin{align*}
+			\alpha_1 + \alpha_2 &= -\frac{7}{120}, \\
+			\alpha_1\lambda_1 + \alpha_2\lambda_2 &= -\frac{1}{48}, \\
+			\alpha_1\lambda_1^2 + \alpha_2\lambda_2^2 &= -\frac{1}{160}, \\
+			\alpha_1\lambda_1^3 + \alpha_2\lambda_2^3 &= -\frac{1}{576}.
+		\end{align*}
+		With a complicated series of substitutions, one obtains from these equations:
+		\begin{equation*}
+			\alpha_1 = \frac{3}{40}, \qquad \alpha_2 = -\frac{2}{15}, \qquad \lambda_1 = \frac{1}{6}, \qquad \lambda_2 = \frac{1}{4}.
+		\end{equation*}
+		It can be verified that these choices of $\alpha_1,\alpha_2,\alpha_3,x_3,y_3,\lambda_1,\lambda_2$ satisfy the exactness constraints. Hence, the quadrature rule
+		\begin{equation*}
+			Q(f) = \sum_{j=1}^5\alpha_j f(\xb_j)
+		\end{equation*}
+		is exact for all polynomials of degree at most 3 (i.e., has degree of precision 3), where
+		\begin{gather*}
+			\alpha_1 = \alpha_3=\alpha_4=\alpha_5 = \frac{3}{40}, \qquad \alpha_2 = -\frac{2}{15},\\[0.5em]
+			\xb_1 = \frac{1}{6}\mat{1\\1\\1}, \quad\xb_2 = \frac{1}{4}\mat{1\\1\\1},\quad \xb_3 = \frac{1}{6}\mat{3\\1\\1}, \quad \xb_4 = \frac{1}{6}\mat{1\\3\\1}, \quad \xb_5 = \frac{1}{6}\mat{1\\1\\3}.
+		\end{gather*}
+		
+		\questionpart We need $J\Th + b = T$. There are multiple ways to do this, so we choose one arbitrarily: suppose
+		\begin{equation}
+			\label{eq:p2c}
+			\mat{x_1 \\ y_1} = J\mat{1 \\ 0} + b, \qquad \mat{x_2 \\ y_2} = J\mat{0 \\ 0} + b, \qquad \mat{x_3 \\ y_3} = J\mat{0 \\ 1} + b.
+		\end{equation}
+		Then let $\widehat{P} \in \Th$. Since $\Th$ is a simplex, $\widehat{P}$ is a convex combination of the vertices $\vh_1=\mat{1 \\ 0}$, $\vh_2=\mat{0 \\ 0}$, and $\vh_3=\mat{0 \\ 1}$. That is, $P = \alpha_1\vh_1 + \alpha_2\vh_2 + \alpha_3\vh_3$, where $\alpha_i \ge 0$ for $i \in \{1,2,3\}$, and $\alpha_1+\alpha_2+\alpha_3 = 1$. Then
+		\begin{equation*}
+			J\widehat{P}+b = J(\alpha_1\vh_1 + \alpha_2\vh_2 + \alpha_3\vh_3) + b = \sum_{i=1}^3\alpha_i(J\vh_i + b) = \sum_{i=1}^3\alpha_iv_i \in T,
+		\end{equation*}
+		where $v_i = \mat{x_i \\ y_i}$ is a vertex of $T$. Then $J\Th + b \subseteq T$ because $T$ is convex. 
+		
+		Conversely, since $T$ is also a simplex, if $P \in T$, then $P = \alpha_1v_1 + \alpha_2v_2 + \alpha_3v_3$ is a convex combination of the vertices of $T$. Then if $\widehat{P} = \alpha_1\vh_1 + \alpha_2\vh_2 + \alpha_3\vh_3$,
+		\begin{equation*}
+			J\widehat{P} + b = b + J\sum_{i=1}^3\alpha_i\vh_i = \sum_{i=1}^3\alpha_i(J\vh_i + b) = \sum_{i=1}^3\alpha_iv_i = P.
+		\end{equation*}
+		Thus, $J\Th +b = T$.
+		
+		It remains to find the entries of $J = \mat{J_{11} & J_{12} \\ J_{21} & J_{22}}$ and $b = \mat{b_1 \\ b_2}$ from the constraints in \eqref{eq:p2c}. Clearly, the second equation implies that $b = v_2$. Then the first and third equations give
+		\begin{equation*}
+			\mat{J_{11} \\ J_{21}} = \mat{x_1 - x_2 \\ y_1-y_2}, \qquad \mat{J_{12} \\ J_{22}} = \mat{x_3 - x_2 \\ y_3 - y_2}.
+		\end{equation*}
+		
+		\questionpart We need $J\Th + b = T$. There are multiple ways to do this, so we choose one arbitrarily: suppose
+		\begin{equation}
+			\label{eq:p2d}
+			\mat{x_1 \\ y_1 \\ z_1} = J\mat{1 \\ 0 \\ 0} + b, \qquad \mat{x_2 \\ y_2 \\ z_2} = J\mat{0 \\ 0 \\ 0} + b, \qquad \mat{x_3 \\ y_3 \\ z_3} = J\mat{0 \\ 1 \\ 0} + b, \qquad \mat{x_4 \\ y_4 \\ z_4} = J\mat{0 \\ 0 \\ 1} + b.
+		\end{equation}
+		Then let $\widehat{P} \in \Th$. Since $\Th$ is a simplex, $\widehat{P}$ is a convex combination of the vertices $\vh_1=\mat{1 \\ 0 \\ 0}$, $\vh_2=\mat{0 \\ 0 \\0}$, $\vh_3=\mat{0 \\ 1\\ 0}$, and $\vh_4 = \mat{0 \\ 0 \\ 1}$. That is, $P = \alpha_1\vh_1 + \alpha_2\vh_2 + \alpha_3\vh_3 + \alpha_4\vh_4$, where $\alpha_i \ge 0$ for $i \in \{1,2,3, 4\}$, and $\alpha_1+\alpha_2+\alpha_3 + \alpha_4 = 1$. Then
+		\begin{equation*}
+			J\widehat{P}+b = J(\alpha_1\vh_1 + \alpha_2\vh_2 + \alpha_3\vh_3 + \alpha_4\vh_4) + b = \sum_{i=1}^4\alpha_i(J\vh_i + b) = \sum_{i=1}^4\alpha_iv_i \in T,
+		\end{equation*}
+		where $v_i = \mat{x_i \\ y_i \\ z_i}$ is a vertex of $T$. Then $J\Th + b \subseteq T$ because $T$ is convex. 
+		
+		Conversely, since $T$ is also a simplex, if $P \in T$, then $P = \alpha_1v_1 + \alpha_2v_2 + \alpha_3v_3 + \alpha_4v_4$ is a convex combination of the vertices of $T$. Then if $\widehat{P} = \alpha_1\vh_1 + \alpha_2\vh_2 + \alpha_3\vh_3+\alpha_4\vh_4$,
+		\begin{equation*}
+			J\widehat{P} + b = b + J\sum_{i=1}^4\alpha_i\vh_i = \sum_{i=1}^4\alpha_i(J\vh_i + b) = \sum_{i=1}^4\alpha_iv_i = P.
+		\end{equation*}
+		Thus, $J\Th + b= T$.
+		
+		It remains to find the entries of $J = \mat{J_{11} & J_{12} & J_{13} \\ J_{21} & J_{22} & J_{23} \\ J_{31} & J_{32} & J_{33}}$ and $b = \mat{b_1 \\ b_2 \\ b_3}$ from the constraints in \eqref{eq:p2d}. Clearly, the second equation implies that $b = v_2$. Then the first, third, and fourth equations give
+		\begin{equation*}
+			\mat{J_{11} \\ J_{21} \\ J_{31}} = \mat{x_1 - x_2 \\ y_1-y_2 \\ z_1 - z_2}, \qquad \mat{J_{12} \\ J_{22} \\ J_{32}} = \mat{x_3 - x_2 \\ y_3 - y_2 \\ z_3 - z_2}, \qquad \mat{J_{13} \\ J_{23} \\ J_{33}} = \mat{x_4 - x_2 \\ y_4 - y_2 \\ z_4-z_2}.
+		\end{equation*}
+		
+		\newcommand{\zh}{\widehat{z}}
+		\newcommand{\yb}{\mathbf{y}}
+		\questionpart \textbf{2D rule}\; Given any three distinct points $\xb_i=\mat{x_i\\y_i}$ for $i\in\{1,2,3\}$, we construct the matrix $J$ and vector $b$ from \textbf{(c)} such that the triangle $T$ with vertices $\xb_1,\xb_2,\xb_3$ satisfies $T = J\Th + b$. Then, for any function $f$ integrable on $T$, we make the substitution $\xb = J\widehat{\xb} +b$, where $\xb = (x,y)^T$, and $\widehat{\xb} =(\xh, \yh)^T$. This yields
+		\begin{equation*}
+			\int_T f(x,y)\dee x\dee y = \int_{\Th}f(J\xb+b)|J|\dee \xh\dee\yh,
+		\end{equation*}
+		where $|J|$ is the magnitude of the determinant of $J$, given by
+		\begin{equation*}
+			|J| = |(x_1-x_2)(y_3-y_2) - (x_3-x_2)(y_1-y_2)|.
+		\end{equation*}
+		Applying the quadrature rule found in \textbf{(a)}, we get
+		\begin{align*}
+			\int_Tf(x,y)\dee x\dee y &\approx \sum_{i,j=0}^1 w_{ij}f\left(J\mat{x_{ij} \\y_{ij}} + b\right)|J| \\
+			&=\sum_{i,j=0}^1\alpha_{ij}f(\xb_{ij}),
+		\end{align*}
+		where $\alpha_{ij} = w_{ij}|J|$, and $\xb_{ij} = J\mat{x_{ij} \\ y_{ij}} + b$; recall that $x_{ij}, y_{ij}$ and $w_{ij}$ are defined in \textbf{(a)}. Since polynomials composed with affine transformations are still polynomials, this gives a four-point Gaussian quadrature rule for integration on $T$. The degree of precision of the rule is 2. \\
+		
+		\textbf{3D rule}\; Given any four distinct points $\xb_i = (x_i,y_i,z_i)^T$ for $i \in \{1,2,3\}$, we construct the matrix $J$ and vector $b$ from \textbf{(d)} such that the tetrahedron $T$ with vertices $\xb_1,\xb_2,\xb_3,\xb_4$ satisfies $T = J\Th + b$. Then, for any function $f$ integrable on $T$, we make the substitution $\xb = J\widehat{\xb} + b$, where $\xb = (x,y,z)^T$, and $\widehat{\xb}=(\xh,\yh,\zh)^T$. This yields
+		\begin{equation*}
+			\int_Tf(x,y,z)\dv = \int_{\Th}f(J\xb + b)|J|\dee \xh\dee\yh\dee\zh,
+		\end{equation*}
+		where $|J|$ is the magnitude of the determinant of $J$, which can be given explicitly in terms of $\xb_1,\xb_2,\xb_3,\xb_4$, but I will omit it here for brevity. Applying the quadrature rule found in \textbf{(b)}, we get
+		\begin{align*}
+			\int_Tf(x,y,z)\dv &\approx \sum_{j=1}^5\alpha_jf\left(J\xb_j + b\right)|J| \\
+			&=\sum_{j=1}^5\beta_jf(\yb_j),
+		\end{align*}
+		where $\beta_j = |J|\alpha_j$, and $\yb_j = J\xb_j + b$. Since polynomials composed with affine transformations are still polynomials, this gives a five-point Gaussian quadrature rule for integration on $T$. The degree of precision of the rule is 3.
+		
+		\questionpart Using the result from \textbf{(e)}, we can easily implement quadrature over each triangle $T_\ell$ in terms of the coordinates of the vertices and then add up the results to approximate the integral over the square. This MATLAB implementation is documented in the comments of the code; running \texttt{p2f.m} executes the above-described procedure. I will briefly outline the structure of the code.
+		\begin{enumerate}
+			\item \texttt{p2\_gauss4.m}---constructs the four-point Gaussian quadrature found in \textbf{(a)} on the reference triangle $\Th$.
+			\item \texttt{p2\_triangles.m}---generates a data structure storing all the triangles $\{T_\ell\}_{\ell=1}^{2n^2}$ for a given $n$.
+			\item \texttt{p2\_local\_mapping.m}---computes the matrix $J$ and vector $b$ determined in \textbf{(c)} for all the triangles.
+			\item \texttt{p2\_affine\_quad.m}---maps the reference quadrature nodes and weights to the local triangles using the affine transformation $T = J\Th + b$.
+			\item \texttt{p2\_quad\_full.m}---approximates the integral of a function on the whole square using a given number $n$ of triangles in each direction and adding up the Gaussian quadrature on each triangle.
+		\end{enumerate}
+		As mentioned, \texttt{p2f.m} outputs results in Table \ref{table:p2f}, which indicates third-order convergence, as is expected for a method with degree of precision 2.
+		\begin{table}[htb!]
+			\centering
+			\begin{tabular}{@{}rrr@{}}
+				\toprule
+				$n$ & $Q_{n}$ & $\log_2\left(\frac{Q_n - Q_{128}}{Q_{2n} - Q_{128}}\right)$ \\
+				\midrule
+				  4  &   2.13786713  &   3.014 \\
+				8    & 2.13916651   &  3.018 \\
+				16   &  2.13932742  &   3.029 \\
+				32   &  2.13934731  &   3.175 \\
+				64   &  2.13934978  &   $\infty$ \\
+				128  &   2.13935009 & -\\
+				\bottomrule
+			\end{tabular}
+			\caption{Errors and convergence order for computing the integral. The last order is infinity because we treat $Q_{128}$ as the exact value.}
+			\label{table:p2f}
+		\end{table}
+	\end{alphaparts}
+	
+	\question 
+	\newcommand{\btheta}{\boldsymbol{\theta}}
+	Define
+	\begin{equation*}
+		L_m(\btheta) = \frac{1}{m}\sum_{i=1}^m(y(t_i) -g(t_i))^2 = \frac{1}{m}\sum_{i=1}^m\left(\sum_{j=1}^n\left[c_j\cos(w_jt_i + b_j)\right] -g(t_i)\right)^2
+	\end{equation*}
+	\begin{alphaparts}
+		\questionpart We have
+		\begin{align*}
+			\frac{\partial L_m}{\partial c_k} &= \frac{2}{m}\sum_{i=1}^m\left(y(t_i) - g(t_i)\right)\cos(w_kt_i + b_k), \\
+			\frac{\partial L_m}{\partial w_k} &= -\frac{2}{m}\sum_{i=1}^m\left(y(t_i)- g(t_i)\right)c_k\sin(w_kt_i + b_k)t_i, \\
+			\frac{\partial L_m}{\partial b_k} &= -\frac{2}{m}\sum_{i=1}^m\left(y(t_i) - g(t_i)\right)c_k\sin(w_kt_i+b_k),
+		\end{align*}
+		for $k = 1,2,\dots, n$. These are the components of $\nabla_{\btheta} L_m$:
+		\begin{equation*}
+			\nabla_{\btheta}L_m = \mat{\frac{\partial L_m}{\partial c_1} \\ \vdots \\ \frac{\partial L_m}{\partial c_n} \\[0.5em] \frac{\partial L_m}{\partial w_1} \\ \vdots \\ \frac{\partial L_m}{\partial w_n} \\[0.5em] \frac{\partial L_m}{\partial b_1} \\ \vdots \\ \frac{\partial L_m}{\partial b_n}}.
+		\end{equation*}
+		
+		\questionpart Taking derivatives of the gradient components from \textbf{(a)}, we get
+		\begin{align*}
+			\frac{\partial^2 L_m}{\partial c_\ell \partial c_k} &= \frac{2}{m}\sum_{i=1}^m \cos(w_\ell t_i + b_\ell)\cos(w_kt_i + b_k), \\
+			\frac{\partial^2 L_m}{\partial w_\ell \partial c_k} &= -\frac{2}{m}\sum_{i=1}^m\left[ c_\ell\sin(w_\ell t_i + b_\ell)t_i\cos(w_kt_i + b_k) + \delta_{\ell k}(y(t_i) - g(t_i))\sin(w_kt_i + b_k)t_i\right], \\
+			\frac{\partial^2 L_m}{\partial b_\ell \partial c_k} &= -\frac{2}{m}\sum_{i=1}^m\left[ c_\ell\sin(w_\ell t_i + b_\ell)\cos(w_kt_i + b_k) + \delta_{\ell k}(y(t_i) - g(t_i))\sin(w_kt_i+b_k)\right], \\
+			\frac{\partial^2 L_m}{\partial w_\ell \partial w_k} &= \frac{2}{m}\sum_{i=1}^m \left[c_\ell \sin(w_\ell t_i + b_\ell)c_k\sin(w_kt_i + b_k)t_i^2 - \delta_{\ell k}(y(t_i) - g(t_i))c_k\cos(w_kt_i+b_k)t_i^2 \right], \\
+			\frac{\partial^2 L_m}{\partial b_\ell \partial w_k} &= \frac{2}{m}\sum_{i=1}^m\left[c_\ell\sin(w_\ell t_i +b_\ell)c_k\sin(w_kt_i + b_k)t_i - \delta_{\ell k}(y(t_i) - g(t_i))c_k\cos(w_kt_i + b_k)t_i\right], \\
+			\frac{\partial^2 L_m}{\partial b_\ell \partial b_k} &= \frac{2}{m}\sum_{i=1}^m\left[c_\ell\sin(w_\ell t_i + b_\ell)c_k\sin(w_kt_i + b_k) - \delta_{\ell k}(y(t_i) - g(t_i))c_k\cos(w_kt_i + b_k)\right]
+		\end{align*}
+		for $k,\ell = 1,2,\dots, n$, where $\delta_{\ell k}$ is Kronecker delta symbol. These are the components of the Hessian $\nabla^2_{\btheta}L_m$:
+		\begin{equation*}
+			\nabla_{\btheta}^2L_m = \mat{
+				\frac{\partial^2 L_m}{\partial c_1^2} &  \cdots  & \frac{\partial^2 L_m}{\partial c_n\partial c_1} & \frac{\partial^2 L_m}{\partial w_1\partial c_1} & \cdots & \frac{\partial^2 L_m}{\partial w_n\partial c_1} & \frac{\partial^2L_m}{\partial b_1\partial c_1} & \cdots & \frac{\partial^2L_m}{\partial b_n\partial c_1} \\
+				\vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+				\frac{\partial^2L_m}{\partial c_1\partial c_n} & \cdots & \frac{\partial^2L_m}{\partial^2c_n} & \frac{\partial^2L_m}{\partial w_1\partial c_n} & \cdots & \frac{\partial^2L_m}{\partial w_n\partial c_n} & \frac{\partial^2L_m}{\partial b_1\partial c_n} & \cdots & \frac{\partial^2L_m}{\partial b_n\partial c_n} \\[1em]
+				\frac{\partial^2L_m}{\partial c_1\partial w_1} & \cdots & \frac{\partial^2L_m}{\partial c_n\partial w_1} & \frac{\partial^2L_m}{\partial w_1^2} & \cdots & \frac{\partial^2L_m}{\partial w_n\partial w_1} & \frac{\partial^2L_m}{\partial b_1\partial w_1} & \cdots & \frac{\partial^2L_m}{\partial b_n\partial w_1} \\
+				\vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+				\frac{\partial^2L_m}{\partial c_1\partial w_n} & \cdots & \frac{\partial^2L_m}{\partial c_n\partial w_n} & \frac{\partial^2L_m}{\partial w_1\partial w_n} & \cdots & \frac{\partial^2L_m}{\partial w_n^2} & \frac{\partial^2L_m}{\partial b_1\partial w_n} & \cdots & \frac{\partial^2L_m}{\partial b_n\partial w_n} \\[1em]
+				\frac{\partial^2L_m}{\partial c_1\partial b_1} & \cdots & \frac{\partial^2L_m}{\partial c_n\partial b_1} & \frac{\partial^2L_m}{\partial w_1\partial b_1} & \cdots &\frac{\partial^2L_m}{\partial w_n\partial b_1} & \frac{\partial^2L_m}{\partial b_1^2} & \cdots & \frac{\partial^2L_m}{\partial b_n\partial b_1} \\
+				\vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+				\frac{\partial^2L_m}{\partial c_1\partial b_n} & \cdots & \frac{\partial^2L_m}{\partial c_n\partial b_n} & \frac{\partial^2L_m}{\partial w_1\partial b_n} & \cdots & \frac{\partial^2L_m}{\partial w_n\partial b_n} & \frac{\partial^2L_m}{\partial b_1\partial b_n} & \cdots & \frac{\partial^2L_m}{\partial b_n^2}
+			}.
+		\end{equation*}
+		
+		\questionpart The gradient descent algorithm is implemented in \texttt{p3\_gradient\_descent.m}, and it is applied in the case $n=10$, $m=10$ in \texttt{p3c.m}. Other dependencies are explained in the comments of the code.
+		
+		\questionpart Newton's method is implemented in \texttt{p3\_newton.m}, and in \texttt{p3d.m} it is applied in the case $n=10$, $m=10$ using the optimized parameter from \textbf{(c)} as an initial guess. Other dependencies are explained in the comments of the code.
+		
+		\questionpart The required training runs are implemented in \texttt{p3e.m}, and the resulting values of $E_M$ are presented in Table \ref{table:E_M}. We do up to four steps of Newton's method or until the loss is less than $10^{-4}$. The errors are very erratic because Newton's method is extremely sensitive to the initial guess, and often converges to bad solutions. We observe that there are broadly less failures when $m\ge n$ than when $n > m$, but this is not a guarantee one way or another.
+		\begin{table}[htb!]
+			\centering
+			\begin{tabular}{@{}rrrrrrr@{}}
+				\toprule
+				& \multicolumn{6}{c}{$m$} \\
+				\cmidrule(ll){2-7}
+				$n$ & $10$ & $20$ & $40$ & $80$ & $160$ & $320$ \\
+				\midrule\num{10} & \num{9.960e-04} & \num{8.993e-04} & \num{7.323e-04} & \num{7.120e-04} & \num{8.438e-04} & \num{4.712e-04}\\
+				\num{20} & \num{1.369e-02} & \num{3.270e+00} & \num{4.973e-03} & \num{3.437e+01} & \num{2.990e+00} & \num{8.798e-04}\\
+				\num{40} & \num{9.861e-04} & \num{5.645e+00} & \num{7.416e-01} & \num{2.567e-01} & \num{1.556e+00} & \num{2.159e-02}\\
+				\num{80} & \num{1.697e+00} & \num{4.636e+00} & \num{1.820e+00} & \num{6.725e-03} & \num{2.610e-03} & \num{3.308e-03}\\
+				\num{160} & \num{4.604e+00} & \num{6.350e-02} & \num{2.842e+05} & \num{6.521e+00} & \num{3.188e+00} & \num{1.288e-01}\\
+				\num{320} & \num{2.552e+02} & \num{4.632e-03} & \num{3.082e+01} & \num{2.146e+03} & \num{3.780e+03} & \num{7.224e+00}\\
+				\bottomrule
+			\end{tabular}
+			\caption{Values of the error $E_M$ for different values of $n$ and $m$}
+			\label{table:E_M}
+		\end{table}
+	\end{alphaparts}
+\end{document}
