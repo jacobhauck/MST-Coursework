@@ -17,8 +17,8 @@ function u = Function1d(elements, c, x)
     % Get left and right endpoints for each x
     i_left = elements.mesh.T(1, element_indices);  % (1, n)
     i_right = elements.mesh.T(2, element_indices);  % (1, n)
-    xl = elements.P(i_left);  % (1, n)
-    xr = elements.P(i_right);  % (1, n)
+    xl = elements.mesh.P(i_left);  % (1, n)
+    xr = elements.mesh.P(i_right);  % (1, n)
 
     % Convert to reference domain
     x_ref = (x - xl) ./ (xr - xl);  % (1, n)

@@ -1,4 +1,5 @@
 classdef QuadraticElements1d < handle
+    % Defines a quadratic 1D finite element basis
 
     properties
         % Mesh1d mesh object
@@ -6,6 +7,9 @@ classdef QuadraticElements1d < handle
         
         % Number of basis functions Nb = 2 * mesh.N + 1
         Nb
+
+        % Number of local basis functions
+        N_lb = 3
 
         % (1, Nb) Finite element node matrix
         Pb
@@ -65,6 +69,56 @@ classdef QuadraticElements1d < handle
             %           x
 
             dBasis = [4*x - 3; 4*x - 1; -8*x + 4];
+        end
+
+        function lbf = LocalBasisFunction(self, i_lb, i_elem)
+            % Get the local basis function with the given index at the
+            % given element
+            %
+            % Parameters
+            % ----------
+            %   i_lb: Local basis function index (1 or 2)
+            %   i_elem: Element index
+            % 
+            % Return
+            % ------
+            %   lbf: Callable mapping (1, n) -> (1, n) that evaluates
+            %        the local basis function at given points
+            
+            if i_lb == 1
+                lbf = self.mesh.ReferenceToLocal(@(x) 2 * x.^2 - 3*x + 1, i_elem);
+            elseif i_lb == 2
+                lbf = self.mesh.ReferenceToLocal(@(x) 2 * x.^2 - x, i_elem);
+            elseif i_lb == 3
+                lbf = self.mesh.ReferenceToLocal(@(x) -4 * x.^2 + 4*x, i_elem);
+            else
+                error("Invalid index: %d", i_lb);
+            end
+        end
+
+        function lbf = LocalBasisFunctionDerivative(self, i_lb, i_elem)
+            % Get the local basis function derivatives with the given index
+            % at the given element
+            %
+            % Parameters
+            % ----------
+            %   i_lb: Local basis function index (1 or 2)
+            %   i_elem: Element index
+            % 
+            % Return
+            % ------
+            %   lbf: Callable mapping (1, n) -> (1, n) that evaluates
+            %        the local basis function derivative at given points
+
+            if i_lb == 1
+                lbf = self.mesh.ReferenceToLocalDerivative(@(x) 4*x - 3, i_elem);
+            elseif i_lb == 2
+                lbf = self.mesh.ReferenceToLocalDerivative(@(x) 4*x - 1, i_elem);
+            elseif i_lb == 3
+                lbf = self.mesh.ReferenceToLocalDerivative(@(x) -8*x + 4, i_elem);
+            else
+                error("Invalid index: %d", i_lb);
+            end
         end
     end
 end

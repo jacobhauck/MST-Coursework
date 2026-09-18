@@ -1,4 +1,4 @@
-classdef GaussIntegrator1d
+classdef GaussIntegrator1d < handle
     % Integrator for FEM in 1D that uses Gauss-Legendre quadrature
 
     properties
@@ -54,6 +54,10 @@ classdef GaussIntegrator1d
             %      integrand
             %   a: Lower bound of domain
             %   b: Upper bound of domain
+            %
+            % Return
+            % ------
+            %   integral: approximate integral of f on [a, b]
 
             x_g = self.x * (b - a) + a;
             w_g = self.w * (b - a);

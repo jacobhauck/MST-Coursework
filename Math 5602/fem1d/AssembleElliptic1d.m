@@ -1,6 +1,7 @@
-function [A, b] = AssembleElliptic1d(c, f, elements, integrator)
+function [A, b] = AssembleElliptic1d(c, f, trial_elements, test_elements, integrator)
     % Assemble stiffness matrix and load vector for 1D elliptic equation
-    % with coefficient c(x) and forcing function f(x)
+    % with coefficient c(x) and forcing function f(x):
+    %     d/dx (c(x) du/dx) = f(x)
     %
     % Parameters
     % ----------
@@ -8,56 +9,73 @@ function [A, b] = AssembleElliptic1d(c, f, elements, integrator)
     %      coefficient function
     %   f: Callable mapping (1, k) -> (1, k) computing the value of the
     %      forcing function
-    %   elements: Finite element basis object
+    %   trial_elements: Finite element basis object for trial function
+    %   test_elements: Finite element basis object for test function
     %   integrator: Integrator object for numerical integration
     %
     % Return
-    %   A: (elements.Nb, elements.Nb) stiffness matrix of the elliptic
+    %   A: (Nb, Nb) stiffness matrix of the elliptic
     %      equation using the given finite element discretization
-    %   b: (elements.Nb, 1) load vector of the equation using the given
+    %   b: (Nb, 1) load vector of the equation using the given
     %      finite element discretization
-    %   
+    %
+
+    % Validate input
+    mesh = test_elements.mesh;
+    if mesh ~= trial_elements.mesh
+        error("Test and trial elements must be defined on the same mesh");
+    end
 
     % Precompute local basis functions and their derivatives in reference 
-    % domain [0, 1]
-    basis_vals = elements.EvalLocalBasisReference(integrator.x);
-    % (N_lb, n)
-    dBasis_vals = elements.EvalLocalBasisDerivativeReference(integrator.x);
-    % (N_lb, n)
+    % domain [0, 1] at reference quadrature nodes
+    trial_dBasis_vals = trial_elements.EvalLocalBasisDerivativeReference(integrator.x);
+    % (N_lb_trial, n)
+    test_dBasis_vals = test_elements.EvalLocalBasisDerivativeReference(integrator.x);
+    % (N_lb_test, n)
     
     % Assemble A
-    N_lb = size(basis_vals, 1);
-    A = sparse(elements.Nb, elements.Nb);
-    for i_elem = 1 : elements.mesh.N
+    N_lb_trial = size(trial_dBasis_vals, 1);
+    N_lb_test = size(test_dBasis_vals, 1);
+    
+    Nb = test_elements.Nb;
+    if Nb ~= trial_elements.Nb
+        error("Dimension of trial space must equal dimension of test space");
+    end
+    A = sparse(Nb, Nb);
+
+    % Loop over elements
+    for n = 1 : mesh.N
         % Get element coordinates
-        xl = elements.mesh.P(elements.mesh.T(1, i_elem));
-        xr = elements.mesh.P(elements.mesh.T(2, i_elem));
+        x = mesh.P(:, mesh.T(:, n));
         
-        for i_lb = 1:N_lb  % For test function
-            i_node = elements.Tb(i_lb, i_elem);
-            dBasis_i = dBasis_vals(i_lb, :) / (xr - xl);
+        for alpha = 1:N_lb_trial  % For trial function
+            i = trial_elements.Tb(alpha, n);
+            trial_dBasis = trial_dBasis_vals(alpha, :) / (x(2) - x(1));
             
-            for j_lb = 1:N_lb  % For trial function
-                j_node = elements.Tb(j_lb, i_elem);
-                dBasis_j = dBasis_vals(j_lb, :) / (xr - xl);
-                val = integrator.integrate(@(x) c(x) .* dBasis_i .* dBasis_j, xl, xr);
-                A(i_node, j_node) = A(i_node, j_node) + val;
+            for beta = 1:N_lb_test  % For test function
+                j = test_elements.Tb(beta, n);
+                test_dBasis = test_dBasis_vals(beta, :) / (x(2) - x(1));
+                val = integrator.integrate(@(x) c(x) .* test_dBasis .* trial_dBasis, x(1), x(2));
+                A(j, i) = A(j, i) + val;
             end
         end
     end
 
     % Assemble b
-    b = zeros(elements.Nb, 1);
-    for i_elem = 1 : elements.mesh.N
-        % Get element coordinates
-        xl = elements.mesh.P(elements.mesh.T(1, i_elem));
-        xr = elements.mesh.P(elements.mesh.T(2, i_elem));
+    b = zeros(Nb, 1);
 
-        for i_lb = 1:N_lb  % For test function
-            i_node = elements.Tb(i_lb, i_elem);
-            basis_i = basis_vals(i_lb, :);
-            val = integrator.integrate(@(x) f(x) .* basis_i, xl, xr);
-            b(i_node) = b(i_node) + val;
+    test_basis_vals = test_elements.EvalLocalBasisReference(integrator.x);
+    % (N_lb_test, n)
+    
+    for n = 1 : mesh.N
+        % Get element coordinates
+        x = mesh.P(:, mesh.T(:, n));
+
+        for beta = 1:N_lb_test  % For test function
+            j = test_elements.Tb(beta, n);
+            test_basis = test_basis_vals(beta, :);
+            val = integrator.integrate(@(x) f(x) .* test_basis, x(1), x(2));
+            b(j) = b(j) + val;
         end
     end
 end
