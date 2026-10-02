@@ -1,0 +1,8 @@
+>> Main
+Error at h = 1/128: 2.3340e-03
+Error at h = 1/128: 5.8317e-04
+Error at h = 1/128: 1.4645e-04
+Error at h = 1/128: 3.6675e-05
+Error at h = 1/128: 9.1700e-06
+Error at h = 1/128: 2.2929e-06
+Error at h = 1/128: 5.7323e-07

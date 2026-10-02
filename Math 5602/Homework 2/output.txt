@@ -1,0 +1,8 @@
+>> Main
+Error at h = 1/4: 4.6597e-05
+Error at h = 1/8: 2.9918e-06
+Error at h = 1/16: 1.8901e-07
+Error at h = 1/32: 1.1869e-08
+Error at h = 1/64: 7.4345e-10
+Error at h = 1/128: 4.6115e-11
+Error at h = 1/256: 1.8658e-12

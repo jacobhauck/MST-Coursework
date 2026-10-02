@@ -16,9 +16,6 @@ classdef LinearElements1d < handle
 
         % (2, mesh.N) Finite element index matrix
         Tb
-
-        % (1, 2) Boundary finite element node indices (in Pb)
-        boundary
     end
 
     methods
@@ -27,7 +24,6 @@ classdef LinearElements1d < handle
             self.Nb = self.mesh.Nm;
             self.Pb = mesh.P;
             self.Tb = mesh.T;
-            self.boundary = [1, self.Nb];
         end
 
         function basis = EvalLocalBasisReference(~, x)
